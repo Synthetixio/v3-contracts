@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.10.7",
-  "timestamp": 1706198800,
+  "timestamp": 1706205519,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -58,7 +58,7 @@
         "defaultValue": "synthetix-snapshot-record-mock:3.0.0"
       },
       "governance_package": {
-        "defaultValue": "synthetix-governance:3.0.1"
+        "defaultValue": "synthetix-governance:3.0.3"
       },
       "governance_salt": {
         "defaultValue": "synthetix-council"
@@ -493,7 +493,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "3.3.4-2",
+    "version": "3.3.4-3",
     "description": "Includes the full synthetix system with configurations applied"
   },
   "state": {
@@ -3051,7 +3051,7 @@
       "artifacts": {
         "imports": {
           "ambassador_council": {
-            "url": "ipfs://Qmdd7eTFWxGkiZjwTdcKprHwzMbKbq8YHb2hjS5NXG7jgJ",
+            "url": "ipfs://QmdN6ZCgMD6rbDEuwruDqzF8Amf9WLsPVfAapadZFLh4m9",
             "tags": [
               "latest"
             ],
@@ -3189,7 +3189,7 @@
                 "gasCost": "5609845706"
               },
               "ElectionModule": {
-                "address": "0x0Ec577B780c365Ce69F6956f961cD6301C2440DF",
+                "address": "0x841c1C6C453e9D1F5f439DD8E60E33ee96164b2A",
                 "abi": [
                   "error AlreadyACouncilMember()",
                   "error AlreadyNominated()",
@@ -3208,12 +3208,12 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error OverflowUint256ToUint64()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
                   "error Unauthorized(address addr)",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueAlreadyInSet()",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
@@ -3231,7 +3231,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -3252,7 +3251,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -3266,12 +3266,12 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x5e6f70e2df11611118c1ad75a918f3795c680a7aa826e97d5bb835feb5227282",
+                "deployTxnHash": "0x3c63afe18c3b843096b154b1b1177d07af38d860762e0524056ab2b46fc83ec5",
                 "sourceName": "contracts/modules/core/ElectionModule.sol",
                 "contractName": "ElectionModule",
                 "deployedOn": "contract.ElectionModule",
-                "gasUsed": 4072906,
-                "gasCost": "5825048094"
+                "gasUsed": 3998177,
+                "gasCost": "1717510069"
               },
               "InitialModuleBundle": {
                 "address": "0x8a0221CabE12b3C8BA33ab13397dDC575DA1CcC1",
@@ -3365,7 +3365,7 @@
                 "gasCost": "6706057890"
               },
               "CoreRouter": {
-                "address": "0xc5AD2a56F8e139573465a9bc1d6E87CcA8094fDC",
+                "address": "0x89CB5446B63f4A7807928Ef504ED501A6b18Ec3d",
                 "abi": [
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error MissingAssociatedSystem(bytes32 id)",
@@ -3405,10 +3405,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -3425,7 +3425,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -3446,7 +3445,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -3486,14 +3486,15 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0x0433dc9066e92c0160ae8c377cb962aedbf0b0b7426d125ec401d6751468b0e6",
+                "deployTxnHash": "0x836f73c82ea5db18f46d4509d7a6279b9e7a002d6845ef997cd139b901c74b36",
                 "contractName": "CoreRouter",
                 "sourceName": "CoreRouter.sol",
                 "gasUsed": 682369,
-                "gasCost": "668040974"
+                "gasCost": "1723826903"
               },
               "CouncilTokenRouter": {
                 "address": "0x6ae2597A90C94999566031655b7C388cCF8283C5",
@@ -3600,10 +3601,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -3620,7 +3621,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -3641,7 +3641,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -3681,6 +3682,7 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployTxnHash": "",
@@ -3816,21 +3818,21 @@
             },
             "txns": {
               "upgrade_core_proxy": {
-                "hash": "0x11b90699a3fe7c19e3a2da95d47bc28f4b5c3ea49e16ea32ee0f9b605b53e40a",
+                "hash": "0xa52dfd5e8833ab5ace08b4621866e8be87b4b0651685372e7e8291c56830ae3c",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0x9abCc1d560C1af4Cf8a84D80AE5E35a24C1f38FA",
-                        "0xc5AD2a56F8e139573465a9bc1d6E87CcA8094fDC"
+                        "0x89CB5446B63f4A7807928Ef504ED501A6b18Ec3d"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_core_proxy",
-                "gasUsed": 51146,
-                "gasCost": "747096975",
+                "gasUsed": 51150,
+                "gasCost": "1729041631",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "init_council_token": {
@@ -3909,14 +3911,14 @@
           }
         }
       },
-      "hash": "1b37f0205fb0e0db137aa3a3c89f784a",
+      "hash": "ca75faa7e3be90d91ef7b4ce0259ef22",
       "version": 6
     },
     "provision.grants_council": {
       "artifacts": {
         "imports": {
           "grants_council": {
-            "url": "ipfs://QmRqkXdP9y1RzLidTuQ5DCtdWMxHcu1Fn77S415hCrb66A",
+            "url": "ipfs://QmczyYvP7c2VGHj4xKEdiD7NCrdL9KnHuD3ettnGUywnDS",
             "tags": [
               "latest"
             ],
@@ -4054,7 +4056,7 @@
                 "gasCost": "6681566569"
               },
               "ElectionModule": {
-                "address": "0x8A9899a906A25a23F702bA02de8F9d2f0358d482",
+                "address": "0x1D4A9D394A1F2C49E44E7bCB3A38d70374A53d01",
                 "abi": [
                   "error AlreadyACouncilMember()",
                   "error AlreadyNominated()",
@@ -4073,12 +4075,12 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error OverflowUint256ToUint64()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
                   "error Unauthorized(address addr)",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueAlreadyInSet()",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
@@ -4096,7 +4098,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -4117,7 +4118,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -4131,12 +4133,12 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x2a8b2edb2de1224376218ed6e75704bb4ddbde924285b7866a94cd819e1e8201",
+                "deployTxnHash": "0xbdbc53ed1903ff246d3509096f60e2803f8c0de59a4f3c67c7e3d6b0999972af",
                 "sourceName": "contracts/modules/core/ElectionModule.sol",
                 "contractName": "ElectionModule",
                 "deployedOn": "contract.ElectionModule",
-                "gasUsed": 4072906,
-                "gasCost": "6386251222"
+                "gasUsed": 3998177,
+                "gasCost": "1741704018"
               },
               "InitialModuleBundle": {
                 "address": "0x8a0221CabE12b3C8BA33ab13397dDC575DA1CcC1",
@@ -4230,7 +4232,7 @@
                 "gasCost": "5997056821"
               },
               "CoreRouter": {
-                "address": "0xFd3045C6BEB3fc43CddA3845C6799B9bBA6Fd69b",
+                "address": "0xb4B97E3Fe080F00c042CF331aa899a9595240Fbc",
                 "abi": [
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error MissingAssociatedSystem(bytes32 id)",
@@ -4270,10 +4272,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -4290,7 +4292,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -4311,7 +4312,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -4351,14 +4353,15 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0x7ffbbba9efeb5474d2881bad474370b59a8eb814608c35af78099d91af53fc1b",
+                "deployTxnHash": "0x5ed200a2dba924df25d4af5188973ff29fe3362af128a4c923a3c19c9c3c81c2",
                 "contractName": "CoreRouter",
                 "sourceName": "CoreRouter.sol",
-                "gasUsed": 682369,
-                "gasCost": "704084030"
+                "gasUsed": 682357,
+                "gasCost": "1747353374"
               },
               "CouncilTokenRouter": {
                 "address": "0x5f06a14BC2d2B895F4cD4820BFd034f90a711755",
@@ -4465,10 +4468,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -4485,7 +4488,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -4506,7 +4508,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -4546,6 +4549,7 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployTxnHash": "",
@@ -4681,21 +4685,21 @@
             },
             "txns": {
               "upgrade_core_proxy": {
-                "hash": "0x93af436e635f00c388897d0cbd17300390712ea702de3df64fe2ed3f8908e060",
+                "hash": "0x133fd81af36773030a333b096e38b3a2201db6769d6587865825cedd4f6f1ec1",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0x8A3bA910172c4b77BF4c52d04bA1a59b963700ec",
-                        "0xFd3045C6BEB3fc43CddA3845C6799B9bBA6Fd69b"
+                        "0xb4B97E3Fe080F00c042CF331aa899a9595240Fbc"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_core_proxy",
-                "gasUsed": 51146,
-                "gasCost": "686131694",
+                "gasUsed": 51150,
+                "gasCost": "1743808172",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "init_council_token": {
@@ -4774,7 +4778,7 @@
           }
         }
       },
-      "hash": "850087e6a4454005baaee529c8c778b8",
+      "hash": "c0145c4a758c05f25fc4466d698b59d6",
       "version": 6
     },
     "provision.snapshot_record_mock": {
@@ -4816,7 +4820,7 @@
       "artifacts": {
         "imports": {
           "spartan_council": {
-            "url": "ipfs://QmeycAL9MWpaq3Y79CBPm9vmoDyBgTWPkLgk8Q1nFRkRhi",
+            "url": "ipfs://QmVAR8KuedCc5cS8kJGVfryRLskYvto6FPCKYL1b5kDRr1",
             "tags": [
               "latest"
             ],
@@ -4954,7 +4958,7 @@
                 "gasCost": "5321465784"
               },
               "ElectionModule": {
-                "address": "0x1a80e098B7236d04F4CDF6A81f976F502448F883",
+                "address": "0xD6f533DED7045D90954Bb92D6F888bb7d0e1f585",
                 "abi": [
                   "error AlreadyACouncilMember()",
                   "error AlreadyNominated()",
@@ -4973,12 +4977,12 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error OverflowUint256ToUint64()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
                   "error Unauthorized(address addr)",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueAlreadyInSet()",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
@@ -4996,7 +5000,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -5017,7 +5020,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -5031,12 +5035,12 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xd1583310d462d3675d6eeae2f6b9c27cb4f56807cec2f520aac387b2b5c007c1",
+                "deployTxnHash": "0x5218ebe5ace3a67a2569b74c2495fe7967d4ef1386aed2f132e2f6de8adbf773",
                 "sourceName": "contracts/modules/core/ElectionModule.sol",
                 "contractName": "ElectionModule",
                 "deployedOn": "contract.ElectionModule",
-                "gasUsed": 4072906,
-                "gasCost": "5326586650"
+                "gasUsed": 3998177,
+                "gasCost": "1741092300"
               },
               "InitialModuleBundle": {
                 "address": "0x8a0221CabE12b3C8BA33ab13397dDC575DA1CcC1",
@@ -5130,7 +5134,7 @@
                 "gasCost": "5121260164"
               },
               "CoreRouter": {
-                "address": "0xE9731d4F624eA2F2A70e807DEe033b8Ec1365d6e",
+                "address": "0x0f9A59c985B28fb98f63380566e4e07800246689",
                 "abi": [
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error MissingAssociatedSystem(bytes32 id)",
@@ -5170,10 +5174,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -5190,7 +5194,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -5211,7 +5214,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -5251,14 +5255,15 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0x9242ab52e45d6440db6ed86ecda22572c469d64660365a8b54b4f96d42038e46",
+                "deployTxnHash": "0x185e45a6ebcc3727b3afe232a55f5ab989071b24d7e9a311cc36ea643f22ec8f",
                 "contractName": "CoreRouter",
                 "sourceName": "CoreRouter.sol",
                 "gasUsed": 682369,
-                "gasCost": "669415324"
+                "gasCost": "1739995238"
               },
               "CouncilTokenRouter": {
                 "address": "0xBc55541e23c5458Bfc625dd331EBa6C756e30290",
@@ -5365,10 +5370,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -5385,7 +5390,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -5406,7 +5410,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -5446,6 +5451,7 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployTxnHash": "",
@@ -5581,21 +5587,21 @@
             },
             "txns": {
               "upgrade_core_proxy": {
-                "hash": "0x9a8babaa6df1a69431af2bef8c8b35b1b0ed5fcbed21ea9ee588dda6bcec9ac7",
+                "hash": "0x382da155a8966129f0e221cd656c90f58353fc0c18963acff3c4fd0f794c31a3",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0xDAA5A8bFDEBcA03cCAF0d5285265A7d7Fbb42e15",
-                        "0xE9731d4F624eA2F2A70e807DEe033b8Ec1365d6e"
+                        "0x0f9A59c985B28fb98f63380566e4e07800246689"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_core_proxy",
-                "gasUsed": 51146,
-                "gasCost": "713755176",
+                "gasUsed": 51138,
+                "gasCost": "1756588805",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "init_council_token": {
@@ -5674,14 +5680,14 @@
           }
         }
       },
-      "hash": "71ccb7c59020130408bae47dcaba5f40",
+      "hash": "5b6fdec69d153a62db53d49cb2309e9c",
       "version": 6
     },
     "provision.treasury_council": {
       "artifacts": {
         "imports": {
           "treasury_council": {
-            "url": "ipfs://QmfEtdfdZSyL33SeDYcs5TcyMiCku9X8kTnSgciz54Scbq",
+            "url": "ipfs://QmPSXnVvHpXbJBvfms8HPfCJ3MVMonWDK9CtoHiYhn5PWy",
             "tags": [
               "latest"
             ],
@@ -5819,7 +5825,7 @@
                 "gasCost": "5548101336"
               },
               "ElectionModule": {
-                "address": "0x74c534a9AD80A2b9aA4B0501Fd232b3D0084238A",
+                "address": "0xE8c08109573B5D756375e66EFdba3abd78091393",
                 "abi": [
                   "error AlreadyACouncilMember()",
                   "error AlreadyNominated()",
@@ -5838,12 +5844,12 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error OverflowUint256ToUint64()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
                   "error Unauthorized(address addr)",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueAlreadyInSet()",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
@@ -5861,7 +5867,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -5882,7 +5887,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -5896,12 +5902,12 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xbe8789cbe1a6ff4d4f1ac94f0b7a56fd99de523c0ad65e352b944feb434f0003",
+                "deployTxnHash": "0xff86f15465657c89892b3d0b5a04e2390a29c1ad847881c7b24e3e119c848180",
                 "sourceName": "contracts/modules/core/ElectionModule.sol",
                 "contractName": "ElectionModule",
                 "deployedOn": "contract.ElectionModule",
-                "gasUsed": 4072906,
-                "gasCost": "5954987634"
+                "gasUsed": 3998177,
+                "gasCost": "1741713823"
               },
               "InitialModuleBundle": {
                 "address": "0x8a0221CabE12b3C8BA33ab13397dDC575DA1CcC1",
@@ -5995,7 +6001,7 @@
                 "gasCost": "5738016371"
               },
               "CoreRouter": {
-                "address": "0xD25C404E7b3Dbb2b37A7c2fA27c0Be46f407D075",
+                "address": "0xC3f3cDce2396F693bcBEf25795122ce60DBf4157",
                 "abi": [
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error MissingAssociatedSystem(bytes32 id)",
@@ -6035,10 +6041,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -6055,7 +6061,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -6076,7 +6081,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -6116,14 +6122,15 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0x721d0bd154d1d1b9c5feb3ce7ff91ae5c212c520fb2fc321e9544fb888bf0bf6",
+                "deployTxnHash": "0x2ad84b90ab60618caa82b1cb1955e28599e7e361adb6ca98bc24fde42c726541",
                 "contractName": "CoreRouter",
                 "sourceName": "CoreRouter.sol",
-                "gasUsed": 681913,
-                "gasCost": "683360815"
+                "gasUsed": 682321,
+                "gasCost": "1739032442"
               },
               "CouncilTokenRouter": {
                 "address": "0x92aF1f0D609BC51483Caea1eD3B65Fe96b6Ba513",
@@ -6230,10 +6237,10 @@
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
                   "error NotCallableInCurrentPeriod()",
+                  "error NotImplemented()",
                   "error NotNominated()",
                   "error PositionOutOfBounds()",
                   "error TooManyMembers()",
-                  "error UnsupportedNetwork(uint64)",
                   "error ValueNotInSet()",
                   "event CandidateNominated(address indexed candidate, uint256 indexed epochId)",
                   "event CouncilMemberAdded(address indexed member, uint256 indexed epochIndex)",
@@ -6250,7 +6257,6 @@
                   "event VoteWithdrawn(address indexed voter, uint256 indexed chainId, uint256 indexed epochId, address[] candidates)",
                   "function _recvCast(uint256 epochIndex, address voter, uint256 votingPower, uint256 chainId, address[] candidates, uint256[] amounts)",
                   "function _recvDismissMembers(address[] membersToDismiss, uint256 epochIndex)",
-                  "function _recvInitElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function _recvWithdrawVote(uint256 epochIndex, address voter, uint256 chainId, address[] candidates)",
@@ -6271,7 +6277,8 @@
                   "function getNominees() view returns (address[])",
                   "function getVotePower(address user, uint256 chainId, uint256 electionId) view returns (uint256)",
                   "function hasVoted(address user, uint256 chainId) view returns (bool)",
-                  "function initElectionModuleSatellite(uint256 chainId) payable",
+                  "function initElectionModuleSatellite(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
+                  "function initElectionModuleSatellite() payable",
                   "function initOrUpdateElectionSettings(address[] initialCouncil, uint8 minimumActiveMembers, uint64 initialNominationPeriodStartDate, uint64 administrationPeriodDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration)",
                   "function isElectionEvaluated() view returns (bool)",
                   "function isElectionModuleInitialized() view returns (bool)",
@@ -6311,6 +6318,7 @@
                   "function upgradeTo(address newImplementation)",
                   "error InvalidMessage()",
                   "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
                   "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
                 ],
                 "deployTxnHash": "",
@@ -6446,21 +6454,21 @@
             },
             "txns": {
               "upgrade_core_proxy": {
-                "hash": "0x002aae09b4d721397ae52d5d74147c67a6c83ac4fc1f70834d636e452c7f6912",
+                "hash": "0x6c81e442046a3167c0092ab105e134fa69a81a1750d898d254377399fa3719f1",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0x01fa5A659Da52Fa0AE26bc60698B2760B745d910",
-                        "0xD25C404E7b3Dbb2b37A7c2fA27c0Be46f407D075"
+                        "0xC3f3cDce2396F693bcBEf25795122ce60DBf4157"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_core_proxy",
-                "gasUsed": 51146,
-                "gasCost": "675922283",
+                "gasUsed": 51150,
+                "gasCost": "1731624881",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "init_council_token": {
@@ -6539,7 +6547,7 @@
           }
         }
       },
-      "hash": "082953f43b037301772888157f336d00",
+      "hash": "ce0d5ce1367f11d29954c42ccf7e4917",
       "version": 6
     },
     "invoke.ambassador_council_setSnapshotContract": {
