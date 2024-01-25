@@ -1,0 +1,2585 @@
+{
+  "def": {
+    "setting": {
+      "minimum_liquidity_ratio": {
+        "defaultValue": "2000000000000000000"
+      },
+      "account_timeout_withdraw": {
+        "defaultValue": "86400"
+      },
+      "ccip_router": {
+        "defaultValue": "0xE561d5E02207fb5eB32cca20a699E0d8919a1476"
+      },
+      "ccip_token_pool": {
+        "defaultValue": "0x057152DB365B47851B0A0bd431644b8eE21fE1b4"
+      },
+      "snx_package": {
+        "defaultValue": "synthetix:3.3.4"
+      },
+      "owner": {
+        "defaultValue": "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
+      },
+      "target_preset": {
+        "defaultValue": "main"
+      },
+      "salt": {
+        "defaultValue": "0x3330363734343032330000000000000000000000000000000000000000000000"
+      },
+      "bundleSalt": {
+        "defaultValue": "snax"
+      },
+      "deployer": {
+        "defaultValue": "0x302d2451d9f47620374B54c521423Bf0403916A2"
+      },
+      "snx_aggregator_address": {
+        "defaultValue": "0xDC3EA94CD0AC27d9A86C180091e7f78C683d3699"
+      },
+      "snx_address": {
+        "defaultValue": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f"
+      },
+      "snx_liquidation_reward": {
+        "defaultValue": "10000000000000000000"
+      },
+      "sc_pool_id": {
+        "defaultValue": "1"
+      },
+      "pool_owner": {
+        "defaultValue": "0x302d2451d9f47620374B54c521423Bf0403916A2"
+      },
+      "snx_pool_id": {
+        "defaultValue": "2"
+      },
+      "spot_market_package": {
+        "defaultValue": "synthetix-spot-market:3.3.4"
+      },
+      "perps_market_package": {
+        "defaultValue": "synthetix-perps-market:3.3.4"
+      }
+    },
+    "invoke": {
+      "setMinimumLiquidityRatio": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMinLiquidityRatio(uint256)",
+        "args": [
+          "<%= settings.minimum_liquidity_ratio %>"
+        ],
+        "depends": [
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "setAccountTimeoutWithdraw": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setConfig",
+        "args": [
+          "<%= formatBytes32String('accountTimeoutWithdraw') %>",
+          "<%= hexZeroPad(hexlify(parseInt(settings.account_timeout_withdraw)), 32) %>"
+        ],
+        "depends": [
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "configureChainlinkCrossChain": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureChainlinkCrossChain",
+        "args": [
+          "<%= settings.ccip_router %>",
+          "<%= settings.ccip_token_pool %>"
+        ],
+        "depends": [
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "setSupportedCrossChainNetworks": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setSupportedCrossChainNetworks",
+        "args": [
+          [
+            "1",
+            "10"
+          ],
+          [
+            "5009297550715157269",
+            "3734403246176062136"
+          ]
+        ],
+        "depends": [
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "permitCreatePool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "addToFeatureFlagAllowlist",
+        "args": [
+          "<%= formatBytes32String('createPool') %>",
+          "<%= settings.deployer %>"
+        ],
+        "depends": [
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "registerSnxOracleManager": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          3,
+          "<%= defaultAbiCoder.encode(['address', 'uint256', 'uint8'], [settings.snx_aggregator_address, 0, 8]) %>",
+          []
+        ],
+        "extra": {
+          "snx_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "configureSnxCollateral": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= settings.snx_address %>",
+            "oracleNodeId": "<%= extras.snx_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('4') %>",
+            "liquidationRatioD18": "<%= parseEther('1.5') %>",
+            "liquidationRewardD18": "<%= settings.snx_liquidation_reward %>",
+            "minDelegationD18": "<%= settings.snx_liquidation_reward %>",
+            "depositingEnabled": true
+          }
+        ],
+        "depends": [
+          "invoke.registerSnxOracleManager",
+          "provision.system",
+          "invoke.registerSnxOracleManager",
+          "provision.system",
+          "invoke.registerSnxOracleManager",
+          "provision.system",
+          "invoke.registerSnxOracleManager"
+        ]
+      },
+      "createScPool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "from": "<%= settings.deployer %>",
+        "func": "createPool",
+        "args": [
+          "<%= settings.sc_pool_id %>",
+          "<%= settings.pool_owner %>"
+        ],
+        "depends": [
+          "invoke.permitCreatePool",
+          "provision.system",
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "setScPoolName": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= settings.sc_pool_id %>"
+          ]
+        },
+        "func": "setPoolName",
+        "args": [
+          "<%= settings.sc_pool_id %>",
+          "Spartan Council Pool"
+        ],
+        "depends": [
+          "invoke.createScPool",
+          "provision.system"
+        ]
+      },
+      "setPreferredPool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setPreferredPool",
+        "args": [
+          "<%= settings.sc_pool_id %>"
+        ],
+        "depends": [
+          "invoke.createScPool",
+          "provision.system"
+        ]
+      },
+      "create_snx_pool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "from": "<%= settings.deployer %>",
+        "func": "createPool",
+        "args": [
+          "<%= settings.snx_pool_id %>",
+          "<%= settings.pool_owner %>"
+        ],
+        "depends": [
+          "invoke.permitCreatePool",
+          "provision.system",
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "set_snx_pool_name": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= settings.snx_pool_id %>"
+          ]
+        },
+        "func": "setPoolName",
+        "args": [
+          "<%= settings.snx_pool_id %>",
+          "Passive SNX Pool"
+        ],
+        "depends": [
+          "invoke.create_snx_pool",
+          "provision.system"
+        ]
+      },
+      "approve_snx_pool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "addApprovedPool",
+        "args": [
+          "<%= settings.snx_pool_id %>"
+        ],
+        "depends": [
+          "invoke.create_snx_pool",
+          "provision.system",
+          "provision.system",
+          "provision.system"
+        ]
+      },
+      "allowAllTransferCrossChain": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setFeatureFlagAllowAll",
+        "args": [
+          "<%= formatBytes32String('transferCrossChain') %>",
+          true
+        ],
+        "depends": [
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system"
+        ]
+      }
+    },
+    "provision": {
+      "system": {
+        "source": "<%= settings.snx_package %>",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "owner": "<%= settings.owner %>",
+          "salt": "<%= settings.salt %>",
+          "bundleSalt": "<%= settings.bundleSalt %>"
+        }
+      }
+    },
+    "name": "synthetix-omnibus",
+    "version": "3.3.4",
+    "description": "Includes the full synthetix system with configurations applied"
+  },
+  "state": {
+    "provision.system": {
+      "artifacts": {
+        "imports": {
+          "system": {
+            "url": "ipfs://QmUtELWtepNn1ByaFUF8YAgLMtdvy6GGe2P9ex48EVit4H",
+            "tags": [
+              "latest"
+            ],
+            "preset": "main",
+            "imports": {
+              "oracle_manager": {
+                "url": "ipfs://QmUo3tYVM7MPGnihmAhnyTG6o1ryXB96ah31nmSr6x9jYp",
+                "tags": [
+                  "latest"
+                ],
+                "preset": "with-synthetix",
+                "contracts": {
+                  "CoreModule": {
+                    "address": "0x874573f87a53e6D9D6F11eE8Bb994E247dB55509",
+                    "abi": [
+                      "error ImplementationIsSterile(address implementation)",
+                      "error NoChange()",
+                      "error NotAContract(address contr)",
+                      "error NotNominated(address addr)",
+                      "error Unauthorized(address addr)",
+                      "error UpgradeSimulationFailed()",
+                      "error ZeroAddress()",
+                      "event OwnerChanged(address oldOwner, address newOwner)",
+                      "event OwnerNominated(address newOwner)",
+                      "event Upgraded(address indexed self, address implementation)",
+                      "function acceptOwnership()",
+                      "function getImplementation() view returns (address)",
+                      "function nominateNewOwner(address newNominatedOwner)",
+                      "function nominatedOwner() view returns (address)",
+                      "function owner() view returns (address)",
+                      "function renounceNomination()",
+                      "function simulateUpgradeTo(address newImplementation)",
+                      "function upgradeTo(address newImplementation)"
+                    ],
+                    "constructorArgs": [],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0x4138c6203bd14aa46ae82320dbf12769582e0c8e7fa9312ddcc64a3ce266354d",
+                    "sourceName": "contracts/modules/CoreModule.sol",
+                    "contractName": "CoreModule",
+                    "deployedOn": "contract.CoreModule"
+                  },
+                  "InitialProxy": {
+                    "address": "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
+                    "abi": [
+                      "error ImplementationIsSterile(address implementation)",
+                      "error NoChange()",
+                      "error NotAContract(address contr)",
+                      "error NotNominated(address addr)",
+                      "error Unauthorized(address addr)",
+                      "error UpgradeSimulationFailed()",
+                      "error ZeroAddress()",
+                      "event OwnerChanged(address oldOwner, address newOwner)",
+                      "event OwnerNominated(address newOwner)",
+                      "event Upgraded(address indexed self, address implementation)",
+                      "function acceptOwnership()",
+                      "function getImplementation() view returns (address)",
+                      "function nominateNewOwner(address newNominatedOwner)",
+                      "function nominatedOwner() view returns (address)",
+                      "function owner() view returns (address)",
+                      "function renounceNomination()",
+                      "function simulateUpgradeTo(address newImplementation)",
+                      "function upgradeTo(address newImplementation)"
+                    ],
+                    "constructorArgs": [
+                      "0x874573f87a53e6D9D6F11eE8Bb994E247dB55509",
+                      "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
+                    ],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0x727e23917aaded347b4a9df8fa5e189100d329b2c08e5ecdb6fd7e3ab0132c84",
+                    "sourceName": "contracts/Proxy.sol",
+                    "contractName": "Proxy",
+                    "deployedOn": "contract.InitialProxy"
+                  },
+                  "NodeModule": {
+                    "address": "0x6e7209c0dB7110fc5606BAAC492Ce4dEA2EFEd8e",
+                    "abi": [
+                      "error DeviationToleranceExceeded(int256 deviation)",
+                      "error InvalidInputPrice()",
+                      "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
+                      "error InvalidParameter(string parameter, string reason)",
+                      "error InvalidPrice(int256 price)",
+                      "error NodeNotRegistered(bytes32 nodeId)",
+                      "error OverflowInt256ToUint256()",
+                      "error OverflowInt56ToInt24()",
+                      "error OverflowUint256ToInt256()",
+                      "error OverflowUint256ToUint160()",
+                      "error OverflowUint56ToInt56()",
+                      "error StalenessToleranceExceeded()",
+                      "error UnprocessableNode(bytes32 nodeId)",
+                      "error UnsupportedOperation(uint8 operation)",
+                      "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
+                      "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
+                      "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
+                      "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
+                    ],
+                    "constructorArgs": [],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0x81c3f8f7e0bf2640bc2c5691eeca42c1f8eecc780deb6f1dbd2220295ca637b0",
+                    "sourceName": "contracts/modules/NodeModule.sol",
+                    "contractName": "NodeModule",
+                    "deployedOn": "contract.NodeModule"
+                  },
+                  "OracleRouter": {
+                    "address": "0x6172289961007908442a0437891DcD966F368563",
+                    "abi": [
+                      "error ImplementationIsSterile(address implementation)",
+                      "error NoChange()",
+                      "error NotAContract(address contr)",
+                      "error NotNominated(address addr)",
+                      "error Unauthorized(address addr)",
+                      "error UpgradeSimulationFailed()",
+                      "error ZeroAddress()",
+                      "event OwnerChanged(address oldOwner, address newOwner)",
+                      "event OwnerNominated(address newOwner)",
+                      "event Upgraded(address indexed self, address implementation)",
+                      "function acceptOwnership()",
+                      "function getImplementation() view returns (address)",
+                      "function nominateNewOwner(address newNominatedOwner)",
+                      "function nominatedOwner() view returns (address)",
+                      "function owner() view returns (address)",
+                      "function renounceNomination()",
+                      "function simulateUpgradeTo(address newImplementation)",
+                      "function upgradeTo(address newImplementation)",
+                      "error DeviationToleranceExceeded(int256 deviation)",
+                      "error InvalidInputPrice()",
+                      "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
+                      "error InvalidParameter(string parameter, string reason)",
+                      "error InvalidPrice(int256 price)",
+                      "error NodeNotRegistered(bytes32 nodeId)",
+                      "error OverflowInt256ToUint256()",
+                      "error OverflowInt56ToInt24()",
+                      "error OverflowUint256ToInt256()",
+                      "error OverflowUint256ToUint160()",
+                      "error OverflowUint56ToInt56()",
+                      "error StalenessToleranceExceeded()",
+                      "error UnprocessableNode(bytes32 nodeId)",
+                      "error UnsupportedOperation(uint8 operation)",
+                      "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
+                      "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
+                      "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
+                      "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
+                    ],
+                    "deployedOn": "router.OracleRouter",
+                    "deployTxnHash": "0x4d08b0ad414ab994766c27c9b09f8f8463910c0a981a228310fa5613ceb04115",
+                    "contractName": "OracleRouter",
+                    "sourceName": "OracleRouter.sol"
+                  },
+                  "Proxy": {
+                    "address": "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
+                    "abi": [
+                      "error ImplementationIsSterile(address implementation)",
+                      "error NoChange()",
+                      "error NotAContract(address contr)",
+                      "error NotNominated(address addr)",
+                      "error Unauthorized(address addr)",
+                      "error UpgradeSimulationFailed()",
+                      "error ZeroAddress()",
+                      "event OwnerChanged(address oldOwner, address newOwner)",
+                      "event OwnerNominated(address newOwner)",
+                      "event Upgraded(address indexed self, address implementation)",
+                      "function acceptOwnership()",
+                      "function getImplementation() view returns (address)",
+                      "function nominateNewOwner(address newNominatedOwner)",
+                      "function nominatedOwner() view returns (address)",
+                      "function owner() view returns (address)",
+                      "function renounceNomination()",
+                      "function simulateUpgradeTo(address newImplementation)",
+                      "function upgradeTo(address newImplementation)",
+                      "error DeviationToleranceExceeded(int256 deviation)",
+                      "error InvalidInputPrice()",
+                      "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
+                      "error InvalidParameter(string parameter, string reason)",
+                      "error InvalidPrice(int256 price)",
+                      "error NodeNotRegistered(bytes32 nodeId)",
+                      "error OverflowInt256ToUint256()",
+                      "error OverflowInt56ToInt24()",
+                      "error OverflowUint256ToInt256()",
+                      "error OverflowUint256ToUint160()",
+                      "error OverflowUint56ToInt56()",
+                      "error StalenessToleranceExceeded()",
+                      "error UnprocessableNode(bytes32 nodeId)",
+                      "error UnsupportedOperation(uint8 operation)",
+                      "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
+                      "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
+                      "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
+                      "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
+                    ],
+                    "deployTxnHash": "",
+                    "sourceName": "",
+                    "contractName": "",
+                    "deployedOn": "invoke.upgrade_proxy"
+                  }
+                },
+                "txns": {
+                  "upgrade_proxy": {
+                    "hash": "0xf38306766a2a14a7593dc5a2b9c9b3cab5af3e4bb08ca4c6f854c6589ddfa11f",
+                    "events": {
+                      "Upgraded": [
+                        {
+                          "name": "Upgraded",
+                          "args": [
+                            "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
+                            "0x6172289961007908442a0437891DcD966F368563"
+                          ]
+                        }
+                      ]
+                    },
+                    "deployedOn": "invoke.upgrade_proxy"
+                  }
+                },
+                "extras": {}
+              }
+            },
+            "contracts": {
+              "InitialModuleBundle": {
+                "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "",
+                "sourceName": "contracts/modules/InitialModuleBundle.sol",
+                "contractName": "InitialModuleBundle",
+                "deployedOn": "contract.InitialModuleBundle"
+              },
+              "InitialCoreProxy": {
+                "address": "0xffffffaEff0B96Ea8e4f94b2253f31abdD875847",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)"
+                ],
+                "constructorArgs": [
+                  "0x828EED723cAF0A8F822249231266E38dF614923C",
+                  "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x61ea4c25df95b8df1478f840390eb2d6097f20edf48781fa1345bdc178d305c2",
+                "sourceName": "contracts/Proxy.sol",
+                "contractName": "Proxy",
+                "deployedOn": "contract.InitialCoreProxy"
+              },
+              "FeatureFlagModule": {
+                "address": "0x3f050dD41fb168Da28931A10337614A08e5750f6",
+                "abi": [
+                  "error Unauthorized(address addr)",
+                  "error ValueAlreadyInSet()",
+                  "error ValueNotInSet()",
+                  "event FeatureFlagAllowAllSet(bytes32 indexed feature, bool allowAll)",
+                  "event FeatureFlagAllowlistAdded(bytes32 indexed feature, address account)",
+                  "event FeatureFlagAllowlistRemoved(bytes32 indexed feature, address account)",
+                  "event FeatureFlagDeniersReset(bytes32 indexed feature, address[] deniers)",
+                  "event FeatureFlagDenyAllSet(bytes32 indexed feature, bool denyAll)",
+                  "function addToFeatureFlagAllowlist(bytes32 feature, address account)",
+                  "function getDeniers(bytes32 feature) view returns (address[])",
+                  "function getFeatureFlagAllowAll(bytes32 feature) view returns (bool)",
+                  "function getFeatureFlagAllowlist(bytes32 feature) view returns (address[])",
+                  "function getFeatureFlagDenyAll(bytes32 feature) view returns (bool)",
+                  "function isFeatureAllowed(bytes32 feature, address account) view returns (bool)",
+                  "function removeFromFeatureFlagAllowlist(bytes32 feature, address account)",
+                  "function setDeniers(bytes32 feature, address[] deniers)",
+                  "function setFeatureFlagAllowAll(bytes32 feature, bool allowAll)",
+                  "function setFeatureFlagDenyAll(bytes32 feature, bool denyAll)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x30054e78447359447e2702906f52c315a537f062c4bf736dca9047a4db2a7502",
+                "sourceName": "contracts/modules/core/FeatureFlagModule.sol",
+                "contractName": "FeatureFlagModule",
+                "deployedOn": "contract.FeatureFlagModule"
+              },
+              "AccountModule": {
+                "address": "0x95AfaD3bc603F6AcAa8Fd98a11790fDcC14201C6",
+                "abi": [
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InvalidAccountId(uint128 accountId)",
+                  "error InvalidPermission(bytes32 permission)",
+                  "error OnlyAccountTokenProxy(address origin)",
+                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
+                  "error PermissionNotGranted(uint128 accountId, bytes32 permission, address user)",
+                  "error PositionOutOfBounds()",
+                  "error ValueAlreadyInSet()",
+                  "error ValueNotInSet()",
+                  "error ZeroAddress()",
+                  "event AccountCreated(uint128 indexed accountId, address indexed owner)",
+                  "event PermissionGranted(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "event PermissionRevoked(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "function createAccount() returns (uint128 accountId)",
+                  "function createAccount(uint128 requestedAccountId)",
+                  "function getAccountLastInteraction(uint128 accountId) view returns (uint256)",
+                  "function getAccountOwner(uint128 accountId) view returns (address)",
+                  "function getAccountPermissions(uint128 accountId) view returns (tuple(address user, bytes32[] permissions)[] accountPerms)",
+                  "function getAccountTokenAddress() view returns (address)",
+                  "function grantPermission(uint128 accountId, bytes32 permission, address user)",
+                  "function hasPermission(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function isAuthorized(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function notifyAccountTransfer(address to, uint128 accountId)",
+                  "function renouncePermission(uint128 accountId, bytes32 permission)",
+                  "function revokePermission(uint128 accountId, bytes32 permission, address user)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xd96c41f3bfc7461f8f3d84b3edd4b1b97bb00ec862607859aa245e36b17ba3b7",
+                "sourceName": "contracts/modules/core/AccountModule.sol",
+                "contractName": "AccountModule",
+                "deployedOn": "contract.AccountModule"
+              },
+              "AssociateDebtModule": {
+                "address": "0x896c3A88CF3C0330948d844951D5Ed7cF2d9A48D",
+                "abi": [
+                  "error AccountNotFound(uint128 accountId)",
+                  "error EmptyDistribution()",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
+                  "error MarketNotFound(uint128 marketId)",
+                  "error NotFundedByPool(uint256 marketId, uint256 poolId)",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "error Unauthorized(address addr)",
+                  "event DebtAssociated(uint128 indexed marketId, uint128 indexed poolId, address indexed collateralType, uint128 accountId, uint256 amount, int256 updatedDebt)",
+                  "function associateDebt(uint128 marketId, uint128 poolId, address collateralType, uint128 accountId, uint256 amount) returns (int256)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x009cce6237365a8dd2abe0d1afd5dc4ad1c5a781db8ee4e48ac71fd0c103ad82",
+                "sourceName": "contracts/modules/core/AssociateDebtModule.sol",
+                "contractName": "AssociateDebtModule",
+                "deployedOn": "contract.AssociateDebtModule"
+              },
+              "AssociatedSystemsModule": {
+                "address": "0x8655d839f2e12E0BF7B13FC78d6E5E5495d50c69",
+                "abi": [
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error MissingAssociatedSystem(bytes32 id)",
+                  "error Unauthorized(address addr)",
+                  "event AssociatedSystemSet(bytes32 indexed kind, bytes32 indexed id, address proxy, address impl)",
+                  "function getAssociatedSystem(bytes32 id) view returns (address addr, bytes32 kind)",
+                  "function initOrUpgradeNft(bytes32 id, string name, string symbol, string uri, address impl)",
+                  "function initOrUpgradeToken(bytes32 id, string name, string symbol, uint8 decimals, address impl)",
+                  "function registerUnmanagedSystem(bytes32 id, address endpoint)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xe58bce6ac4300b0890046eeb5f7f36faa6823cb86cf9b9aa690ac5f7e86734fa",
+                "sourceName": "contracts/modules/associated-systems/AssociatedSystemsModule.sol",
+                "contractName": "AssociatedSystemsModule",
+                "deployedOn": "contract.AssociatedSystemsModule"
+              },
+              "CcipReceiverModule": {
+                "address": "0x5B0899eBE04F08fA9472487E725192b47DBCe611",
+                "abi": [
+                  "error InvalidMessage()",
+                  "error NotCcipRouter(address)",
+                  "error Unauthorized(address addr)",
+                  "error UnsupportedNetwork(uint64)",
+                  "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x4e11e8df19fc3ba644ba8cdc66bef4b52e977d6c94a215812e98c84652865f00",
+                "sourceName": "contracts/modules/core/CcipReceiverModule.sol",
+                "contractName": "CcipReceiverModule",
+                "deployedOn": "contract.CcipReceiverModule"
+              },
+              "CollateralModule": {
+                "address": "0xCDF91a2efA3308ec985afA57754Ba8b6709cC8ce",
+                "abi": [
+                  "error AccountActivityTimeoutPending(uint128 accountId, uint256 currentTime, uint256 requiredTime)",
+                  "error AccountNotFound(uint128 accountId)",
+                  "error CollateralDepositDisabled(address collateralType)",
+                  "error CollateralNotFound()",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
+                  "error InsufficientAccountCollateral(uint256 amount)",
+                  "error InsufficientAllowance(uint256 required, uint256 existing)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint256ToUint128()",
+                  "error OverflowUint256ToUint64()",
+                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
+                  "error PositionOutOfBounds()",
+                  "error PrecisionLost(uint256 tokenAmount, uint8 decimals)",
+                  "event CollateralLockCreated(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, uint64 expireTimestamp)",
+                  "event CollateralLockExpired(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, uint64 expireTimestamp)",
+                  "event Deposited(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event Withdrawn(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "function cleanExpiredLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) returns (uint256 cleared)",
+                  "function createLock(uint128 accountId, address collateralType, uint256 amount, uint64 expireTimestamp)",
+                  "function deposit(uint128 accountId, address collateralType, uint256 tokenAmount)",
+                  "function getAccountAvailableCollateral(uint128 accountId, address collateralType) view returns (uint256)",
+                  "function getAccountCollateral(uint128 accountId, address collateralType) view returns (uint256 totalDeposited, uint256 totalAssigned, uint256 totalLocked)",
+                  "function getLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) view returns (tuple(uint128 amountD18, uint64 lockExpirationTime)[] locks)",
+                  "function withdraw(uint128 accountId, address collateralType, uint256 tokenAmount)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x0f792cf4077dab984e295b39b18ffa60b79703a19b08482a56ccea96269a724c",
+                "sourceName": "contracts/modules/core/CollateralModule.sol",
+                "contractName": "CollateralModule",
+                "deployedOn": "contract.CollateralModule"
+              },
+              "CollateralConfigurationModule": {
+                "address": "0xB93B39B9e8d2B47042a186DEccf07442e01816Ec",
+                "abi": [
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error OverflowInt256ToUint256()",
+                  "error PositionOutOfBounds()",
+                  "error Unauthorized(address addr)",
+                  "error ValueAlreadyInSet()",
+                  "event CollateralConfigured(address indexed collateralType, tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18) config)",
+                  "function configureCollateral(tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18) config)",
+                  "function getCollateralConfiguration(address collateralType) pure returns (tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18))",
+                  "function getCollateralConfigurations(bool hideDisabled) view returns (tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18)[])",
+                  "function getCollateralPrice(address collateralType) view returns (uint256)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xa96da299cdb54671c3812817401e2729d475a1e7889f69bd623408c013252ef6",
+                "sourceName": "contracts/modules/core/CollateralConfigurationModule.sol",
+                "contractName": "CollateralConfigurationModule",
+                "deployedOn": "contract.CollateralConfigurationModule"
+              },
+              "CrossChainUSDModule": {
+                "address": "0xEE2Eb1DA7c13f65Bb6ffDA195ADC63bb177f8AbA",
+                "abi": [
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InsufficientCcipFee(uint256 requiredAmount, uint256 availableAmount)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "event TransferCrossChainInitiated(uint64 indexed destChainId, uint256 indexed amount, address sender)",
+                  "function transferCrossChain(uint64 destChainId, uint256 amount) payable returns (uint256 gasTokenUsed)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x4de916011b556671536b93223eabe9cb0db0d9ac52e4a012e15a160821b6429f",
+                "sourceName": "contracts/modules/core/CrossChainUSDModule.sol",
+                "contractName": "CrossChainUSDModule",
+                "deployedOn": "contract.CrossChainUSDModule"
+              },
+              "IssueUSDModule": {
+                "address": "0x3391297a26e769475eBFFE912EFf05C51095D082",
+                "abi": [
+                  "error CollateralDepositDisabled(address collateralType)",
+                  "error EmptyDistribution()",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
+                  "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
+                  "error InsufficientDebt(int256 currentDebt)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error MarketNotFound(uint128 marketId)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
+                  "error PoolNotFound(uint128 poolId)",
+                  "event IssuanceFeePaid(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 feeAmount)",
+                  "event UsdBurned(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, address indexed sender)",
+                  "event UsdMinted(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, address indexed sender)",
+                  "function burnUsd(uint128 accountId, uint128 poolId, address collateralType, uint256 amount)",
+                  "function mintUsd(uint128 accountId, uint128 poolId, address collateralType, uint256 amount)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x1760bf79a58901d71d2a6d5ee6ba9b962fae498dd3d45554769b8554cf2bc0ff",
+                "sourceName": "contracts/modules/core/IssueUSDModule.sol",
+                "contractName": "IssueUSDModule",
+                "deployedOn": "contract.IssueUSDModule"
+              },
+              "LiquidationModule": {
+                "address": "0xf378Bd660c1c2B6790634f4B38BDbAbeBa075D8A",
+                "abi": [
+                  "error AccountNotFound(uint128 accountId)",
+                  "error CannotScaleEmptyMapping()",
+                  "error EmptyDistribution()",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error IneligibleForLiquidation(uint256 collateralValue, int256 debt, uint256 currentCRatio, uint256 cratio)",
+                  "error InsufficientMappedAmount()",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error MarketNotFound(uint128 marketId)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error MustBeVaultLiquidated()",
+                  "error OverflowInt128ToUint128()",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "event Liquidation(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData, uint128 liquidateAsAccountId, address sender)",
+                  "event VaultLiquidation(uint128 indexed poolId, address indexed collateralType, tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData, uint128 liquidateAsAccountId, address sender)",
+                  "function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) returns (bool)",
+                  "function isVaultLiquidatable(uint128 poolId, address collateralType) returns (bool)",
+                  "function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                  "function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xfe94157d4106a0f30851748555e11490f990e4024f16ec46683c15b4d74db20f",
+                "sourceName": "contracts/modules/core/LiquidationModule.sol",
+                "contractName": "LiquidationModule",
+                "deployedOn": "contract.LiquidationModule"
+              },
+              "MarketCollateralModule": {
+                "address": "0x5a19Abe2c65056b9928e665233d6E517FCf4d62C",
+                "abi": [
+                  "error CollateralNotFound()",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit)",
+                  "error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw)",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint256ToInt256()",
+                  "error PrecisionLost(uint256 tokenAmount, uint8 decimals)",
+                  "error Unauthorized(address addr)",
+                  "event MarketCollateralDeposited(uint128 indexed marketId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event MarketCollateralWithdrawn(uint128 indexed marketId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event MaximumMarketCollateralConfigured(uint128 indexed marketId, address indexed collateralType, uint256 systemAmount, address indexed owner)",
+                  "function configureMaximumMarketCollateral(uint128 marketId, address collateralType, uint256 amount)",
+                  "function depositMarketCollateral(uint128 marketId, address collateralType, uint256 tokenAmount)",
+                  "function getMarketCollateralAmount(uint128 marketId, address collateralType) view returns (uint256 collateralAmountD18)",
+                  "function getMarketCollateralValue(uint128 marketId) view returns (uint256)",
+                  "function getMaximumMarketCollateral(uint128 marketId, address collateralType) view returns (uint256)",
+                  "function withdrawMarketCollateral(uint128 marketId, address collateralType, uint256 tokenAmount)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xf47107ec71a1e6c05b82062031933503eb9a9b85d35a134e01d6050046f9ebb4",
+                "sourceName": "contracts/modules/core/MarketCollateralModule.sol",
+                "contractName": "MarketCollateralModule",
+                "deployedOn": "contract.MarketCollateralModule"
+              },
+              "MarketManagerModule": {
+                "address": "0xa8b6B4a1b114D1157bc21E49eA24D90165136870",
+                "abi": [
+                  "error EmptyDistribution()",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error IncorrectMarketInterface(address market)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error NotEnoughLiquidity(uint128 marketId, uint256 amount)",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "error Unauthorized(address addr)",
+                  "event MarketRegistered(address indexed market, uint128 indexed marketId, address indexed sender)",
+                  "event MarketSystemFeePaid(uint128 indexed marketId, uint256 feeAmount)",
+                  "event MarketUsdDeposited(uint128 indexed marketId, address indexed target, uint256 amount, address indexed market)",
+                  "event MarketUsdWithdrawn(uint128 indexed marketId, address indexed target, uint256 amount, address indexed market)",
+                  "event SetMarketMinLiquidityRatio(uint128 indexed marketId, uint256 minLiquidityRatio)",
+                  "event SetMinDelegateTime(uint128 indexed marketId, uint32 minDelegateTime)",
+                  "function depositMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
+                  "function distributeDebtToPools(uint128 marketId, uint256 maxIter) returns (bool)",
+                  "function getMarketAddress(uint128 marketId) view returns (address)",
+                  "function getMarketCollateral(uint128 marketId) view returns (uint256)",
+                  "function getMarketDebtPerShare(uint128 marketId) returns (int256)",
+                  "function getMarketFees(uint128, uint256 amount) view returns (uint256 depositFeeAmount, uint256 withdrawFeeAmount)",
+                  "function getMarketMinDelegateTime(uint128 marketId) view returns (uint32)",
+                  "function getMarketNetIssuance(uint128 marketId) view returns (int128)",
+                  "function getMarketPoolDebtDistribution(uint128 marketId, uint128 poolId) returns (uint256 sharesD18, uint128 totalSharesD18, int128 valuePerShareD27)",
+                  "function getMarketPools(uint128 marketId) returns (uint128[] inRangePoolIds, uint128[] outRangePoolIds)",
+                  "function getMarketReportedDebt(uint128 marketId) view returns (uint256)",
+                  "function getMarketTotalDebt(uint128 marketId) view returns (int256)",
+                  "function getMinLiquidityRatio(uint128 marketId) view returns (uint256)",
+                  "function getOracleManager() view returns (address)",
+                  "function getUsdToken() view returns (address)",
+                  "function getWithdrawableMarketUsd(uint128 marketId) view returns (uint256)",
+                  "function isMarketCapacityLocked(uint128 marketId) view returns (bool)",
+                  "function registerMarket(address market) returns (uint128 marketId)",
+                  "function setMarketMinDelegateTime(uint128 marketId, uint32 minDelegateTime)",
+                  "function setMinLiquidityRatio(uint128 marketId, uint256 minLiquidityRatio)",
+                  "function withdrawMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x44daab21b499935a81f4421ad55a93b1a2da3219dcf265db820dbe242a20ca3f",
+                "sourceName": "contracts/modules/core/MarketManagerModule.sol",
+                "contractName": "MarketManagerModule",
+                "deployedOn": "contract.MarketManagerModule"
+              },
+              "MulticallModule": {
+                "address": "0xD54ba8b0851b7456508d45264aad1FDdc7499e73",
+                "abi": [
+                  "error DeniedMulticallTarget(address)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error RecursiveMulticall(address)",
+                  "error Unauthorized(address addr)",
+                  "function getMessageSender() view returns (address)",
+                  "function multicall(bytes[] data) returns (bytes[] results)",
+                  "function multicallThrough(address[] to, bytes[] data, uint256[] values) payable returns (bytes[] results)",
+                  "function setAllowlistedMulticallTarget(address target, bool allowlisted)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xf0ba4d81b505a6420c7d2343524b455c4cbd3cb0292c4d49c30ddaa0b38e4069",
+                "sourceName": "contracts/modules/core/MulticallModule.sol",
+                "contractName": "MulticallModule",
+                "deployedOn": "contract.MulticallModule"
+              },
+              "PoolConfigurationModule": {
+                "address": "0x8C35743b4DC33cc2e8D5ddA8bCF428340424349F",
+                "abi": [
+                  "error PoolNotFound(uint128 poolId)",
+                  "error Unauthorized(address addr)",
+                  "error ValueAlreadyInSet()",
+                  "error ValueNotInSet()",
+                  "event PoolApprovedAdded(uint256 poolId)",
+                  "event PoolApprovedRemoved(uint256 poolId)",
+                  "event PreferredPoolSet(uint256 poolId)",
+                  "function addApprovedPool(uint128 poolId)",
+                  "function getApprovedPools() view returns (uint256[])",
+                  "function getPreferredPool() view returns (uint128)",
+                  "function removeApprovedPool(uint128 poolId)",
+                  "function setPreferredPool(uint128 poolId)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xc63f48678b3bcfbe0a5ad326cb981bd47677c5e1cba582f48ac7a1ece792bf2a",
+                "sourceName": "contracts/modules/core/PoolConfigurationModule.sol",
+                "contractName": "PoolConfigurationModule",
+                "deployedOn": "contract.PoolConfigurationModule"
+              },
+              "PoolModule": {
+                "address": "0x44406De9887af6ffc813D3Cda4aDa6fabd3946C9",
+                "abi": [
+                  "error CapacityLocked(uint256 marketId)",
+                  "error EmptyDistribution()",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error MarketNotFound(uint128 marketId)",
+                  "error MinDelegationTimeoutPending(uint128 poolId, uint32 timeRemaining)",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "error PoolAlreadyExists(uint128 poolId)",
+                  "error PoolNotFound(uint128 poolId)",
+                  "error Unauthorized(address addr)",
+                  "error ZeroAddress()",
+                  "event PoolCollateralConfigurationUpdated(uint128 indexed poolId, address collateralType, tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) config)",
+                  "event PoolCollateralDisabledByDefaultSet(uint128 poolId, bool disabled)",
+                  "event PoolConfigurationSet(uint128 indexed poolId, tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[] markets, address indexed sender)",
+                  "event PoolCreated(uint128 indexed poolId, address indexed owner, address indexed sender)",
+                  "event PoolNameUpdated(uint128 indexed poolId, string name, address indexed sender)",
+                  "event PoolNominationRenounced(uint128 indexed poolId, address indexed owner)",
+                  "event PoolNominationRevoked(uint128 indexed poolId, address indexed owner)",
+                  "event PoolOwnerNominated(uint128 indexed poolId, address indexed nominatedOwner, address indexed owner)",
+                  "event PoolOwnershipAccepted(uint128 indexed poolId, address indexed owner)",
+                  "event SetMinLiquidityRatio(uint256 minLiquidityRatio)",
+                  "function acceptPoolOwnership(uint128 poolId)",
+                  "function createPool(uint128 requestedPoolId, address owner)",
+                  "function getMinLiquidityRatio() view returns (uint256)",
+                  "function getNominatedPoolOwner(uint128 poolId) view returns (address)",
+                  "function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) view returns (uint256)",
+                  "function getPoolConfiguration(uint128 poolId) view returns (tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[])",
+                  "function getPoolName(uint128 poolId) view returns (string poolName)",
+                  "function getPoolOwner(uint128 poolId) view returns (address)",
+                  "function nominatePoolOwner(address nominatedOwner, uint128 poolId)",
+                  "function rebalancePool(uint128 poolId, address optionalCollateralType)",
+                  "function renouncePoolNomination(uint128 poolId)",
+                  "function revokePoolNomination(uint128 poolId)",
+                  "function setMinLiquidityRatio(uint256 minLiquidityRatio)",
+                  "function setPoolCollateralConfiguration(uint128 poolId, address collateralType, tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) newConfig)",
+                  "function setPoolCollateralDisabledByDefault(uint128 poolId, bool disabled)",
+                  "function setPoolConfiguration(uint128 poolId, tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[] newMarketConfigurations)",
+                  "function setPoolName(uint128 poolId, string name)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x429e43b3dcb9799012da246fb53261a4f9283c0b2e6146ebc117e623d444cd87",
+                "sourceName": "contracts/modules/core/PoolModule.sol",
+                "contractName": "PoolModule",
+                "deployedOn": "contract.PoolModule"
+              },
+              "RewardsManagerModule": {
+                "address": "0xb7059Ed9950f2D9fDc0155fC0D79e63d4441e806",
+                "abi": [
+                  "error AccountNotFound(uint128 accountId)",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "error OverflowUint256ToUint32()",
+                  "error OverflowUint32ToInt32()",
+                  "error OverflowUint64ToInt64()",
+                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
+                  "error PositionOutOfBounds()",
+                  "error RewardDistributorNotFound()",
+                  "error RewardUnavailable(address distributor)",
+                  "error Unauthorized(address addr)",
+                  "error ValueAlreadyInSet()",
+                  "error ValueNotInSet()",
+                  "event RewardsClaimed(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, address distributor, uint256 amount)",
+                  "event RewardsDistributed(uint128 indexed poolId, address indexed collateralType, address distributor, uint256 amount, uint256 start, uint256 duration)",
+                  "event RewardsDistributorRegistered(uint128 indexed poolId, address indexed collateralType, address indexed distributor)",
+                  "event RewardsDistributorRemoved(uint128 indexed poolId, address indexed collateralType, address indexed distributor)",
+                  "function claimRewards(uint128 accountId, uint128 poolId, address collateralType, address distributor) returns (uint256)",
+                  "function distributeRewards(uint128 poolId, address collateralType, uint256 amount, uint64 start, uint32 duration)",
+                  "function getRewardRate(uint128 poolId, address collateralType, address distributor) view returns (uint256)",
+                  "function registerRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
+                  "function removeRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
+                  "function updateRewards(uint128 poolId, address collateralType, uint128 accountId) returns (uint256[], address[])"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x828e69738083be12c3ce0598a757c114a9c3f0ff191c57152829b04a116e9251",
+                "sourceName": "contracts/modules/core/RewardsManagerModule.sol",
+                "contractName": "RewardsManagerModule",
+                "deployedOn": "contract.RewardsManagerModule"
+              },
+              "UtilsModule": {
+                "address": "0x7ebCBBD835D17661b26b8AFAe75b5f94BfDC12cA",
+                "abi": [
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error OverflowUint256ToUint64()",
+                  "error Unauthorized(address addr)",
+                  "error ValueAlreadyInSet()",
+                  "event NewSupportedCrossChainNetwork(uint64 newChainId)",
+                  "function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool)",
+                  "function configureOracleManager(address oracleManagerAddress)",
+                  "function getConfig(bytes32 k) view returns (bytes32 v)",
+                  "function getConfigAddress(bytes32 k) view returns (address v)",
+                  "function getConfigUint(bytes32 k) view returns (uint256 v)",
+                  "function setConfig(bytes32 k, bytes32 v)",
+                  "function setSupportedCrossChainNetworks(uint64[] supportedNetworks, uint64[] ccipSelectors) returns (uint256 numRegistered)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x914048882ecbf18cca873d7dfc6dfcbac7c70daa26fbb63705b9bc4c08764a65",
+                "sourceName": "contracts/modules/core/UtilsModule.sol",
+                "contractName": "UtilsModule",
+                "deployedOn": "contract.UtilsModule"
+              },
+              "VaultModule": {
+                "address": "0xA154EcFFfb46380991751DE890956b245142e10C",
+                "abi": [
+                  "error CapacityLocked(uint256 marketId)",
+                  "error CollateralDepositDisabled(address collateralType)",
+                  "error EmptyDistribution()",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
+                  "error InsufficientAccountCollateral(uint256 requestedAmount)",
+                  "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
+                  "error InsufficientDelegation(uint256 minDelegation)",
+                  "error InvalidCollateralAmount()",
+                  "error InvalidLeverage(uint256 leverage)",
+                  "error MarketNotFound(uint128 marketId)",
+                  "error MinDelegationTimeoutPending(uint128 poolId, uint32 timeRemaining)",
+                  "error OverflowInt128ToUint128()",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "error OverflowUint256ToUint32()",
+                  "error OverflowUint32ToInt32()",
+                  "error OverflowUint64ToInt64()",
+                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
+                  "error PoolCollateralLimitExceeded(uint128 poolId, address collateralType, uint256 currentCollateral, uint256 maxCollateral)",
+                  "error PoolNotFound(uint128 poolId)",
+                  "error PositionOutOfBounds()",
+                  "error RewardDistributorNotFound()",
+                  "error ValueAlreadyInSet()",
+                  "error ValueNotInSet()",
+                  "event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender)",
+                  "function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage)",
+                  "function getPosition(uint128 accountId, uint128 poolId, address collateralType) returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio)",
+                  "function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
+                  "function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) returns (uint256)",
+                  "function getPositionDebt(uint128 accountId, uint128 poolId, address collateralType) returns (int256 debt)",
+                  "function getVaultCollateral(uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
+                  "function getVaultCollateralRatio(uint128 poolId, address collateralType) returns (uint256)",
+                  "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xd866be48cd9cd7851cd1eba226877b1633397084c4dfbd3e48bc8d1d98e73f7e",
+                "sourceName": "contracts/modules/core/VaultModule.sol",
+                "contractName": "VaultModule",
+                "deployedOn": "contract.VaultModule"
+              },
+              "CoreRouter": {
+                "address": "0x9f3be6Be18E8D0613f87c86A0b1875B74f404A11",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)",
+                  "error ValueAlreadyInSet()",
+                  "error ValueNotInSet()",
+                  "event FeatureFlagAllowAllSet(bytes32 indexed feature, bool allowAll)",
+                  "event FeatureFlagAllowlistAdded(bytes32 indexed feature, address account)",
+                  "event FeatureFlagAllowlistRemoved(bytes32 indexed feature, address account)",
+                  "event FeatureFlagDeniersReset(bytes32 indexed feature, address[] deniers)",
+                  "event FeatureFlagDenyAllSet(bytes32 indexed feature, bool denyAll)",
+                  "function addToFeatureFlagAllowlist(bytes32 feature, address account)",
+                  "function getDeniers(bytes32 feature) view returns (address[])",
+                  "function getFeatureFlagAllowAll(bytes32 feature) view returns (bool)",
+                  "function getFeatureFlagAllowlist(bytes32 feature) view returns (address[])",
+                  "function getFeatureFlagDenyAll(bytes32 feature) view returns (bool)",
+                  "function isFeatureAllowed(bytes32 feature, address account) view returns (bool)",
+                  "function removeFromFeatureFlagAllowlist(bytes32 feature, address account)",
+                  "function setDeniers(bytes32 feature, address[] deniers)",
+                  "function setFeatureFlagAllowAll(bytes32 feature, bool allowAll)",
+                  "function setFeatureFlagDenyAll(bytes32 feature, bool denyAll)",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InvalidAccountId(uint128 accountId)",
+                  "error InvalidPermission(bytes32 permission)",
+                  "error OnlyAccountTokenProxy(address origin)",
+                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
+                  "error PermissionNotGranted(uint128 accountId, bytes32 permission, address user)",
+                  "error PositionOutOfBounds()",
+                  "event AccountCreated(uint128 indexed accountId, address indexed owner)",
+                  "event PermissionGranted(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "event PermissionRevoked(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "function createAccount() returns (uint128 accountId)",
+                  "function createAccount(uint128 requestedAccountId)",
+                  "function getAccountLastInteraction(uint128 accountId) view returns (uint256)",
+                  "function getAccountOwner(uint128 accountId) view returns (address)",
+                  "function getAccountPermissions(uint128 accountId) view returns (tuple(address user, bytes32[] permissions)[] accountPerms)",
+                  "function getAccountTokenAddress() view returns (address)",
+                  "function grantPermission(uint128 accountId, bytes32 permission, address user)",
+                  "function hasPermission(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function isAuthorized(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function notifyAccountTransfer(address to, uint128 accountId)",
+                  "function renouncePermission(uint128 accountId, bytes32 permission)",
+                  "function revokePermission(uint128 accountId, bytes32 permission, address user)",
+                  "error AccountNotFound(uint128 accountId)",
+                  "error EmptyDistribution()",
+                  "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
+                  "error MarketNotFound(uint128 marketId)",
+                  "error NotFundedByPool(uint256 marketId, uint256 poolId)",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "event DebtAssociated(uint128 indexed marketId, uint128 indexed poolId, address indexed collateralType, uint128 accountId, uint256 amount, int256 updatedDebt)",
+                  "function associateDebt(uint128 marketId, uint128 poolId, address collateralType, uint128 accountId, uint256 amount) returns (int256)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error MissingAssociatedSystem(bytes32 id)",
+                  "event AssociatedSystemSet(bytes32 indexed kind, bytes32 indexed id, address proxy, address impl)",
+                  "function getAssociatedSystem(bytes32 id) view returns (address addr, bytes32 kind)",
+                  "function initOrUpgradeNft(bytes32 id, string name, string symbol, string uri, address impl)",
+                  "function initOrUpgradeToken(bytes32 id, string name, string symbol, uint8 decimals, address impl)",
+                  "function registerUnmanagedSystem(bytes32 id, address endpoint)",
+                  "error InvalidMessage()",
+                  "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
+                  "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)",
+                  "error AccountActivityTimeoutPending(uint128 accountId, uint256 currentTime, uint256 requiredTime)",
+                  "error CollateralDepositDisabled(address collateralType)",
+                  "error CollateralNotFound()",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
+                  "error InsufficientAccountCollateral(uint256 amount)",
+                  "error InsufficientAllowance(uint256 required, uint256 existing)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error OverflowUint256ToUint64()",
+                  "error PrecisionLost(uint256 tokenAmount, uint8 decimals)",
+                  "event CollateralLockCreated(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, uint64 expireTimestamp)",
+                  "event CollateralLockExpired(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, uint64 expireTimestamp)",
+                  "event Deposited(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event Withdrawn(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "function cleanExpiredLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) returns (uint256 cleared)",
+                  "function createLock(uint128 accountId, address collateralType, uint256 amount, uint64 expireTimestamp)",
+                  "function deposit(uint128 accountId, address collateralType, uint256 tokenAmount)",
+                  "function getAccountAvailableCollateral(uint128 accountId, address collateralType) view returns (uint256)",
+                  "function getAccountCollateral(uint128 accountId, address collateralType) view returns (uint256 totalDeposited, uint256 totalAssigned, uint256 totalLocked)",
+                  "function getLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) view returns (tuple(uint128 amountD18, uint64 lockExpirationTime)[] locks)",
+                  "function withdraw(uint128 accountId, address collateralType, uint256 tokenAmount)",
+                  "event CollateralConfigured(address indexed collateralType, tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18) config)",
+                  "function configureCollateral(tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18) config)",
+                  "function getCollateralConfiguration(address collateralType) pure returns (tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18))",
+                  "function getCollateralConfigurations(bool hideDisabled) view returns (tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18)[])",
+                  "function getCollateralPrice(address collateralType) view returns (uint256)",
+                  "error InsufficientCcipFee(uint256 requiredAmount, uint256 availableAmount)",
+                  "event TransferCrossChainInitiated(uint64 indexed destChainId, uint256 indexed amount, address sender)",
+                  "function transferCrossChain(uint64 destChainId, uint256 amount) payable returns (uint256 gasTokenUsed)",
+                  "error InsufficientDebt(int256 currentDebt)",
+                  "error PoolNotFound(uint128 poolId)",
+                  "event IssuanceFeePaid(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 feeAmount)",
+                  "event UsdBurned(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, address indexed sender)",
+                  "event UsdMinted(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, address indexed sender)",
+                  "function burnUsd(uint128 accountId, uint128 poolId, address collateralType, uint256 amount)",
+                  "function mintUsd(uint128 accountId, uint128 poolId, address collateralType, uint256 amount)",
+                  "error CannotScaleEmptyMapping()",
+                  "error IneligibleForLiquidation(uint256 collateralValue, int256 debt, uint256 currentCRatio, uint256 cratio)",
+                  "error InsufficientMappedAmount()",
+                  "error MustBeVaultLiquidated()",
+                  "error OverflowInt128ToUint128()",
+                  "event Liquidation(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData, uint128 liquidateAsAccountId, address sender)",
+                  "event VaultLiquidation(uint128 indexed poolId, address indexed collateralType, tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData, uint128 liquidateAsAccountId, address sender)",
+                  "function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) returns (bool)",
+                  "function isVaultLiquidatable(uint128 poolId, address collateralType) returns (bool)",
+                  "function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                  "function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                  "error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit)",
+                  "error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw)",
+                  "event MarketCollateralDeposited(uint128 indexed marketId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event MarketCollateralWithdrawn(uint128 indexed marketId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event MaximumMarketCollateralConfigured(uint128 indexed marketId, address indexed collateralType, uint256 systemAmount, address indexed owner)",
+                  "function configureMaximumMarketCollateral(uint128 marketId, address collateralType, uint256 amount)",
+                  "function depositMarketCollateral(uint128 marketId, address collateralType, uint256 tokenAmount)",
+                  "function getMarketCollateralAmount(uint128 marketId, address collateralType) view returns (uint256 collateralAmountD18)",
+                  "function getMarketCollateralValue(uint128 marketId) view returns (uint256)",
+                  "function getMaximumMarketCollateral(uint128 marketId, address collateralType) view returns (uint256)",
+                  "function withdrawMarketCollateral(uint128 marketId, address collateralType, uint256 tokenAmount)",
+                  "error IncorrectMarketInterface(address market)",
+                  "error NotEnoughLiquidity(uint128 marketId, uint256 amount)",
+                  "event MarketRegistered(address indexed market, uint128 indexed marketId, address indexed sender)",
+                  "event MarketSystemFeePaid(uint128 indexed marketId, uint256 feeAmount)",
+                  "event MarketUsdDeposited(uint128 indexed marketId, address indexed target, uint256 amount, address indexed market)",
+                  "event MarketUsdWithdrawn(uint128 indexed marketId, address indexed target, uint256 amount, address indexed market)",
+                  "event SetMarketMinLiquidityRatio(uint128 indexed marketId, uint256 minLiquidityRatio)",
+                  "event SetMinDelegateTime(uint128 indexed marketId, uint32 minDelegateTime)",
+                  "function depositMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
+                  "function distributeDebtToPools(uint128 marketId, uint256 maxIter) returns (bool)",
+                  "function getMarketAddress(uint128 marketId) view returns (address)",
+                  "function getMarketCollateral(uint128 marketId) view returns (uint256)",
+                  "function getMarketDebtPerShare(uint128 marketId) returns (int256)",
+                  "function getMarketFees(uint128, uint256 amount) view returns (uint256 depositFeeAmount, uint256 withdrawFeeAmount)",
+                  "function getMarketMinDelegateTime(uint128 marketId) view returns (uint32)",
+                  "function getMarketNetIssuance(uint128 marketId) view returns (int128)",
+                  "function getMarketPoolDebtDistribution(uint128 marketId, uint128 poolId) returns (uint256 sharesD18, uint128 totalSharesD18, int128 valuePerShareD27)",
+                  "function getMarketPools(uint128 marketId) returns (uint128[] inRangePoolIds, uint128[] outRangePoolIds)",
+                  "function getMarketReportedDebt(uint128 marketId) view returns (uint256)",
+                  "function getMarketTotalDebt(uint128 marketId) view returns (int256)",
+                  "function getMinLiquidityRatio(uint128 marketId) view returns (uint256)",
+                  "function getOracleManager() view returns (address)",
+                  "function getUsdToken() view returns (address)",
+                  "function getWithdrawableMarketUsd(uint128 marketId) view returns (uint256)",
+                  "function isMarketCapacityLocked(uint128 marketId) view returns (bool)",
+                  "function registerMarket(address market) returns (uint128 marketId)",
+                  "function setMarketMinDelegateTime(uint128 marketId, uint32 minDelegateTime)",
+                  "function setMinLiquidityRatio(uint128 marketId, uint256 minLiquidityRatio)",
+                  "function withdrawMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
+                  "error DeniedMulticallTarget(address)",
+                  "error RecursiveMulticall(address)",
+                  "function getMessageSender() view returns (address)",
+                  "function multicall(bytes[] data) returns (bytes[] results)",
+                  "function multicallThrough(address[] to, bytes[] data, uint256[] values) payable returns (bytes[] results)",
+                  "function setAllowlistedMulticallTarget(address target, bool allowlisted)",
+                  "event PoolApprovedAdded(uint256 poolId)",
+                  "event PoolApprovedRemoved(uint256 poolId)",
+                  "event PreferredPoolSet(uint256 poolId)",
+                  "function addApprovedPool(uint128 poolId)",
+                  "function getApprovedPools() view returns (uint256[])",
+                  "function getPreferredPool() view returns (uint128)",
+                  "function removeApprovedPool(uint128 poolId)",
+                  "function setPreferredPool(uint128 poolId)",
+                  "error CapacityLocked(uint256 marketId)",
+                  "error MinDelegationTimeoutPending(uint128 poolId, uint32 timeRemaining)",
+                  "error PoolAlreadyExists(uint128 poolId)",
+                  "event PoolCollateralConfigurationUpdated(uint128 indexed poolId, address collateralType, tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) config)",
+                  "event PoolCollateralDisabledByDefaultSet(uint128 poolId, bool disabled)",
+                  "event PoolConfigurationSet(uint128 indexed poolId, tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[] markets, address indexed sender)",
+                  "event PoolCreated(uint128 indexed poolId, address indexed owner, address indexed sender)",
+                  "event PoolNameUpdated(uint128 indexed poolId, string name, address indexed sender)",
+                  "event PoolNominationRenounced(uint128 indexed poolId, address indexed owner)",
+                  "event PoolNominationRevoked(uint128 indexed poolId, address indexed owner)",
+                  "event PoolOwnerNominated(uint128 indexed poolId, address indexed nominatedOwner, address indexed owner)",
+                  "event PoolOwnershipAccepted(uint128 indexed poolId, address indexed owner)",
+                  "event SetMinLiquidityRatio(uint256 minLiquidityRatio)",
+                  "function acceptPoolOwnership(uint128 poolId)",
+                  "function createPool(uint128 requestedPoolId, address owner)",
+                  "function getMinLiquidityRatio() view returns (uint256)",
+                  "function getNominatedPoolOwner(uint128 poolId) view returns (address)",
+                  "function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) view returns (uint256)",
+                  "function getPoolConfiguration(uint128 poolId) view returns (tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[])",
+                  "function getPoolName(uint128 poolId) view returns (string poolName)",
+                  "function getPoolOwner(uint128 poolId) view returns (address)",
+                  "function nominatePoolOwner(address nominatedOwner, uint128 poolId)",
+                  "function rebalancePool(uint128 poolId, address optionalCollateralType)",
+                  "function renouncePoolNomination(uint128 poolId)",
+                  "function revokePoolNomination(uint128 poolId)",
+                  "function setMinLiquidityRatio(uint256 minLiquidityRatio)",
+                  "function setPoolCollateralConfiguration(uint128 poolId, address collateralType, tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) newConfig)",
+                  "function setPoolCollateralDisabledByDefault(uint128 poolId, bool disabled)",
+                  "function setPoolConfiguration(uint128 poolId, tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[] newMarketConfigurations)",
+                  "function setPoolName(uint128 poolId, string name)",
+                  "error OverflowUint256ToUint32()",
+                  "error OverflowUint32ToInt32()",
+                  "error OverflowUint64ToInt64()",
+                  "error RewardDistributorNotFound()",
+                  "error RewardUnavailable(address distributor)",
+                  "event RewardsClaimed(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, address distributor, uint256 amount)",
+                  "event RewardsDistributed(uint128 indexed poolId, address indexed collateralType, address distributor, uint256 amount, uint256 start, uint256 duration)",
+                  "event RewardsDistributorRegistered(uint128 indexed poolId, address indexed collateralType, address indexed distributor)",
+                  "event RewardsDistributorRemoved(uint128 indexed poolId, address indexed collateralType, address indexed distributor)",
+                  "function claimRewards(uint128 accountId, uint128 poolId, address collateralType, address distributor) returns (uint256)",
+                  "function distributeRewards(uint128 poolId, address collateralType, uint256 amount, uint64 start, uint32 duration)",
+                  "function getRewardRate(uint128 poolId, address collateralType, address distributor) view returns (uint256)",
+                  "function registerRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
+                  "function removeRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
+                  "function updateRewards(uint128 poolId, address collateralType, uint128 accountId) returns (uint256[], address[])",
+                  "event NewSupportedCrossChainNetwork(uint64 newChainId)",
+                  "function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool)",
+                  "function configureOracleManager(address oracleManagerAddress)",
+                  "function getConfig(bytes32 k) view returns (bytes32 v)",
+                  "function getConfigAddress(bytes32 k) view returns (address v)",
+                  "function getConfigUint(bytes32 k) view returns (uint256 v)",
+                  "function setConfig(bytes32 k, bytes32 v)",
+                  "function setSupportedCrossChainNetworks(uint64[] supportedNetworks, uint64[] ccipSelectors) returns (uint256 numRegistered)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "error InsufficientDelegation(uint256 minDelegation)",
+                  "error InvalidCollateralAmount()",
+                  "error InvalidLeverage(uint256 leverage)",
+                  "error PoolCollateralLimitExceeded(uint128 poolId, address collateralType, uint256 currentCollateral, uint256 maxCollateral)",
+                  "event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender)",
+                  "function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage)",
+                  "function getPosition(uint128 accountId, uint128 poolId, address collateralType) returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio)",
+                  "function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
+                  "function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) returns (uint256)",
+                  "function getPositionDebt(uint128 accountId, uint128 poolId, address collateralType) returns (int256 debt)",
+                  "function getVaultCollateral(uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
+                  "function getVaultCollateralRatio(uint128 poolId, address collateralType) returns (uint256)",
+                  "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
+                ],
+                "deployedOn": "router.CoreRouter",
+                "deployTxnHash": "0x5f460910d7832379da39c823dbded3589e6e53632b053a3eda7451288243600f",
+                "contractName": "CoreRouter",
+                "sourceName": "CoreRouter.sol"
+              },
+              "CoreProxy": {
+                "address": "0xffffffaEff0B96Ea8e4f94b2253f31abdD875847",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)",
+                  "error ValueAlreadyInSet()",
+                  "error ValueNotInSet()",
+                  "event FeatureFlagAllowAllSet(bytes32 indexed feature, bool allowAll)",
+                  "event FeatureFlagAllowlistAdded(bytes32 indexed feature, address account)",
+                  "event FeatureFlagAllowlistRemoved(bytes32 indexed feature, address account)",
+                  "event FeatureFlagDeniersReset(bytes32 indexed feature, address[] deniers)",
+                  "event FeatureFlagDenyAllSet(bytes32 indexed feature, bool denyAll)",
+                  "function addToFeatureFlagAllowlist(bytes32 feature, address account)",
+                  "function getDeniers(bytes32 feature) view returns (address[])",
+                  "function getFeatureFlagAllowAll(bytes32 feature) view returns (bool)",
+                  "function getFeatureFlagAllowlist(bytes32 feature) view returns (address[])",
+                  "function getFeatureFlagDenyAll(bytes32 feature) view returns (bool)",
+                  "function isFeatureAllowed(bytes32 feature, address account) view returns (bool)",
+                  "function removeFromFeatureFlagAllowlist(bytes32 feature, address account)",
+                  "function setDeniers(bytes32 feature, address[] deniers)",
+                  "function setFeatureFlagAllowAll(bytes32 feature, bool allowAll)",
+                  "function setFeatureFlagDenyAll(bytes32 feature, bool denyAll)",
+                  "error FeatureUnavailable(bytes32 which)",
+                  "error InvalidAccountId(uint128 accountId)",
+                  "error InvalidPermission(bytes32 permission)",
+                  "error OnlyAccountTokenProxy(address origin)",
+                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
+                  "error PermissionNotGranted(uint128 accountId, bytes32 permission, address user)",
+                  "error PositionOutOfBounds()",
+                  "event AccountCreated(uint128 indexed accountId, address indexed owner)",
+                  "event PermissionGranted(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "event PermissionRevoked(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "function createAccount() returns (uint128 accountId)",
+                  "function createAccount(uint128 requestedAccountId)",
+                  "function getAccountLastInteraction(uint128 accountId) view returns (uint256)",
+                  "function getAccountOwner(uint128 accountId) view returns (address)",
+                  "function getAccountPermissions(uint128 accountId) view returns (tuple(address user, bytes32[] permissions)[] accountPerms)",
+                  "function getAccountTokenAddress() view returns (address)",
+                  "function grantPermission(uint128 accountId, bytes32 permission, address user)",
+                  "function hasPermission(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function isAuthorized(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function notifyAccountTransfer(address to, uint128 accountId)",
+                  "function renouncePermission(uint128 accountId, bytes32 permission)",
+                  "function revokePermission(uint128 accountId, bytes32 permission, address user)",
+                  "error AccountNotFound(uint128 accountId)",
+                  "error EmptyDistribution()",
+                  "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
+                  "error MarketNotFound(uint128 marketId)",
+                  "error NotFundedByPool(uint256 marketId, uint256 poolId)",
+                  "error OverflowInt256ToInt128()",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint128ToInt128()",
+                  "error OverflowUint256ToInt256()",
+                  "error OverflowUint256ToUint128()",
+                  "event DebtAssociated(uint128 indexed marketId, uint128 indexed poolId, address indexed collateralType, uint128 accountId, uint256 amount, int256 updatedDebt)",
+                  "function associateDebt(uint128 marketId, uint128 poolId, address collateralType, uint128 accountId, uint256 amount) returns (int256)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error MissingAssociatedSystem(bytes32 id)",
+                  "event AssociatedSystemSet(bytes32 indexed kind, bytes32 indexed id, address proxy, address impl)",
+                  "function getAssociatedSystem(bytes32 id) view returns (address addr, bytes32 kind)",
+                  "function initOrUpgradeNft(bytes32 id, string name, string symbol, string uri, address impl)",
+                  "function initOrUpgradeToken(bytes32 id, string name, string symbol, uint8 decimals, address impl)",
+                  "function registerUnmanagedSystem(bytes32 id, address endpoint)",
+                  "error InvalidMessage()",
+                  "error NotCcipRouter(address)",
+                  "error UnsupportedNetwork(uint64)",
+                  "function ccipReceive(tuple(bytes32 messageId, uint64 sourceChainSelector, bytes sender, bytes data, tuple(address token, uint256 amount)[] tokenAmounts) message)",
+                  "error AccountActivityTimeoutPending(uint128 accountId, uint256 currentTime, uint256 requiredTime)",
+                  "error CollateralDepositDisabled(address collateralType)",
+                  "error CollateralNotFound()",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
+                  "error InsufficientAccountCollateral(uint256 amount)",
+                  "error InsufficientAllowance(uint256 required, uint256 existing)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error OverflowUint256ToUint64()",
+                  "error PrecisionLost(uint256 tokenAmount, uint8 decimals)",
+                  "event CollateralLockCreated(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, uint64 expireTimestamp)",
+                  "event CollateralLockExpired(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, uint64 expireTimestamp)",
+                  "event Deposited(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event Withdrawn(uint128 indexed accountId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "function cleanExpiredLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) returns (uint256 cleared)",
+                  "function createLock(uint128 accountId, address collateralType, uint256 amount, uint64 expireTimestamp)",
+                  "function deposit(uint128 accountId, address collateralType, uint256 tokenAmount)",
+                  "function getAccountAvailableCollateral(uint128 accountId, address collateralType) view returns (uint256)",
+                  "function getAccountCollateral(uint128 accountId, address collateralType) view returns (uint256 totalDeposited, uint256 totalAssigned, uint256 totalLocked)",
+                  "function getLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) view returns (tuple(uint128 amountD18, uint64 lockExpirationTime)[] locks)",
+                  "function withdraw(uint128 accountId, address collateralType, uint256 tokenAmount)",
+                  "event CollateralConfigured(address indexed collateralType, tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18) config)",
+                  "function configureCollateral(tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18) config)",
+                  "function getCollateralConfiguration(address collateralType) pure returns (tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18))",
+                  "function getCollateralConfigurations(bool hideDisabled) view returns (tuple(bool depositingEnabled, uint256 issuanceRatioD18, uint256 liquidationRatioD18, uint256 liquidationRewardD18, bytes32 oracleNodeId, address tokenAddress, uint256 minDelegationD18)[])",
+                  "function getCollateralPrice(address collateralType) view returns (uint256)",
+                  "error InsufficientCcipFee(uint256 requiredAmount, uint256 availableAmount)",
+                  "event TransferCrossChainInitiated(uint64 indexed destChainId, uint256 indexed amount, address sender)",
+                  "function transferCrossChain(uint64 destChainId, uint256 amount) payable returns (uint256 gasTokenUsed)",
+                  "error InsufficientDebt(int256 currentDebt)",
+                  "error PoolNotFound(uint128 poolId)",
+                  "event IssuanceFeePaid(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 feeAmount)",
+                  "event UsdBurned(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, address indexed sender)",
+                  "event UsdMinted(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, address indexed sender)",
+                  "function burnUsd(uint128 accountId, uint128 poolId, address collateralType, uint256 amount)",
+                  "function mintUsd(uint128 accountId, uint128 poolId, address collateralType, uint256 amount)",
+                  "error CannotScaleEmptyMapping()",
+                  "error IneligibleForLiquidation(uint256 collateralValue, int256 debt, uint256 currentCRatio, uint256 cratio)",
+                  "error InsufficientMappedAmount()",
+                  "error MustBeVaultLiquidated()",
+                  "error OverflowInt128ToUint128()",
+                  "event Liquidation(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData, uint128 liquidateAsAccountId, address sender)",
+                  "event VaultLiquidation(uint128 indexed poolId, address indexed collateralType, tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData, uint128 liquidateAsAccountId, address sender)",
+                  "function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) returns (bool)",
+                  "function isVaultLiquidatable(uint128 poolId, address collateralType) returns (bool)",
+                  "function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                  "function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                  "error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit)",
+                  "error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw)",
+                  "event MarketCollateralDeposited(uint128 indexed marketId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event MarketCollateralWithdrawn(uint128 indexed marketId, address indexed collateralType, uint256 tokenAmount, address indexed sender)",
+                  "event MaximumMarketCollateralConfigured(uint128 indexed marketId, address indexed collateralType, uint256 systemAmount, address indexed owner)",
+                  "function configureMaximumMarketCollateral(uint128 marketId, address collateralType, uint256 amount)",
+                  "function depositMarketCollateral(uint128 marketId, address collateralType, uint256 tokenAmount)",
+                  "function getMarketCollateralAmount(uint128 marketId, address collateralType) view returns (uint256 collateralAmountD18)",
+                  "function getMarketCollateralValue(uint128 marketId) view returns (uint256)",
+                  "function getMaximumMarketCollateral(uint128 marketId, address collateralType) view returns (uint256)",
+                  "function withdrawMarketCollateral(uint128 marketId, address collateralType, uint256 tokenAmount)",
+                  "error IncorrectMarketInterface(address market)",
+                  "error NotEnoughLiquidity(uint128 marketId, uint256 amount)",
+                  "event MarketRegistered(address indexed market, uint128 indexed marketId, address indexed sender)",
+                  "event MarketSystemFeePaid(uint128 indexed marketId, uint256 feeAmount)",
+                  "event MarketUsdDeposited(uint128 indexed marketId, address indexed target, uint256 amount, address indexed market)",
+                  "event MarketUsdWithdrawn(uint128 indexed marketId, address indexed target, uint256 amount, address indexed market)",
+                  "event SetMarketMinLiquidityRatio(uint128 indexed marketId, uint256 minLiquidityRatio)",
+                  "event SetMinDelegateTime(uint128 indexed marketId, uint32 minDelegateTime)",
+                  "function depositMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
+                  "function distributeDebtToPools(uint128 marketId, uint256 maxIter) returns (bool)",
+                  "function getMarketAddress(uint128 marketId) view returns (address)",
+                  "function getMarketCollateral(uint128 marketId) view returns (uint256)",
+                  "function getMarketDebtPerShare(uint128 marketId) returns (int256)",
+                  "function getMarketFees(uint128, uint256 amount) view returns (uint256 depositFeeAmount, uint256 withdrawFeeAmount)",
+                  "function getMarketMinDelegateTime(uint128 marketId) view returns (uint32)",
+                  "function getMarketNetIssuance(uint128 marketId) view returns (int128)",
+                  "function getMarketPoolDebtDistribution(uint128 marketId, uint128 poolId) returns (uint256 sharesD18, uint128 totalSharesD18, int128 valuePerShareD27)",
+                  "function getMarketPools(uint128 marketId) returns (uint128[] inRangePoolIds, uint128[] outRangePoolIds)",
+                  "function getMarketReportedDebt(uint128 marketId) view returns (uint256)",
+                  "function getMarketTotalDebt(uint128 marketId) view returns (int256)",
+                  "function getMinLiquidityRatio(uint128 marketId) view returns (uint256)",
+                  "function getOracleManager() view returns (address)",
+                  "function getUsdToken() view returns (address)",
+                  "function getWithdrawableMarketUsd(uint128 marketId) view returns (uint256)",
+                  "function isMarketCapacityLocked(uint128 marketId) view returns (bool)",
+                  "function registerMarket(address market) returns (uint128 marketId)",
+                  "function setMarketMinDelegateTime(uint128 marketId, uint32 minDelegateTime)",
+                  "function setMinLiquidityRatio(uint128 marketId, uint256 minLiquidityRatio)",
+                  "function withdrawMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
+                  "error DeniedMulticallTarget(address)",
+                  "error RecursiveMulticall(address)",
+                  "function getMessageSender() view returns (address)",
+                  "function multicall(bytes[] data) returns (bytes[] results)",
+                  "function multicallThrough(address[] to, bytes[] data, uint256[] values) payable returns (bytes[] results)",
+                  "function setAllowlistedMulticallTarget(address target, bool allowlisted)",
+                  "event PoolApprovedAdded(uint256 poolId)",
+                  "event PoolApprovedRemoved(uint256 poolId)",
+                  "event PreferredPoolSet(uint256 poolId)",
+                  "function addApprovedPool(uint128 poolId)",
+                  "function getApprovedPools() view returns (uint256[])",
+                  "function getPreferredPool() view returns (uint128)",
+                  "function removeApprovedPool(uint128 poolId)",
+                  "function setPreferredPool(uint128 poolId)",
+                  "error CapacityLocked(uint256 marketId)",
+                  "error MinDelegationTimeoutPending(uint128 poolId, uint32 timeRemaining)",
+                  "error PoolAlreadyExists(uint128 poolId)",
+                  "event PoolCollateralConfigurationUpdated(uint128 indexed poolId, address collateralType, tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) config)",
+                  "event PoolCollateralDisabledByDefaultSet(uint128 poolId, bool disabled)",
+                  "event PoolConfigurationSet(uint128 indexed poolId, tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[] markets, address indexed sender)",
+                  "event PoolCreated(uint128 indexed poolId, address indexed owner, address indexed sender)",
+                  "event PoolNameUpdated(uint128 indexed poolId, string name, address indexed sender)",
+                  "event PoolNominationRenounced(uint128 indexed poolId, address indexed owner)",
+                  "event PoolNominationRevoked(uint128 indexed poolId, address indexed owner)",
+                  "event PoolOwnerNominated(uint128 indexed poolId, address indexed nominatedOwner, address indexed owner)",
+                  "event PoolOwnershipAccepted(uint128 indexed poolId, address indexed owner)",
+                  "event SetMinLiquidityRatio(uint256 minLiquidityRatio)",
+                  "function acceptPoolOwnership(uint128 poolId)",
+                  "function createPool(uint128 requestedPoolId, address owner)",
+                  "function getMinLiquidityRatio() view returns (uint256)",
+                  "function getNominatedPoolOwner(uint128 poolId) view returns (address)",
+                  "function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) view returns (uint256)",
+                  "function getPoolConfiguration(uint128 poolId) view returns (tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[])",
+                  "function getPoolName(uint128 poolId) view returns (string poolName)",
+                  "function getPoolOwner(uint128 poolId) view returns (address)",
+                  "function nominatePoolOwner(address nominatedOwner, uint128 poolId)",
+                  "function rebalancePool(uint128 poolId, address optionalCollateralType)",
+                  "function renouncePoolNomination(uint128 poolId)",
+                  "function revokePoolNomination(uint128 poolId)",
+                  "function setMinLiquidityRatio(uint256 minLiquidityRatio)",
+                  "function setPoolCollateralConfiguration(uint128 poolId, address collateralType, tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) newConfig)",
+                  "function setPoolCollateralDisabledByDefault(uint128 poolId, bool disabled)",
+                  "function setPoolConfiguration(uint128 poolId, tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[] newMarketConfigurations)",
+                  "function setPoolName(uint128 poolId, string name)",
+                  "error OverflowUint256ToUint32()",
+                  "error OverflowUint32ToInt32()",
+                  "error OverflowUint64ToInt64()",
+                  "error RewardDistributorNotFound()",
+                  "error RewardUnavailable(address distributor)",
+                  "event RewardsClaimed(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, address distributor, uint256 amount)",
+                  "event RewardsDistributed(uint128 indexed poolId, address indexed collateralType, address distributor, uint256 amount, uint256 start, uint256 duration)",
+                  "event RewardsDistributorRegistered(uint128 indexed poolId, address indexed collateralType, address indexed distributor)",
+                  "event RewardsDistributorRemoved(uint128 indexed poolId, address indexed collateralType, address indexed distributor)",
+                  "function claimRewards(uint128 accountId, uint128 poolId, address collateralType, address distributor) returns (uint256)",
+                  "function distributeRewards(uint128 poolId, address collateralType, uint256 amount, uint64 start, uint32 duration)",
+                  "function getRewardRate(uint128 poolId, address collateralType, address distributor) view returns (uint256)",
+                  "function registerRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
+                  "function removeRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
+                  "function updateRewards(uint128 poolId, address collateralType, uint128 accountId) returns (uint256[], address[])",
+                  "event NewSupportedCrossChainNetwork(uint64 newChainId)",
+                  "function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool)",
+                  "function configureOracleManager(address oracleManagerAddress)",
+                  "function getConfig(bytes32 k) view returns (bytes32 v)",
+                  "function getConfigAddress(bytes32 k) view returns (address v)",
+                  "function getConfigUint(bytes32 k) view returns (uint256 v)",
+                  "function setConfig(bytes32 k, bytes32 v)",
+                  "function setSupportedCrossChainNetworks(uint64[] supportedNetworks, uint64[] ccipSelectors) returns (uint256 numRegistered)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "error InsufficientDelegation(uint256 minDelegation)",
+                  "error InvalidCollateralAmount()",
+                  "error InvalidLeverage(uint256 leverage)",
+                  "error PoolCollateralLimitExceeded(uint128 poolId, address collateralType, uint256 currentCollateral, uint256 maxCollateral)",
+                  "event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender)",
+                  "function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage)",
+                  "function getPosition(uint128 accountId, uint128 poolId, address collateralType) returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio)",
+                  "function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
+                  "function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) returns (uint256)",
+                  "function getPositionDebt(uint128 accountId, uint128 poolId, address collateralType) returns (int256 debt)",
+                  "function getVaultCollateral(uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
+                  "function getVaultCollateralRatio(uint128 poolId, address collateralType) returns (uint256)",
+                  "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
+                ],
+                "deployTxnHash": "",
+                "sourceName": "",
+                "contractName": "",
+                "deployedOn": "invoke.upgrade_core_proxy"
+              },
+              "USDTokenModule": {
+                "address": "0xF8dBEf33111A37879f35EE15507769CA927cf9C0",
+                "abi": [
+                  "error AlreadyInitialized()",
+                  "error InsufficientAllowance(uint256 required, uint256 existing)",
+                  "error InsufficientBalance(uint256 required, uint256 existing)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error Unauthorized(address addr)",
+                  "event Approval(address indexed owner, address indexed spender, uint256 amount)",
+                  "event Transfer(address indexed from, address indexed to, uint256 amount)",
+                  "function allowance(address owner, address spender) view returns (uint256)",
+                  "function approve(address spender, uint256 amount) returns (bool)",
+                  "function balanceOf(address owner) view returns (uint256)",
+                  "function burn(uint256 amount)",
+                  "function burn(address target, uint256 amount)",
+                  "function burnWithAllowance(address from, address spender, uint256 amount)",
+                  "function decimals() view returns (uint8)",
+                  "function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)",
+                  "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
+                  "function initialize(string tokenName, string tokenSymbol, uint8 tokenDecimals)",
+                  "function isInitialized() view returns (bool)",
+                  "function mint(address target, uint256 amount)",
+                  "function name() view returns (string)",
+                  "function setAllowance(address from, address spender, uint256 amount)",
+                  "function symbol() view returns (string)",
+                  "function totalSupply() view returns (uint256)",
+                  "function transfer(address to, uint256 amount) returns (bool)",
+                  "function transferFrom(address from, address to, uint256 amount) returns (bool)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x7fb009a1a0ed11348312e405a487de609e79b49fb5813ea5228b92e2a26f6944",
+                "sourceName": "contracts/modules/usd/USDTokenModule.sol",
+                "contractName": "USDTokenModule",
+                "deployedOn": "contract.USDTokenModule"
+              },
+              "USDRouter": {
+                "address": "0xbaAcf0F9dEA6b17D8667a34b7f69f60591c8D68D",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error MissingAssociatedSystem(bytes32 id)",
+                  "event AssociatedSystemSet(bytes32 indexed kind, bytes32 indexed id, address proxy, address impl)",
+                  "function getAssociatedSystem(bytes32 id) view returns (address addr, bytes32 kind)",
+                  "function initOrUpgradeNft(bytes32 id, string name, string symbol, string uri, address impl)",
+                  "function initOrUpgradeToken(bytes32 id, string name, string symbol, uint8 decimals, address impl)",
+                  "function registerUnmanagedSystem(bytes32 id, address endpoint)",
+                  "error AlreadyInitialized()",
+                  "error InsufficientAllowance(uint256 required, uint256 existing)",
+                  "error InsufficientBalance(uint256 required, uint256 existing)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "event Approval(address indexed owner, address indexed spender, uint256 amount)",
+                  "event Transfer(address indexed from, address indexed to, uint256 amount)",
+                  "function allowance(address owner, address spender) view returns (uint256)",
+                  "function approve(address spender, uint256 amount) returns (bool)",
+                  "function balanceOf(address owner) view returns (uint256)",
+                  "function burn(uint256 amount)",
+                  "function burn(address target, uint256 amount)",
+                  "function burnWithAllowance(address from, address spender, uint256 amount)",
+                  "function decimals() view returns (uint8)",
+                  "function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)",
+                  "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
+                  "function initialize(string tokenName, string tokenSymbol, uint8 tokenDecimals)",
+                  "function isInitialized() view returns (bool)",
+                  "function mint(address target, uint256 amount)",
+                  "function name() view returns (string)",
+                  "function setAllowance(address from, address spender, uint256 amount)",
+                  "function symbol() view returns (string)",
+                  "function totalSupply() view returns (uint256)",
+                  "function transfer(address to, uint256 amount) returns (bool)",
+                  "function transferFrom(address from, address to, uint256 amount) returns (bool)"
+                ],
+                "deployedOn": "router.USDRouter",
+                "deployTxnHash": "0x53b7c24468d11a8e4159c51066e0624366b3582b1e908c453c63c73813ff7ae8",
+                "contractName": "USDRouter",
+                "sourceName": "USDRouter.sol"
+              },
+              "USDProxy": {
+                "address": "0xb2F30A7C980f052f02563fb518dcc39e6bf38175",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)",
+                  "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
+                  "error MissingAssociatedSystem(bytes32 id)",
+                  "event AssociatedSystemSet(bytes32 indexed kind, bytes32 indexed id, address proxy, address impl)",
+                  "function getAssociatedSystem(bytes32 id) view returns (address addr, bytes32 kind)",
+                  "function initOrUpgradeNft(bytes32 id, string name, string symbol, string uri, address impl)",
+                  "function initOrUpgradeToken(bytes32 id, string name, string symbol, uint8 decimals, address impl)",
+                  "function registerUnmanagedSystem(bytes32 id, address endpoint)",
+                  "error AlreadyInitialized()",
+                  "error InsufficientAllowance(uint256 required, uint256 existing)",
+                  "error InsufficientBalance(uint256 required, uint256 existing)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "event Approval(address indexed owner, address indexed spender, uint256 amount)",
+                  "event Transfer(address indexed from, address indexed to, uint256 amount)",
+                  "function allowance(address owner, address spender) view returns (uint256)",
+                  "function approve(address spender, uint256 amount) returns (bool)",
+                  "function balanceOf(address owner) view returns (uint256)",
+                  "function burn(uint256 amount)",
+                  "function burn(address target, uint256 amount)",
+                  "function burnWithAllowance(address from, address spender, uint256 amount)",
+                  "function decimals() view returns (uint8)",
+                  "function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)",
+                  "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
+                  "function initialize(string tokenName, string tokenSymbol, uint8 tokenDecimals)",
+                  "function isInitialized() view returns (bool)",
+                  "function mint(address target, uint256 amount)",
+                  "function name() view returns (string)",
+                  "function setAllowance(address from, address spender, uint256 amount)",
+                  "function symbol() view returns (string)",
+                  "function totalSupply() view returns (uint256)",
+                  "function transfer(address to, uint256 amount) returns (bool)",
+                  "function transferFrom(address from, address to, uint256 amount) returns (bool)"
+                ],
+                "deployTxnHash": "",
+                "sourceName": "",
+                "contractName": "",
+                "deployedOn": "invoke.init_usd"
+              },
+              "AccountTokenModule": {
+                "address": "0xE7E4c2f766c254E427568D37e2f5b122630b8998",
+                "abi": [
+                  "error AlreadyInitialized()",
+                  "error CannotSelfApprove(address addr)",
+                  "error IndexOverrun(uint256 requestedIndex, uint256 length)",
+                  "error InvalidOwner(address addr)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error InvalidTransferRecipient(address addr)",
+                  "error OverflowUint256ToUint128()",
+                  "error TokenAlreadyMinted(uint256 id)",
+                  "error TokenDoesNotExist(uint256 id)",
+                  "error Unauthorized(address addr)",
+                  "error ZeroAddress()",
+                  "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",
+                  "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)",
+                  "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+                  "function approve(address to, uint256 tokenId)",
+                  "function balanceOf(address holder) view returns (uint256 balance)",
+                  "function burn(uint256 tokenId)",
+                  "function getApproved(uint256 tokenId) view returns (address operator)",
+                  "function initialize(string tokenName, string tokenSymbol, string uri)",
+                  "function isApprovedForAll(address holder, address operator) view returns (bool)",
+                  "function isInitialized() view returns (bool)",
+                  "function mint(address to, uint256 tokenId)",
+                  "function name() view returns (string)",
+                  "function ownerOf(uint256 tokenId) view returns (address)",
+                  "function safeMint(address to, uint256 tokenId, bytes data)",
+                  "function safeTransferFrom(address from, address to, uint256 tokenId)",
+                  "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
+                  "function setAllowance(uint256 tokenId, address spender)",
+                  "function setApprovalForAll(address operator, bool approved)",
+                  "function setBaseTokenURI(string uri)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function symbol() view returns (string)",
+                  "function tokenByIndex(uint256 index) view returns (uint256)",
+                  "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
+                  "function tokenURI(uint256 tokenId) view returns (string)",
+                  "function totalSupply() view returns (uint256)",
+                  "function transferFrom(address from, address to, uint256 tokenId)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x5696fee83254b592b917e338d10a6d742689804a33d791f1771d77e6625c0fea",
+                "sourceName": "contracts/modules/account/AccountTokenModule.sol",
+                "contractName": "AccountTokenModule",
+                "deployedOn": "contract.AccountTokenModule"
+              },
+              "AccountRouter": {
+                "address": "0xe91C4219Dd8A7bde2135839607E433eD2b13Ab80",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)",
+                  "error AlreadyInitialized()",
+                  "error CannotSelfApprove(address addr)",
+                  "error IndexOverrun(uint256 requestedIndex, uint256 length)",
+                  "error InvalidOwner(address addr)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error InvalidTransferRecipient(address addr)",
+                  "error OverflowUint256ToUint128()",
+                  "error TokenAlreadyMinted(uint256 id)",
+                  "error TokenDoesNotExist(uint256 id)",
+                  "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",
+                  "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)",
+                  "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+                  "function approve(address to, uint256 tokenId)",
+                  "function balanceOf(address holder) view returns (uint256 balance)",
+                  "function burn(uint256 tokenId)",
+                  "function getApproved(uint256 tokenId) view returns (address operator)",
+                  "function initialize(string tokenName, string tokenSymbol, string uri)",
+                  "function isApprovedForAll(address holder, address operator) view returns (bool)",
+                  "function isInitialized() view returns (bool)",
+                  "function mint(address to, uint256 tokenId)",
+                  "function name() view returns (string)",
+                  "function ownerOf(uint256 tokenId) view returns (address)",
+                  "function safeMint(address to, uint256 tokenId, bytes data)",
+                  "function safeTransferFrom(address from, address to, uint256 tokenId)",
+                  "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
+                  "function setAllowance(uint256 tokenId, address spender)",
+                  "function setApprovalForAll(address operator, bool approved)",
+                  "function setBaseTokenURI(string uri)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function symbol() view returns (string)",
+                  "function tokenByIndex(uint256 index) view returns (uint256)",
+                  "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
+                  "function tokenURI(uint256 tokenId) view returns (string)",
+                  "function totalSupply() view returns (uint256)",
+                  "function transferFrom(address from, address to, uint256 tokenId)"
+                ],
+                "deployedOn": "router.AccountRouter",
+                "deployTxnHash": "0x1aa76fa40f5857f6825b6de4163328ca278ab1c44bac4adda21c40844e9f9b35",
+                "contractName": "AccountRouter",
+                "sourceName": "AccountRouter.sol"
+              },
+              "AccountProxy": {
+                "address": "0x0E429603D3Cb1DFae4E6F52Add5fE82d96d77Dac",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)",
+                  "error AlreadyInitialized()",
+                  "error CannotSelfApprove(address addr)",
+                  "error IndexOverrun(uint256 requestedIndex, uint256 length)",
+                  "error InvalidOwner(address addr)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error InvalidTransferRecipient(address addr)",
+                  "error OverflowUint256ToUint128()",
+                  "error TokenAlreadyMinted(uint256 id)",
+                  "error TokenDoesNotExist(uint256 id)",
+                  "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",
+                  "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)",
+                  "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+                  "function approve(address to, uint256 tokenId)",
+                  "function balanceOf(address holder) view returns (uint256 balance)",
+                  "function burn(uint256 tokenId)",
+                  "function getApproved(uint256 tokenId) view returns (address operator)",
+                  "function initialize(string tokenName, string tokenSymbol, string uri)",
+                  "function isApprovedForAll(address holder, address operator) view returns (bool)",
+                  "function isInitialized() view returns (bool)",
+                  "function mint(address to, uint256 tokenId)",
+                  "function name() view returns (string)",
+                  "function ownerOf(uint256 tokenId) view returns (address)",
+                  "function safeMint(address to, uint256 tokenId, bytes data)",
+                  "function safeTransferFrom(address from, address to, uint256 tokenId)",
+                  "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
+                  "function setAllowance(uint256 tokenId, address spender)",
+                  "function setApprovalForAll(address operator, bool approved)",
+                  "function setBaseTokenURI(string uri)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function symbol() view returns (string)",
+                  "function tokenByIndex(uint256 index) view returns (uint256)",
+                  "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
+                  "function tokenURI(uint256 tokenId) view returns (string)",
+                  "function totalSupply() view returns (uint256)",
+                  "function transferFrom(address from, address to, uint256 tokenId)"
+                ],
+                "deployTxnHash": "",
+                "sourceName": "",
+                "contractName": "",
+                "deployedOn": "invoke.init_account"
+              }
+            },
+            "txns": {
+              "register_const_one_oracle": {
+                "hash": "0xc364170bfa95b109ebd21a59c7929598bfbc1f3aa61674fd242ba951fe53b18e",
+                "events": {
+                  "NodeRegistered": [
+                    {
+                      "name": "NodeRegistered",
+                      "args": [
+                        "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733",
+                        8,
+                        "0x0000000000000000000000000000000000000000000000000de0b6b3a7640000",
+                        []
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.register_const_one_oracle"
+              },
+              "upgrade_core_proxy": {
+                "hash": "0x31969e7f53d89bee95f064be7252750443137ade896b02ffe72c19ddf832b13b",
+                "events": {
+                  "Upgraded": [
+                    {
+                      "name": "Upgraded",
+                      "args": [
+                        "0xffffffaEff0B96Ea8e4f94b2253f31abdD875847",
+                        "0x9f3be6Be18E8D0613f87c86A0b1875B74f404A11"
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.upgrade_core_proxy"
+              },
+              "init_usd": {
+                "hash": "0x6bcdc799de9621c49cc7bc80928024e000b76e80203161f7934db8c7579e6179",
+                "events": {
+                  "Upgraded": [
+                    {
+                      "name": "Upgraded",
+                      "args": [
+                        "0xb2F30A7C980f052f02563fb518dcc39e6bf38175",
+                        "0xbaAcf0F9dEA6b17D8667a34b7f69f60591c8D68D"
+                      ]
+                    }
+                  ],
+                  "AssociatedSystemSet": [
+                    {
+                      "name": "AssociatedSystemSet",
+                      "args": [
+                        "0x6572633230000000000000000000000000000000000000000000000000000000",
+                        "0x555344546f6b656e000000000000000000000000000000000000000000000000",
+                        "0xb2F30A7C980f052f02563fb518dcc39e6bf38175",
+                        "0xbaAcf0F9dEA6b17D8667a34b7f69f60591c8D68D"
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.init_usd"
+              },
+              "configure_usd_collateral": {
+                "hash": "0x00e044c8fb2f008138244ea81ea15b1ecdbf370b22e70361060b37e1d11cf271",
+                "events": {
+                  "CollateralConfigured": [
+                    {
+                      "name": "CollateralConfigured",
+                      "args": [
+                        "0xb2F30A7C980f052f02563fb518dcc39e6bf38175",
+                        [
+                          true,
+                          {
+                            "type": "BigNumber",
+                            "hex": "0x8ac7230489e80000"
+                          },
+                          {
+                            "type": "BigNumber",
+                            "hex": "0x8ac7230489e80000"
+                          },
+                          {
+                            "type": "BigNumber",
+                            "hex": "0x00"
+                          },
+                          "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733",
+                          "0xb2F30A7C980f052f02563fb518dcc39e6bf38175",
+                          {
+                            "type": "BigNumber",
+                            "hex": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.configure_usd_collateral"
+              },
+              "enable_basic_features": {
+                "hash": "0xd678dcbb3006a68991a70f0c037da65fa21894401a27c87e311cf83baf252868",
+                "events": {
+                  "FeatureFlagAllowAllSet": [
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6372656174654163636f756e7400000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6465706f73697400000000000000000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x7769746864726177000000000000000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6d696e7455736400000000000000000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6275726e55736400000000000000000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6c69717569646174650000000000000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6c69717569646174655661756c74000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6465706f7369744d61726b6574436f6c6c61746572616c000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x77697468647261774d61726b6574436f6c6c61746572616c0000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x6465706f7369744d61726b657455736400000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x77697468647261774d61726b6574557364000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x636c61696d526577617264730000000000000000000000000000000000000000",
+                        true
+                      ]
+                    },
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x64656c6567617465436f6c6c61746572616c0000000000000000000000000000",
+                        true
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.enable_basic_features"
+              },
+              "init_account": {
+                "hash": "0x6afdeb77e600b636ea7b2dd6267f3891d1d54d26a53a91bfd2a0da1f33859127",
+                "events": {
+                  "Upgraded": [
+                    {
+                      "name": "Upgraded",
+                      "args": [
+                        "0x0E429603D3Cb1DFae4E6F52Add5fE82d96d77Dac",
+                        "0xe91C4219Dd8A7bde2135839607E433eD2b13Ab80"
+                      ]
+                    }
+                  ],
+                  "AssociatedSystemSet": [
+                    {
+                      "name": "AssociatedSystemSet",
+                      "args": [
+                        "0x6572633732310000000000000000000000000000000000000000000000000000",
+                        "0x6163636f756e744e667400000000000000000000000000000000000000000000",
+                        "0x0E429603D3Cb1DFae4E6F52Add5fE82d96d77Dac",
+                        "0xe91C4219Dd8A7bde2135839607E433eD2b13Ab80"
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.init_account"
+              },
+              "set_oracle_manager": {
+                "hash": "0xd14a861aba2399243d6b4bb66289c06a6ca3269b8509fe2af0ca92ed2be6f2e4",
+                "events": {},
+                "deployedOn": "invoke.set_oracle_manager"
+              }
+            },
+            "extras": {
+              "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
+            }
+          }
+        }
+      },
+      "hash": "08ca4fd615a093e43af496bb04e665da",
+      "version": 6
+    },
+    "invoke.registerSnxOracleManager": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "registerSnxOracleManager": {
+            "hash": "0xf82923838f2666104f3e7943cf7969a15232c5196216a51da322aaea1657ca48",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x050be821f7e92c7ca8366e2fe01eee313272231d436c5deaed75b978d78f7116",
+                    3,
+                    "0x000000000000000000000000dc3ea94cd0ac27d9a86c180091e7f78c683d369900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.registerSnxOracleManager"
+          }
+        },
+        "extras": {
+          "snx_oracle_id": "0x050be821f7e92c7ca8366e2fe01eee313272231d436c5deaed75b978d78f7116"
+        }
+      },
+      "hash": "2d3891822435e109e836ed17e27d0f11",
+      "version": 5
+    },
+    "invoke.configureSnxCollateral": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "configureSnxCollateral": {
+            "hash": "0x243fc3d98160ae6ec9f764dd688cbc4c99d29f30d5e28ebefdc4968a45371ce3",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+                    [
+                      true,
+                      {
+                        "type": "BigNumber",
+                        "hex": "0x3782dace9d900000"
+                      },
+                      {
+                        "type": "BigNumber",
+                        "hex": "0x14d1120d7b160000"
+                      },
+                      {
+                        "type": "BigNumber",
+                        "hex": "0x8ac7230489e80000"
+                      },
+                      "0x050be821f7e92c7ca8366e2fe01eee313272231d436c5deaed75b978d78f7116",
+                      "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+                      {
+                        "type": "BigNumber",
+                        "hex": "0x8ac7230489e80000"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.configureSnxCollateral"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "6544979bb6b6b12086beb807c10a94d6",
+      "version": 5
+    },
+    "invoke.setAccountTimeoutWithdraw": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setAccountTimeoutWithdraw": {
+            "hash": "0xdc535e10711c47ca2a0ccb0ff82216ccf961ecd3fe90b998e2e3701df0f78e5c",
+            "events": {},
+            "deployedOn": "invoke.setAccountTimeoutWithdraw"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "0d5ee3ec4c2a887019a0fb4397e89c3f",
+      "version": 5
+    },
+    "invoke.setMinimumLiquidityRatio": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setMinimumLiquidityRatio": {
+            "hash": "0x4d19259bb439ad1abad630a7c1764782ec9bc9f3062327671cdb31a2e61d94c1",
+            "events": {
+              "SetMinLiquidityRatio": [
+                {
+                  "name": "SetMinLiquidityRatio",
+                  "args": [
+                    {
+                      "type": "BigNumber",
+                      "hex": "0x1bc16d674ec80000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setMinimumLiquidityRatio"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "9f0d21e3cdef7d1a142a19f5c8314447",
+      "version": 5
+    },
+    "invoke.permitCreatePool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "permitCreatePool": {
+            "hash": "0x5e53bd5a2f3825d5f697edf110d1765e1dfb5b329f4971a0a66adb8f2108123f",
+            "events": {
+              "FeatureFlagAllowlistAdded": [
+                {
+                  "name": "FeatureFlagAllowlistAdded",
+                  "args": [
+                    "0x637265617465506f6f6c00000000000000000000000000000000000000000000",
+                    "0x302d2451d9f47620374B54c521423Bf0403916A2"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.permitCreatePool"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "73611ef27a599bdf737a51228bdc31de",
+      "version": 5
+    },
+    "invoke.createScPool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "createScPool": {
+            "hash": "0x0ce3e0b1ea7a1579d3435d1646ff3555db7c5571a9ae6dc6241f522a2d9f7857",
+            "events": {
+              "PoolCreated": [
+                {
+                  "name": "PoolCreated",
+                  "args": [
+                    {
+                      "type": "BigNumber",
+                      "hex": "0x01"
+                    },
+                    "0x302d2451d9f47620374B54c521423Bf0403916A2",
+                    "0x302d2451d9f47620374B54c521423Bf0403916A2"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.createScPool"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "04aa3465462c991a7592aae0d1989c20",
+      "version": 5
+    },
+    "invoke.setPreferredPool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPreferredPool": {
+            "hash": "0x516e9b01b55f4abf87d6ba408103ce21b9d73d831c316ea374e97cc5159e23a2",
+            "events": {
+              "PreferredPoolSet": [
+                {
+                  "name": "PreferredPoolSet",
+                  "args": [
+                    {
+                      "type": "BigNumber",
+                      "hex": "0x01"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPreferredPool"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "00d415ef9ee32b910b756bd98ae30b9b",
+      "version": 5
+    },
+    "invoke.configureChainlinkCrossChain": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "configureChainlinkCrossChain": {
+            "hash": "0xca85c731730c07df5c135147ff68c7945b916771f65068aa7d1ca59b8c827c29",
+            "events": {
+              "AssociatedSystemSet": [
+                {
+                  "name": "AssociatedSystemSet",
+                  "args": [
+                    "0x756e6d616e616765640000000000000000000000000000000000000000000000",
+                    "0x63636970436861696e6c696e6b53656e64000000000000000000000000000000",
+                    "0xE561d5E02207fb5eB32cca20a699E0d8919a1476",
+                    "0xE561d5E02207fb5eB32cca20a699E0d8919a1476"
+                  ]
+                },
+                {
+                  "name": "AssociatedSystemSet",
+                  "args": [
+                    "0x756e6d616e616765640000000000000000000000000000000000000000000000",
+                    "0x63636970436861696e6c696e6b52656376000000000000000000000000000000",
+                    "0xE561d5E02207fb5eB32cca20a699E0d8919a1476",
+                    "0xE561d5E02207fb5eB32cca20a699E0d8919a1476"
+                  ]
+                },
+                {
+                  "name": "AssociatedSystemSet",
+                  "args": [
+                    "0x756e6d616e616765640000000000000000000000000000000000000000000000",
+                    "0x63636970436861696e6c696e6b546f6b656e506f6f6c00000000000000000000",
+                    "0x057152DB365B47851B0A0bd431644b8eE21fE1b4",
+                    "0x057152DB365B47851B0A0bd431644b8eE21fE1b4"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.configureChainlinkCrossChain"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "81acdea9eeff258116a5cd5ca1b64e63",
+      "version": 6
+    },
+    "invoke.setScPoolName": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setScPoolName": {
+            "hash": "0x74c7c4db02b3d7a399071120915eee0670d1c5d7db1c8b586a841cc59a6732cb",
+            "events": {
+              "PoolNameUpdated": [
+                {
+                  "name": "PoolNameUpdated",
+                  "args": [
+                    {
+                      "type": "BigNumber",
+                      "hex": "0x01"
+                    },
+                    "Spartan Council Pool",
+                    "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setScPoolName"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "9a4cec8163fdf956f8e0efaf34851515",
+      "version": 6
+    },
+    "invoke.setSupportedCrossChainNetworks": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSupportedCrossChainNetworks": {
+            "hash": "0x7d1f88d64eb03fb3692af016fde6ec528c34a670a527066fd31214d1537d7613",
+            "events": {
+              "NewSupportedCrossChainNetwork": [
+                {
+                  "name": "NewSupportedCrossChainNetwork",
+                  "args": [
+                    {
+                      "type": "BigNumber",
+                      "hex": "0x0a"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSupportedCrossChainNetworks"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "c5f828233462d1b12ce560a1ea2e9195",
+      "version": 6
+    },
+    "invoke.allowAllTransferCrossChain": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "allowAllTransferCrossChain": {
+            "hash": "0xd47cd8c4d86b308762aec198734df806df383c688da8966597f1dc142d1553c1",
+            "events": {
+              "FeatureFlagAllowAllSet": [
+                {
+                  "name": "FeatureFlagAllowAllSet",
+                  "args": [
+                    "0x7472616e7366657243726f7373436861696e0000000000000000000000000000",
+                    true
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.allowAllTransferCrossChain"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "00384bfcc7741fd22c57f50a98baa1d1",
+      "version": 6
+    }
+  },
+  "options": {},
+  "meta": {},
+  "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k"
+}
