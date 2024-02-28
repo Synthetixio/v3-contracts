@@ -858,21 +858,12 @@
       {
         "type": "address",
         "name": "spotMarket"
+      },
+      {
+        "type": "string",
+        "name": "marketName"
       }
     ],
-    "outputs": [
-      {
-        "type": "uint128"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "interestRate",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [],
     "outputs": [
       {
         "type": "uint128"
@@ -961,28 +952,6 @@
     "outputs": [
       {
         "type": "bool"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "utilizationRate",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [],
-    "outputs": [
-      {
-        "type": "uint256",
-        "name": "rate"
-      },
-      {
-        "type": "uint256",
-        "name": "delegatedCollateral"
-      },
-      {
-        "type": "uint256",
-        "name": "lockedCredit"
       }
     ]
   },
@@ -1265,10 +1234,6 @@
       {
         "type": "int128",
         "name": "positionSize"
-      },
-      {
-        "type": "uint256",
-        "name": "owedInterest"
       }
     ]
   },
@@ -1645,28 +1610,6 @@
   },
   {
     "type": "error",
-    "name": "MaxUSDOpenInterestReached",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "marketId"
-      },
-      {
-        "type": "uint256",
-        "name": "maxMarketValue"
-      },
-      {
-        "type": "int256",
-        "name": "newSideSize"
-      },
-      {
-        "type": "uint256",
-        "name": "price"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "OverflowInt256ToInt128",
     "inputs": []
   },
@@ -1895,37 +1838,6 @@
   },
   {
     "type": "function",
-    "name": "computeOrderFeesWithPrice",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "marketId"
-      },
-      {
-        "type": "int128",
-        "name": "sizeDelta"
-      },
-      {
-        "type": "uint256",
-        "name": "price"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256",
-        "name": "orderFees"
-      },
-      {
-        "type": "uint256",
-        "name": "fillPrice"
-      }
-    ]
-  },
-  {
-    "type": "function",
     "name": "getOrder",
     "constant": true,
     "stateMutability": "view",
@@ -2001,37 +1913,6 @@
       {
         "type": "int128",
         "name": "sizeDelta"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256",
-        "name": "requiredMargin"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "requiredMarginForOrderWithPrice",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      },
-      {
-        "type": "uint128",
-        "name": "marketId"
-      },
-      {
-        "type": "int128",
-        "name": "sizeDelta"
-      },
-      {
-        "type": "uint256",
-        "name": "price"
       }
     ],
     "outputs": [
@@ -2133,23 +2014,6 @@
   {
     "type": "event",
     "anonymous": false,
-    "name": "InterestCharged",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId",
-        "indexed": true
-      },
-      {
-        "type": "uint256",
-        "name": "interest",
-        "indexed": false
-      }
-    ]
-  },
-  {
-    "type": "event",
-    "anonymous": false,
     "name": "MarketUpdated",
     "inputs": [
       {
@@ -2185,11 +2049,6 @@
       {
         "type": "int256",
         "name": "currentFundingVelocity",
-        "indexed": false
-      },
-      {
-        "type": "uint128",
-        "name": "interestRate",
         "indexed": false
       }
     ]
@@ -2933,7 +2792,7 @@
   {
     "type": "event",
     "anonymous": false,
-    "name": "MaxMarketSizesSet",
+    "name": "MaxMarketSizeSet",
     "inputs": [
       {
         "type": "uint128",
@@ -2943,11 +2802,6 @@
       {
         "type": "uint256",
         "name": "maxMarketSize",
-        "indexed": false
-      },
-      {
-        "type": "uint256",
-        "name": "maxMarketValue",
         "indexed": false
       }
     ]
@@ -3251,7 +3105,7 @@
   },
   {
     "type": "function",
-    "name": "getMaxMarketSizes",
+    "name": "getMaxMarketSize",
     "constant": true,
     "stateMutability": "view",
     "payable": false,
@@ -3265,10 +3119,6 @@
       {
         "type": "uint256",
         "name": "maxMarketSize"
-      },
-      {
-        "type": "uint256",
-        "name": "maxMarketValue"
       }
     ]
   },
@@ -3477,7 +3327,7 @@
   },
   {
     "type": "function",
-    "name": "setMaxMarketSizes",
+    "name": "setMaxMarketSize",
     "constant": false,
     "payable": false,
     "inputs": [
@@ -3488,10 +3338,6 @@
       {
         "type": "uint256",
         "name": "maxMarketSize"
-      },
-      {
-        "type": "uint256",
-        "name": "maxMarketValue"
       }
     ],
     "outputs": []
@@ -3626,20 +3472,6 @@
   },
   {
     "type": "error",
-    "name": "InvalidInterestRateParameters",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "lowUtilizationInterestRateGradient"
-      },
-      {
-        "type": "uint128",
-        "name": "highUtilizationInterestRateGradient"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "InvalidReferrerShareRatio",
     "inputs": [
       {
@@ -3673,45 +3505,6 @@
       {
         "type": "address",
         "name": "feeCollector",
-        "indexed": false
-      }
-    ]
-  },
-  {
-    "type": "event",
-    "anonymous": false,
-    "name": "InterestRateParametersSet",
-    "inputs": [
-      {
-        "type": "uint256",
-        "name": "lowUtilizationInterestRateGradient",
-        "indexed": false
-      },
-      {
-        "type": "uint256",
-        "name": "interestRateGradientBreakpoint",
-        "indexed": false
-      },
-      {
-        "type": "uint256",
-        "name": "highUtilizationInterestRateGradient",
-        "indexed": false
-      }
-    ]
-  },
-  {
-    "type": "event",
-    "anonymous": false,
-    "name": "InterestRateUpdated",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "superMarketId",
-        "indexed": true
-      },
-      {
-        "type": "uint128",
-        "name": "interestRate",
         "indexed": false
       }
     ]
@@ -3831,28 +3624,6 @@
       {
         "type": "address",
         "name": "feeCollector"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "getInterestRateParameters",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [],
-    "outputs": [
-      {
-        "type": "uint128",
-        "name": "lowUtilizationInterestRateGradient"
-      },
-      {
-        "type": "uint128",
-        "name": "interestRateGradientBreakpoint"
-      },
-      {
-        "type": "uint128",
-        "name": "highUtilizationInterestRateGradient"
       }
     ]
   },
@@ -4006,27 +3777,6 @@
   },
   {
     "type": "function",
-    "name": "setInterestRateParameters",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "lowUtilizationInterestRateGradient"
-      },
-      {
-        "type": "uint128",
-        "name": "interestRateGradientBreakpoint"
-      },
-      {
-        "type": "uint128",
-        "name": "highUtilizationInterestRateGradient"
-      }
-    ],
-    "outputs": []
-  },
-  {
-    "type": "function",
     "name": "setKeeperRewardGuards",
     "constant": false,
     "payable": false,
@@ -4093,14 +3843,6 @@
         "name": "totalCollateralValue"
       }
     ]
-  },
-  {
-    "type": "function",
-    "name": "updateInterestRate",
-    "constant": false,
-    "payable": false,
-    "inputs": [],
-    "outputs": []
   },
   {
     "type": "function",
