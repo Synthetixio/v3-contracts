@@ -1274,6 +1274,29 @@
   },
   {
     "type": "function",
+    "name": "getOpenPositionSize",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "int128",
+        "name": "positionSize"
+      }
+    ]
+  },
+  {
+    "type": "function",
     "name": "getRequiredMargins",
     "constant": true,
     "stateMutability": "view",
@@ -1985,6 +2008,28 @@
   },
   {
     "type": "function",
+    "name": "getSettlementRewardCost",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint128",
+        "name": "settlementStrategyId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
     "name": "requiredMarginForOrder",
     "constant": true,
     "stateMutability": "view",
@@ -2630,6 +2675,38 @@
   {
     "type": "event",
     "anonymous": false,
+    "name": "AccountFlaggedForLiquidation",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "int256",
+        "name": "availableMargin",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "requiredMaintenanceMargin",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "liquidationReward",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "flagReward",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
     "name": "AccountLiquidationAttempt",
     "inputs": [
       {
@@ -2933,7 +3010,7 @@
   {
     "type": "event",
     "anonymous": false,
-    "name": "MaxMarketSizesSet",
+    "name": "MaxMarketSizeSet",
     "inputs": [
       {
         "type": "uint128",
@@ -3251,7 +3328,7 @@
   },
   {
     "type": "function",
-    "name": "getMaxMarketSizes",
+    "name": "getMaxMarketSize",
     "constant": true,
     "stateMutability": "view",
     "payable": false,
@@ -3477,7 +3554,7 @@
   },
   {
     "type": "function",
-    "name": "setMaxMarketSizes",
+    "name": "setMaxMarketSize",
     "constant": false,
     "payable": false,
     "inputs": [
