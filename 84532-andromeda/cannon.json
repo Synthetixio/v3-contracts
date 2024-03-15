@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.11.19",
-  "timestamp": 1709856312,
+  "generator": "cannon cli 2.11.21",
+  "timestamp": 1710471032,
   "def": {
     "setting": {
       "snx_package": {
@@ -40,7 +40,7 @@
         "defaultValue": "synthetix-perps-market:3.3.17"
       },
       "perps_super_market_name": {
-        "value": "High MCap"
+        "defaultValue": "High MCap"
       },
       "synthUsdcMaxMarketCollateral": {
         "defaultValue": "<%= parseEther(String(5_000_000)) %>"
@@ -286,7 +286,7 @@
           "coreProxyOwner": "<%= settings.owner %>",
           "owner": "<%= settings.owner %>",
           "salt": "<%= settings.salt %>",
-          "synthetixPackage": "<%= settings.snx_package %>",
+          "synthetixPackage": "<%= settings.snx_package %>@<%= settings.target_preset %>",
           "synthetixPreset": "<%= settings.target_preset %>"
         },
         "depends": [
@@ -304,7 +304,7 @@
           "spotMarketPackage": "<%= settings.spot_market_package %>@<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.spotFactory"
+          "provision.system"
         ]
       },
       "usdc_mock_collateral": {
@@ -350,6 +350,19 @@
           "salt": "<%= settings.salt %>",
           "pythAddress": "<%= settings.pyth_price_verification_address %>"
         }
+      },
+      "spartan_council_pool_rewards": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= settings.sc_pool_id %>",
+          "collateralType": "<%= extras.synth_usdc_token_address %>",
+          "payoutToken": "<%= imports.snx_mock_collateral.contracts.MintableToken.address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Spartan Council Pool Rewards"
+        }
       }
     },
     "invoke": {
@@ -363,11 +376,6 @@
         "func": "setMinLiquidityRatio(uint256)",
         "args": [
           "<%= settings.minimum_liquidity_ratio %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "setAccountTimeoutWithdraw": {
@@ -381,11 +389,6 @@
         "args": [
           "<%= formatBytes32String('accountTimeoutWithdraw') %>",
           "<%= hexZeroPad(hexlify(parseInt(settings.account_timeout_withdraw)), 32) %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "permitCreatePool": {
@@ -399,11 +402,6 @@
         "args": [
           "<%= formatBytes32String('createPool') %>",
           "<%= settings.deployer %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "set_deniers_core_withdraw": {
@@ -524,11 +522,6 @@
         "func": "setPerpsMarketName",
         "args": [
           "<%= settings.perps_super_market_name %>"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "createUsdcSynth": {
@@ -636,16 +629,6 @@
         "args": [
           "<%= formatBytes32String('perpsSystem') %>",
           true
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPolynomialAsReferrerOnPerpsMarket": {
@@ -783,14 +766,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.perps_gas_oracle_node",
-          "provision.system",
-          "provision.perps_gas_oracle_node"
-        ]
+        }
       },
       "registerPerps_KeeperCostUsdOracleNode": {
         "target": [
@@ -810,18 +786,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.system",
-          "invoke.registerEthOracleNode",
-          "invoke.registerPerps_KeeperCostEthOracleNode",
-          "provision.system",
-          "invoke.registerPerps_KeeperCostEthOracleNode",
-          "invoke.registerEthOracleNode",
-          "provision.system",
-          "invoke.registerPerps_KeeperCostEthOracleNode",
-          "invoke.registerEthOracleNode"
-        ]
+        }
       },
       "setFeeCollector": {
         "target": [
@@ -927,17 +892,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "invoke.registerPythBtcOracleNode",
-          "invoke.registerLookupBtcOracleNode",
-          "provision.system",
-          "invoke.registerPythBtcOracleNode",
-          "invoke.registerLookupBtcOracleNode",
-          "provision.system",
-          "invoke.registerPythBtcOracleNode",
-          "invoke.registerLookupBtcOracleNode"
-        ]
+        }
       },
       "createBtcPerpsMarket": {
         "target": [
@@ -951,16 +906,6 @@
           "<%= settings.btcPerpsMarketId %>",
           "Bitcoin",
           "BTC"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsPriceBtc": {
@@ -978,7 +923,6 @@
         ],
         "depends": [
           "invoke.createBtcPerpsMarket",
-          "invoke.registerBtcOracleNode",
           "provision.perpsFactory",
           "invoke.registerBtcOracleNode",
           "provision.perpsFactory",
@@ -1044,15 +988,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitmentPriceDelay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.perpsFactory",
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.pyth_erc7412_wrapper",
-          "provision.perpsFactory",
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.pyth_erc7412_wrapper"
         ]
       },
       "setPerpsBtcFundingParameters": {
@@ -1222,14 +1157,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper"
-        ]
+        }
       },
       "registerEthOracleNode": {
         "target": [
@@ -1249,17 +1177,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "invoke.registerPythEthOracleNode",
-          "invoke.registerLookupEthOracleNode",
-          "provision.system",
-          "invoke.registerPythEthOracleNode",
-          "invoke.registerLookupEthOracleNode",
-          "provision.system",
-          "invoke.registerPythEthOracleNode",
-          "invoke.registerLookupEthOracleNode"
-        ]
+        }
       },
       "createEthPerpsMarket": {
         "target": [
@@ -1273,16 +1191,6 @@
           "<%= settings.ethPerpsMarketId %>",
           "Ethereum",
           "ETH"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsPriceEth": {
@@ -1300,7 +1208,6 @@
         ],
         "depends": [
           "invoke.createEthPerpsMarket",
-          "invoke.registerEthOracleNode",
           "provision.perpsFactory",
           "invoke.registerEthOracleNode",
           "provision.perpsFactory",
@@ -1366,15 +1273,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitmentPriceDelay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.perpsFactory",
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.pyth_erc7412_wrapper",
-          "provision.perpsFactory",
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.pyth_erc7412_wrapper"
         ]
       },
       "setPerpsEthFundingParameters": {
@@ -1544,14 +1442,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper"
-        ]
+        }
       },
       "setScPoolConfig": {
         "target": [
@@ -1574,10 +1465,27 @@
             }
           ]
         ]
+      },
+      "register_spartan_council_pool_rewards": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= settings.sc_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= settings.sc_pool_id %>",
+          "<%= extras.synth_usdc_token_address %>",
+          "<%= imports.spartan_council_pool_rewards.contracts.RewardsDistributor.address %>"
+        ]
       }
     },
     "name": "synthetix-omnibus",
-    "version": "3.3.17",
+    "version": "4",
     "description": "Andromeda dev deployment",
     "preset": "andromeda"
   },
@@ -4402,7 +4310,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmbRFEmEwvX1h5BCMmfozCzaCCHhZ8Xh5JT9xEBAinoEAm",
+            "url": "ipfs://QmX6Wty6BsqtY6DwyWDme5W7pYwXsGbm8S2GUeWZWRP9SP",
             "tags": [
               "latest"
             ],
@@ -7498,7 +7406,7 @@
           }
         }
       },
-      "hash": "24fddbd6507390306f9585693580d350",
+      "hash": "d57be32757ed992dd8f3c95819d72d52",
       "version": 6
     },
     "invoke.createScPool": {
@@ -15617,17 +15525,17 @@
         "contracts": {},
         "txns": {
           "setPerpsMarketName": {
-            "hash": "0x98aab1aae0e76a09f538db28465717f1c1eaa1bae51947e87f9e164925316c7c",
+            "hash": "0xdcda5e8a7a79461915a0eec92caa3ad22f54e965c2a841ee4a24ad12cc2e4bf4",
             "events": {},
             "deployedOn": "invoke.setPerpsMarketName",
-            "gasUsed": 35710,
-            "gasCost": "15958163",
+            "gasUsed": 55843,
+            "gasCost": "1007365",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "extras": {}
       },
-      "hash": "28aaa3b678a4b919abc476f220a508c7",
+      "hash": "4f6bcd627b6877364c991b55a97c4087",
       "version": 6
     },
     "invoke.setInterestRateParams": {
@@ -15713,6 +15621,93 @@
         "extras": {}
       },
       "hash": "f61fe61c8b423f1f77fc65cd9512b634",
+      "version": 6
+    },
+    "provision.spartan_council_pool_rewards": {
+      "artifacts": {
+        "imports": {
+          "spartan_council_pool_rewards": {
+            "url": "ipfs://QmZneW4ppJVhZwMsUBRwtbLGk8ieQhGDamisuvLWJvaqsf",
+            "tags": [
+              "latest"
+            ],
+            "preset": "andromeda",
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0x6B2554A8349319597D1a8a36DeeD07Fb7c70400d",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0xF4Df9Dd327Fd30695d478c3c8a2fffAddcdD0d31",
+                  "1",
+                  "0x434Aa3FDb11798EDaB506D4a5e48F70845a66219",
+                  "0x2aa3cBB35161F33b113c849349D345d1807738de",
+                  "18",
+                  "Spartan Council Pool Rewards"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xa496853d4b5f3769f981a3b0797070ba60df4d31972599972cec3f603381e6af",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 923623,
+                "gasCost": "1007151"
+              }
+            }
+          }
+        }
+      },
+      "hash": "cf221769ec3aa7ce753021ee8b888f39",
+      "version": 6
+    },
+    "invoke.register_spartan_council_pool_rewards": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "register_spartan_council_pool_rewards": {
+            "hash": "0xf3e4206cffbc002e8980077eab5d916b408cd68f9a05ce9fe8101ee511041a47",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x434Aa3FDb11798EDaB506D4a5e48F70845a66219",
+                    "0x6B2554A8349319597D1a8a36DeeD07Fb7c70400d"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.register_spartan_council_pool_rewards",
+            "gasUsed": 129016,
+            "gasCost": "1007043",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "48869f5ef9ce77d54ff429f96157ac57",
       "version": 6
     }
   },
