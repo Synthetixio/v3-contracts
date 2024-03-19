@@ -7,12 +7,6 @@
       "account_timeout_withdraw": {
         "defaultValue": "86400"
       },
-      "ccip_router": {
-        "defaultValue": "0xE561d5E02207fb5eB32cca20a699E0d8919a1476"
-      },
-      "ccip_token_pool": {
-        "defaultValue": "0x057152DB365B47851B0A0bd431644b8eE21fE1b4"
-      },
       "snx_package": {
         "defaultValue": "synthetix:3.3.4"
       },
@@ -34,6 +28,9 @@
       "snx_aggregator_address": {
         "defaultValue": "0xDC3EA94CD0AC27d9A86C180091e7f78C683d3699"
       },
+      "snx_chainlink_staleness_tolerance": {
+        "defaultValue": "129600"
+      },
       "snx_address": {
         "defaultValue": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f"
       },
@@ -46,8 +43,11 @@
       "pool_owner": {
         "defaultValue": "0x302d2451d9f47620374B54c521423Bf0403916A2"
       },
-      "snx_pool_id": {
-        "defaultValue": "2"
+      "ccip_router": {
+        "defaultValue": "0xE561d5E02207fb5eB32cca20a699E0d8919a1476"
+      },
+      "ccip_token_pool": {
+        "defaultValue": "0x057152DB365B47851B0A0bd431644b8eE21fE1b4"
       },
       "spot_market_package": {
         "defaultValue": "synthetix-spot-market:3.3.4"
@@ -67,10 +67,6 @@
         "func": "setMinLiquidityRatio(uint256)",
         "args": [
           "<%= settings.minimum_liquidity_ratio %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system"
         ]
       },
       "setAccountTimeoutWithdraw": {
@@ -84,29 +80,6 @@
         "args": [
           "<%= formatBytes32String('accountTimeoutWithdraw') %>",
           "<%= hexZeroPad(hexlify(parseInt(settings.account_timeout_withdraw)), 32) %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system"
-        ]
-      },
-      "configureChainlinkCrossChain": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "configureChainlinkCrossChain",
-        "args": [
-          "<%= settings.ccip_router %>",
-          "<%= settings.ccip_token_pool %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "setSupportedCrossChainNetworks": {
@@ -129,6 +102,15 @@
         ],
         "depends": [
           "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
           "provision.system"
         ]
       },
@@ -143,15 +125,9 @@
         "args": [
           "<%= formatBytes32String('createPool') %>",
           "<%= settings.deployer %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
-      "registerSnxOracleManager": {
+      "registerSnxOracleManagerNode": {
         "target": [
           "system.oracle_manager.Proxy"
         ],
@@ -162,17 +138,30 @@
           []
         ],
         "extra": {
+          "snx_oracle_id_raw": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "registerSnxWithStaleness": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.snx_chainlink_staleness_tolerance]) %>",
+          [
+            "<%= extras.snx_oracle_id_raw %>"
+          ]
+        ],
+        "extra": {
           "snx_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system",
-          "provision.system"
-        ]
+        }
       },
       "configureSnxCollateral": {
         "target": [
@@ -192,15 +181,6 @@
             "minDelegationD18": "<%= settings.snx_liquidation_reward %>",
             "depositingEnabled": true
           }
-        ],
-        "depends": [
-          "invoke.registerSnxOracleManager",
-          "provision.system",
-          "invoke.registerSnxOracleManager",
-          "provision.system",
-          "invoke.registerSnxOracleManager",
-          "provision.system",
-          "invoke.registerSnxOracleManager"
         ]
       },
       "createScPool": {
@@ -212,12 +192,6 @@
         "args": [
           "<%= settings.sc_pool_id %>",
           "<%= settings.pool_owner %>"
-        ],
-        "depends": [
-          "invoke.permitCreatePool",
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "setScPoolName": {
@@ -237,6 +211,15 @@
         ],
         "depends": [
           "invoke.createScPool",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
           "provision.system"
         ]
       },
@@ -253,62 +236,29 @@
         ],
         "depends": [
           "invoke.createScPool",
-          "provision.system"
-        ]
-      },
-      "create_snx_pool": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "from": "<%= settings.deployer %>",
-        "func": "createPool",
-        "args": [
-          "<%= settings.snx_pool_id %>",
-          "<%= settings.pool_owner %>"
-        ],
-        "depends": [
-          "invoke.permitCreatePool",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
           "provision.system",
           "provision.system",
           "provision.system"
         ]
       },
-      "set_snx_pool_name": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= settings.snx_pool_id %>"
-          ]
-        },
-        "func": "setPoolName",
-        "args": [
-          "<%= settings.snx_pool_id %>",
-          "Passive SNX Pool"
-        ],
-        "depends": [
-          "invoke.create_snx_pool",
-          "provision.system"
-        ]
-      },
-      "approve_snx_pool": {
+      "configureChainlinkCrossChain": {
         "target": [
           "system.CoreProxy"
         ],
         "fromCall": {
           "func": "owner"
         },
-        "func": "addApprovedPool",
+        "func": "configureChainlinkCrossChain",
         "args": [
-          "<%= settings.snx_pool_id %>"
-        ],
-        "depends": [
-          "invoke.create_snx_pool",
-          "provision.system",
-          "provision.system",
-          "provision.system"
+          "<%= settings.ccip_router %>",
+          "<%= settings.ccip_token_pool %>"
         ]
       },
       "allowAllTransferCrossChain": {
@@ -322,12 +272,6 @@
         "args": [
           "<%= formatBytes32String('transferCrossChain') %>",
           true
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       }
     },
@@ -343,7 +287,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "3.3.4",
+    "version": "4",
     "description": "Includes the full synthetix system with configurations applied"
   },
   "state": {
@@ -2289,45 +2233,36 @@
         "contracts": {},
         "txns": {
           "configureSnxCollateral": {
-            "hash": "0x243fc3d98160ae6ec9f764dd688cbc4c99d29f30d5e28ebefdc4968a45371ce3",
+            "hash": "0x64eb2f4f77ae596ceb24be2621e04a3b853eb555fe76fd02eb27f218c7d7d413",
             "events": {
               "CollateralConfigured": [
                 {
                   "name": "CollateralConfigured",
                   "args": [
                     "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
-                    [
-                      true,
-                      {
-                        "type": "BigNumber",
-                        "hex": "0x3782dace9d900000"
-                      },
-                      {
-                        "type": "BigNumber",
-                        "hex": "0x14d1120d7b160000"
-                      },
-                      {
-                        "type": "BigNumber",
-                        "hex": "0x8ac7230489e80000"
-                      },
-                      "0x050be821f7e92c7ca8366e2fe01eee313272231d436c5deaed75b978d78f7116",
-                      "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
-                      {
-                        "type": "BigNumber",
-                        "hex": "0x8ac7230489e80000"
-                      }
-                    ]
+                    {
+                      "depositingEnabled": true,
+                      "issuanceRatioD18": "4000000000000000000",
+                      "liquidationRatioD18": "1500000000000000000",
+                      "liquidationRewardD18": "10000000000000000000",
+                      "oracleNodeId": "0xe68abf6ddc460cb9989f6cfd808b3af937f896a38dd4a271b81c2b60c3511516",
+                      "tokenAddress": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+                      "minDelegationD18": "10000000000000000000"
+                    }
                   ]
                 }
               ]
             },
-            "deployedOn": "invoke.configureSnxCollateral"
+            "deployedOn": "invoke.configureSnxCollateral",
+            "gasUsed": 59044,
+            "gasCost": "49771696673",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
           }
         },
         "extras": {}
       },
-      "hash": "6544979bb6b6b12086beb807c10a94d6",
-      "version": 5
+      "hash": "d51889519be52444041372db2c370365",
+      "version": 6
     },
     "invoke.setAccountTimeoutWithdraw": {
       "artifacts": {
@@ -2576,6 +2511,72 @@
         "extras": {}
       },
       "hash": "00384bfcc7741fd22c57f50a98baa1d1",
+      "version": 6
+    },
+    "invoke.registerSnxOracleManagerNode": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "registerSnxOracleManagerNode": {
+            "hash": "0x1f5eac5c22bc4244154ab7f30a08e2fec0187485e20f04d8ca43b8de63fbf3dc",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x050be821f7e92c7ca8366e2fe01eee313272231d436c5deaed75b978d78f7116",
+                    3,
+                    "0x000000000000000000000000dc3ea94cd0ac27d9a86c180091e7f78c683d369900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.registerSnxOracleManagerNode",
+            "gasUsed": 53100,
+            "gasCost": "58855283443",
+            "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+          }
+        },
+        "extras": {
+          "snx_oracle_id_raw": "0x050be821f7e92c7ca8366e2fe01eee313272231d436c5deaed75b978d78f7116"
+        }
+      },
+      "hash": "1d4d6f09c8e538e56f8eb0e20af2ee81",
+      "version": 6
+    },
+    "invoke.registerSnxWithStaleness": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "registerSnxWithStaleness": {
+            "hash": "0x097884fa1c07d07e53868e8ba712938d531f078a31ac5a2730cc07f8c7e8c046",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xe68abf6ddc460cb9989f6cfd808b3af937f896a38dd4a271b81c2b60c3511516",
+                    7,
+                    "0x000000000000000000000000000000000000000000000000000000000001fa40",
+                    [
+                      "0x050be821f7e92c7ca8366e2fe01eee313272231d436c5deaed75b978d78f7116"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.registerSnxWithStaleness",
+            "gasUsed": 51248,
+            "gasCost": "58288745633",
+            "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+          }
+        },
+        "extras": {
+          "snx_oracle_id": "0xe68abf6ddc460cb9989f6cfd808b3af937f896a38dd4a271b81c2b60c3511516"
+        }
+      },
+      "hash": "73e37a377ce0a0cfafcc9f0ba16d309a",
       "version": 6
     }
   },
