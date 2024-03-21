@@ -56,19 +56,19 @@
         "defaultValue": "30000"
       },
       "perps_keeper_l2_cost_settle_gas_units": {
-        "defaultValue": "1200000"
+        "defaultValue": "1300000"
       },
       "perps_keeper_l1_cost_flag_gas_units": {
-        "defaultValue": "15500"
+        "defaultValue": "31000"
       },
       "perps_keeper_l2_cost_flag_gas_units": {
-        "defaultValue": "250000"
+        "defaultValue": "1160000"
       },
       "perps_keeper_l1_cost_liquidate_gas_units": {
         "defaultValue": "5500"
       },
       "perps_keeper_l2_cost_liquidate_gas_units": {
-        "defaultValue": "1100000"
+        "defaultValue": "600000"
       },
       "perps_liquidation_min_keeper_reward_usd": {
         "defaultValue": "5"
@@ -274,7 +274,7 @@
           "coreProxyOwner": "<%= settings.owner %>",
           "owner": "<%= settings.owner %>",
           "salt": "<%= settings.salt %>",
-          "synthetixPackage": "<%= settings.snx_package %>",
+          "synthetixPackage": "<%= settings.snx_package %>@<%= settings.target_preset %>",
           "synthetixPreset": "<%= settings.target_preset %>"
         },
         "depends": [
@@ -334,12 +334,6 @@
         "func": "setMinLiquidityRatio(uint256)",
         "args": [
           "<%= settings.minimum_liquidity_ratio %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "setAccountTimeoutWithdraw": {
@@ -353,12 +347,6 @@
         "args": [
           "<%= formatBytes32String('accountTimeoutWithdraw') %>",
           "<%= hexZeroPad(hexlify(parseInt(settings.account_timeout_withdraw)), 32) %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "permitCreatePool": {
@@ -372,12 +360,6 @@
         "args": [
           "<%= formatBytes32String('createPool') %>",
           "<%= settings.deployer %>"
-        ],
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.system",
-          "provision.system"
         ]
       },
       "set_deniers_core_withdraw": {
@@ -448,6 +430,13 @@
           "invoke.permitCreatePool",
           "provision.system",
           "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
+          "provision.system",
           "provision.system"
         ]
       },
@@ -501,12 +490,6 @@
         "func": "setPerpsMarketName",
         "args": [
           "<%= settings.perps_super_market_name %>"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "createUsdcSynth": {
@@ -531,20 +514,7 @@
             "event": "SynthRegistered",
             "arg": 1
           }
-        },
-        "depends": [
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory",
-          "provision.spotFactory"
-        ]
+        }
       },
       "setSynthPriceUsdc": {
         "target": [
@@ -577,15 +547,6 @@
           "<%= extras.synth_usdc_market_id %>",
           "<%= settings.usdc_address %>",
           "<%= settings.synthUsdcMaxMarketCollateral %>"
-        ],
-        "depends": [
-          "invoke.createUsdcSynth",
-          "provision.system",
-          "invoke.createUsdcSynth",
-          "provision.system",
-          "invoke.createUsdcSynth",
-          "provision.system",
-          "invoke.createUsdcSynth"
         ]
       },
       "configureSynthWrapperUsdc": {
@@ -603,39 +564,6 @@
           "<%= extras.synth_usdc_market_id %>",
           "<%= settings.usdc_address %>",
           "<%= settings.synthUsdcMaxMarketCollateral %>"
-        ],
-        "depends": [
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth",
-          "provision.spotFactory",
-          "invoke.createUsdcSynth",
-          "invoke.createUsdcSynth"
         ]
       },
       "configure_usdc_collateral": {
@@ -669,19 +597,6 @@
         "args": [
           "<%= formatBytes32String('perpsSystem') %>",
           true
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPolynomialAsReferrerOnPerpsMarket": {
@@ -805,16 +720,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.system",
-          "provision.system",
-          "provision.perps_gas_oracle_node",
-          "provision.system",
-          "provision.perps_gas_oracle_node",
-          "provision.system",
-          "provision.perps_gas_oracle_node"
-        ]
+        }
       },
       "registerPerps_KeeperCostUsdOracleNode": {
         "target": [
@@ -834,21 +740,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.system",
-          "invoke.registerEthOracleNode",
-          "invoke.registerPerps_KeeperCostEthOracleNode",
-          "provision.system",
-          "invoke.registerPerps_KeeperCostEthOracleNode",
-          "invoke.registerEthOracleNode",
-          "provision.system",
-          "invoke.registerPerps_KeeperCostEthOracleNode",
-          "invoke.registerEthOracleNode",
-          "provision.system",
-          "invoke.registerPerps_KeeperCostEthOracleNode",
-          "invoke.registerEthOracleNode"
-        ]
+        }
       },
       "setFeeCollector": {
         "target": [
@@ -894,16 +786,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper"
-        ]
+        }
       },
       "registerSnxOracleNodeBuyback": {
         "target": [
@@ -923,20 +806,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "invoke.registerPythSnxOracleNodeBuyback",
-          "invoke.registerLookupSnxOracleNodeBuyback",
-          "provision.system",
-          "invoke.registerPythSnxOracleNodeBuyback",
-          "invoke.registerLookupSnxOracleNodeBuyback",
-          "provision.system",
-          "invoke.registerPythSnxOracleNodeBuyback",
-          "invoke.registerLookupSnxOracleNodeBuyback",
-          "provision.system",
-          "invoke.registerPythSnxOracleNodeBuyback",
-          "invoke.registerLookupSnxOracleNodeBuyback"
-        ]
+        }
       },
       "configure_susdc_collateral": {
         "target": [
@@ -976,20 +846,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "invoke.registerPythBtcOracleNode",
-          "invoke.registerLookupBtcOracleNode",
-          "provision.system",
-          "invoke.registerPythBtcOracleNode",
-          "invoke.registerLookupBtcOracleNode",
-          "provision.system",
-          "invoke.registerPythBtcOracleNode",
-          "invoke.registerLookupBtcOracleNode",
-          "provision.system",
-          "invoke.registerPythBtcOracleNode",
-          "invoke.registerLookupBtcOracleNode"
-        ]
+        }
       },
       "createBtcPerpsMarket": {
         "target": [
@@ -1003,19 +860,6 @@
           "<%= settings.btcPerpsMarketId %>",
           "Bitcoin",
           "BTC"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsPriceBtc": {
@@ -1030,16 +874,6 @@
           "<%= settings.btcPerpsMarketId %>",
           "<%= extras.btc_oracle_id %>",
           "<%= settings.bigCapStrictStalenessTolerance %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "invoke.registerBtcOracleNode",
-          "provision.perpsFactory",
-          "invoke.registerBtcOracleNode",
-          "provision.perpsFactory",
-          "invoke.registerBtcOracleNode",
-          "provision.perpsFactory",
-          "invoke.registerBtcOracleNode"
         ]
       },
       "addPerpsBtcSettlementStrategy": {
@@ -1068,20 +902,7 @@
             "event": "SettlementStrategyAdded",
             "arg": 2
           }
-        },
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
-        ]
+        }
       },
       "setPerpsBtcSettlementStrategy": {
         "target": [
@@ -1104,18 +925,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitmentPriceDelay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.perpsFactory",
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.pyth_erc7412_wrapper",
-          "provision.perpsFactory",
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.pyth_erc7412_wrapper",
-          "provision.perpsFactory",
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.pyth_erc7412_wrapper"
         ]
       },
       "setPerpsBtcFundingParameters": {
@@ -1130,12 +939,6 @@
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcSkewScale) %>",
           "<%= parseEther(settings.perpsBtcMaxFundingVelocity) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsBtcOrderFees": {
@@ -1150,12 +953,6 @@
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcMakerFeeRatio) %>",
           "<%= parseEther(settings.perpsBtcTakerFeeRatio) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsBtcMaxMarketSize": {
@@ -1169,12 +966,6 @@
         "args": [
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcMaxMarketSize) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsBtcMaxLiquidationParameters": {
@@ -1191,12 +982,6 @@
           "<%= settings.perpsBtcMaxSecondsInLiquidationWindow %>",
           "<%= parseEther(settings.perpsBtcMaxLiquidationPd) %>",
           "<%= settings.perpsBtcEndorsedLiquidator %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsBtcLiquidationParameters": {
@@ -1214,12 +999,6 @@
           "<%= parseEther(settings.perpsBtcMaintenanceMarginScalar) %>",
           "<%= parseEther(settings.perpsBtcFlagRewardRatioD18) %>",
           "<%= parseEther(settings.perpsBtcMinimumPositionMargin) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsBtcLockedOiRatio": {
@@ -1233,12 +1012,6 @@
         "args": [
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcLockedOiRatio) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "registerPythBtcOracleNode": {
@@ -1273,16 +1046,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper"
-        ]
+        }
       },
       "registerEthOracleNode": {
         "target": [
@@ -1302,20 +1066,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "invoke.registerPythEthOracleNode",
-          "invoke.registerLookupEthOracleNode",
-          "provision.system",
-          "invoke.registerPythEthOracleNode",
-          "invoke.registerLookupEthOracleNode",
-          "provision.system",
-          "invoke.registerPythEthOracleNode",
-          "invoke.registerLookupEthOracleNode",
-          "provision.system",
-          "invoke.registerPythEthOracleNode",
-          "invoke.registerLookupEthOracleNode"
-        ]
+        }
       },
       "createEthPerpsMarket": {
         "target": [
@@ -1329,19 +1080,6 @@
           "<%= settings.ethPerpsMarketId %>",
           "Ethereum",
           "ETH"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsPriceEth": {
@@ -1356,16 +1094,6 @@
           "<%= settings.ethPerpsMarketId %>",
           "<%= extras.eth_oracle_id %>",
           "<%= settings.bigCapStrictStalenessTolerance %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "invoke.registerEthOracleNode",
-          "provision.perpsFactory",
-          "invoke.registerEthOracleNode",
-          "provision.perpsFactory",
-          "invoke.registerEthOracleNode",
-          "provision.perpsFactory",
-          "invoke.registerEthOracleNode"
         ]
       },
       "addPerpsEthSettlementStrategy": {
@@ -1394,20 +1122,7 @@
             "event": "SettlementStrategyAdded",
             "arg": 2
           }
-        },
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
-        ]
+        }
       },
       "setPerpsEthSettlementStrategy": {
         "target": [
@@ -1430,18 +1145,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitmentPriceDelay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.perpsFactory",
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.pyth_erc7412_wrapper",
-          "provision.perpsFactory",
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.pyth_erc7412_wrapper",
-          "provision.perpsFactory",
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.pyth_erc7412_wrapper"
         ]
       },
       "setPerpsEthFundingParameters": {
@@ -1456,12 +1159,6 @@
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthSkewScale) %>",
           "<%= parseEther(settings.perpsEthMaxFundingVelocity) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsEthOrderFees": {
@@ -1476,12 +1173,6 @@
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthMakerFeeRatio) %>",
           "<%= parseEther(settings.perpsEthTakerFeeRatio) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsEthMaxMarketSize": {
@@ -1495,12 +1186,6 @@
         "args": [
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthMaxMarketSize) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsEthMaxLiquidationParameters": {
@@ -1517,12 +1202,6 @@
           "<%= settings.perpsEthMaxSecondsInLiquidationWindow %>",
           "<%= parseEther(settings.perpsEthMaxLiquidationPd) %>",
           "<%= settings.perpsEthEndorsedLiquidator %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsEthLiquidationParameters": {
@@ -1540,12 +1219,6 @@
           "<%= parseEther(settings.perpsEthMaintenanceMarginScalar) %>",
           "<%= parseEther(settings.perpsEthFlagRewardRatioD18) %>",
           "<%= parseEther(settings.perpsEthMinimumPositionMargin) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "setPerpsEthLockedOiRatio": {
@@ -1559,12 +1232,6 @@
         "args": [
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthLockedOiRatio) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "provision.perpsFactory",
-          "provision.perpsFactory"
         ]
       },
       "registerPythEthOracleNode": {
@@ -1599,16 +1266,7 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "provision.pyth_erc7412_wrapper"
-        ]
+        }
       },
       "setScPoolConfig": {
         "target": [
@@ -1634,7 +1292,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "3.3.5-3",
+    "version": "4",
     "description": "Andromeda deployment",
     "preset": "andromeda"
   },
@@ -4118,31 +3776,31 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostEthOracleNode": {
-            "hash": "0xa75e89575d6b2aeb4604113298857aad0db2b7dc087ee9d594dae6b448ceed6b",
+            "hash": "0xf125c851d0fb1235db8ce373c1596a75909e48213a90dc8ff77be5b40813ef88",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0xf0b2a83c917dfe80d11663dff356c5ca380512005598b62bd10984c6d0ab6a11",
+                    "0x25bf77f6a6de024d26fd87d451ebaeb0568750a7333afa31b68c6296d8983903",
                     2,
-                    "0x0000000000000000000000006d12a3cdf4ddf71baab4876891b7690a9d4f702700000000000000000000000000000000000000000000000000000000000075300000000000000000000000000000000000000000000000000000000000124f800000000000000000000000000000000000000000000000000000000000003c8c000000000000000000000000000000000000000000000000000000000003d090000000000000000000000000000000000000000000000000000000000000157c000000000000000000000000000000000000000000000000000000000010c8e0",
+                    "0x0000000000000000000000006d12a3cdf4ddf71baab4876891b7690a9d4f70270000000000000000000000000000000000000000000000000000000000007530000000000000000000000000000000000000000000000000000000000013d6200000000000000000000000000000000000000000000000000000000000007918000000000000000000000000000000000000000000000000000000000011b340000000000000000000000000000000000000000000000000000000000000157c00000000000000000000000000000000000000000000000000000000000927c0",
                     []
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.registerPerps_KeeperCostEthOracleNode",
-            "gasUsed": 62007,
-            "gasCost": "279",
+            "gasUsed": 273046,
+            "gasCost": "1028277883",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "extras": {
-          "perps_keeper_cost_eth_oracle_id": "0xf0b2a83c917dfe80d11663dff356c5ca380512005598b62bd10984c6d0ab6a11"
+          "perps_keeper_cost_eth_oracle_id": "0x25bf77f6a6de024d26fd87d451ebaeb0568750a7333afa31b68c6296d8983903"
         }
       },
-      "hash": "61c137a8bf8b36aedc67cdbec04a300e",
+      "hash": "adb5cca5403813715e1a28a2388dc1d0",
       "version": 6
     },
     "invoke.registerPythBtcOracleNode": {
@@ -4335,7 +3993,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmUBvYki86Anhzb7Wma6ksZeJtrovUWDSF7aHenEy2w5Cs",
+            "url": "ipfs://QmPteVns7a3eQWyqsgoHVq9uCNyVYE6WN323dg6crdffNt",
             "tags": [
               "latest"
             ],
@@ -7400,7 +7058,7 @@
           }
         }
       },
-      "hash": "ddd3a2d829a6b3c42af9a8c0045a3b6a",
+      "hash": "fe96cbe2e0b436ae7fa94b612ec59142",
       "version": 6
     },
     "invoke.createScPool": {
@@ -14089,17 +13747,17 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostUsdOracleNode": {
-            "hash": "0x6da61165a3601cc281b8931e66b082744586723fc07b84ff2891da846b555dcc",
+            "hash": "0x9e4770c494624d4d9077813d3c12f47e47845056fce8c83bd37114966618e4c5",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0xec5ccbafbc337f706347c5bab0135c35c1c4fcbd8733cd94851cf1c00a1b03a6",
+                    "0x408419543cc0f06015b53780f4de3ba79ad93300baf7cbded2760f0a90e30fd6",
                     1,
                     "0x0000000000000000000000000000000000000000000000000000000000000007",
                     [
-                      "0xf0b2a83c917dfe80d11663dff356c5ca380512005598b62bd10984c6d0ab6a11",
+                      "0x25bf77f6a6de024d26fd87d451ebaeb0568750a7333afa31b68c6296d8983903",
                       "0x7d2b60ca705849f516057208eb4a8a0f3a749e3d620902f4fd8d43a3f813a24a"
                     ]
                   ]
@@ -14107,16 +13765,16 @@
               ]
             },
             "deployedOn": "invoke.registerPerps_KeeperCostUsdOracleNode",
-            "gasUsed": 51795,
-            "gasCost": "214",
+            "gasUsed": 286887,
+            "gasCost": "1024807491",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "extras": {
-          "perps_keeper_cost_usd_oracle_id": "0xec5ccbafbc337f706347c5bab0135c35c1c4fcbd8733cd94851cf1c00a1b03a6"
+          "perps_keeper_cost_usd_oracle_id": "0x408419543cc0f06015b53780f4de3ba79ad93300baf7cbded2760f0a90e30fd6"
         }
       },
-      "hash": "e9f89023a680e98e810532ea2796c5f7",
+      "hash": "03cc996302a938f3690226ddafc3024e",
       "version": 6
     },
     "invoke.setKwentaAsReferrerOnPerpsMarket": {
@@ -15209,26 +14867,26 @@
         "contracts": {},
         "txns": {
           "setPerpsMarketKeeperCostNodeId": {
-            "hash": "0x2b4f7a10f303fb9e0221dc4e00fbbe60afb2e0b74e35bae0e78b4771df47818b",
+            "hash": "0xe6b8f2f65072d1b41922620644b78e583b486acdc9aea7080cb5aee0323456fa",
             "events": {
               "KeeperCostNodeIdUpdated": [
                 {
                   "name": "KeeperCostNodeIdUpdated",
                   "args": [
-                    "0xec5ccbafbc337f706347c5bab0135c35c1c4fcbd8733cd94851cf1c00a1b03a6"
+                    "0x408419543cc0f06015b53780f4de3ba79ad93300baf7cbded2760f0a90e30fd6"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMarketKeeperCostNodeId",
-            "gasUsed": 39135,
-            "gasCost": "145",
+            "gasUsed": 39123,
+            "gasCost": "1021765863",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "extras": {}
       },
-      "hash": "b0d4338dabbdfb30b846fe3f3ae3e445",
+      "hash": "cc8c185d7171e6cccbd943614c3e108b",
       "version": 6
     },
     "invoke.setPerpsPriceBtc": {
