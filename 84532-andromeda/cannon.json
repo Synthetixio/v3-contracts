@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.11.21",
-  "timestamp": 1710875384,
+  "timestamp": 1711345680,
   "def": {
     "setting": {
       "snx_package": {
@@ -362,6 +362,19 @@
           "payoutToken": "<%= imports.snx_mock_collateral.contracts.MintableToken.address %>",
           "payoutTokenDecimals": "18",
           "name": "Spartan Council Pool Rewards"
+        }
+      },
+      "sccp_313_spartan_council_pool_usdc_rewards": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= settings.sc_pool_id %>",
+          "collateralType": "<%= extras.synth_usdc_token_address %>",
+          "payoutToken": "<%= imports.usdc_mock_collateral.contracts.MintableToken.address %>",
+          "payoutTokenDecimals": "6",
+          "name": "Spartan Council Pool USDC Rewards"
         }
       }
     },
@@ -1482,10 +1495,27 @@
           "<%= extras.synth_usdc_token_address %>",
           "<%= imports.spartan_council_pool_rewards.contracts.RewardsDistributor.address %>"
         ]
+      },
+      "sccp_313_register_spartan_council_pool_usdc_rewards": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= settings.sc_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= settings.sc_pool_id %>",
+          "<%= extras.synth_usdc_token_address %>",
+          "<%= imports.sccp_313_spartan_council_pool_usdc_rewards.contracts.RewardsDistributor.address %>"
+        ]
       }
     },
     "name": "synthetix-omnibus",
-    "version": "6",
+    "version": "7",
     "description": "Andromeda dev deployment",
     "preset": "andromeda"
   },
@@ -15696,6 +15726,93 @@
         "extras": {}
       },
       "hash": "48869f5ef9ce77d54ff429f96157ac57",
+      "version": 6
+    },
+    "provision.sccp_313_spartan_council_pool_usdc_rewards": {
+      "artifacts": {
+        "imports": {
+          "sccp_313_spartan_council_pool_usdc_rewards": {
+            "url": "ipfs://QmRLSpNksb7ivbYHTxCVAx65xUgwW9HzDCM8s2B3DUh2iA",
+            "tags": [
+              "latest"
+            ],
+            "preset": "andromeda",
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0xFba808B1d7D283bE822aB9af880Cb37B16194410",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0xF4Df9Dd327Fd30695d478c3c8a2fffAddcdD0d31",
+                  "1",
+                  "0x434Aa3FDb11798EDaB506D4a5e48F70845a66219",
+                  "0x69980C3296416820623b3e3b30703A74e2320bC8",
+                  "6",
+                  "Spartan Council Pool USDC Rewards"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x15e57be9ca216769785534fa0ebf9ada5a1481422f21f53e3dc5b45a485640a7",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 968220,
+                "gasCost": "1000274"
+              }
+            }
+          }
+        }
+      },
+      "hash": "54818a8596b94fe2e0ab6ceab74fb70b",
+      "version": 6
+    },
+    "invoke.sccp_313_register_spartan_council_pool_usdc_rewards": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "sccp_313_register_spartan_council_pool_usdc_rewards": {
+            "hash": "0x5ff67d019c948469684de4a14cee2acaff5b53980f7581187c5b5baa7e3cbd80",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x434Aa3FDb11798EDaB506D4a5e48F70845a66219",
+                    "0xFba808B1d7D283bE822aB9af880Cb37B16194410"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.sccp_313_register_spartan_council_pool_usdc_rewards",
+            "gasUsed": 111916,
+            "gasCost": "1000279",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "a8cba276f3d5c8264a6c9262c552d12a",
       "version": 6
     }
   },
