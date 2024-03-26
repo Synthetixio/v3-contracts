@@ -56,7 +56,7 @@
         "defaultValue": "30000"
       },
       "perps_keeper_l2_cost_settle_gas_units": {
-        "defaultValue": "1300000"
+        "defaultValue": "1500000"
       },
       "perps_keeper_l1_cost_flag_gas_units": {
         "defaultValue": "31000"
@@ -320,6 +320,19 @@
         "options": {
           "salt": "<%= settings.salt %>",
           "pythAddress": "<%= settings.pyth_price_verification_address %>"
+        }
+      },
+      "sccp_313_spartan_council_pool_usdc_rewards": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= settings.sc_pool_id %>",
+          "collateralType": "<%= extras.synth_usdc_token_address %>",
+          "payoutToken": "<%= settings.usdc_address %>",
+          "payoutTokenDecimals": "6",
+          "name": "Spartan Council Pool USDC Rewards"
         }
       }
     },
@@ -876,34 +889,6 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ]
       },
-      "addPerpsBtcSettlementStrategy": {
-        "target": [
-          "perpsFactory.PerpsMarketProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "addSettlementStrategy",
-        "args": [
-          "<%= settings.btcPerpsMarketId %>",
-          {
-            "strategyType": "0",
-            "settlementDelay": "0",
-            "settlementWindowDuration": "1",
-            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
-            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "settlementReward": "0",
-            "disabled": false,
-            "commitmentPriceDelay": "0"
-          }
-        ],
-        "extra": {
-          "btc_pyth_settlement_strategy": {
-            "event": "SettlementStrategyAdded",
-            "arg": 2
-          }
-        }
-      },
       "setPerpsBtcSettlementStrategy": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -914,7 +899,7 @@
         "func": "setSettlementStrategy",
         "args": [
           "<%= settings.btcPerpsMarketId %>",
-          "<%= extras.btc_pyth_settlement_strategy %>",
+          "0",
           {
             "strategyType": "0",
             "settlementDelay": "<%= settings.bigCapSettlementDelay %>",
@@ -1096,34 +1081,6 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ]
       },
-      "addPerpsEthSettlementStrategy": {
-        "target": [
-          "perpsFactory.PerpsMarketProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "addSettlementStrategy",
-        "args": [
-          "<%= settings.ethPerpsMarketId %>",
-          {
-            "strategyType": "0",
-            "settlementDelay": "0",
-            "settlementWindowDuration": "1",
-            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
-            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "settlementReward": "0",
-            "disabled": false,
-            "commitmentPriceDelay": "0"
-          }
-        ],
-        "extra": {
-          "eth_pyth_settlement_strategy": {
-            "event": "SettlementStrategyAdded",
-            "arg": 2
-          }
-        }
-      },
       "setPerpsEthSettlementStrategy": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -1134,7 +1091,7 @@
         "func": "setSettlementStrategy",
         "args": [
           "<%= settings.ethPerpsMarketId %>",
-          "<%= extras.eth_pyth_settlement_strategy %>",
+          "0",
           {
             "strategyType": "0",
             "settlementDelay": "<%= settings.bigCapSettlementDelay %>",
@@ -1289,10 +1246,27 @@
             }
           ]
         ]
+      },
+      "sccp_313_register_spartan_council_pool_usdc_rewards": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= settings.sc_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= settings.sc_pool_id %>",
+          "<%= extras.synth_usdc_token_address %>",
+          "<%= imports.sccp_313_spartan_council_pool_usdc_rewards.contracts.RewardsDistributor.address %>"
+        ]
       }
     },
     "name": "synthetix-omnibus",
-    "version": "4",
+    "version": "6",
     "description": "Andromeda deployment",
     "preset": "andromeda"
   },
@@ -3776,15 +3750,15 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostEthOracleNode": {
-            "hash": "0xf125c851d0fb1235db8ce373c1596a75909e48213a90dc8ff77be5b40813ef88",
+            "hash": "0x1e8bb96b2af206cd9245e5b2c481c028cb548097de1a65abfe3835aaeead710c",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0x25bf77f6a6de024d26fd87d451ebaeb0568750a7333afa31b68c6296d8983903",
+                    "0x8bb795903db4b0b4d94fd47380cc39b2ff21334f95daa12e1dd568e0c2ac7897",
                     2,
-                    "0x0000000000000000000000006d12a3cdf4ddf71baab4876891b7690a9d4f70270000000000000000000000000000000000000000000000000000000000007530000000000000000000000000000000000000000000000000000000000013d6200000000000000000000000000000000000000000000000000000000000007918000000000000000000000000000000000000000000000000000000000011b340000000000000000000000000000000000000000000000000000000000000157c00000000000000000000000000000000000000000000000000000000000927c0",
+                    "0x0000000000000000000000006d12a3cdf4ddf71baab4876891b7690a9d4f70270000000000000000000000000000000000000000000000000000000000007530000000000000000000000000000000000000000000000000000000000016e3600000000000000000000000000000000000000000000000000000000000007918000000000000000000000000000000000000000000000000000000000011b340000000000000000000000000000000000000000000000000000000000000157c00000000000000000000000000000000000000000000000000000000000927c0",
                     []
                   ]
                 }
@@ -3792,15 +3766,15 @@
             },
             "deployedOn": "invoke.registerPerps_KeeperCostEthOracleNode",
             "gasUsed": 273046,
-            "gasCost": "1028277883",
+            "gasCost": "1218859059",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "extras": {
-          "perps_keeper_cost_eth_oracle_id": "0x25bf77f6a6de024d26fd87d451ebaeb0568750a7333afa31b68c6296d8983903"
+          "perps_keeper_cost_eth_oracle_id": "0x8bb795903db4b0b4d94fd47380cc39b2ff21334f95daa12e1dd568e0c2ac7897"
         }
       },
-      "hash": "adb5cca5403813715e1a28a2388dc1d0",
+      "hash": "ddab0fdd2231a809879c83751f869afc",
       "version": 6
     },
     "invoke.registerPythBtcOracleNode": {
@@ -13747,17 +13721,17 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostUsdOracleNode": {
-            "hash": "0x9e4770c494624d4d9077813d3c12f47e47845056fce8c83bd37114966618e4c5",
+            "hash": "0xa8ccc6041b4f4ad91516950ca59b8f311367a521475c3650a9d39125c372fa12",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0x408419543cc0f06015b53780f4de3ba79ad93300baf7cbded2760f0a90e30fd6",
+                    "0x15d942c93da73be17ad5664325f2524d425f0767baff1ca787350cd6d664fe20",
                     1,
                     "0x0000000000000000000000000000000000000000000000000000000000000007",
                     [
-                      "0x25bf77f6a6de024d26fd87d451ebaeb0568750a7333afa31b68c6296d8983903",
+                      "0x8bb795903db4b0b4d94fd47380cc39b2ff21334f95daa12e1dd568e0c2ac7897",
                       "0x7d2b60ca705849f516057208eb4a8a0f3a749e3d620902f4fd8d43a3f813a24a"
                     ]
                   ]
@@ -13766,15 +13740,15 @@
             },
             "deployedOn": "invoke.registerPerps_KeeperCostUsdOracleNode",
             "gasUsed": 286887,
-            "gasCost": "1024807491",
+            "gasCost": "1191999665",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "extras": {
-          "perps_keeper_cost_usd_oracle_id": "0x408419543cc0f06015b53780f4de3ba79ad93300baf7cbded2760f0a90e30fd6"
+          "perps_keeper_cost_usd_oracle_id": "0x15d942c93da73be17ad5664325f2524d425f0767baff1ca787350cd6d664fe20"
         }
       },
-      "hash": "03cc996302a938f3690226ddafc3024e",
+      "hash": "02cbf102ed909ab32008b797ab543038",
       "version": 6
     },
     "invoke.setKwentaAsReferrerOnPerpsMarket": {
@@ -14867,26 +14841,26 @@
         "contracts": {},
         "txns": {
           "setPerpsMarketKeeperCostNodeId": {
-            "hash": "0xe6b8f2f65072d1b41922620644b78e583b486acdc9aea7080cb5aee0323456fa",
+            "hash": "0xffd87e11d49a7c4cd21bdeed9ad8c9521bced0cb334833e480392383f2bf8fe7",
             "events": {
               "KeeperCostNodeIdUpdated": [
                 {
                   "name": "KeeperCostNodeIdUpdated",
                   "args": [
-                    "0x408419543cc0f06015b53780f4de3ba79ad93300baf7cbded2760f0a90e30fd6"
+                    "0x15d942c93da73be17ad5664325f2524d425f0767baff1ca787350cd6d664fe20"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMarketKeeperCostNodeId",
-            "gasUsed": 39123,
-            "gasCost": "1021765863",
+            "gasUsed": 39135,
+            "gasCost": "1168458726",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "extras": {}
       },
-      "hash": "cc8c185d7171e6cccbd943614c3e108b",
+      "hash": "e63a54d58974c4604aeff31ea3363c42",
       "version": 6
     },
     "invoke.setPerpsPriceBtc": {
@@ -15118,6 +15092,93 @@
         "extras": {}
       },
       "hash": "5a18fdc24d411274b729e9480a95a032",
+      "version": 6
+    },
+    "provision.sccp_313_spartan_council_pool_usdc_rewards": {
+      "artifacts": {
+        "imports": {
+          "sccp_313_spartan_council_pool_usdc_rewards": {
+            "url": "ipfs://QmadaxqikXoJ49HByGZ1gszNmxaCcybPHKjD9mD7QZAe5y",
+            "tags": [
+              "latest"
+            ],
+            "preset": "andromeda",
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0xe92bcD40849BE5a5eb90065402e508aF4b28263b",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+                  "1",
+                  "0xC74eA762cF06c9151cE074E6a569a5945b6302E7",
+                  "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                  "6",
+                  "Spartan Council Pool USDC Rewards"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x0bf21cec966271d80cc6d0efffdca1bf2e685440cc6bba5ef4f406855409ff2e",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 977535,
+                "gasCost": "1883324253"
+              }
+            }
+          }
+        }
+      },
+      "hash": "9b6fff894732614fcc388a4e47da5dc9",
+      "version": 6
+    },
+    "invoke.sccp_313_register_spartan_council_pool_usdc_rewards": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "sccp_313_register_spartan_council_pool_usdc_rewards": {
+            "hash": "0x8f42b7eb7ca00c331c86524ccde87b53e5159750479cd40dfa012eec1c34cd1f",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0xC74eA762cF06c9151cE074E6a569a5945b6302E7",
+                    "0xe92bcD40849BE5a5eb90065402e508aF4b28263b"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.sccp_313_register_spartan_council_pool_usdc_rewards",
+            "gasUsed": 129016,
+            "gasCost": "1825843031",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "30e6470eccccceefe1cff15b92188ddb",
       "version": 6
     }
   },
