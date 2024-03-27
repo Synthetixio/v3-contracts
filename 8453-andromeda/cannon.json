@@ -322,6 +322,19 @@
           "pythAddress": "<%= settings.pyth_price_verification_address %>"
         }
       },
+      "stp_14_spartan_council_pool_snx_rewards": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= settings.sc_pool_id %>",
+          "collateralType": "<%= extras.synth_usdc_token_address %>",
+          "payoutToken": "<%= settings.snx_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Spartan Council Pool Rewards"
+        }
+      },
       "sccp_313_spartan_council_pool_usdc_rewards": {
         "source": "synthetix-rewards-distributor:0.0.2",
         "targetPreset": "<%= settings.target_preset %>",
@@ -1247,6 +1260,23 @@
           ]
         ]
       },
+      "stp_14_register_spartan_council_pool_snx_rewards": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= settings.sc_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= settings.sc_pool_id %>",
+          "<%= extras.synth_usdc_token_address %>",
+          "<%= imports.stp_14_spartan_council_pool_snx_rewards.contracts.RewardsDistributor.address %>"
+        ]
+      },
       "sccp_313_register_spartan_council_pool_usdc_rewards": {
         "target": [
           "system.CoreProxy"
@@ -1266,7 +1296,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "6",
+    "version": "7",
     "description": "Andromeda deployment",
     "preset": "andromeda"
   },
@@ -15179,6 +15209,93 @@
         "extras": {}
       },
       "hash": "30e6470eccccceefe1cff15b92188ddb",
+      "version": 6
+    },
+    "provision.stp_14_spartan_council_pool_snx_rewards": {
+      "artifacts": {
+        "imports": {
+          "stp_14_spartan_council_pool_snx_rewards": {
+            "url": "ipfs://QmP7m95JymkDE6Hs29GEoCHmDB2KVzu73NyuaCTrAhM3PX",
+            "tags": [
+              "latest"
+            ],
+            "preset": "andromeda",
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0x45063DCd92f56138686810eacB1B510C941d6593",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+                  "1",
+                  "0xC74eA762cF06c9151cE074E6a569a5945b6302E7",
+                  "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+                  "18",
+                  "Spartan Council Pool Rewards"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x24fcb3cb30485bfcedd7da639c8a559d2dd7ac8b3852dc6c8a18f11136900e16",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 923596,
+                "gasCost": "255128098"
+              }
+            }
+          }
+        }
+      },
+      "hash": "b198f3d1c65b03ccf188ed00d507414d",
+      "version": 6
+    },
+    "invoke.stp_14_register_spartan_council_pool_snx_rewards": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "stp_14_register_spartan_council_pool_snx_rewards": {
+            "hash": "0xc72cda2cdd05bbc4bd755ac95dd198d3097fb587981aeacb5221ad2f16c32084",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0xC74eA762cF06c9151cE074E6a569a5945b6302E7",
+                    "0x45063DCd92f56138686810eacB1B510C941d6593"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.stp_14_register_spartan_council_pool_snx_rewards",
+            "gasUsed": 111916,
+            "gasCost": "1196360730",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "extras": {}
+      },
+      "hash": "3d8fcc9fa2a8c579e486ea6639f321a1",
       "version": 6
     }
   },
