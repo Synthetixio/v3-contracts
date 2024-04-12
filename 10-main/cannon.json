@@ -130,7 +130,8 @@
         ],
         "depends": [
           "provision.system",
-          "provision.system"
+          "provision.system",
+          "setting.minimum_liquidity_ratio"
         ]
       },
       "setAccountTimeoutWithdraw": {
@@ -147,7 +148,8 @@
         ],
         "depends": [
           "provision.system",
-          "provision.system"
+          "provision.system",
+          "setting.account_timeout_withdraw"
         ]
       },
       "configureChainlinkCrossChain": {
@@ -165,8 +167,14 @@
         "depends": [
           "provision.system",
           "provision.system",
+          "setting.ccip_router",
+          "setting.ccip_token_pool",
           "provision.system",
-          "provision.system"
+          "setting.ccip_router",
+          "setting.ccip_token_pool",
+          "provision.system",
+          "setting.ccip_router",
+          "setting.ccip_token_pool"
         ]
       },
       "setSupportedCrossChainNetworks": {
@@ -207,8 +215,11 @@
         "depends": [
           "provision.system",
           "provision.system",
+          "setting.deployer",
           "provision.system",
-          "provision.system"
+          "setting.deployer",
+          "provision.system",
+          "setting.deployer"
         ]
       },
       "registerSnxOracleManager": {
@@ -230,8 +241,11 @@
         "depends": [
           "provision.system",
           "provision.system",
+          "setting.snx_aggregator_address",
           "provision.system",
-          "provision.system"
+          "setting.snx_aggregator_address",
+          "provision.system",
+          "setting.snx_aggregator_address"
         ]
       },
       "configureSnxCollateral": {
@@ -257,10 +271,16 @@
           "invoke.registerSnxOracleManager",
           "provision.system",
           "invoke.registerSnxOracleManager",
+          "setting.snx_address",
+          "setting.snx_liquidation_reward",
           "provision.system",
           "invoke.registerSnxOracleManager",
+          "setting.snx_address",
+          "setting.snx_liquidation_reward",
           "provision.system",
-          "invoke.registerSnxOracleManager"
+          "invoke.registerSnxOracleManager",
+          "setting.snx_address",
+          "setting.snx_liquidation_reward"
         ]
       },
       "createScPool": {
@@ -275,7 +295,10 @@
         ],
         "depends": [
           "invoke.permitCreatePool",
-          "provision.system"
+          "setting.deployer",
+          "provision.system",
+          "setting.sc_pool_id",
+          "setting.pool_owner"
         ]
       },
       "setScPoolName": {
@@ -295,7 +318,9 @@
         ],
         "depends": [
           "invoke.createScPool",
-          "provision.system"
+          "provision.system",
+          "setting.sc_pool_id",
+          "setting.sc_pool_id"
         ]
       },
       "setPreferredPool": {
@@ -311,7 +336,8 @@
         ],
         "depends": [
           "invoke.createScPool",
-          "provision.system"
+          "provision.system",
+          "setting.sc_pool_id"
         ]
       },
       "create_snx_pool": {
@@ -326,9 +352,18 @@
         ],
         "depends": [
           "invoke.permitCreatePool",
+          "setting.deployer",
           "provision.system",
+          "setting.snx_pool_id",
+          "setting.pool_owner",
+          "setting.deployer",
           "provision.system",
-          "provision.system"
+          "setting.snx_pool_id",
+          "setting.pool_owner",
+          "setting.deployer",
+          "provision.system",
+          "setting.snx_pool_id",
+          "setting.pool_owner"
         ]
       },
       "set_snx_pool_name": {
@@ -348,7 +383,9 @@
         ],
         "depends": [
           "invoke.create_snx_pool",
-          "provision.system"
+          "provision.system",
+          "setting.snx_pool_id",
+          "setting.snx_pool_id"
         ]
       },
       "approve_snx_pool": {
@@ -365,8 +402,11 @@
         "depends": [
           "invoke.create_snx_pool",
           "provision.system",
+          "setting.snx_pool_id",
           "provision.system",
-          "provision.system"
+          "setting.snx_pool_id",
+          "provision.system",
+          "setting.snx_pool_id"
         ]
       },
       "allowAllTransferCrossChain": {
@@ -406,7 +446,8 @@
         },
         "depends": [
           "provision.system",
-          "provision.system"
+          "provision.system",
+          "setting.eth_aggregator_address"
         ]
       },
       "createEthSynth": {
@@ -435,8 +476,11 @@
         "depends": [
           "provision.spotFactory",
           "provision.spotFactory",
+          "setting.owner",
           "provision.spotFactory",
-          "provision.spotFactory"
+          "setting.owner",
+          "provision.spotFactory",
+          "setting.owner"
         ]
       },
       "setSynthPriceEth": {
@@ -518,6 +562,12 @@
           "invoke.createEthSynth",
           "provision.spotFactory",
           "invoke.createEthSynth",
+          "setting.bigCapSettlementDelay",
+          "setting.bigCapSettlementWindowDuration",
+          "setting.pythPriceVerificationAddress",
+          "setting.pythEthFeedId",
+          "setting.pythFeedUrl",
+          "setting.bigCapSettlementDeviationTolerance",
           "invoke.createEthSynth"
         ]
       },
@@ -540,6 +590,7 @@
           "invoke.createEthSynth",
           "provision.spotFactory",
           "invoke.createEthSynth",
+          "setting.synthEthAsyncFixedFee",
           "invoke.createEthSynth"
         ]
       },
@@ -560,7 +611,9 @@
         "depends": [
           "invoke.createEthSynth",
           "provision.system",
-          "invoke.createEthSynth"
+          "invoke.createEthSynth",
+          "setting.weth_address",
+          "setting.synthEthMaxMarketCollateral"
         ]
       },
       "configureSynthWrapperEth": {
@@ -583,12 +636,18 @@
           "invoke.createEthSynth",
           "provision.spotFactory",
           "invoke.createEthSynth",
+          "setting.weth_address",
+          "setting.synthEthMaxMarketCollateral",
           "invoke.createEthSynth",
           "provision.spotFactory",
           "invoke.createEthSynth",
+          "setting.weth_address",
+          "setting.synthEthMaxMarketCollateral",
           "invoke.createEthSynth",
           "provision.spotFactory",
           "invoke.createEthSynth",
+          "setting.weth_address",
+          "setting.synthEthMaxMarketCollateral",
           "invoke.createEthSynth"
         ]
       },
@@ -611,6 +670,7 @@
           "invoke.createEthSynth",
           "provision.spotFactory",
           "invoke.createEthSynth",
+          "setting.synthEthSkewScale",
           "invoke.createEthSynth"
         ]
       },
@@ -634,6 +694,8 @@
           "invoke.createEthSynth",
           "provision.spotFactory",
           "invoke.createEthSynth",
+          "setting.synthEthWrapFee",
+          "setting.synthEthUnwrapFee",
           "invoke.createEthSynth"
         ]
       },
@@ -662,7 +724,9 @@
           "invoke.createScPool",
           "invoke.createEthSynth",
           "provision.system",
-          "invoke.createEthSynth"
+          "setting.sc_pool_id",
+          "invoke.createEthSynth",
+          "setting.sc_pool_id"
         ]
       }
     },
@@ -686,7 +750,19 @@
           "synthetixPackage": "<%= settings.snx_package %>"
         },
         "depends": [
-          "provision.system"
+          "provision.system",
+          "setting.spot_market_package",
+          "setting.owner",
+          "setting.owner",
+          "setting.snx_package",
+          "setting.spot_market_package",
+          "setting.owner",
+          "setting.owner",
+          "setting.snx_package",
+          "setting.spot_market_package",
+          "setting.owner",
+          "setting.owner",
+          "setting.snx_package"
         ]
       }
     },
