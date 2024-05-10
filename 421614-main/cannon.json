@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.13.0",
-  "timestamp": 1715267339,
+  "generator": "cannon cli 2.13.3",
+  "timestamp": 1715300538,
   "def": {
     "setting": {
       "snx_package": {
@@ -34,10 +34,10 @@
         "defaultValue": "<%= parseEther('1.05') %>"
       },
       "usdc_liquidation_reward": {
-        "defaultValue": "<%= parseUnits('1', 6) %>"
+        "defaultValue": "<%= parseEther('1') %>"
       },
       "usdc_min_delegation": {
-        "defaultValue": "<%= parseUnits('100', 6) %>"
+        "defaultValue": "<%= parseEther('100') %>"
       },
       "dai_issuance_ratio": {
         "defaultValue": "<%= parseEther('1.2') %>"
@@ -1591,7 +1591,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "2",
+    "version": "3",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -1959,19 +1959,19 @@
     "setting.usdc_liquidation_reward": {
       "artifacts": {
         "settings": {
-          "usdc_liquidation_reward": "1000000"
+          "usdc_liquidation_reward": "1000000000000000000"
         }
       },
-      "hash": "4dc06aaec2772a58aef72e6d42392002",
+      "hash": "845fb85d1e0ccaf6b0afd054626bbe97",
       "version": 7
     },
     "setting.usdc_min_delegation": {
       "artifacts": {
         "settings": {
-          "usdc_min_delegation": "100000000"
+          "usdc_min_delegation": "100000000000000000000"
         }
       },
-      "hash": "9c1228023dfaa944571fe842dbb36261",
+      "hash": "ad27ad0c2fad068c59a31bad017dda13",
       "version": 7
     },
     "setting.usdc_staleness_tolerance": {
@@ -2049,6 +2049,14 @@
                 "gasUsed": 865741,
                 "gasCost": "707980000"
               }
+            },
+            "extras": {
+              "decimals": "18",
+              "initialSupply": "0",
+              "name": "Token",
+              "owner": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9",
+              "salt": "",
+              "symbol": "TKN"
             }
           }
         }
@@ -2112,6 +2120,14 @@
                 "gasUsed": 867303,
                 "gasCost": "696820000"
               }
+            },
+            "extras": {
+              "decimals": "18",
+              "initialSupply": "0",
+              "name": "Token",
+              "owner": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9",
+              "salt": "",
+              "symbol": "TKN"
             }
           }
         }
@@ -2157,6 +2173,9 @@
                 "gasUsed": 0,
                 "gasCost": "0"
               }
+            },
+            "extras": {
+              "pythAddress": "0x420000000000000000000000000000000000000F"
             }
           }
         }
@@ -2167,7 +2186,7 @@
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmdyoW8dhme8bP9f77Jt5x2ovZ1fp7ntTZ8ETPc55mPGnF",
+            "url": "ipfs://QmS2bsJjEtwzhHEJ3K8U8HVA5K2fTDtnmZfGJy4FpG1KiS",
             "tags": [
               "latest"
             ],
@@ -3724,10 +3743,13 @@
                     "gasUsed": 0,
                     "gasCost": "0"
                   }
+                },
+                "extras": {
+                  "salt": "salt"
                 }
               },
               "oracle_manager": {
-                "url": "ipfs://QmPWDGYVZnMKomZBCw3Q3VPwhXYCrSLVZjht4dWVJt6WAW",
+                "url": "ipfs://Qmeyv4z4Z7nFoZiGKb5k7h81mpV6z2vdGyPJqDFwLGfCjc",
                 "tags": [
                   "latest"
                 ],
@@ -3992,6 +4014,9 @@
                         "gasUsed": 0,
                         "gasCost": "0"
                       }
+                    },
+                    "extras": {
+                      "salt": "salt"
                     }
                   }
                 },
@@ -4018,6 +4043,10 @@
                     "gasCost": "814970000",
                     "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   }
+                },
+                "extras": {
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "oracle-manager-official"
                 }
               }
             },
@@ -4375,6 +4404,13 @@
                 "gasCost": "740420000",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               }
+            },
+            "extras": {
+              "bundleSalt": "main",
+              "oracle_manager_source": "oracle-manager:3.3.15",
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "main",
+              "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
             }
           }
         }
@@ -5010,7 +5046,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmT15qxYsxLuVfGyrtkR4BzeCkdBtAZ7DE8gpfFkdwpUMx",
+            "url": "ipfs://QmTRjjKuLMk1yJgbyZTsezhYaNwY654kXAii5Yv18UH9gf",
             "tags": [
               "latest"
             ],
@@ -5792,7 +5828,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmdyoW8dhme8bP9f77Jt5x2ovZ1fp7ntTZ8ETPc55mPGnF",
+                "url": "ipfs://QmS2bsJjEtwzhHEJ3K8U8HVA5K2fTDtnmZfGJy4FpG1KiS",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xB3737eEFa2C21b07ACc7053F099B67231A1a0D78",
@@ -7345,10 +7381,13 @@
                         "gasUsed": 0,
                         "gasCost": "0"
                       }
+                    },
+                    "extras": {
+                      "salt": "salt"
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmPWDGYVZnMKomZBCw3Q3VPwhXYCrSLVZjht4dWVJt6WAW",
+                    "url": "ipfs://Qmeyv4z4Z7nFoZiGKb5k7h81mpV6z2vdGyPJqDFwLGfCjc",
                     "tags": [
                       "latest"
                     ],
@@ -7613,6 +7652,9 @@
                             "gasUsed": 0,
                             "gasCost": "0"
                           }
+                        },
+                        "extras": {
+                          "salt": "salt"
                         }
                       }
                     },
@@ -7639,6 +7681,10 @@
                         "gasCost": "814970000",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       }
+                    },
+                    "extras": {
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "oracle-manager-official"
                     }
                   }
                 },
@@ -7996,6 +8042,13 @@
                     "gasCost": "740420000",
                     "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   }
+                },
+                "extras": {
+                  "bundleSalt": "main",
+                  "oracle_manager_source": "oracle-manager:3.3.15",
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "main",
+                  "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
                 }
               }
             },
@@ -8090,6 +8143,12 @@
                 "gasCost": "704610000",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               }
+            },
+            "extras": {
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "snax",
+              "synthetixPackage": "synthetix:3.3.15",
+              "synthetixPreset": "main"
             }
           }
         }
@@ -8285,7 +8344,7 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://QmcgieQ2DwuLvTWKDD9nGXA1DNybktNuYAFfjDRrJoJtRd",
+            "url": "ipfs://QmbmALGjgm7VnKL1pn1J5pMJV2oqsLurhV7MiXdkCAwG4s",
             "tags": [
               "latest"
             ],
@@ -9289,7 +9348,7 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmT15qxYsxLuVfGyrtkR4BzeCkdBtAZ7DE8gpfFkdwpUMx",
+                "url": "ipfs://QmTRjjKuLMk1yJgbyZTsezhYaNwY654kXAii5Yv18UH9gf",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0xF1aCD87E7EcFf92B7aC0793C6EF9812bc9e72a00",
@@ -10067,7 +10126,7 @@
                 },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://QmdyoW8dhme8bP9f77Jt5x2ovZ1fp7ntTZ8ETPc55mPGnF",
+                    "url": "ipfs://QmS2bsJjEtwzhHEJ3K8U8HVA5K2fTDtnmZfGJy4FpG1KiS",
                     "contracts": {
                       "AccountModule": {
                         "address": "0xB3737eEFa2C21b07ACc7053F099B67231A1a0D78",
@@ -11620,10 +11679,13 @@
                             "gasUsed": 0,
                             "gasCost": "0"
                           }
+                        },
+                        "extras": {
+                          "salt": "salt"
                         }
                       },
                       "oracle_manager": {
-                        "url": "ipfs://QmPWDGYVZnMKomZBCw3Q3VPwhXYCrSLVZjht4dWVJt6WAW",
+                        "url": "ipfs://Qmeyv4z4Z7nFoZiGKb5k7h81mpV6z2vdGyPJqDFwLGfCjc",
                         "tags": [
                           "latest"
                         ],
@@ -11888,6 +11950,9 @@
                                 "gasUsed": 0,
                                 "gasCost": "0"
                               }
+                            },
+                            "extras": {
+                              "salt": "salt"
                             }
                           }
                         },
@@ -11914,6 +11979,10 @@
                             "gasCost": "814970000",
                             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                           }
+                        },
+                        "extras": {
+                          "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                          "salt": "oracle-manager-official"
                         }
                       }
                     },
@@ -12271,6 +12340,13 @@
                         "gasCost": "740420000",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       }
+                    },
+                    "extras": {
+                      "bundleSalt": "main",
+                      "oracle_manager_source": "oracle-manager:3.3.15",
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "main",
+                      "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
                     }
                   }
                 },
@@ -12365,10 +12441,16 @@
                     "gasCost": "704610000",
                     "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   }
+                },
+                "extras": {
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "snax",
+                  "synthetixPackage": "synthetix:3.3.15",
+                  "synthetixPreset": "main"
                 }
               },
               "synthetix": {
-                "url": "ipfs://QmdyoW8dhme8bP9f77Jt5x2ovZ1fp7ntTZ8ETPc55mPGnF",
+                "url": "ipfs://QmS2bsJjEtwzhHEJ3K8U8HVA5K2fTDtnmZfGJy4FpG1KiS",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xB3737eEFa2C21b07ACc7053F099B67231A1a0D78",
@@ -13921,10 +14003,13 @@
                         "gasUsed": 0,
                         "gasCost": "0"
                       }
+                    },
+                    "extras": {
+                      "salt": "salt"
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmPWDGYVZnMKomZBCw3Q3VPwhXYCrSLVZjht4dWVJt6WAW",
+                    "url": "ipfs://Qmeyv4z4Z7nFoZiGKb5k7h81mpV6z2vdGyPJqDFwLGfCjc",
                     "tags": [
                       "latest"
                     ],
@@ -14189,6 +14274,9 @@
                             "gasUsed": 0,
                             "gasCost": "0"
                           }
+                        },
+                        "extras": {
+                          "salt": "salt"
                         }
                       }
                     },
@@ -14215,6 +14303,10 @@
                         "gasCost": "814970000",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       }
+                    },
+                    "extras": {
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "oracle-manager-official"
                     }
                   }
                 },
@@ -14572,6 +14664,13 @@
                     "gasCost": "740420000",
                     "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   }
+                },
+                "extras": {
+                  "bundleSalt": "main",
+                  "oracle_manager_source": "oracle-manager:3.3.15",
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "main",
+                  "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
                 }
               }
             },
@@ -14685,6 +14784,16 @@
                 "gasCost": "767830000",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               }
+            },
+            "extras": {
+              "coreProxyOwner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "snax",
+              "spotMarketPackage": "synthetix-spot-market:latest",
+              "spotMarketPreset": "main",
+              "synthetixPackage": "synthetix:latest",
+              "synthetixPreset": "main",
+              "superMarketId": "3"
             }
           }
         }
@@ -14732,7 +14841,7 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_usdc": {
-            "hash": "0xef68478b143baee34599ca9a54dcf4bb4146e613b46e873acde6727a4f13c38e",
+            "hash": "0xfe7803c6d32ed9ab0941a00c458a8ec58a66c06e59c09eca8b022ff2728cacde",
             "events": {
               "CollateralConfigured": [
                 {
@@ -14743,24 +14852,24 @@
                       "depositingEnabled": true,
                       "issuanceRatioD18": "1200000000000000000",
                       "liquidationRatioD18": "1050000000000000000",
-                      "liquidationRewardD18": "1000000",
+                      "liquidationRewardD18": "1000000000000000000",
                       "oracleNodeId": "0x999c46d1e0e994822e8b02def68984d9c9e124d58ee2b68f604c6a5144b0db14",
                       "tokenAddress": "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
-                      "minDelegationD18": "100000000"
+                      "minDelegationD18": "100000000000000000000"
                     }
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_usdc",
-            "gasUsed": 62219,
-            "gasCost": "3086690000",
+            "gasUsed": 61856,
+            "gasCost": "745990000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "6cc5be87ba74af713ed03f5865be9028",
+      "hash": "44bdc85cb885c9fcb6bb9d7b1b1b82f1",
       "version": 7
     },
     "invoke.CoreProxy_configureMaximumMarketCollateral_dai": {
