@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.11.21",
-  "timestamp": 1710726714,
+  "generator": "cannon cli 2.13.3",
+  "timestamp": 1715566518,
   "def": {
     "invoke": {
       "enable_feature_createAccount": {
@@ -26,7 +26,7 @@
         "func": "setFeatureFlagAllowAll",
         "args": [
           "<%= formatBytes32String('deposit') %>",
-          true
+          false
         ]
       },
       "enable_feature_withdraw": {
@@ -39,7 +39,7 @@
         "func": "setFeatureFlagAllowAll",
         "args": [
           "<%= formatBytes32String('withdraw') %>",
-          false
+          true
         ]
       },
       "enable_feature_mintUsd": {
@@ -195,6 +195,14 @@
         "args": [
           "<%= formatBytes32String('accountTimeoutWithdraw') %>",
           "<%= hexZeroPad(hexlify(parseInt(settings.account_timeout_withdraw)), 32) %>"
+        ],
+        "depends": [
+          "provision.system",
+          "setting.account_timeout_withdraw",
+          "provision.system",
+          "setting.account_timeout_withdraw",
+          "provision.system",
+          "setting.account_timeout_withdraw"
         ]
       },
       "permitCreatePool": {
@@ -276,10 +284,22 @@
         ],
         "depends": [
           "invoke.permitCreatePool",
+          "setting.deployer",
           "provision.system",
+          "setting.sc_pool_id",
+          "setting.pool_owner",
+          "setting.deployer",
           "provision.system",
+          "setting.sc_pool_id",
+          "setting.pool_owner",
+          "setting.deployer",
           "provision.system",
+          "setting.sc_pool_id",
+          "setting.pool_owner",
+          "setting.deployer",
           "provision.system",
+          "setting.sc_pool_id",
+          "setting.pool_owner",
           "setting.deployer",
           "provision.system",
           "setting.sc_pool_id",
@@ -312,6 +332,8 @@
         "depends": [
           "invoke.createScPool",
           "provision.system",
+          "setting.sc_pool_id",
+          "setting.sc_pool_id",
           "provision.system",
           "setting.sc_pool_id",
           "setting.sc_pool_id"
@@ -331,6 +353,7 @@
         "depends": [
           "invoke.createScPool",
           "provision.system",
+          "setting.sc_pool_id",
           "provision.system",
           "setting.sc_pool_id"
         ]
@@ -412,6 +435,23 @@
           "<%= parseEther(settings.perps_liquidation_min_keeper_profit_ratio_d18) %>",
           "<%= parseEther(settings.perps_liquidation_max_keeper_reward_usd) %>",
           "<%= parseEther(settings.perps_liquidation_max_keeper_scaling_ratio_d18) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.perps_liquidation_min_keeper_reward_usd",
+          "setting.perps_liquidation_min_keeper_profit_ratio_d18",
+          "setting.perps_liquidation_max_keeper_reward_usd",
+          "setting.perps_liquidation_max_keeper_scaling_ratio_d18",
+          "provision.perpsFactory",
+          "setting.perps_liquidation_min_keeper_reward_usd",
+          "setting.perps_liquidation_min_keeper_profit_ratio_d18",
+          "setting.perps_liquidation_max_keeper_reward_usd",
+          "setting.perps_liquidation_max_keeper_scaling_ratio_d18",
+          "provision.perpsFactory",
+          "setting.perps_liquidation_min_keeper_reward_usd",
+          "setting.perps_liquidation_min_keeper_profit_ratio_d18",
+          "setting.perps_liquidation_max_keeper_reward_usd",
+          "setting.perps_liquidation_max_keeper_scaling_ratio_d18"
         ]
       },
       "setPerpsMaxCollateralForSnxUsd": {
@@ -481,7 +521,33 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        }
+        },
+        "depends": [
+          "provision.system",
+          "provision.perps_gas_oracle_node",
+          "setting.perps_keeper_l1_cost_settle_gas_units",
+          "setting.perps_keeper_l2_cost_settle_gas_units",
+          "setting.perps_keeper_l1_cost_flag_gas_units",
+          "setting.perps_keeper_l2_cost_flag_gas_units",
+          "setting.perps_keeper_l1_cost_liquidate_gas_units",
+          "setting.perps_keeper_l2_cost_liquidate_gas_units",
+          "provision.system",
+          "provision.perps_gas_oracle_node",
+          "setting.perps_keeper_l1_cost_settle_gas_units",
+          "setting.perps_keeper_l2_cost_settle_gas_units",
+          "setting.perps_keeper_l1_cost_flag_gas_units",
+          "setting.perps_keeper_l2_cost_flag_gas_units",
+          "setting.perps_keeper_l1_cost_liquidate_gas_units",
+          "setting.perps_keeper_l2_cost_liquidate_gas_units",
+          "provision.system",
+          "provision.perps_gas_oracle_node",
+          "setting.perps_keeper_l1_cost_settle_gas_units",
+          "setting.perps_keeper_l2_cost_settle_gas_units",
+          "setting.perps_keeper_l1_cost_flag_gas_units",
+          "setting.perps_keeper_l2_cost_flag_gas_units",
+          "setting.perps_keeper_l1_cost_liquidate_gas_units",
+          "setting.perps_keeper_l2_cost_liquidate_gas_units"
+        ]
       },
       "registerPerps_KeeperCostUsdOracleNode": {
         "target": [
@@ -498,26 +564,6 @@
         ],
         "extra": {
           "perps_keeper_cost_usd_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "registerBtcOracleNode": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.bigCapDefaultStalenessTolerance]) %>",
-          [
-            "<%= extras.btc_pyth_oracle_id %>",
-            "<%= extras.btc_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "btc_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -551,34 +597,6 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ]
       },
-      "addPerpsBtcSettlementStrategy": {
-        "target": [
-          "perpsFactory.PerpsMarketProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "addSettlementStrategy",
-        "args": [
-          "<%= settings.btcPerpsMarketId %>",
-          {
-            "strategyType": "0",
-            "settlementDelay": "0",
-            "settlementWindowDuration": "1",
-            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
-            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "settlementReward": "0",
-            "disabled": false,
-            "commitmentPriceDelay": "0"
-          }
-        ],
-        "extra": {
-          "btc_pyth_settlement_strategy": {
-            "event": "SettlementStrategyAdded",
-            "arg": 2
-          }
-        }
-      },
       "setPerpsBtcSettlementStrategy": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -589,7 +607,7 @@
         "func": "setSettlementStrategy",
         "args": [
           "<%= settings.btcPerpsMarketId %>",
-          "<%= extras.btc_pyth_settlement_strategy %>",
+          "0",
           {
             "strategyType": "0",
             "settlementDelay": "<%= settings.bigCapSettlementDelay %>",
@@ -600,6 +618,30 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitmentPriceDelay %>"
           }
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "provision.pyth_erc7412_wrapper",
+          "setting.bigCapSettlementDelay",
+          "setting.bigCapSettlementWindowDuration",
+          "setting.pythBtcFeedId",
+          "setting.settlementReward",
+          "setting.commitmentPriceDelay",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "provision.pyth_erc7412_wrapper",
+          "setting.bigCapSettlementDelay",
+          "setting.bigCapSettlementWindowDuration",
+          "setting.pythBtcFeedId",
+          "setting.settlementReward",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "provision.pyth_erc7412_wrapper",
+          "setting.bigCapSettlementDelay",
+          "setting.bigCapSettlementWindowDuration",
+          "setting.pythBtcFeedId",
+          "setting.settlementReward"
         ]
       },
       "setPerpsBtcFundingParameters": {
@@ -614,6 +656,20 @@
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcSkewScale) %>",
           "<%= parseEther(settings.perpsBtcMaxFundingVelocity) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcSkewScale",
+          "setting.perpsBtcMaxFundingVelocity",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcSkewScale",
+          "setting.perpsBtcMaxFundingVelocity",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcSkewScale",
+          "setting.perpsBtcMaxFundingVelocity"
         ]
       },
       "setPerpsBtcOrderFees": {
@@ -628,6 +684,20 @@
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcMakerFeeRatio) %>",
           "<%= parseEther(settings.perpsBtcTakerFeeRatio) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMakerFeeRatio",
+          "setting.perpsBtcTakerFeeRatio",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMakerFeeRatio",
+          "setting.perpsBtcTakerFeeRatio",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMakerFeeRatio",
+          "setting.perpsBtcTakerFeeRatio"
         ]
       },
       "setPerpsBtcMaxMarketSize": {
@@ -641,6 +711,17 @@
         "args": [
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcMaxMarketSize) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMaxMarketSize",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMaxMarketSize",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMaxMarketSize"
         ]
       },
       "setPerpsBtcMaxLiquidationParameters": {
@@ -657,6 +738,26 @@
           "<%= settings.perpsBtcMaxSecondsInLiquidationWindow %>",
           "<%= parseEther(settings.perpsBtcMaxLiquidationPd) %>",
           "<%= settings.perpsBtcEndorsedLiquidator %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMaxLiquidationLimitAccumulationMultiplier",
+          "setting.perpsBtcMaxSecondsInLiquidationWindow",
+          "setting.perpsBtcMaxLiquidationPd",
+          "setting.perpsBtcEndorsedLiquidator",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMaxLiquidationLimitAccumulationMultiplier",
+          "setting.perpsBtcMaxSecondsInLiquidationWindow",
+          "setting.perpsBtcMaxLiquidationPd",
+          "setting.perpsBtcEndorsedLiquidator",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcMaxLiquidationLimitAccumulationMultiplier",
+          "setting.perpsBtcMaxSecondsInLiquidationWindow",
+          "setting.perpsBtcMaxLiquidationPd",
+          "setting.perpsBtcEndorsedLiquidator"
         ]
       },
       "setPerpsBtcLiquidationParameters": {
@@ -674,6 +775,29 @@
           "<%= parseEther(settings.perpsBtcMaintenanceMarginScalar) %>",
           "<%= parseEther(settings.perpsBtcFlagRewardRatioD18) %>",
           "<%= parseEther(settings.perpsBtcMinimumPositionMargin) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcInitialMarginRatio",
+          "setting.perpsBtcMinimumInitialMarginRatio",
+          "setting.perpsBtcMaintenanceMarginScalar",
+          "setting.perpsBtcFlagRewardRatioD18",
+          "setting.perpsBtcMinimumPositionMargin",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcInitialMarginRatio",
+          "setting.perpsBtcMinimumInitialMarginRatio",
+          "setting.perpsBtcMaintenanceMarginScalar",
+          "setting.perpsBtcFlagRewardRatioD18",
+          "setting.perpsBtcMinimumPositionMargin",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcInitialMarginRatio",
+          "setting.perpsBtcMinimumInitialMarginRatio",
+          "setting.perpsBtcMaintenanceMarginScalar",
+          "setting.perpsBtcFlagRewardRatioD18",
+          "setting.perpsBtcMinimumPositionMargin"
         ]
       },
       "setPerpsBtcLockedOiRatio": {
@@ -687,6 +811,17 @@
         "args": [
           "<%= settings.btcPerpsMarketId %>",
           "<%= parseEther(settings.perpsBtcLockedOiRatio) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcLockedOiRatio",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcLockedOiRatio",
+          "provision.perpsFactory",
+          "setting.btcPerpsMarketId",
+          "setting.perpsBtcLockedOiRatio"
         ]
       },
       "registerPythBtcOracleNode": {
@@ -704,7 +839,18 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythBtcFeedId",
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythBtcFeedId",
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythBtcFeedId"
+        ]
       },
       "registerLookupBtcOracleNode": {
         "target": [
@@ -721,9 +867,23 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        }
+        },
+        "depends": [
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythBtcFeedId",
+          "setting.bigCapDefaultStalenessTolerance",
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythBtcFeedId",
+          "setting.bigCapDefaultStalenessTolerance",
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythBtcFeedId",
+          "setting.bigCapDefaultStalenessTolerance"
+        ]
       },
-      "registerEthOracleNode": {
+      "registerBtcOracleNode": {
         "target": [
           "system.oracle_manager.Proxy"
         ],
@@ -732,12 +892,12 @@
           7,
           "<%= defaultAbiCoder.encode(['uint256'], [settings.bigCapDefaultStalenessTolerance]) %>",
           [
-            "<%= extras.eth_pyth_oracle_id %>",
-            "<%= extras.eth_lookup_oracle_id %>"
+            "<%= extras.btc_pyth_oracle_id %>",
+            "<%= extras.btc_lookup_oracle_id %>"
           ]
         ],
         "extra": {
-          "eth_oracle_id": {
+          "btc_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -771,34 +931,6 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ]
       },
-      "addPerpsEthSettlementStrategy": {
-        "target": [
-          "perpsFactory.PerpsMarketProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "addSettlementStrategy",
-        "args": [
-          "<%= settings.ethPerpsMarketId %>",
-          {
-            "strategyType": "0",
-            "settlementDelay": "0",
-            "settlementWindowDuration": "1",
-            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
-            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "settlementReward": "0",
-            "disabled": false,
-            "commitmentPriceDelay": "0"
-          }
-        ],
-        "extra": {
-          "eth_pyth_settlement_strategy": {
-            "event": "SettlementStrategyAdded",
-            "arg": 2
-          }
-        }
-      },
       "setPerpsEthSettlementStrategy": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -809,7 +941,7 @@
         "func": "setSettlementStrategy",
         "args": [
           "<%= settings.ethPerpsMarketId %>",
-          "<%= extras.eth_pyth_settlement_strategy %>",
+          "0",
           {
             "strategyType": "0",
             "settlementDelay": "<%= settings.bigCapSettlementDelay %>",
@@ -820,6 +952,30 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitmentPriceDelay %>"
           }
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "provision.pyth_erc7412_wrapper",
+          "setting.bigCapSettlementDelay",
+          "setting.bigCapSettlementWindowDuration",
+          "setting.pythEthFeedId",
+          "setting.settlementReward",
+          "setting.commitmentPriceDelay",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "provision.pyth_erc7412_wrapper",
+          "setting.bigCapSettlementDelay",
+          "setting.bigCapSettlementWindowDuration",
+          "setting.pythEthFeedId",
+          "setting.settlementReward",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "provision.pyth_erc7412_wrapper",
+          "setting.bigCapSettlementDelay",
+          "setting.bigCapSettlementWindowDuration",
+          "setting.pythEthFeedId",
+          "setting.settlementReward"
         ]
       },
       "setPerpsEthFundingParameters": {
@@ -834,6 +990,20 @@
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthSkewScale) %>",
           "<%= parseEther(settings.perpsEthMaxFundingVelocity) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthSkewScale",
+          "setting.perpsEthMaxFundingVelocity",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthSkewScale",
+          "setting.perpsEthMaxFundingVelocity",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthSkewScale",
+          "setting.perpsEthMaxFundingVelocity"
         ]
       },
       "setPerpsEthOrderFees": {
@@ -848,6 +1018,20 @@
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthMakerFeeRatio) %>",
           "<%= parseEther(settings.perpsEthTakerFeeRatio) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMakerFeeRatio",
+          "setting.perpsEthTakerFeeRatio",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMakerFeeRatio",
+          "setting.perpsEthTakerFeeRatio",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMakerFeeRatio",
+          "setting.perpsEthTakerFeeRatio"
         ]
       },
       "setPerpsEthMaxMarketSize": {
@@ -861,6 +1045,17 @@
         "args": [
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthMaxMarketSize) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMaxMarketSize",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMaxMarketSize",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMaxMarketSize"
         ]
       },
       "setPerpsEthMaxLiquidationParameters": {
@@ -877,6 +1072,26 @@
           "<%= settings.perpsEthMaxSecondsInLiquidationWindow %>",
           "<%= parseEther(settings.perpsEthMaxLiquidationPd) %>",
           "<%= settings.perpsEthEndorsedLiquidator %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMaxLiquidationLimitAccumulationMultiplier",
+          "setting.perpsEthMaxSecondsInLiquidationWindow",
+          "setting.perpsEthMaxLiquidationPd",
+          "setting.perpsEthEndorsedLiquidator",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMaxLiquidationLimitAccumulationMultiplier",
+          "setting.perpsEthMaxSecondsInLiquidationWindow",
+          "setting.perpsEthMaxLiquidationPd",
+          "setting.perpsEthEndorsedLiquidator",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthMaxLiquidationLimitAccumulationMultiplier",
+          "setting.perpsEthMaxSecondsInLiquidationWindow",
+          "setting.perpsEthMaxLiquidationPd",
+          "setting.perpsEthEndorsedLiquidator"
         ]
       },
       "setPerpsEthLiquidationParameters": {
@@ -894,6 +1109,29 @@
           "<%= parseEther(settings.perpsEthMaintenanceMarginScalar) %>",
           "<%= parseEther(settings.perpsEthFlagRewardRatioD18) %>",
           "<%= parseEther(settings.perpsEthMinimumPositionMargin) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthInitialMarginRatio",
+          "setting.perpsEthMinimumInitialMarginRatio",
+          "setting.perpsEthMaintenanceMarginScalar",
+          "setting.perpsEthFlagRewardRatioD18",
+          "setting.perpsEthMinimumPositionMargin",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthInitialMarginRatio",
+          "setting.perpsEthMinimumInitialMarginRatio",
+          "setting.perpsEthMaintenanceMarginScalar",
+          "setting.perpsEthFlagRewardRatioD18",
+          "setting.perpsEthMinimumPositionMargin",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthInitialMarginRatio",
+          "setting.perpsEthMinimumInitialMarginRatio",
+          "setting.perpsEthMaintenanceMarginScalar",
+          "setting.perpsEthFlagRewardRatioD18",
+          "setting.perpsEthMinimumPositionMargin"
         ]
       },
       "setPerpsEthLockedOiRatio": {
@@ -907,6 +1145,17 @@
         "args": [
           "<%= settings.ethPerpsMarketId %>",
           "<%= parseEther(settings.perpsEthLockedOiRatio) %>"
+        ],
+        "depends": [
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthLockedOiRatio",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthLockedOiRatio",
+          "provision.perpsFactory",
+          "setting.ethPerpsMarketId",
+          "setting.perpsEthLockedOiRatio"
         ]
       },
       "registerPythEthOracleNode": {
@@ -924,7 +1173,18 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythEthFeedId",
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythEthFeedId",
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythEthFeedId"
+        ]
       },
       "registerLookupEthOracleNode": {
         "target": [
@@ -938,6 +1198,40 @@
         ],
         "extra": {
           "eth_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythEthFeedId",
+          "setting.bigCapDefaultStalenessTolerance",
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythEthFeedId",
+          "setting.bigCapDefaultStalenessTolerance",
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythEthFeedId",
+          "setting.bigCapDefaultStalenessTolerance"
+        ]
+      },
+      "registerEthOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.bigCapDefaultStalenessTolerance]) %>",
+          [
+            "<%= extras.eth_pyth_oracle_id %>",
+            "<%= extras.eth_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "eth_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -978,7 +1272,18 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythArbFeedId",
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythArbFeedId",
+          "provision.system",
+          "setting.pyth_price_verification_address",
+          "setting.pythArbFeedId"
+        ]
       },
       "registerLookupArbOracleNode": {
         "target": [
@@ -995,7 +1300,21 @@
             "event": "NodeRegistered",
             "arg": 0
           }
-        }
+        },
+        "depends": [
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythArbFeedId",
+          "setting.bigCapDefaultStalenessTolerance",
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythArbFeedId",
+          "setting.bigCapDefaultStalenessTolerance",
+          "provision.system",
+          "provision.pyth_erc7412_wrapper",
+          "setting.pythArbFeedId",
+          "setting.bigCapDefaultStalenessTolerance"
+        ]
       },
       "registerArbOracleNode": {
         "target": [
@@ -1139,11 +1458,34 @@
       "perps_super_market_name": {
         "defaultValue": "High MCap"
       },
-      "referrerFee": {
-        "defaultValue": "<%= parseEther('0.2') %>"
-      },
+      "pythPriceVerificationAddress": {},
+      "pythFeedUrl": {},
       "settlementReward": {
         "defaultValue": "1"
+      },
+      "settlementMinimumUsdExchangeAmount": {
+        "defaultValue": "0.000001"
+      },
+      "settlementMaxRoundingLoss": {
+        "defaultValue": "0.000001"
+      },
+      "commitmentPriceDelay": {
+        "defaultValue": "2"
+      },
+      "bigCapSettlementDelay": {
+        "defaultValue": "2"
+      },
+      "bigCapSettlementWindowDuration": {
+        "defaultValue": "60"
+      },
+      "bigCapDefaultStalenessTolerance": {
+        "defaultValue": "86400"
+      },
+      "bigCapStrictStalenessTolerance": {
+        "defaultValue": "60"
+      },
+      "referrerFee": {
+        "defaultValue": "<%= parseEther('0.2') %>"
       },
       "perps_keeper_l1_cost_settle_gas_units": {
         "defaultValue": "<%= String(30_000) %>"
@@ -1174,30 +1516,6 @@
       },
       "perps_liquidation_max_keeper_scaling_ratio_d18": {
         "defaultValue": "0.3"
-      },
-      "btc_aggregator_address": {},
-      "pythPriceVerificationAddress": {},
-      "pythFeedUrl": {},
-      "settlementMinimumUsdExchangeAmount": {
-        "defaultValue": "0.000001"
-      },
-      "settlementMaxRoundingLoss": {
-        "defaultValue": "0.000001"
-      },
-      "commitmentPriceDelay": {
-        "defaultValue": "2"
-      },
-      "bigCapSettlementDelay": {
-        "defaultValue": "2"
-      },
-      "bigCapSettlementWindowDuration": {
-        "defaultValue": "60"
-      },
-      "bigCapDefaultStalenessTolerance": {
-        "defaultValue": "86400"
-      },
-      "bigCapStrictStalenessTolerance": {
-        "defaultValue": "60"
       },
       "pythBtcFeedId": {
         "defaultValue": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43"
@@ -1254,7 +1572,6 @@
       "perpsBtcEndorsedLiquidator": {
         "defaultValue": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
       },
-      "eth_aggregator_address": {},
       "ethPerpsMarketId": {
         "defaultValue": "100"
       },
@@ -1381,6 +1698,38 @@
           "setting.salt",
           "setting.snx_package",
           "setting.target_preset",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
           "setting.target_preset"
         ]
       },
@@ -1396,6 +1745,42 @@
         },
         "depends": [
           "provision.spotFactory",
+          "setting.perps_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
+          "setting.perps_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
+          "setting.perps_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
+          "setting.perps_market_package",
+          "setting.target_preset",
+          "setting.owner",
+          "setting.owner",
+          "setting.salt",
+          "setting.snx_package",
+          "setting.target_preset",
+          "setting.spot_market_package",
+          "setting.target_preset",
           "setting.perps_market_package",
           "setting.target_preset",
           "setting.owner",
@@ -1442,7 +1827,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "5",
+    "version": "6",
     "description": "Arbitrum deployment",
     "preset": "arbthetix"
   },
@@ -1451,11 +1836,14 @@
       "artifacts": {
         "imports": {
           "perps_gas_oracle_node": {
-            "url": "ipfs://Qme1ctHMvbukUGWG78bkbCACGh1TBMH7f5Qp1WAoXSMYxM",
+            "url": "ipfs://Qmb98dFK5ttLob1nM4KgUGGhaQkenkeV86CEbuGg1t2GCT",
             "tags": [
               "latest"
             ],
             "preset": "arbthetix",
+            "settings": {
+              "arbGasPriceOracleAddress": "0x000000000000000000000000000000000000006C"
+            },
             "contracts": {
               "ArbGasPriceOracle": {
                 "address": "0x1FBbaFB9232247D37aF889210c75BbF29303b833",
@@ -1482,22 +1870,27 @@
                 "gasUsed": 1199330,
                 "gasCost": "100000000"
               }
+            },
+            "extras": {
+              "arbGasPriceOracleAddress": "0x000000000000000000000000000000000000006C"
             }
           }
         }
       },
-      "hash": "812de9559c3dcbc6c4cc97bedb5f1873",
-      "version": 6
+      "version": 7
     },
     "provision.pyth_erc7412_wrapper": {
       "artifacts": {
         "imports": {
           "pyth_erc7412_wrapper": {
-            "url": "ipfs://QmQ7z4EJWTkdUuk57rtBiBHX8WfKsdUeuMpmngWP6DRs6t",
+            "url": "ipfs://QmeTApUAPsQsgo3JMeafDLYxDgaNT2ZBV2YAKGr66oxFrF",
             "tags": [
               "latest"
             ],
             "preset": "arbthetix",
+            "settings": {
+              "pythAddress": "0x420000000000000000000000000000000000000F"
+            },
             "contracts": {
               "PythERC7412Wrapper": {
                 "address": "0x7b118596be900f3c0feB2f23758d9798965B72a3",
@@ -1525,18 +1918,20 @@
                 "gasUsed": 2200981,
                 "gasCost": "100000000"
               }
+            },
+            "extras": {
+              "pythAddress": "0x420000000000000000000000000000000000000F"
             }
           }
         }
       },
-      "hash": "bd04665c0adc2f44add83b7e391f0477",
-      "version": 6
+      "version": 7
     },
     "provision.system": {
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmQgBJxBPDJ3hfFex2SKSihRSdBBomUmaL3r7ja24Ap8Go",
+            "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
             "tags": [
               "latest"
             ],
@@ -1806,37 +2201,6 @@
                 "contractName": "FeatureFlagModule",
                 "deployedOn": "contract.FeatureFlagModule",
                 "gasUsed": 1322533,
-                "gasCost": "100000000"
-              },
-              "InitialModuleBundle": {
-                "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
-                "abi": [
-                  "error ImplementationIsSterile(address implementation)",
-                  "error NoChange()",
-                  "error NotAContract(address contr)",
-                  "error NotNominated(address addr)",
-                  "error Unauthorized(address addr)",
-                  "error UpgradeSimulationFailed()",
-                  "error ZeroAddress()",
-                  "event OwnerChanged(address oldOwner, address newOwner)",
-                  "event OwnerNominated(address newOwner)",
-                  "event Upgraded(address indexed self, address implementation)",
-                  "function acceptOwnership()",
-                  "function getImplementation() view returns (address)",
-                  "function nominateNewOwner(address newNominatedOwner)",
-                  "function nominatedOwner() view returns (address)",
-                  "function owner() view returns (address)",
-                  "function renounceNomination()",
-                  "function simulateUpgradeTo(address newImplementation)",
-                  "function upgradeTo(address newImplementation)"
-                ],
-                "constructorArgs": [],
-                "linkedLibraries": {},
-                "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
-                "sourceName": "contracts/modules/InitialModuleBundle.sol",
-                "contractName": "InitialModuleBundle",
-                "deployedOn": "contract.InitialModuleBundle",
-                "gasUsed": 856521,
                 "gasCost": "100000000"
               },
               "IssueUSDModule": {
@@ -2229,6 +2593,37 @@
                 "contractName": "VaultModule",
                 "deployedOn": "contract.VaultModule",
                 "gasUsed": 5599946,
+                "gasCost": "100000000"
+              },
+              "InitialModuleBundle": {
+                "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address newImplementation)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
+                "sourceName": "contracts/modules/InitialModuleBundle.sol",
+                "contractName": "InitialModuleBundle",
+                "deployedOn": "contract.InitialModuleBundle",
+                "gasUsed": 856521,
                 "gasCost": "100000000"
               },
               "InitialCoreProxy": {
@@ -3036,44 +3431,75 @@
               }
             },
             "imports": {
+              "trusted_multicall_forwarder": {
+                "url": "ipfs://QmPG3H2FLR6TuTYXtB57sSPgXi3sChMbCkGxmGosuGpuQd",
+                "tags": [
+                  "latest"
+                ],
+                "preset": "with-synthetix",
+                "settings": {
+                  "salt": "salt"
+                },
+                "contracts": {
+                  "TrustedMulticallForwarder": {
+                    "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
+                    "abi": [
+                      "constructor()",
+                      "error AddressInsufficientBalance(address account)",
+                      "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
+                      "error ERC2771ForwarderInvalidSigner(address signer, address from)",
+                      "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
+                      "error ERC2771UntrustfulTarget(address target, address forwarder)",
+                      "error FailedInnerCall()",
+                      "error InvalidAccountNonce(address account, uint256 currentNonce)",
+                      "error InvalidShortString()",
+                      "error StringTooLong(string str)",
+                      "event EIP712DomainChanged()",
+                      "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
+                      "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
+                      "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                      "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                      "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                      "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
+                      "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
+                      "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                      "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
+                      "function getBasefee() view returns (uint256 basefee)",
+                      "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
+                      "function getBlockNumber() view returns (uint256 blockNumber)",
+                      "function getChainId() view returns (uint256 chainid)",
+                      "function getCurrentBlockCoinbase() view returns (address coinbase)",
+                      "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
+                      "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
+                      "function getEthBalance(address addr) view returns (uint256 balance)",
+                      "function getLastBlockHash() view returns (bytes32 blockHash)",
+                      "function getPrevRandao() view returns (uint256 prevrandao)",
+                      "function nonces(address owner) view returns (uint256)",
+                      "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
+                      "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                      "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
+                    ],
+                    "constructorArgs": [],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "",
+                    "sourceName": "src/TrustedMulticallForwarder.sol",
+                    "contractName": "TrustedMulticallForwarder",
+                    "deployedOn": "contract.TrustedMulticallForwarder",
+                    "gasUsed": 0,
+                    "gasCost": "0"
+                  }
+                },
+                "extras": {
+                  "salt": "salt"
+                }
+              },
               "oracle_manager": {
-                "url": "ipfs://QmXrcQNawxaxsZvLZ9cyWUtM4RBd12kCowKrNpz5ZdWgT6",
+                "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
                 "tags": [
                   "latest"
                 ],
                 "preset": "with-synthetix",
                 "contracts": {
-                  "CoreModule": {
-                    "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
-                    "abi": [
-                      "error ImplementationIsSterile(address implementation)",
-                      "error NoChange()",
-                      "error NotAContract(address contr)",
-                      "error NotNominated(address addr)",
-                      "error Unauthorized(address addr)",
-                      "error UpgradeSimulationFailed()",
-                      "error ZeroAddress()",
-                      "event OwnerChanged(address oldOwner, address newOwner)",
-                      "event OwnerNominated(address newOwner)",
-                      "event Upgraded(address indexed self, address implementation)",
-                      "function acceptOwnership()",
-                      "function getImplementation() view returns (address)",
-                      "function nominateNewOwner(address newNominatedOwner)",
-                      "function nominatedOwner() view returns (address)",
-                      "function owner() view returns (address)",
-                      "function renounceNomination()",
-                      "function simulateUpgradeTo(address newImplementation)",
-                      "function upgradeTo(address newImplementation)"
-                    ],
-                    "constructorArgs": [],
-                    "linkedLibraries": {},
-                    "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
-                    "sourceName": "contracts/modules/CoreModule.sol",
-                    "contractName": "CoreModule",
-                    "deployedOn": "contract.CoreModule",
-                    "gasUsed": 1387392,
-                    "gasCost": "100000000"
-                  },
                   "NodeModule": {
                     "address": "0xFCAD0fF92f4854A467C28Bd98FBB40f8352F127A",
                     "abi": [
@@ -3106,6 +3532,37 @@
                     "contractName": "NodeModule",
                     "deployedOn": "contract.NodeModule",
                     "gasUsed": 6226312,
+                    "gasCost": "100000000"
+                  },
+                  "CoreModule": {
+                    "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
+                    "abi": [
+                      "error ImplementationIsSterile(address implementation)",
+                      "error NoChange()",
+                      "error NotAContract(address contr)",
+                      "error NotNominated(address addr)",
+                      "error Unauthorized(address addr)",
+                      "error UpgradeSimulationFailed()",
+                      "error ZeroAddress()",
+                      "event OwnerChanged(address oldOwner, address newOwner)",
+                      "event OwnerNominated(address newOwner)",
+                      "event Upgraded(address indexed self, address implementation)",
+                      "function acceptOwnership()",
+                      "function getImplementation() view returns (address)",
+                      "function nominateNewOwner(address newNominatedOwner)",
+                      "function nominatedOwner() view returns (address)",
+                      "function owner() view returns (address)",
+                      "function renounceNomination()",
+                      "function simulateUpgradeTo(address newImplementation)",
+                      "function upgradeTo(address newImplementation)"
+                    ],
+                    "constructorArgs": [],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
+                    "sourceName": "contracts/modules/CoreModule.sol",
+                    "contractName": "CoreModule",
+                    "deployedOn": "contract.CoreModule",
+                    "gasUsed": 1387392,
                     "gasCost": "100000000"
                   },
                   "InitialProxy": {
@@ -3246,11 +3703,14 @@
                 },
                 "imports": {
                   "trusted_multicall_forwarder": {
-                    "url": "ipfs://QmWaDqF2WP6LB3xACuWkWx7QCy7wTo66jNpmLCXc2xhRhE",
+                    "url": "ipfs://QmctMp5GYQaN8u7kiUNrTBbsvDjTtvDb9rPYj9722QQXt7",
                     "tags": [
                       "latest"
                     ],
                     "preset": "with-oracle-manager",
+                    "settings": {
+                      "salt": "salt"
+                    },
                     "contracts": {
                       "TrustedMulticallForwarder": {
                         "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
@@ -3299,8 +3759,15 @@
                         "gasUsed": 3201761,
                         "gasCost": "100000000"
                       }
+                    },
+                    "extras": {
+                      "salt": "salt"
                     }
                   }
+                },
+                "settings": {
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "oracle-manager-official"
                 },
                 "txns": {
                   "upgrade_proxy": {
@@ -3322,64 +3789,17 @@
                     "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
                   }
                 },
-                "extras": {}
-              },
-              "trusted_multicall_forwarder": {
-                "url": "ipfs://QmdAmPr6eB7ncScRuzPQB31gpZVq5ESvq5HhePGzaomiu4",
-                "tags": [
-                  "latest"
-                ],
-                "preset": "with-synthetix",
-                "contracts": {
-                  "TrustedMulticallForwarder": {
-                    "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
-                    "abi": [
-                      "constructor()",
-                      "error AddressInsufficientBalance(address account)",
-                      "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
-                      "error ERC2771ForwarderInvalidSigner(address signer, address from)",
-                      "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
-                      "error ERC2771UntrustfulTarget(address target, address forwarder)",
-                      "error FailedInnerCall()",
-                      "error InvalidAccountNonce(address account, uint256 currentNonce)",
-                      "error InvalidShortString()",
-                      "error StringTooLong(string str)",
-                      "event EIP712DomainChanged()",
-                      "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
-                      "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
-                      "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                      "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                      "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                      "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                      "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
-                      "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                      "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
-                      "function getBasefee() view returns (uint256 basefee)",
-                      "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
-                      "function getBlockNumber() view returns (uint256 blockNumber)",
-                      "function getChainId() view returns (uint256 chainid)",
-                      "function getCurrentBlockCoinbase() view returns (address coinbase)",
-                      "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
-                      "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
-                      "function getEthBalance(address addr) view returns (uint256 balance)",
-                      "function getLastBlockHash() view returns (bytes32 blockHash)",
-                      "function getPrevRandao() view returns (uint256 prevrandao)",
-                      "function nonces(address owner) view returns (uint256)",
-                      "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
-                      "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                      "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
-                    ],
-                    "constructorArgs": [],
-                    "linkedLibraries": {},
-                    "deployTxnHash": "",
-                    "sourceName": "src/TrustedMulticallForwarder.sol",
-                    "contractName": "TrustedMulticallForwarder",
-                    "deployedOn": "contract.TrustedMulticallForwarder",
-                    "gasUsed": 0,
-                    "gasCost": "0"
-                  }
+                "extras": {
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "oracle-manager-official"
                 }
               }
+            },
+            "settings": {
+              "bundleSalt": "main",
+              "oracle_manager_source": "oracle-manager:3.3.15",
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "main"
             },
             "txns": {
               "register_const_one_oracle": {
@@ -3730,13 +4150,16 @@
               }
             },
             "extras": {
-              "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
+              "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733",
+              "bundleSalt": "main",
+              "oracle_manager_source": "oracle-manager:3.3.15",
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "main"
             }
           }
         }
       },
-      "hash": "e728d2013f915f398695c42273731931",
-      "version": 6
+      "version": 7
     },
     "invoke.allowCreateAccount_revert": {
       "artifacts": {
@@ -4031,7 +4454,7 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://QmZL5ozhWGLBf5nMCS12H5fCiGsyrSGg2ZQQZYzYzq3pQd",
+            "url": "ipfs://QmcxSts9kVnfkz63KfGniJ4DQD67syi8iT26MiGMS8NYYr",
             "tags": [
               "latest"
             ],
@@ -5023,9 +5446,18 @@
                 "highlight": true
               }
             },
+            "settings": {
+              "coreProxyOwner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "snax",
+              "spotMarketPackage": "synthetix-spot-market:latest",
+              "spotMarketPreset": "main",
+              "synthetixPackage": "synthetix:latest",
+              "synthetixPreset": "main"
+            },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmWN2TuwDLdUUqby15XF86PjyG1pRtkstyPXaCgCMVXBq7",
+                "url": "ipfs://QmTJwP3dvcfscATWArQFZxoVYsWH18vsv9AvBgcMciEHMs",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0x3400f899EE37Db540681Fbf0fb49bEF2Bc7F351B",
@@ -5795,9 +6227,15 @@
                     "highlight": true
                   }
                 },
+                "settings": {
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "snax",
+                  "synthetixPackage": "synthetix:3.3.15",
+                  "synthetixPreset": "main"
+                },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://QmQgBJxBPDJ3hfFex2SKSihRSdBBomUmaL3r7ja24Ap8Go",
+                    "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
                     "contracts": {
                       "AccountModule": {
                         "address": "0xBb0CBCa9CE28a8C6c7Aaa13584A76c0B1a35Fff7",
@@ -6063,37 +6501,6 @@
                         "contractName": "FeatureFlagModule",
                         "deployedOn": "contract.FeatureFlagModule",
                         "gasUsed": 1322533,
-                        "gasCost": "100000000"
-                      },
-                      "InitialModuleBundle": {
-                        "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
-                        "abi": [
-                          "error ImplementationIsSterile(address implementation)",
-                          "error NoChange()",
-                          "error NotAContract(address contr)",
-                          "error NotNominated(address addr)",
-                          "error Unauthorized(address addr)",
-                          "error UpgradeSimulationFailed()",
-                          "error ZeroAddress()",
-                          "event OwnerChanged(address oldOwner, address newOwner)",
-                          "event OwnerNominated(address newOwner)",
-                          "event Upgraded(address indexed self, address implementation)",
-                          "function acceptOwnership()",
-                          "function getImplementation() view returns (address)",
-                          "function nominateNewOwner(address newNominatedOwner)",
-                          "function nominatedOwner() view returns (address)",
-                          "function owner() view returns (address)",
-                          "function renounceNomination()",
-                          "function simulateUpgradeTo(address newImplementation)",
-                          "function upgradeTo(address newImplementation)"
-                        ],
-                        "constructorArgs": [],
-                        "linkedLibraries": {},
-                        "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
-                        "sourceName": "contracts/modules/InitialModuleBundle.sol",
-                        "contractName": "InitialModuleBundle",
-                        "deployedOn": "contract.InitialModuleBundle",
-                        "gasUsed": 856521,
                         "gasCost": "100000000"
                       },
                       "IssueUSDModule": {
@@ -6486,6 +6893,37 @@
                         "contractName": "VaultModule",
                         "deployedOn": "contract.VaultModule",
                         "gasUsed": 5599946,
+                        "gasCost": "100000000"
+                      },
+                      "InitialModuleBundle": {
+                        "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
+                        "abi": [
+                          "error ImplementationIsSterile(address implementation)",
+                          "error NoChange()",
+                          "error NotAContract(address contr)",
+                          "error NotNominated(address addr)",
+                          "error Unauthorized(address addr)",
+                          "error UpgradeSimulationFailed()",
+                          "error ZeroAddress()",
+                          "event OwnerChanged(address oldOwner, address newOwner)",
+                          "event OwnerNominated(address newOwner)",
+                          "event Upgraded(address indexed self, address implementation)",
+                          "function acceptOwnership()",
+                          "function getImplementation() view returns (address)",
+                          "function nominateNewOwner(address newNominatedOwner)",
+                          "function nominatedOwner() view returns (address)",
+                          "function owner() view returns (address)",
+                          "function renounceNomination()",
+                          "function simulateUpgradeTo(address newImplementation)",
+                          "function upgradeTo(address newImplementation)"
+                        ],
+                        "constructorArgs": [],
+                        "linkedLibraries": {},
+                        "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
+                        "sourceName": "contracts/modules/InitialModuleBundle.sol",
+                        "contractName": "InitialModuleBundle",
+                        "deployedOn": "contract.InitialModuleBundle",
+                        "gasUsed": 856521,
                         "gasCost": "100000000"
                       },
                       "InitialCoreProxy": {
@@ -7293,44 +7731,75 @@
                       }
                     },
                     "imports": {
+                      "trusted_multicall_forwarder": {
+                        "url": "ipfs://QmPG3H2FLR6TuTYXtB57sSPgXi3sChMbCkGxmGosuGpuQd",
+                        "tags": [
+                          "latest"
+                        ],
+                        "preset": "with-synthetix",
+                        "settings": {
+                          "salt": "salt"
+                        },
+                        "contracts": {
+                          "TrustedMulticallForwarder": {
+                            "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
+                            "abi": [
+                              "constructor()",
+                              "error AddressInsufficientBalance(address account)",
+                              "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
+                              "error ERC2771ForwarderInvalidSigner(address signer, address from)",
+                              "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
+                              "error ERC2771UntrustfulTarget(address target, address forwarder)",
+                              "error FailedInnerCall()",
+                              "error InvalidAccountNonce(address account, uint256 currentNonce)",
+                              "error InvalidShortString()",
+                              "error StringTooLong(string str)",
+                              "event EIP712DomainChanged()",
+                              "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
+                              "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
+                              "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                              "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                              "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                              "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
+                              "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
+                              "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                              "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
+                              "function getBasefee() view returns (uint256 basefee)",
+                              "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
+                              "function getBlockNumber() view returns (uint256 blockNumber)",
+                              "function getChainId() view returns (uint256 chainid)",
+                              "function getCurrentBlockCoinbase() view returns (address coinbase)",
+                              "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
+                              "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
+                              "function getEthBalance(address addr) view returns (uint256 balance)",
+                              "function getLastBlockHash() view returns (bytes32 blockHash)",
+                              "function getPrevRandao() view returns (uint256 prevrandao)",
+                              "function nonces(address owner) view returns (uint256)",
+                              "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
+                              "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                              "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
+                            ],
+                            "constructorArgs": [],
+                            "linkedLibraries": {},
+                            "deployTxnHash": "",
+                            "sourceName": "src/TrustedMulticallForwarder.sol",
+                            "contractName": "TrustedMulticallForwarder",
+                            "deployedOn": "contract.TrustedMulticallForwarder",
+                            "gasUsed": 0,
+                            "gasCost": "0"
+                          }
+                        },
+                        "extras": {
+                          "salt": "salt"
+                        }
+                      },
                       "oracle_manager": {
-                        "url": "ipfs://QmXrcQNawxaxsZvLZ9cyWUtM4RBd12kCowKrNpz5ZdWgT6",
+                        "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
                         "tags": [
                           "latest"
                         ],
                         "preset": "with-synthetix",
                         "contracts": {
-                          "CoreModule": {
-                            "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
-                            "abi": [
-                              "error ImplementationIsSterile(address implementation)",
-                              "error NoChange()",
-                              "error NotAContract(address contr)",
-                              "error NotNominated(address addr)",
-                              "error Unauthorized(address addr)",
-                              "error UpgradeSimulationFailed()",
-                              "error ZeroAddress()",
-                              "event OwnerChanged(address oldOwner, address newOwner)",
-                              "event OwnerNominated(address newOwner)",
-                              "event Upgraded(address indexed self, address implementation)",
-                              "function acceptOwnership()",
-                              "function getImplementation() view returns (address)",
-                              "function nominateNewOwner(address newNominatedOwner)",
-                              "function nominatedOwner() view returns (address)",
-                              "function owner() view returns (address)",
-                              "function renounceNomination()",
-                              "function simulateUpgradeTo(address newImplementation)",
-                              "function upgradeTo(address newImplementation)"
-                            ],
-                            "constructorArgs": [],
-                            "linkedLibraries": {},
-                            "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
-                            "sourceName": "contracts/modules/CoreModule.sol",
-                            "contractName": "CoreModule",
-                            "deployedOn": "contract.CoreModule",
-                            "gasUsed": 1387392,
-                            "gasCost": "100000000"
-                          },
                           "NodeModule": {
                             "address": "0xFCAD0fF92f4854A467C28Bd98FBB40f8352F127A",
                             "abi": [
@@ -7363,6 +7832,37 @@
                             "contractName": "NodeModule",
                             "deployedOn": "contract.NodeModule",
                             "gasUsed": 6226312,
+                            "gasCost": "100000000"
+                          },
+                          "CoreModule": {
+                            "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
+                            "abi": [
+                              "error ImplementationIsSterile(address implementation)",
+                              "error NoChange()",
+                              "error NotAContract(address contr)",
+                              "error NotNominated(address addr)",
+                              "error Unauthorized(address addr)",
+                              "error UpgradeSimulationFailed()",
+                              "error ZeroAddress()",
+                              "event OwnerChanged(address oldOwner, address newOwner)",
+                              "event OwnerNominated(address newOwner)",
+                              "event Upgraded(address indexed self, address implementation)",
+                              "function acceptOwnership()",
+                              "function getImplementation() view returns (address)",
+                              "function nominateNewOwner(address newNominatedOwner)",
+                              "function nominatedOwner() view returns (address)",
+                              "function owner() view returns (address)",
+                              "function renounceNomination()",
+                              "function simulateUpgradeTo(address newImplementation)",
+                              "function upgradeTo(address newImplementation)"
+                            ],
+                            "constructorArgs": [],
+                            "linkedLibraries": {},
+                            "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
+                            "sourceName": "contracts/modules/CoreModule.sol",
+                            "contractName": "CoreModule",
+                            "deployedOn": "contract.CoreModule",
+                            "gasUsed": 1387392,
                             "gasCost": "100000000"
                           },
                           "InitialProxy": {
@@ -7503,11 +8003,14 @@
                         },
                         "imports": {
                           "trusted_multicall_forwarder": {
-                            "url": "ipfs://QmWaDqF2WP6LB3xACuWkWx7QCy7wTo66jNpmLCXc2xhRhE",
+                            "url": "ipfs://QmctMp5GYQaN8u7kiUNrTBbsvDjTtvDb9rPYj9722QQXt7",
                             "tags": [
                               "latest"
                             ],
                             "preset": "with-oracle-manager",
+                            "settings": {
+                              "salt": "salt"
+                            },
                             "contracts": {
                               "TrustedMulticallForwarder": {
                                 "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
@@ -7556,8 +8059,15 @@
                                 "gasUsed": 3201761,
                                 "gasCost": "100000000"
                               }
+                            },
+                            "extras": {
+                              "salt": "salt"
                             }
                           }
+                        },
+                        "settings": {
+                          "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                          "salt": "oracle-manager-official"
                         },
                         "txns": {
                           "upgrade_proxy": {
@@ -7579,64 +8089,17 @@
                             "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
                           }
                         },
-                        "extras": {}
-                      },
-                      "trusted_multicall_forwarder": {
-                        "url": "ipfs://QmdAmPr6eB7ncScRuzPQB31gpZVq5ESvq5HhePGzaomiu4",
-                        "tags": [
-                          "latest"
-                        ],
-                        "preset": "with-synthetix",
-                        "contracts": {
-                          "TrustedMulticallForwarder": {
-                            "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
-                            "abi": [
-                              "constructor()",
-                              "error AddressInsufficientBalance(address account)",
-                              "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
-                              "error ERC2771ForwarderInvalidSigner(address signer, address from)",
-                              "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
-                              "error ERC2771UntrustfulTarget(address target, address forwarder)",
-                              "error FailedInnerCall()",
-                              "error InvalidAccountNonce(address account, uint256 currentNonce)",
-                              "error InvalidShortString()",
-                              "error StringTooLong(string str)",
-                              "event EIP712DomainChanged()",
-                              "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
-                              "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
-                              "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                              "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                              "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
-                              "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
-                              "function getBasefee() view returns (uint256 basefee)",
-                              "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
-                              "function getBlockNumber() view returns (uint256 blockNumber)",
-                              "function getChainId() view returns (uint256 chainid)",
-                              "function getCurrentBlockCoinbase() view returns (address coinbase)",
-                              "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
-                              "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
-                              "function getEthBalance(address addr) view returns (uint256 balance)",
-                              "function getLastBlockHash() view returns (bytes32 blockHash)",
-                              "function getPrevRandao() view returns (uint256 prevrandao)",
-                              "function nonces(address owner) view returns (uint256)",
-                              "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                              "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
-                            ],
-                            "constructorArgs": [],
-                            "linkedLibraries": {},
-                            "deployTxnHash": "",
-                            "sourceName": "src/TrustedMulticallForwarder.sol",
-                            "contractName": "TrustedMulticallForwarder",
-                            "deployedOn": "contract.TrustedMulticallForwarder",
-                            "gasUsed": 0,
-                            "gasCost": "0"
-                          }
+                        "extras": {
+                          "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                          "salt": "oracle-manager-official"
                         }
                       }
+                    },
+                    "settings": {
+                      "bundleSalt": "main",
+                      "oracle_manager_source": "oracle-manager:3.3.15",
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "main"
                     },
                     "txns": {
                       "register_const_one_oracle": {
@@ -7987,7 +8450,11 @@
                       }
                     },
                     "extras": {
-                      "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
+                      "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733",
+                      "bundleSalt": "main",
+                      "oracle_manager_source": "oracle-manager:3.3.15",
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "main"
                     }
                   }
                 },
@@ -8083,10 +8550,15 @@
                     "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
                   }
                 },
-                "extras": {}
+                "extras": {
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "snax",
+                  "synthetixPackage": "synthetix:3.3.15",
+                  "synthetixPreset": "main"
+                }
               },
               "synthetix": {
-                "url": "ipfs://QmQgBJxBPDJ3hfFex2SKSihRSdBBomUmaL3r7ja24Ap8Go",
+                "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xBb0CBCa9CE28a8C6c7Aaa13584A76c0B1a35Fff7",
@@ -8352,37 +8824,6 @@
                     "contractName": "FeatureFlagModule",
                     "deployedOn": "contract.FeatureFlagModule",
                     "gasUsed": 1322533,
-                    "gasCost": "100000000"
-                  },
-                  "InitialModuleBundle": {
-                    "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
-                    "abi": [
-                      "error ImplementationIsSterile(address implementation)",
-                      "error NoChange()",
-                      "error NotAContract(address contr)",
-                      "error NotNominated(address addr)",
-                      "error Unauthorized(address addr)",
-                      "error UpgradeSimulationFailed()",
-                      "error ZeroAddress()",
-                      "event OwnerChanged(address oldOwner, address newOwner)",
-                      "event OwnerNominated(address newOwner)",
-                      "event Upgraded(address indexed self, address implementation)",
-                      "function acceptOwnership()",
-                      "function getImplementation() view returns (address)",
-                      "function nominateNewOwner(address newNominatedOwner)",
-                      "function nominatedOwner() view returns (address)",
-                      "function owner() view returns (address)",
-                      "function renounceNomination()",
-                      "function simulateUpgradeTo(address newImplementation)",
-                      "function upgradeTo(address newImplementation)"
-                    ],
-                    "constructorArgs": [],
-                    "linkedLibraries": {},
-                    "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
-                    "sourceName": "contracts/modules/InitialModuleBundle.sol",
-                    "contractName": "InitialModuleBundle",
-                    "deployedOn": "contract.InitialModuleBundle",
-                    "gasUsed": 856521,
                     "gasCost": "100000000"
                   },
                   "IssueUSDModule": {
@@ -8775,6 +9216,37 @@
                     "contractName": "VaultModule",
                     "deployedOn": "contract.VaultModule",
                     "gasUsed": 5599946,
+                    "gasCost": "100000000"
+                  },
+                  "InitialModuleBundle": {
+                    "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
+                    "abi": [
+                      "error ImplementationIsSterile(address implementation)",
+                      "error NoChange()",
+                      "error NotAContract(address contr)",
+                      "error NotNominated(address addr)",
+                      "error Unauthorized(address addr)",
+                      "error UpgradeSimulationFailed()",
+                      "error ZeroAddress()",
+                      "event OwnerChanged(address oldOwner, address newOwner)",
+                      "event OwnerNominated(address newOwner)",
+                      "event Upgraded(address indexed self, address implementation)",
+                      "function acceptOwnership()",
+                      "function getImplementation() view returns (address)",
+                      "function nominateNewOwner(address newNominatedOwner)",
+                      "function nominatedOwner() view returns (address)",
+                      "function owner() view returns (address)",
+                      "function renounceNomination()",
+                      "function simulateUpgradeTo(address newImplementation)",
+                      "function upgradeTo(address newImplementation)"
+                    ],
+                    "constructorArgs": [],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
+                    "sourceName": "contracts/modules/InitialModuleBundle.sol",
+                    "contractName": "InitialModuleBundle",
+                    "deployedOn": "contract.InitialModuleBundle",
+                    "gasUsed": 856521,
                     "gasCost": "100000000"
                   },
                   "InitialCoreProxy": {
@@ -9582,44 +10054,75 @@
                   }
                 },
                 "imports": {
+                  "trusted_multicall_forwarder": {
+                    "url": "ipfs://QmPG3H2FLR6TuTYXtB57sSPgXi3sChMbCkGxmGosuGpuQd",
+                    "tags": [
+                      "latest"
+                    ],
+                    "preset": "with-synthetix",
+                    "settings": {
+                      "salt": "salt"
+                    },
+                    "contracts": {
+                      "TrustedMulticallForwarder": {
+                        "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
+                        "abi": [
+                          "constructor()",
+                          "error AddressInsufficientBalance(address account)",
+                          "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
+                          "error ERC2771ForwarderInvalidSigner(address signer, address from)",
+                          "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
+                          "error ERC2771UntrustfulTarget(address target, address forwarder)",
+                          "error FailedInnerCall()",
+                          "error InvalidAccountNonce(address account, uint256 currentNonce)",
+                          "error InvalidShortString()",
+                          "error StringTooLong(string str)",
+                          "event EIP712DomainChanged()",
+                          "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
+                          "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
+                          "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                          "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
+                          "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
+                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
+                          "function getBasefee() view returns (uint256 basefee)",
+                          "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
+                          "function getBlockNumber() view returns (uint256 blockNumber)",
+                          "function getChainId() view returns (uint256 chainid)",
+                          "function getCurrentBlockCoinbase() view returns (address coinbase)",
+                          "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
+                          "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
+                          "function getEthBalance(address addr) view returns (uint256 balance)",
+                          "function getLastBlockHash() view returns (bytes32 blockHash)",
+                          "function getPrevRandao() view returns (uint256 prevrandao)",
+                          "function nonces(address owner) view returns (uint256)",
+                          "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                          "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
+                        ],
+                        "constructorArgs": [],
+                        "linkedLibraries": {},
+                        "deployTxnHash": "",
+                        "sourceName": "src/TrustedMulticallForwarder.sol",
+                        "contractName": "TrustedMulticallForwarder",
+                        "deployedOn": "contract.TrustedMulticallForwarder",
+                        "gasUsed": 0,
+                        "gasCost": "0"
+                      }
+                    },
+                    "extras": {
+                      "salt": "salt"
+                    }
+                  },
                   "oracle_manager": {
-                    "url": "ipfs://QmXrcQNawxaxsZvLZ9cyWUtM4RBd12kCowKrNpz5ZdWgT6",
+                    "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
                     "tags": [
                       "latest"
                     ],
                     "preset": "with-synthetix",
                     "contracts": {
-                      "CoreModule": {
-                        "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
-                        "abi": [
-                          "error ImplementationIsSterile(address implementation)",
-                          "error NoChange()",
-                          "error NotAContract(address contr)",
-                          "error NotNominated(address addr)",
-                          "error Unauthorized(address addr)",
-                          "error UpgradeSimulationFailed()",
-                          "error ZeroAddress()",
-                          "event OwnerChanged(address oldOwner, address newOwner)",
-                          "event OwnerNominated(address newOwner)",
-                          "event Upgraded(address indexed self, address implementation)",
-                          "function acceptOwnership()",
-                          "function getImplementation() view returns (address)",
-                          "function nominateNewOwner(address newNominatedOwner)",
-                          "function nominatedOwner() view returns (address)",
-                          "function owner() view returns (address)",
-                          "function renounceNomination()",
-                          "function simulateUpgradeTo(address newImplementation)",
-                          "function upgradeTo(address newImplementation)"
-                        ],
-                        "constructorArgs": [],
-                        "linkedLibraries": {},
-                        "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
-                        "sourceName": "contracts/modules/CoreModule.sol",
-                        "contractName": "CoreModule",
-                        "deployedOn": "contract.CoreModule",
-                        "gasUsed": 1387392,
-                        "gasCost": "100000000"
-                      },
                       "NodeModule": {
                         "address": "0xFCAD0fF92f4854A467C28Bd98FBB40f8352F127A",
                         "abi": [
@@ -9652,6 +10155,37 @@
                         "contractName": "NodeModule",
                         "deployedOn": "contract.NodeModule",
                         "gasUsed": 6226312,
+                        "gasCost": "100000000"
+                      },
+                      "CoreModule": {
+                        "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
+                        "abi": [
+                          "error ImplementationIsSterile(address implementation)",
+                          "error NoChange()",
+                          "error NotAContract(address contr)",
+                          "error NotNominated(address addr)",
+                          "error Unauthorized(address addr)",
+                          "error UpgradeSimulationFailed()",
+                          "error ZeroAddress()",
+                          "event OwnerChanged(address oldOwner, address newOwner)",
+                          "event OwnerNominated(address newOwner)",
+                          "event Upgraded(address indexed self, address implementation)",
+                          "function acceptOwnership()",
+                          "function getImplementation() view returns (address)",
+                          "function nominateNewOwner(address newNominatedOwner)",
+                          "function nominatedOwner() view returns (address)",
+                          "function owner() view returns (address)",
+                          "function renounceNomination()",
+                          "function simulateUpgradeTo(address newImplementation)",
+                          "function upgradeTo(address newImplementation)"
+                        ],
+                        "constructorArgs": [],
+                        "linkedLibraries": {},
+                        "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
+                        "sourceName": "contracts/modules/CoreModule.sol",
+                        "contractName": "CoreModule",
+                        "deployedOn": "contract.CoreModule",
+                        "gasUsed": 1387392,
                         "gasCost": "100000000"
                       },
                       "InitialProxy": {
@@ -9792,11 +10326,14 @@
                     },
                     "imports": {
                       "trusted_multicall_forwarder": {
-                        "url": "ipfs://QmWaDqF2WP6LB3xACuWkWx7QCy7wTo66jNpmLCXc2xhRhE",
+                        "url": "ipfs://QmctMp5GYQaN8u7kiUNrTBbsvDjTtvDb9rPYj9722QQXt7",
                         "tags": [
                           "latest"
                         ],
                         "preset": "with-oracle-manager",
+                        "settings": {
+                          "salt": "salt"
+                        },
                         "contracts": {
                           "TrustedMulticallForwarder": {
                             "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
@@ -9845,8 +10382,15 @@
                             "gasUsed": 3201761,
                             "gasCost": "100000000"
                           }
+                        },
+                        "extras": {
+                          "salt": "salt"
                         }
                       }
+                    },
+                    "settings": {
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "oracle-manager-official"
                     },
                     "txns": {
                       "upgrade_proxy": {
@@ -9868,64 +10412,17 @@
                         "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
                       }
                     },
-                    "extras": {}
-                  },
-                  "trusted_multicall_forwarder": {
-                    "url": "ipfs://QmdAmPr6eB7ncScRuzPQB31gpZVq5ESvq5HhePGzaomiu4",
-                    "tags": [
-                      "latest"
-                    ],
-                    "preset": "with-synthetix",
-                    "contracts": {
-                      "TrustedMulticallForwarder": {
-                        "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
-                        "abi": [
-                          "constructor()",
-                          "error AddressInsufficientBalance(address account)",
-                          "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
-                          "error ERC2771ForwarderInvalidSigner(address signer, address from)",
-                          "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
-                          "error ERC2771UntrustfulTarget(address target, address forwarder)",
-                          "error FailedInnerCall()",
-                          "error InvalidAccountNonce(address account, uint256 currentNonce)",
-                          "error InvalidShortString()",
-                          "error StringTooLong(string str)",
-                          "event EIP712DomainChanged()",
-                          "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
-                          "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
-                          "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                          "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                          "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
-                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
-                          "function getBasefee() view returns (uint256 basefee)",
-                          "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
-                          "function getBlockNumber() view returns (uint256 blockNumber)",
-                          "function getChainId() view returns (uint256 chainid)",
-                          "function getCurrentBlockCoinbase() view returns (address coinbase)",
-                          "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
-                          "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
-                          "function getEthBalance(address addr) view returns (uint256 balance)",
-                          "function getLastBlockHash() view returns (bytes32 blockHash)",
-                          "function getPrevRandao() view returns (uint256 prevrandao)",
-                          "function nonces(address owner) view returns (uint256)",
-                          "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                          "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
-                        ],
-                        "constructorArgs": [],
-                        "linkedLibraries": {},
-                        "deployTxnHash": "",
-                        "sourceName": "src/TrustedMulticallForwarder.sol",
-                        "contractName": "TrustedMulticallForwarder",
-                        "deployedOn": "contract.TrustedMulticallForwarder",
-                        "gasUsed": 0,
-                        "gasCost": "0"
-                      }
+                    "extras": {
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "oracle-manager-official"
                     }
                   }
+                },
+                "settings": {
+                  "bundleSalt": "main",
+                  "oracle_manager_source": "oracle-manager:3.3.15",
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "main"
                 },
                 "txns": {
                   "register_const_one_oracle": {
@@ -10276,7 +10773,11 @@
                   }
                 },
                 "extras": {
-                  "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
+                  "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733",
+                  "bundleSalt": "main",
+                  "oracle_manager_source": "oracle-manager:3.3.15",
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "main"
                 }
               }
             },
@@ -10392,19 +10893,25 @@
               }
             },
             "extras": {
-              "superMarketId": "1"
+              "superMarketId": "1",
+              "coreProxyOwner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "snax",
+              "spotMarketPackage": "synthetix-spot-market:latest",
+              "spotMarketPreset": "main",
+              "synthetixPackage": "synthetix:latest",
+              "synthetixPreset": "main"
             }
           }
         }
       },
-      "hash": "b6bad0dd5971cf8accbf7c3148617e1b",
-      "version": 6
+      "version": 7
     },
     "provision.spotFactory": {
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmWN2TuwDLdUUqby15XF86PjyG1pRtkstyPXaCgCMVXBq7",
+            "url": "ipfs://QmTJwP3dvcfscATWArQFZxoVYsWH18vsv9AvBgcMciEHMs",
             "tags": [
               "latest"
             ],
@@ -11178,9 +11685,15 @@
                 "highlight": true
               }
             },
+            "settings": {
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "snax",
+              "synthetixPackage": "synthetix:3.3.15",
+              "synthetixPreset": "main"
+            },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmQgBJxBPDJ3hfFex2SKSihRSdBBomUmaL3r7ja24Ap8Go",
+                "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xBb0CBCa9CE28a8C6c7Aaa13584A76c0B1a35Fff7",
@@ -11446,37 +11959,6 @@
                     "contractName": "FeatureFlagModule",
                     "deployedOn": "contract.FeatureFlagModule",
                     "gasUsed": 1322533,
-                    "gasCost": "100000000"
-                  },
-                  "InitialModuleBundle": {
-                    "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
-                    "abi": [
-                      "error ImplementationIsSterile(address implementation)",
-                      "error NoChange()",
-                      "error NotAContract(address contr)",
-                      "error NotNominated(address addr)",
-                      "error Unauthorized(address addr)",
-                      "error UpgradeSimulationFailed()",
-                      "error ZeroAddress()",
-                      "event OwnerChanged(address oldOwner, address newOwner)",
-                      "event OwnerNominated(address newOwner)",
-                      "event Upgraded(address indexed self, address implementation)",
-                      "function acceptOwnership()",
-                      "function getImplementation() view returns (address)",
-                      "function nominateNewOwner(address newNominatedOwner)",
-                      "function nominatedOwner() view returns (address)",
-                      "function owner() view returns (address)",
-                      "function renounceNomination()",
-                      "function simulateUpgradeTo(address newImplementation)",
-                      "function upgradeTo(address newImplementation)"
-                    ],
-                    "constructorArgs": [],
-                    "linkedLibraries": {},
-                    "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
-                    "sourceName": "contracts/modules/InitialModuleBundle.sol",
-                    "contractName": "InitialModuleBundle",
-                    "deployedOn": "contract.InitialModuleBundle",
-                    "gasUsed": 856521,
                     "gasCost": "100000000"
                   },
                   "IssueUSDModule": {
@@ -11869,6 +12351,37 @@
                     "contractName": "VaultModule",
                     "deployedOn": "contract.VaultModule",
                     "gasUsed": 5599946,
+                    "gasCost": "100000000"
+                  },
+                  "InitialModuleBundle": {
+                    "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
+                    "abi": [
+                      "error ImplementationIsSterile(address implementation)",
+                      "error NoChange()",
+                      "error NotAContract(address contr)",
+                      "error NotNominated(address addr)",
+                      "error Unauthorized(address addr)",
+                      "error UpgradeSimulationFailed()",
+                      "error ZeroAddress()",
+                      "event OwnerChanged(address oldOwner, address newOwner)",
+                      "event OwnerNominated(address newOwner)",
+                      "event Upgraded(address indexed self, address implementation)",
+                      "function acceptOwnership()",
+                      "function getImplementation() view returns (address)",
+                      "function nominateNewOwner(address newNominatedOwner)",
+                      "function nominatedOwner() view returns (address)",
+                      "function owner() view returns (address)",
+                      "function renounceNomination()",
+                      "function simulateUpgradeTo(address newImplementation)",
+                      "function upgradeTo(address newImplementation)"
+                    ],
+                    "constructorArgs": [],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0x48b0a7c9404c5ceaeb59491e3ee15579be92edc50f27b796544bcca6feeb4183",
+                    "sourceName": "contracts/modules/InitialModuleBundle.sol",
+                    "contractName": "InitialModuleBundle",
+                    "deployedOn": "contract.InitialModuleBundle",
+                    "gasUsed": 856521,
                     "gasCost": "100000000"
                   },
                   "InitialCoreProxy": {
@@ -12676,44 +13189,75 @@
                   }
                 },
                 "imports": {
+                  "trusted_multicall_forwarder": {
+                    "url": "ipfs://QmPG3H2FLR6TuTYXtB57sSPgXi3sChMbCkGxmGosuGpuQd",
+                    "tags": [
+                      "latest"
+                    ],
+                    "preset": "with-synthetix",
+                    "settings": {
+                      "salt": "salt"
+                    },
+                    "contracts": {
+                      "TrustedMulticallForwarder": {
+                        "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
+                        "abi": [
+                          "constructor()",
+                          "error AddressInsufficientBalance(address account)",
+                          "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
+                          "error ERC2771ForwarderInvalidSigner(address signer, address from)",
+                          "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
+                          "error ERC2771UntrustfulTarget(address target, address forwarder)",
+                          "error FailedInnerCall()",
+                          "error InvalidAccountNonce(address account, uint256 currentNonce)",
+                          "error InvalidShortString()",
+                          "error StringTooLong(string str)",
+                          "event EIP712DomainChanged()",
+                          "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
+                          "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
+                          "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                          "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
+                          "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
+                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
+                          "function getBasefee() view returns (uint256 basefee)",
+                          "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
+                          "function getBlockNumber() view returns (uint256 blockNumber)",
+                          "function getChainId() view returns (uint256 chainid)",
+                          "function getCurrentBlockCoinbase() view returns (address coinbase)",
+                          "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
+                          "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
+                          "function getEthBalance(address addr) view returns (uint256 balance)",
+                          "function getLastBlockHash() view returns (bytes32 blockHash)",
+                          "function getPrevRandao() view returns (uint256 prevrandao)",
+                          "function nonces(address owner) view returns (uint256)",
+                          "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
+                          "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+                          "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
+                        ],
+                        "constructorArgs": [],
+                        "linkedLibraries": {},
+                        "deployTxnHash": "",
+                        "sourceName": "src/TrustedMulticallForwarder.sol",
+                        "contractName": "TrustedMulticallForwarder",
+                        "deployedOn": "contract.TrustedMulticallForwarder",
+                        "gasUsed": 0,
+                        "gasCost": "0"
+                      }
+                    },
+                    "extras": {
+                      "salt": "salt"
+                    }
+                  },
                   "oracle_manager": {
-                    "url": "ipfs://QmXrcQNawxaxsZvLZ9cyWUtM4RBd12kCowKrNpz5ZdWgT6",
+                    "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
                     "tags": [
                       "latest"
                     ],
                     "preset": "with-synthetix",
                     "contracts": {
-                      "CoreModule": {
-                        "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
-                        "abi": [
-                          "error ImplementationIsSterile(address implementation)",
-                          "error NoChange()",
-                          "error NotAContract(address contr)",
-                          "error NotNominated(address addr)",
-                          "error Unauthorized(address addr)",
-                          "error UpgradeSimulationFailed()",
-                          "error ZeroAddress()",
-                          "event OwnerChanged(address oldOwner, address newOwner)",
-                          "event OwnerNominated(address newOwner)",
-                          "event Upgraded(address indexed self, address implementation)",
-                          "function acceptOwnership()",
-                          "function getImplementation() view returns (address)",
-                          "function nominateNewOwner(address newNominatedOwner)",
-                          "function nominatedOwner() view returns (address)",
-                          "function owner() view returns (address)",
-                          "function renounceNomination()",
-                          "function simulateUpgradeTo(address newImplementation)",
-                          "function upgradeTo(address newImplementation)"
-                        ],
-                        "constructorArgs": [],
-                        "linkedLibraries": {},
-                        "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
-                        "sourceName": "contracts/modules/CoreModule.sol",
-                        "contractName": "CoreModule",
-                        "deployedOn": "contract.CoreModule",
-                        "gasUsed": 1387392,
-                        "gasCost": "100000000"
-                      },
                       "NodeModule": {
                         "address": "0xFCAD0fF92f4854A467C28Bd98FBB40f8352F127A",
                         "abi": [
@@ -12746,6 +13290,37 @@
                         "contractName": "NodeModule",
                         "deployedOn": "contract.NodeModule",
                         "gasUsed": 6226312,
+                        "gasCost": "100000000"
+                      },
+                      "CoreModule": {
+                        "address": "0x527A4e662c22733A056464D202E77AAd62fA6109",
+                        "abi": [
+                          "error ImplementationIsSterile(address implementation)",
+                          "error NoChange()",
+                          "error NotAContract(address contr)",
+                          "error NotNominated(address addr)",
+                          "error Unauthorized(address addr)",
+                          "error UpgradeSimulationFailed()",
+                          "error ZeroAddress()",
+                          "event OwnerChanged(address oldOwner, address newOwner)",
+                          "event OwnerNominated(address newOwner)",
+                          "event Upgraded(address indexed self, address implementation)",
+                          "function acceptOwnership()",
+                          "function getImplementation() view returns (address)",
+                          "function nominateNewOwner(address newNominatedOwner)",
+                          "function nominatedOwner() view returns (address)",
+                          "function owner() view returns (address)",
+                          "function renounceNomination()",
+                          "function simulateUpgradeTo(address newImplementation)",
+                          "function upgradeTo(address newImplementation)"
+                        ],
+                        "constructorArgs": [],
+                        "linkedLibraries": {},
+                        "deployTxnHash": "0x09f279637d8e85e62d71aa3ae85b246f0e0eb7a3892a484c7def7ac5e7685fb4",
+                        "sourceName": "contracts/modules/CoreModule.sol",
+                        "contractName": "CoreModule",
+                        "deployedOn": "contract.CoreModule",
+                        "gasUsed": 1387392,
                         "gasCost": "100000000"
                       },
                       "InitialProxy": {
@@ -12886,11 +13461,14 @@
                     },
                     "imports": {
                       "trusted_multicall_forwarder": {
-                        "url": "ipfs://QmWaDqF2WP6LB3xACuWkWx7QCy7wTo66jNpmLCXc2xhRhE",
+                        "url": "ipfs://QmctMp5GYQaN8u7kiUNrTBbsvDjTtvDb9rPYj9722QQXt7",
                         "tags": [
                           "latest"
                         ],
                         "preset": "with-oracle-manager",
+                        "settings": {
+                          "salt": "salt"
+                        },
                         "contracts": {
                           "TrustedMulticallForwarder": {
                             "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
@@ -12939,8 +13517,15 @@
                             "gasUsed": 3201761,
                             "gasCost": "100000000"
                           }
+                        },
+                        "extras": {
+                          "salt": "salt"
                         }
                       }
+                    },
+                    "settings": {
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "oracle-manager-official"
                     },
                     "txns": {
                       "upgrade_proxy": {
@@ -12962,64 +13547,17 @@
                         "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
                       }
                     },
-                    "extras": {}
-                  },
-                  "trusted_multicall_forwarder": {
-                    "url": "ipfs://QmdAmPr6eB7ncScRuzPQB31gpZVq5ESvq5HhePGzaomiu4",
-                    "tags": [
-                      "latest"
-                    ],
-                    "preset": "with-synthetix",
-                    "contracts": {
-                      "TrustedMulticallForwarder": {
-                        "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
-                        "abi": [
-                          "constructor()",
-                          "error AddressInsufficientBalance(address account)",
-                          "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
-                          "error ERC2771ForwarderInvalidSigner(address signer, address from)",
-                          "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
-                          "error ERC2771UntrustfulTarget(address target, address forwarder)",
-                          "error FailedInnerCall()",
-                          "error InvalidAccountNonce(address account, uint256 currentNonce)",
-                          "error InvalidShortString()",
-                          "error StringTooLong(string str)",
-                          "event EIP712DomainChanged()",
-                          "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
-                          "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
-                          "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                          "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                          "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
-                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
-                          "function getBasefee() view returns (uint256 basefee)",
-                          "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
-                          "function getBlockNumber() view returns (uint256 blockNumber)",
-                          "function getChainId() view returns (uint256 chainid)",
-                          "function getCurrentBlockCoinbase() view returns (address coinbase)",
-                          "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
-                          "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
-                          "function getEthBalance(address addr) view returns (uint256 balance)",
-                          "function getLastBlockHash() view returns (bytes32 blockHash)",
-                          "function getPrevRandao() view returns (uint256 prevrandao)",
-                          "function nonces(address owner) view returns (uint256)",
-                          "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
-                          "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                          "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
-                        ],
-                        "constructorArgs": [],
-                        "linkedLibraries": {},
-                        "deployTxnHash": "",
-                        "sourceName": "src/TrustedMulticallForwarder.sol",
-                        "contractName": "TrustedMulticallForwarder",
-                        "deployedOn": "contract.TrustedMulticallForwarder",
-                        "gasUsed": 0,
-                        "gasCost": "0"
-                      }
+                    "extras": {
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "oracle-manager-official"
                     }
                   }
+                },
+                "settings": {
+                  "bundleSalt": "main",
+                  "oracle_manager_source": "oracle-manager:3.3.15",
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "main"
                 },
                 "txns": {
                   "register_const_one_oracle": {
@@ -13370,7 +13908,11 @@
                   }
                 },
                 "extras": {
-                  "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
+                  "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733",
+                  "bundleSalt": "main",
+                  "oracle_manager_source": "oracle-manager:3.3.15",
+                  "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                  "salt": "main"
                 }
               }
             },
@@ -13466,12 +14008,16 @@
                 "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
               }
             },
-            "extras": {}
+            "extras": {
+              "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+              "salt": "snax",
+              "synthetixPackage": "synthetix:3.3.15",
+              "synthetixPreset": "main"
+            }
           }
         }
       },
-      "hash": "2a777b50d06569c1fcd0b01da7e5cc8b",
-      "version": 6
+      "version": 7
     },
     "invoke.createScPool": {
       "artifacts": {
@@ -14986,28 +15532,28 @@
         "contracts": {},
         "txns": {
           "enable_feature_deposit": {
-            "hash": "0x896d4b7bc300871fb92a3c44f78ce0774c261b9178f717f885bef86cd96a6160",
+            "hash": "0xc92b04d21d525dc61b2a10f83b93000607c89a455e1e6423ac6889de68011d5a",
             "events": {
               "FeatureFlagAllowAllSet": [
                 {
                   "name": "FeatureFlagAllowAllSet",
                   "args": [
                     "0x6465706f73697400000000000000000000000000000000000000000000000000",
-                    true
+                    false
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.enable_feature_deposit",
-            "gasUsed": 102091,
-            "gasCost": "100000000",
+            "gasUsed": 44097,
+            "gasCost": "10000000",
             "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
           }
         },
-        "extras": {}
+        "settings": {}
       },
-      "hash": "518a8e978990130784912468fbe6000b",
-      "version": 6
+      "hash": "ccb487a9ec898ba44d9a8b5e2bc1a661",
+      "version": 7
     },
     "invoke.enable_feature_depositMarketCollateral": {
       "artifacts": {
@@ -15154,28 +15700,28 @@
         "contracts": {},
         "txns": {
           "enable_feature_withdraw": {
-            "hash": "0x3754ca7706615830ee2419fc849389944b7e1b7dcbdbcb000fe71f0277eeecd2",
+            "hash": "0x2cba2eafa36228ce35a187cc4e9094dd5ec41f77d933ad6bb55becd586f58881",
             "events": {
               "FeatureFlagAllowAllSet": [
                 {
                   "name": "FeatureFlagAllowAllSet",
                   "args": [
                     "0x7769746864726177000000000000000000000000000000000000000000000000",
-                    false
+                    true
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.enable_feature_withdraw",
-            "gasUsed": 99547,
-            "gasCost": "100000000",
+            "gasUsed": 66619,
+            "gasCost": "10000000",
             "signer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
           }
         },
-        "extras": {}
+        "settings": {}
       },
-      "hash": "ac8ceae9d34ef5dfb6f674a3ca19868f",
-      "version": 6
+      "hash": "6400f8ad1aeee0c2c8b0c9a8c7cdf5c3",
+      "version": 7
     },
     "invoke.enable_feature_withdrawMarketCollateral": {
       "artifacts": {
@@ -15232,6 +15778,735 @@
       },
       "hash": "5033bc51b20591d37eb54a4de356bc84",
       "version": 6
+    },
+    "setting.account_timeout_withdraw": {
+      "artifacts": {
+        "settings": {
+          "account_timeout_withdraw": "86400"
+        }
+      },
+      "hash": "3acf2387dde14e993634ca9badf5f564",
+      "version": 7
+    },
+    "setting.arb_address": {
+      "artifacts": {
+        "settings": {
+          "arb_address": "0x912CE59144191C1204E64559FE8253a0e49E6548"
+        }
+      },
+      "hash": "0fd72f508fa3a2c136b9d6ea027f8695",
+      "version": 7
+    },
+    "setting.bigCapDefaultStalenessTolerance": {
+      "artifacts": {
+        "settings": {
+          "bigCapDefaultStalenessTolerance": "86400"
+        }
+      },
+      "hash": "3acf2387dde14e993634ca9badf5f564",
+      "version": 7
+    },
+    "setting.bigCapSettlementDelay": {
+      "artifacts": {
+        "settings": {
+          "bigCapSettlementDelay": "2"
+        }
+      },
+      "hash": "dc88d99e217842b1532ccb97f443b6c1",
+      "version": 7
+    },
+    "setting.bigCapSettlementWindowDuration": {
+      "artifacts": {
+        "settings": {
+          "bigCapSettlementWindowDuration": "60"
+        }
+      },
+      "hash": "c85e06d9961059219500923347f33fea",
+      "version": 7
+    },
+    "setting.bigCapStrictStalenessTolerance": {
+      "artifacts": {
+        "settings": {
+          "bigCapStrictStalenessTolerance": "60"
+        }
+      },
+      "hash": "c85e06d9961059219500923347f33fea",
+      "version": 7
+    },
+    "setting.btcPerpsMarketId": {
+      "artifacts": {
+        "settings": {
+          "btcPerpsMarketId": "200"
+        }
+      },
+      "hash": "711dc9f13e047edd2344a3bc3b61184b",
+      "version": 7
+    },
+    "setting.bundleSalt": {
+      "artifacts": {
+        "settings": {
+          "bundleSalt": "snax"
+        }
+      },
+      "hash": "1ce8073982f8b8f0b4fa5c488c1fac79",
+      "version": 7
+    },
+    "setting.buyback_snx_package": {
+      "artifacts": {
+        "settings": {
+          "buyback_snx_package": "buyback-snx:3.3.14"
+        }
+      },
+      "hash": "cbfb402010c05a2810eaa8ef8217001a",
+      "version": 7
+    },
+    "setting.commitmentPriceDelay": {
+      "artifacts": {
+        "settings": {
+          "commitmentPriceDelay": "2"
+        }
+      },
+      "hash": "dc88d99e217842b1532ccb97f443b6c1",
+      "version": 7
+    },
+    "setting.dai_address": {
+      "artifacts": {
+        "settings": {
+          "dai_address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1"
+        }
+      },
+      "hash": "faca948a24ff1042cb4d39b5a3c426ac",
+      "version": 7
+    },
+    "setting.deployer": {
+      "artifacts": {
+        "settings": {
+          "deployer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+        }
+      },
+      "hash": "96408b630eba79d5dca7f9c1181b689e",
+      "version": 7
+    },
+    "setting.ethPerpsMarketId": {
+      "artifacts": {
+        "settings": {
+          "ethPerpsMarketId": "100"
+        }
+      },
+      "hash": "747281c13f8d6c7e000941bc58e5fc0a",
+      "version": 7
+    },
+    "setting.minimum_liquidity_ratio": {
+      "artifacts": {
+        "settings": {
+          "minimum_liquidity_ratio": "1250000000000000000"
+        }
+      },
+      "hash": "290a2df513cdb87666df984b81069cc3",
+      "version": 7
+    },
+    "setting.owner": {
+      "artifacts": {
+        "settings": {
+          "owner": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+        }
+      },
+      "hash": "96408b630eba79d5dca7f9c1181b689e",
+      "version": 7
+    },
+    "setting.perpsBtcEndorsedLiquidator": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcEndorsedLiquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
+        }
+      },
+      "hash": "95b83e530ad53664c499fc14c25a0d76",
+      "version": 7
+    },
+    "setting.perpsBtcFlagRewardRatioD18": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcFlagRewardRatioD18": "0.0003"
+        }
+      },
+      "hash": "b780f230f5968a8549058dc90528ff19",
+      "version": 7
+    },
+    "setting.perpsBtcInitialMarginRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcInitialMarginRatio": "13.35"
+        }
+      },
+      "hash": "7d26d5d6a42e38facaaee560647ffa1f",
+      "version": 7
+    },
+    "setting.perpsBtcLockedOiRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcLockedOiRatio": "0.5"
+        }
+      },
+      "hash": "55c483cd8d2084ce67eb9fa4347184b0",
+      "version": 7
+    },
+    "setting.perpsBtcMaintenanceMarginFraction": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMaintenanceMarginFraction": ""
+        }
+      },
+      "hash": "99914b932bd37a50b983c5e7c90ae93b",
+      "version": 7
+    },
+    "setting.perpsBtcMaintenanceMarginScalar": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMaintenanceMarginScalar": "0.28"
+        }
+      },
+      "hash": "d06c6fc4e96060dd0945a1a15b365263",
+      "version": 7
+    },
+    "setting.perpsBtcMakerFeeRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMakerFeeRatio": "0.0002"
+        }
+      },
+      "hash": "1f6a0061a38e38df1d2aea9424f1fb01",
+      "version": 7
+    },
+    "setting.perpsBtcMaxFundingVelocity": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMaxFundingVelocity": "9"
+        }
+      },
+      "hash": "7d2b8b65c56b85936c2dfad3e03dfe76",
+      "version": 7
+    },
+    "setting.perpsBtcMaxLiquidationLimitAccumulationMultiplier": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMaxLiquidationLimitAccumulationMultiplier": "1.5"
+        }
+      },
+      "hash": "1f0e6e60b58149c0709fcecc362ae316",
+      "version": 7
+    },
+    "setting.perpsBtcMaxLiquidationPd": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMaxLiquidationPd": "0.0005"
+        }
+      },
+      "hash": "5ae3d8c45b3277572da62621db0ab6bb",
+      "version": 7
+    },
+    "setting.perpsBtcMaxMarketSize": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMaxMarketSize": "300"
+        }
+      },
+      "hash": "3c4d06743f57ad8c95379420214d313f",
+      "version": 7
+    },
+    "setting.perpsBtcMaxSecondsInLiquidationWindow": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMaxSecondsInLiquidationWindow": "30"
+        }
+      },
+      "hash": "b4168e6fd8e62178489ae92c23ee71e8",
+      "version": 7
+    },
+    "setting.perpsBtcMinimumInitialMarginRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMinimumInitialMarginRatio": "0.02"
+        }
+      },
+      "hash": "6d334a816fa5c0e28e98a62d1ba96e12",
+      "version": 7
+    },
+    "setting.perpsBtcMinimumPositionMargin": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcMinimumPositionMargin": "50"
+        }
+      },
+      "hash": "b609262bebf4c3601681034643a5df87",
+      "version": 7
+    },
+    "setting.perpsBtcSkewScale": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcSkewScale": "100000"
+        }
+      },
+      "hash": "03ecac3251dd9772a2b1d1f2a18fc1aa",
+      "version": 7
+    },
+    "setting.perpsBtcSynthMaxCollateralAmount": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcSynthMaxCollateralAmount": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+        }
+      },
+      "hash": "c58bed99bbb29bc55be4aca797032c53",
+      "version": 7
+    },
+    "setting.perpsBtcTakerFeeRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsBtcTakerFeeRatio": "0.0005"
+        }
+      },
+      "hash": "5ae3d8c45b3277572da62621db0ab6bb",
+      "version": 7
+    },
+    "setting.perpsEthEndorsedLiquidator": {
+      "artifacts": {
+        "settings": {
+          "perpsEthEndorsedLiquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
+        }
+      },
+      "hash": "95b83e530ad53664c499fc14c25a0d76",
+      "version": 7
+    },
+    "setting.perpsEthFlagRewardRatioD18": {
+      "artifacts": {
+        "settings": {
+          "perpsEthFlagRewardRatioD18": "0.0003"
+        }
+      },
+      "hash": "b780f230f5968a8549058dc90528ff19",
+      "version": 7
+    },
+    "setting.perpsEthInitialMarginRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsEthInitialMarginRatio": "8.92"
+        }
+      },
+      "hash": "b2f4a6a347053c4de733ffec1748f6f5",
+      "version": 7
+    },
+    "setting.perpsEthLockedOiRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsEthLockedOiRatio": "0.5"
+        }
+      },
+      "hash": "55c483cd8d2084ce67eb9fa4347184b0",
+      "version": 7
+    },
+    "setting.perpsEthMaintenanceMarginFraction": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMaintenanceMarginFraction": ""
+        }
+      },
+      "hash": "99914b932bd37a50b983c5e7c90ae93b",
+      "version": 7
+    },
+    "setting.perpsEthMaintenanceMarginScalar": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMaintenanceMarginScalar": "0.28"
+        }
+      },
+      "hash": "d06c6fc4e96060dd0945a1a15b365263",
+      "version": 7
+    },
+    "setting.perpsEthMakerFeeRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMakerFeeRatio": "0.0002"
+        }
+      },
+      "hash": "1f6a0061a38e38df1d2aea9424f1fb01",
+      "version": 7
+    },
+    "setting.perpsEthMaxFundingVelocity": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMaxFundingVelocity": "9"
+        }
+      },
+      "hash": "7d2b8b65c56b85936c2dfad3e03dfe76",
+      "version": 7
+    },
+    "setting.perpsEthMaxLiquidationLimitAccumulationMultiplier": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMaxLiquidationLimitAccumulationMultiplier": "1.5"
+        }
+      },
+      "hash": "1f0e6e60b58149c0709fcecc362ae316",
+      "version": 7
+    },
+    "setting.perpsEthMaxLiquidationPd": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMaxLiquidationPd": "0.0005"
+        }
+      },
+      "hash": "5ae3d8c45b3277572da62621db0ab6bb",
+      "version": 7
+    },
+    "setting.perpsEthMaxMarketSize": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMaxMarketSize": "5250"
+        }
+      },
+      "hash": "7737d458c3d056b7585876c15aec680c",
+      "version": 7
+    },
+    "setting.perpsEthMaxSecondsInLiquidationWindow": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMaxSecondsInLiquidationWindow": "30"
+        }
+      },
+      "hash": "b4168e6fd8e62178489ae92c23ee71e8",
+      "version": 7
+    },
+    "setting.perpsEthMinimumInitialMarginRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMinimumInitialMarginRatio": "0.02"
+        }
+      },
+      "hash": "6d334a816fa5c0e28e98a62d1ba96e12",
+      "version": 7
+    },
+    "setting.perpsEthMinimumPositionMargin": {
+      "artifacts": {
+        "settings": {
+          "perpsEthMinimumPositionMargin": "50"
+        }
+      },
+      "hash": "b609262bebf4c3601681034643a5df87",
+      "version": 7
+    },
+    "setting.perpsEthSkewScale": {
+      "artifacts": {
+        "settings": {
+          "perpsEthSkewScale": "10000000"
+        }
+      },
+      "hash": "b4d7a773619d1bc22f2850362f9351d4",
+      "version": 7
+    },
+    "setting.perpsEthSynthMaxCollateralAmount": {
+      "artifacts": {
+        "settings": {
+          "perpsEthSynthMaxCollateralAmount": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+        }
+      },
+      "hash": "c58bed99bbb29bc55be4aca797032c53",
+      "version": 7
+    },
+    "setting.perpsEthTakerFeeRatio": {
+      "artifacts": {
+        "settings": {
+          "perpsEthTakerFeeRatio": "0.0005"
+        }
+      },
+      "hash": "5ae3d8c45b3277572da62621db0ab6bb",
+      "version": 7
+    },
+    "setting.perps_keeper_cost_package": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_cost_package": "arbitrum-gas-price-oracle:3.3.16"
+        }
+      },
+      "hash": "5344ee6b18a6667a31ade7106f0d3cfc",
+      "version": 7
+    },
+    "setting.perps_keeper_l1_cost_flag_gas_units": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_l1_cost_flag_gas_units": "15500"
+        }
+      },
+      "hash": "3ce65c68107fce4ea3e9d4cd57d43f96",
+      "version": 7
+    },
+    "setting.perps_keeper_l1_cost_liquidate_gas_units": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_l1_cost_liquidate_gas_units": "5500"
+        }
+      },
+      "hash": "d6bdd761acdebc3a4ec811661aa77c07",
+      "version": 7
+    },
+    "setting.perps_keeper_l1_cost_settle_gas_units": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_l1_cost_settle_gas_units": "30000"
+        }
+      },
+      "hash": "c00e6bbcc1e6d7fb03ac2fb228f56985",
+      "version": 7
+    },
+    "setting.perps_keeper_l2_cost_flag_gas_units": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_l2_cost_flag_gas_units": "250000"
+        }
+      },
+      "hash": "515fc013d1c8eab8263a93f9514da382",
+      "version": 7
+    },
+    "setting.perps_keeper_l2_cost_liquidate_gas_units": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_l2_cost_liquidate_gas_units": "1100000"
+        }
+      },
+      "hash": "262afba57bb439bb6a819e9330e9dcb4",
+      "version": 7
+    },
+    "setting.perps_keeper_l2_cost_settle_gas_units": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_l2_cost_settle_gas_units": "1200000"
+        }
+      },
+      "hash": "77c845638cfebb34a1e7a4768d9467ac",
+      "version": 7
+    },
+    "setting.perps_liquidation_max_keeper_reward_usd": {
+      "artifacts": {
+        "settings": {
+          "perps_liquidation_max_keeper_reward_usd": "100"
+        }
+      },
+      "hash": "747281c13f8d6c7e000941bc58e5fc0a",
+      "version": 7
+    },
+    "setting.perps_liquidation_max_keeper_scaling_ratio_d18": {
+      "artifacts": {
+        "settings": {
+          "perps_liquidation_max_keeper_scaling_ratio_d18": "0.3"
+        }
+      },
+      "hash": "5be58e437c18785e12ebf29daf48f188",
+      "version": 7
+    },
+    "setting.perps_liquidation_min_keeper_profit_ratio_d18": {
+      "artifacts": {
+        "settings": {
+          "perps_liquidation_min_keeper_profit_ratio_d18": "0.30"
+        }
+      },
+      "hash": "041164afb163314bb04e81a41b187e8e",
+      "version": 7
+    },
+    "setting.perps_liquidation_min_keeper_reward_usd": {
+      "artifacts": {
+        "settings": {
+          "perps_liquidation_min_keeper_reward_usd": "5"
+        }
+      },
+      "hash": "bf7f4238534660413f758d9c386deaf6",
+      "version": 7
+    },
+    "setting.perps_market_package": {
+      "artifacts": {
+        "settings": {
+          "perps_market_package": "synthetix-perps-market:3.3.17"
+        }
+      },
+      "hash": "b4eef936b479e89880603b7fa6a88884",
+      "version": 7
+    },
+    "setting.perps_super_market_name": {
+      "artifacts": {
+        "settings": {
+          "perps_super_market_name": "High MCap"
+        }
+      },
+      "hash": "92e2e331ed7c2c6a57cdf1512104ae7f",
+      "version": 7
+    },
+    "setting.pool_owner": {
+      "artifacts": {
+        "settings": {
+          "pool_owner": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+        }
+      },
+      "hash": "96408b630eba79d5dca7f9c1181b689e",
+      "version": 7
+    },
+    "setting.pythArbFeedId": {
+      "artifacts": {
+        "settings": {
+          "pythArbFeedId": "0x3fa4252848f9f0a1480be62745a4629d9eb1322aebab8a791e344b3b9c1adcf5"
+        }
+      },
+      "hash": "13bb632100c3c5ae4ee67c99a7251509",
+      "version": 7
+    },
+    "setting.pythBtcFeedId": {
+      "artifacts": {
+        "settings": {
+          "pythBtcFeedId": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43"
+        }
+      },
+      "hash": "55de472868f03643c2b898c52dfce527",
+      "version": 7
+    },
+    "setting.pythEthFeedId": {
+      "artifacts": {
+        "settings": {
+          "pythEthFeedId": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"
+        }
+      },
+      "hash": "76b70cf1081f908461371df70e34da16",
+      "version": 7
+    },
+    "setting.pythFeedUrl": {
+      "artifacts": {
+        "settings": {
+          "pythFeedUrl": ""
+        }
+      },
+      "hash": "99914b932bd37a50b983c5e7c90ae93b",
+      "version": 7
+    },
+    "setting.pythPriceVerificationAddress": {
+      "artifacts": {
+        "settings": {
+          "pythPriceVerificationAddress": ""
+        }
+      },
+      "hash": "99914b932bd37a50b983c5e7c90ae93b",
+      "version": 7
+    },
+    "setting.pyth_price_verification_address": {
+      "artifacts": {
+        "settings": {
+          "pyth_price_verification_address": "0xff1a0f4744e8582DF1aE09D5611b887B6a12925C"
+        }
+      },
+      "hash": "8d3cfa71d0d3f87a34fc3bbfecb3022f",
+      "version": 7
+    },
+    "setting.referrerFee": {
+      "artifacts": {
+        "settings": {
+          "referrerFee": "200000000000000000"
+        }
+      },
+      "hash": "f296f686e58711260897d9596d6363a5",
+      "version": 7
+    },
+    "setting.salt": {
+      "artifacts": {
+        "settings": {
+          "salt": "ARBTHETIX"
+        }
+      },
+      "hash": "38a2a0f16237df000b60e3df90ebe1e4",
+      "version": 7
+    },
+    "setting.sc_pool_id": {
+      "artifacts": {
+        "settings": {
+          "sc_pool_id": "1"
+        }
+      },
+      "hash": "5f6fb867a611e73895d85f93fc6f7baa",
+      "version": 7
+    },
+    "setting.settlementMaxRoundingLoss": {
+      "artifacts": {
+        "settings": {
+          "settlementMaxRoundingLoss": "0.000001"
+        }
+      },
+      "hash": "345d1577ca60402d0a0632b8eec80f43",
+      "version": 7
+    },
+    "setting.settlementMinimumUsdExchangeAmount": {
+      "artifacts": {
+        "settings": {
+          "settlementMinimumUsdExchangeAmount": "0.000001"
+        }
+      },
+      "hash": "345d1577ca60402d0a0632b8eec80f43",
+      "version": 7
+    },
+    "setting.settlementReward": {
+      "artifacts": {
+        "settings": {
+          "settlementReward": "1"
+        }
+      },
+      "hash": "5f6fb867a611e73895d85f93fc6f7baa",
+      "version": 7
+    },
+    "setting.snx_address": {
+      "artifacts": {
+        "settings": {
+          "snx_address": ""
+        }
+      },
+      "hash": "99914b932bd37a50b983c5e7c90ae93b",
+      "version": 7
+    },
+    "setting.snx_package": {
+      "artifacts": {
+        "settings": {
+          "snx_package": "synthetix:3.3.15"
+        }
+      },
+      "hash": "b118cc3e52d9bab282321e8293b17a1f",
+      "version": 7
+    },
+    "setting.spot_market_package": {
+      "artifacts": {
+        "settings": {
+          "spot_market_package": "synthetix-spot-market:3.3.15"
+        }
+      },
+      "hash": "d8987ab98144a375af937e0df8cbcca5",
+      "version": 7
+    },
+    "setting.target_preset": {
+      "artifacts": {
+        "settings": {
+          "target_preset": "arbthetix"
+        }
+      },
+      "hash": "c1f1551bd186b5f50b6dc111e195c893",
+      "version": 7
+    },
+    "setting.usdc_address": {
+      "artifacts": {
+        "settings": {
+          "usdc_address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+        }
+      },
+      "hash": "bfdcac7a4a9346cedad3f30a6c827795",
+      "version": 7
+    },
+    "setting.weth_address": {
+      "artifacts": {
+        "settings": {
+          "weth_address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+        }
+      },
+      "hash": "94f9c04959c5a5f238a3a33021ae36c2",
+      "version": 7
     }
   },
   "options": {},
