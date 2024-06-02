@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.14.2",
-  "timestamp": 1717011078,
+  "generator": "cannon cli 2.14.3",
+  "timestamp": 1717093663,
   "def": {
     "setting": {
       "snx_package": {
@@ -2071,6 +2071,7 @@
       },
       "usdc_mock_collateral": {
         "source": "mintable-token:1.8",
+        "target": "synthetix-mock-tokens:1.8@usdc",
         "options": {
           "salt": "<%= settings.salt %>",
           "name": "Fake USD Coin",
@@ -2088,6 +2089,7 @@
       },
       "snx_mock_collateral": {
         "source": "mintable-token@permissionless-mint",
+        "target": "synthetix-mock-tokens@snx",
         "options": {
           "salt": "<%= settings.salt %>",
           "name": "Fake Wrapped SNX",
@@ -2455,7 +2457,7 @@
         "func": "configureMaximumMarketCollateral",
         "args": [
           "<%= extras.synth_stata_usdc_market_id %>",
-          "<%= imports.erc_4626_to_assets_ratio_oracle.contracts.ERC4626Mock.address %>",
+          "<%= imports.erc_4626_to_assets_ratio_oracle.imports.statausdc_token_mock.contracts.Token.address %>",
           "<%= settings.synthStataUsdcMaxMarketCollateral %>"
         ]
       },
@@ -2472,7 +2474,7 @@
         "func": "setWrapper",
         "args": [
           "<%= extras.synth_stata_usdc_market_id %>",
-          "<%= imports.erc_4626_to_assets_ratio_oracle.contracts.ERC4626Mock.address %>",
+          "<%= imports.erc_4626_to_assets_ratio_oracle.imports.statausdc_token_mock.contracts.Token.address %>",
           "<%= settings.synthStataUsdcMaxMarketCollateral %>"
         ]
       },
@@ -2486,7 +2488,7 @@
         "func": "configureCollateral",
         "args": [
           {
-            "tokenAddress": "<%= imports.erc_4626_to_assets_ratio_oracle.contracts.ERC4626Mock.address %>",
+            "tokenAddress": "<%= imports.erc_4626_to_assets_ratio_oracle.imports.statausdc_token_mock.contracts.Token.address %>",
             "oracleNodeId": "<%= extras.erc_4626_to_assets_ratio_oracle_id %>",
             "issuanceRatioD18": "<%= settings.sstatausdc_issuance_ratio %>",
             "liquidationRatioD18": "<%= settings.sstatausdc_liquidation_ratio %>",
@@ -13062,11 +13064,11 @@
     },
     "clone": {
       "erc_4626_to_assets_ratio_oracle": {
-        "source": "erc-4626-to-assets-ratio-oracle"
+        "source": "erc-4626-to-assets-ratio-oracle:1.0.0"
       }
     },
     "name": "synthetix-omnibus",
-    "version": "31",
+    "version": "32",
     "description": "Andromeda dev deployment",
     "preset": "andromeda"
   },
@@ -13233,7 +13235,7 @@
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmTNVuuwHkRm4d5EBEoD5Wx8kjU9EtoDBhDQUesXkw1Xvy",
+            "url": "ipfs://QmZzzEyH4q2Eg8cewFTjQBfsXuQyDnzBcHkDHf7Wpu4Ts2",
             "tags": [
               "latest"
             ],
@@ -15769,7 +15771,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmeCPBsGuYAn97wfKD484Vuyk2gzRHzi6bMPrsJhFSqBKq",
+            "url": "ipfs://QmXwKs5vZkqADjLUsQnj7oGi1e96DjHbPMeeuT9TZNMqC3",
             "tags": [
               "latest"
             ],
@@ -16552,7 +16554,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmNzHUXCMwj22KREHXsV6PHdgUJdRYdPpscD7hETT5Gt7y",
+                "url": "ipfs://QmZzzEyH4q2Eg8cewFTjQBfsXuQyDnzBcHkDHf7Wpu4Ts2",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xFf15AF9219D74ABD40a97537Db0EfcC6eE77040b",
@@ -18114,10 +18116,11 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmYMsSWcRezj1LpiNZZvWeeFuCD6Yka9KfacLuFFoQ44WR",
+                    "url": "ipfs://QmXRGhepF6HXHxzQgrrhT9u2ch26QBLG4sjSqjMxd98ZNS",
                     "tags": [
                       "latest"
                     ],
+                    "target": "oracle-manager:latest@with-synthetix",
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
@@ -18991,7 +18994,7 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://QmTZbeJNUfLcYA3R1zjndzDiT1JEaDp2x1jUhojTMBp9oy",
+            "url": "ipfs://QmTj48e4VGQ1wcHdwB98ZsBocw6KQ2rTja5tNL3oaCR2KS",
             "tags": [
               "latest"
             ],
@@ -19995,7 +19998,7 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmeCPBsGuYAn97wfKD484Vuyk2gzRHzi6bMPrsJhFSqBKq",
+                "url": "ipfs://QmXwKs5vZkqADjLUsQnj7oGi1e96DjHbPMeeuT9TZNMqC3",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0x2CdD83591bFcc25Be08561b3E9C18869D459C192",
@@ -20773,7 +20776,7 @@
                 },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://QmNzHUXCMwj22KREHXsV6PHdgUJdRYdPpscD7hETT5Gt7y",
+                    "url": "ipfs://QmZzzEyH4q2Eg8cewFTjQBfsXuQyDnzBcHkDHf7Wpu4Ts2",
                     "contracts": {
                       "AccountModule": {
                         "address": "0xFf15AF9219D74ABD40a97537Db0EfcC6eE77040b",
@@ -22335,10 +22338,11 @@
                         }
                       },
                       "oracle_manager": {
-                        "url": "ipfs://QmYMsSWcRezj1LpiNZZvWeeFuCD6Yka9KfacLuFFoQ44WR",
+                        "url": "ipfs://QmXRGhepF6HXHxzQgrrhT9u2ch26QBLG4sjSqjMxd98ZNS",
                         "tags": [
                           "latest"
                         ],
+                        "target": "oracle-manager:latest@with-synthetix",
                         "preset": "with-synthetix",
                         "contracts": {
                           "NodeModule": {
@@ -23099,7 +23103,7 @@
                 }
               },
               "synthetix": {
-                "url": "ipfs://QmNzHUXCMwj22KREHXsV6PHdgUJdRYdPpscD7hETT5Gt7y",
+                "url": "ipfs://QmZzzEyH4q2Eg8cewFTjQBfsXuQyDnzBcHkDHf7Wpu4Ts2",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xFf15AF9219D74ABD40a97537Db0EfcC6eE77040b",
@@ -24661,10 +24665,11 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmYMsSWcRezj1LpiNZZvWeeFuCD6Yka9KfacLuFFoQ44WR",
+                    "url": "ipfs://QmXRGhepF6HXHxzQgrrhT9u2ch26QBLG4sjSqjMxd98ZNS",
                     "tags": [
                       "latest"
                     ],
+                    "target": "oracle-manager:latest@with-synthetix",
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
@@ -46647,50 +46652,156 @@
       "artifacts": {
         "imports": {
           "erc_4626_to_assets_ratio_oracle": {
-            "url": "ipfs://QmXB2S8nVAEYGZVtUs8FCV2EcZ1iUAhJMiG2GGfdfWbfKw",
+            "url": "ipfs://QmUHHpKaEXhK5LMxSbU8Mf9CDvAvoBnwdp3xxMsmr42Szj",
             "tags": [
               "latest"
             ],
-            "target": "erc-4626-to-assets-ratio-oracle:latest@with-synthetix-omnibus",
+            "target": "erc-4626-to-assets-ratio-oracle:1.0.0@with-synthetix-omnibus",
             "preset": "with-synthetix-omnibus",
+            "imports": {
+              "ausdc_token_mock": {
+                "url": "ipfs://QmdHmZdySmgzRa6V1CHf1jBoyJU2y6ayTmWD8rqsMZKB3D",
+                "tags": [
+                  "latest"
+                ],
+                "target": "synthetix-mock-tokens:latest@ausdc",
+                "preset": "ausdc",
+                "settings": {
+                  "decimals": "18",
+                  "name": "Token",
+                  "salt": "",
+                  "symbol": "TKN"
+                },
+                "contracts": {
+                  "MintableToken": {
+                    "address": "0x862AB59572e38F93197C29Aa7a562e986c80e928",
+                    "abi": [
+                      "constructor(string name, string symbol, uint8 tokenDecimals) payable",
+                      "function allowance(address owner, address spender) view returns (uint256)",
+                      "function approve(address spender, uint256 amount) returns (bool)",
+                      "function balanceOf(address account) view returns (uint256)",
+                      "function decimals() view returns (uint8)",
+                      "function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)",
+                      "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
+                      "function mint(uint256 amount, address to)",
+                      "function name() view returns (string)",
+                      "function symbol() view returns (string)",
+                      "function totalSupply() view returns (uint256)",
+                      "function transfer(address to, uint256 amount) returns (bool)",
+                      "function transferFrom(address from, address to, uint256 amount) returns (bool)",
+                      "event Approval(address indexed owner, address indexed spender, uint256 value)",
+                      "event Transfer(address indexed from, address indexed to, uint256 value)"
+                    ],
+                    "constructorArgs": [
+                      "aUSDC Mock",
+                      "aUSDC",
+                      "6"
+                    ],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "",
+                    "sourceName": "src/MintableTokenPermissionlessMint.sol",
+                    "contractName": "MintableTokenPermissionlessMint",
+                    "deployedOn": "contract.MintableToken",
+                    "highlight": true,
+                    "gasUsed": 0,
+                    "gasCost": "0"
+                  }
+                },
+                "extras": {
+                  "decimals": "18",
+                  "name": "Token",
+                  "salt": "",
+                  "symbol": "TKN"
+                }
+              },
+              "statausdc_token_mock": {
+                "url": "ipfs://QmbFhQoadCLHnNstRR68zonbKVb8aoqzdGVPk9bxYsX92q",
+                "tags": [
+                  "latest"
+                ],
+                "target": "synthetix-mock-tokens:latest@statausdc",
+                "preset": "statausdc",
+                "settings": {
+                  "name": "",
+                  "symbol": "",
+                  "asset": ""
+                },
+                "contracts": {
+                  "Token": {
+                    "address": "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70",
+                    "abi": [
+                      "constructor(address asset, string vaultName, string vaultSymbol)",
+                      "function allowance(address owner, address spender) view returns (uint256)",
+                      "function approve(address spender, uint256 value) returns (bool)",
+                      "function asset() view returns (address)",
+                      "function balanceOf(address account) view returns (uint256)",
+                      "function convertToAssets(uint256 shares) view returns (uint256)",
+                      "function convertToShares(uint256 assets) view returns (uint256)",
+                      "function decimals() view returns (uint8)",
+                      "function deposit(uint256 assets, address receiver) returns (uint256)",
+                      "function maxDeposit(address) view returns (uint256)",
+                      "function maxMint(address) view returns (uint256)",
+                      "function maxRedeem(address owner) view returns (uint256)",
+                      "function maxWithdraw(address owner) view returns (uint256)",
+                      "function mint(uint256 shares, address receiver) returns (uint256)",
+                      "function name() view returns (string)",
+                      "function previewDeposit(uint256 assets) view returns (uint256)",
+                      "function previewMint(uint256 shares) view returns (uint256)",
+                      "function previewRedeem(uint256 shares) view returns (uint256)",
+                      "function previewWithdraw(uint256 assets) view returns (uint256)",
+                      "function redeem(uint256 shares, address receiver, address owner) returns (uint256)",
+                      "function symbol() view returns (string)",
+                      "function totalAssets() view returns (uint256)",
+                      "function totalSupply() view returns (uint256)",
+                      "function transfer(address to, uint256 value) returns (bool)",
+                      "function transferFrom(address from, address to, uint256 value) returns (bool)",
+                      "function withdraw(uint256 assets, address receiver, address owner) returns (uint256)",
+                      "event Approval(address indexed owner, address indexed spender, uint256 value)",
+                      "event Deposit(address indexed sender, address indexed owner, uint256 assets, uint256 shares)",
+                      "event Transfer(address indexed from, address indexed to, uint256 value)",
+                      "event Withdraw(address indexed sender, address indexed receiver, address indexed owner, uint256 assets, uint256 shares)",
+                      "error AddressEmptyCode(address target)",
+                      "error ERC20InsufficientAllowance(address spender, uint256 allowance, uint256 needed)",
+                      "error ERC20InsufficientBalance(address sender, uint256 balance, uint256 needed)",
+                      "error ERC20InvalidApprover(address approver)",
+                      "error ERC20InvalidReceiver(address receiver)",
+                      "error ERC20InvalidSender(address sender)",
+                      "error ERC20InvalidSpender(address spender)",
+                      "error ERC4626ExceededMaxDeposit(address receiver, uint256 assets, uint256 max)",
+                      "error ERC4626ExceededMaxMint(address receiver, uint256 shares, uint256 max)",
+                      "error ERC4626ExceededMaxRedeem(address owner, uint256 shares, uint256 max)",
+                      "error ERC4626ExceededMaxWithdraw(address owner, uint256 assets, uint256 max)",
+                      "error FailedCall()",
+                      "error InsufficientBalance(uint256 balance, uint256 needed)",
+                      "error SafeERC20FailedOperation(address token)"
+                    ],
+                    "constructorArgs": [
+                      "0x862AB59572e38F93197C29Aa7a562e986c80e928",
+                      "stataUSDC Mock",
+                      "stataUSDC"
+                    ],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0x4271f29c8dff8fe72bfcef203ab190ced26549919b9dd005b38159560d005043",
+                    "sourceName": "contracts/implementations/token/ERC4626Impl.sol",
+                    "contractName": "ERC4626Impl",
+                    "deployedOn": "deploy.Token",
+                    "gasUsed": 1140905,
+                    "gasCost": "1000257"
+                  }
+                },
+                "extras": {
+                  "name": "",
+                  "symbol": "",
+                  "asset": ""
+                }
+              }
+            },
+            "settings": {
+              "vault": "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70"
+            },
             "contracts": {
-              "ERC20Mock": {
-                "address": "0x2b3dDf4600Cbb8dB9CB7cf65924cF98b333D362F",
-                "abi": [
-                  "function decimals() pure returns (uint8)"
-                ],
-                "constructorArgs": [],
-                "linkedLibraries": {},
-                "deployTxnHash": "0xcefcb29c492f73f8d9a6321e655420e159150f86344df614c7617262d0843761",
-                "sourceName": "contracts/mocks/ERC20Mock.sol",
-                "contractName": "ERC20Mock",
-                "deployedOn": "deploy.ERC20Mock",
-                "gasUsed": 79157,
-                "gasCost": "1000263"
-              },
-              "ERC4626Mock": {
-                "address": "0x35dc56c594eE66617CB6108022e7554d43155440",
-                "abi": [
-                  "constructor(address _asset)",
-                  "function asset() view returns (address)",
-                  "function convertToAssets(uint256 shares) view returns (uint256)",
-                  "function decimals() pure returns (uint8)",
-                  "function totalAssets() pure returns (uint256)",
-                  "function totalSupply() pure returns (uint256)"
-                ],
-                "constructorArgs": [
-                  "0x2b3dDf4600Cbb8dB9CB7cf65924cF98b333D362F"
-                ],
-                "linkedLibraries": {},
-                "deployTxnHash": "0xf9582166e525c6ed5d185d48f79a048de0ac794951603cc793f1fad830d72508",
-                "sourceName": "contracts/mocks/ERC4626Mock.sol",
-                "contractName": "ERC4626Mock",
-                "deployedOn": "deploy.ERC4626Mock",
-                "gasUsed": 307916,
-                "gasCost": "1000263"
-              },
               "ERC4626ToAssetsRatioOracle": {
-                "address": "0xB0f859241AafA2e8d174065B751d4f603be9B687",
+                "address": "0x6361f087ae398608399DCBec6F6CEE38f6343A9f",
                 "abi": [
                   "constructor(address _vaultAddress)",
                   "error OverflowUint256ToInt256()",
@@ -46704,22 +46815,19 @@
                   "function supportsInterface(bytes4 interfaceId) pure returns (bool)"
                 ],
                 "constructorArgs": [
-                  "0x35dc56c594eE66617CB6108022e7554d43155440"
+                  "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xa75f448b8962d89a3fbcebdb04816c1eed8ea4fc6f8199082ae4371229fdbaac",
+                "deployTxnHash": "0xce821114468cbb349cb24e07401d6a97e2c8799ae55fda3f4dcf9139efeea708",
                 "sourceName": "contracts/ERC4626ToAssetsRatioOracle.sol",
                 "contractName": "ERC4626ToAssetsRatioOracle",
                 "deployedOn": "deploy.ERC4626ToAssetsRatioOracle",
-                "gasUsed": 661109,
-                "gasCost": "1000263"
+                "gasUsed": 659223,
+                "gasCost": "1000257"
               }
             },
-            "settings": {
-              "vault": "0x35dc56c594eE66617CB6108022e7554d43155440"
-            },
             "extras": {
-              "vault": "0x35dc56c594eE66617CB6108022e7554d43155440"
+              "vault": "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70"
             }
           }
         }
@@ -46786,31 +46894,31 @@
         "contracts": {},
         "txns": {
           "register_erc_4626_to_assets_ratio_oracle_node": {
-            "hash": "0x3ead0274aefdc6246216dc2c26c4091cfffab14c19b759b605990444bc1dd149",
+            "hash": "0x232506cc65283fe08a074f82fa82fed58fd0af717473c1cf2d6c3f78d7c2f04a",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0xd0e59ba4704879569c980c7d0aed32aeb87dca0a6ab154e9eeca3a2252fcef1a",
+                    "0xadc7928aa839fc0877a96509de2b19ec77e85b48999ac5d9d3cad40ffc5281ad",
                     2,
-                    "0x000000000000000000000000b0f859241aafa2e8d174065b751d4f603be9b687",
+                    "0x0000000000000000000000006361f087ae398608399dcbec6f6cee38f6343a9f",
                     []
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.register_erc_4626_to_assets_ratio_oracle_node",
-            "gasUsed": 119030,
-            "gasCost": "1000264",
+            "gasUsed": 126624,
+            "gasCost": "1000257",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {
-          "erc_4626_to_assets_ratio_oracle_id": "0xd0e59ba4704879569c980c7d0aed32aeb87dca0a6ab154e9eeca3a2252fcef1a"
+          "erc_4626_to_assets_ratio_oracle_id": "0xadc7928aa839fc0877a96509de2b19ec77e85b48999ac5d9d3cad40ffc5281ad"
         }
       },
-      "hash": "0e69aaea9a5e180a85fd8dac32c57835",
+      "hash": "697562859a4de4ef09523ef889e40cfa",
       "version": 7
     },
     "invoke.CoreProxy_configureCollateral_stataUSDC": {
@@ -46818,20 +46926,20 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_stataUSDC": {
-            "hash": "0xff638ce31cb8f410fae46ccaaee97c215dfee27f1a278d70818379d554671064",
+            "hash": "0x950a0e1f5a9459d75ef78272ea74458e70bdaac56ece71804767b6e6847602b8",
             "events": {
               "CollateralConfigured": [
                 {
                   "name": "CollateralConfigured",
                   "args": [
-                    "0x35dc56c594eE66617CB6108022e7554d43155440",
+                    "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70",
                     {
                       "depositingEnabled": false,
                       "issuanceRatioD18": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
                       "liquidationRatioD18": "1100000000000000000",
                       "liquidationRewardD18": "1000000000000000000",
-                      "oracleNodeId": "0xd0e59ba4704879569c980c7d0aed32aeb87dca0a6ab154e9eeca3a2252fcef1a",
-                      "tokenAddress": "0x35dc56c594eE66617CB6108022e7554d43155440",
+                      "oracleNodeId": "0xadc7928aa839fc0877a96509de2b19ec77e85b48999ac5d9d3cad40ffc5281ad",
+                      "tokenAddress": "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70",
                       "minDelegationD18": "100000000000000000000"
                     }
                   ]
@@ -46840,13 +46948,13 @@
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_stataUSDC",
             "gasUsed": 223609,
-            "gasCost": "1000264",
+            "gasCost": "1000257",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "00be886517c08d7872625c4b453ad105",
+      "hash": "44295313104b1a7761131feddbd03184",
       "version": 7
     },
     "invoke.SpotMarketProxy_createSynth_stataUSDC": {
@@ -46896,14 +47004,14 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureMaximumMarketCollateral_stataUSDC": {
-            "hash": "0x738d9a273068f1c15a73febac2dbf10afebd4dcb6b76c94da0d52dc106c9be42",
+            "hash": "0xf95adeb888d67397dd186ab4933fa8ea2a76e54a93f063ebcfaefc4b7c90059a",
             "events": {
               "MaximumMarketCollateralConfigured": [
                 {
                   "name": "MaximumMarketCollateralConfigured",
                   "args": [
                     "4",
-                    "0x35dc56c594eE66617CB6108022e7554d43155440",
+                    "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70",
                     "5000000000000000000000000",
                     "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   ]
@@ -46912,13 +47020,13 @@
             },
             "deployedOn": "invoke.CoreProxy_configureMaximumMarketCollateral_stataUSDC",
             "gasUsed": 57782,
-            "gasCost": "1000264",
+            "gasCost": "1000257",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "a1a475aafe1c0973c8e78f26c9153b0e",
+      "hash": "9a58d7be807234629a86e8bdaa43f5c8",
       "version": 7
     },
     "invoke.SpotMarketProxy_setWrapper_stataUSDC": {
@@ -46926,28 +47034,28 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_setWrapper_stataUSDC": {
-            "hash": "0x781e102bb216a815755aa16b3c02c2efcaa8c88ef03cbaf8ecfdfb1aed2dca13",
+            "hash": "0x5b8166fab767db86e4ce03845a806563a28228846c134e725026dbb260f93cbf",
             "events": {
               "WrapperSet": [
                 {
                   "name": "WrapperSet",
                   "args": [
                     "4",
-                    "0x35dc56c594eE66617CB6108022e7554d43155440",
+                    "0xB3f05d39504dA95876EA0174D25Ae51Ac2422a70",
                     "5000000000000000000000000"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_setWrapper_stataUSDC",
-            "gasUsed": 96395,
-            "gasCost": "1000264",
+            "gasUsed": 59395,
+            "gasCost": "1000257",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "b282de97bbf01c59de4d41c5e66dff97",
+      "hash": "fbae9c75780cf1697b34007b9fa0cb11",
       "version": 7
     },
     "invoke.SpotMarketProxy_updatePriceData_stataUSDC": {
@@ -46955,29 +47063,29 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_updatePriceData_stataUSDC": {
-            "hash": "0x263acc030e381dad70887e0c1fa5e49305d5a54ff35eff47fe175776a16aca4e",
+            "hash": "0xa700462256cb620325ab5cf5cc6ff8a706403dcaec8da851000eac102d16f181",
             "events": {
               "SynthPriceDataUpdated": [
                 {
                   "name": "SynthPriceDataUpdated",
                   "args": [
                     "4",
-                    "0xd0e59ba4704879569c980c7d0aed32aeb87dca0a6ab154e9eeca3a2252fcef1a",
-                    "0xd0e59ba4704879569c980c7d0aed32aeb87dca0a6ab154e9eeca3a2252fcef1a",
+                    "0xadc7928aa839fc0877a96509de2b19ec77e85b48999ac5d9d3cad40ffc5281ad",
+                    "0xadc7928aa839fc0877a96509de2b19ec77e85b48999ac5d9d3cad40ffc5281ad",
                     "60"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_updatePriceData_stataUSDC",
-            "gasUsed": 102820,
-            "gasCost": "1000264",
+            "gasUsed": 48720,
+            "gasCost": "1000257",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "108c2e708be2b4792b5e4ba7a6970bce",
+      "hash": "b0e20f5d60c04250323a351b4550cce6",
       "version": 7
     },
     "invoke.configure_sstatausdc_collateral": {
@@ -46985,7 +47093,7 @@
         "contracts": {},
         "txns": {
           "configure_sstatausdc_collateral": {
-            "hash": "0x679dc7d6f03a4a6c51d7ea92d5f92ca812035c52550f589bbccf75988808052d",
+            "hash": "0xceb16760831aefe5c6dfe7affd9feff1f0365797172d34a40126466cd548af41",
             "events": {
               "CollateralConfigured": [
                 {
@@ -46997,7 +47105,7 @@
                       "issuanceRatioD18": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
                       "liquidationRatioD18": "1100000000000000000",
                       "liquidationRewardD18": "1000000000000000000",
-                      "oracleNodeId": "0xd0e59ba4704879569c980c7d0aed32aeb87dca0a6ab154e9eeca3a2252fcef1a",
+                      "oracleNodeId": "0xadc7928aa839fc0877a96509de2b19ec77e85b48999ac5d9d3cad40ffc5281ad",
                       "tokenAddress": "0xB94c6E4f5162717c6fAb1Eeab8f0296307F91528",
                       "minDelegationD18": "100000000000000000000"
                     }
@@ -47006,14 +47114,14 @@
               ]
             },
             "deployedOn": "invoke.configure_sstatausdc_collateral",
-            "gasUsed": 243521,
-            "gasCost": "1000263",
+            "gasUsed": 59368,
+            "gasCost": "1000257",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "bdc027c9e712073cd2744b77e9602a12",
+      "hash": "1009dcf2375087b6bdc0b2637a607284",
       "version": 7
     }
   },
