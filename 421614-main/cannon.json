@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.13.3",
-  "timestamp": 1717487343,
+  "generator": "cannon cli 2.15.0",
+  "timestamp": 1718073383,
   "def": {
     "setting": {
       "snx_package": {
@@ -210,12 +210,7 @@
           "synthetixPreset": "<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.system",
-          "setting.owner",
-          "setting.salt",
-          "setting.snx_package",
-          "setting.spot_market_package",
-          "setting.target_preset"
+          "provision.system"
         ]
       },
       "perpsFactory": {
@@ -229,13 +224,7 @@
           "spotMarketPackage": "<%= settings.spot_market_package %>@<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.spotFactory",
-          "setting.owner",
-          "setting.perps_market_package",
-          "setting.salt",
-          "setting.snx_package",
-          "setting.spot_market_package",
-          "setting.target_preset"
+          "provision.spotFactory"
         ]
       },
       "pyth_erc7412_wrapper": {
@@ -263,6 +252,45 @@
           "symbol": "fARB",
           "owner": "<%= settings.owner %>",
           "decimals": "18"
+        }
+      },
+      "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= extras.spartan_council_pool_id %>",
+          "collateralType": "<%= settings.arb_address %>",
+          "payoutToken": "<%= settings.arb_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Spartan Council Pool ARB Rewards for ARB LP"
+        }
+      },
+      "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= extras.spartan_council_pool_id %>",
+          "collateralType": "<%= settings.usdc_address %>",
+          "payoutToken": "<%= settings.arb_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Spartan Council Pool ARB Rewards for USDC LP"
+        }
+      },
+      "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= extras.spartan_council_pool_id %>",
+          "collateralType": "<%= settings.weth_address %>",
+          "payoutToken": "<%= settings.arb_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Spartan Council Pool ARB Rewards for WETH LP"
         }
       }
     },
@@ -545,11 +573,7 @@
           }
         },
         "depends": [
-          "invoke.CoreProxy_addToFeatureFlagAllowlist_createPool_deployer",
-          "provision.system",
-          "setting.deployer",
-          "setting.pool_owner",
-          "setting.spartan_council_pool_id_setting"
+          "invoke.CoreProxy_addToFeatureFlagAllowlist_createPool_deployer"
         ]
       },
       "CoreProxy_setPoolName_SpartanCouncil": {
@@ -1356,10 +1380,61 @@
           18,
           "<%= imports.system.contracts.USDRouter.address %>"
         ]
+      },
+      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.arb_address %>",
+          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp.contracts.RewardsDistributor.address %>"
+        ]
+      },
+      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.usdc_address %>",
+          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp.contracts.RewardsDistributor.address %>"
+        ]
+      },
+      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.weth_address %>",
+          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp.contracts.RewardsDistributor.address %>"
+        ]
       }
     },
     "name": "synthetix-omnibus",
-    "version": "7",
+    "version": "8",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -1829,6 +1904,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.dai_mock_collateral": {
@@ -1900,6 +1976,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.pyth_erc7412_wrapper": {
@@ -1948,16 +2025,18 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.system": {
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmQQuJkHbKBPKpQg4TsBSoYjhSwRStPmVwNcUTAvrNxpNd",
+            "url": "ipfs://QmYV9ykXLEESFo9Ga6pkHfHHY9zmdSWRQeDPaGERK5d8PK",
             "tags": [
               "latest"
             ],
+            "target": "synthetix:3.3.18@main",
             "preset": "main",
             "contracts": {
               "AccountModule": {
@@ -3520,10 +3599,11 @@
                 }
               },
               "oracle_manager": {
-                "url": "ipfs://QmZ1hiw427uFky1VPrWP4GddtJCvtHMyf7ygk2F64cFvbA",
+                "url": "ipfs://Qmctdas9u8avuJ1qmdt6D9M1YvGgUC2Ln84bnuynjPv6hQ",
                 "tags": [
                   "latest"
                 ],
+                "target": "oracle-manager:latest@with-synthetix",
                 "preset": "with-synthetix",
                 "contracts": {
                   "NodeModule": {
@@ -4186,6 +4266,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "invoke.CoreProxy_addToFeatureFlagAllowlist_createPool_deployer": {
@@ -4817,10 +4898,11 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmTuwrDnKQ7tr3DXroV2NLgSknyGDbvRo9Rvm3sXynbGTt",
+            "url": "ipfs://QmTBALvZL7CVPJyvuzyaAZpoTxiZmAE5bHcceFQnasaqaV",
             "tags": [
               "latest"
             ],
+            "target": "synthetix-spot-market:3.3.15@main",
             "preset": "main",
             "contracts": {
               "AsyncOrderConfigurationModule": {
@@ -5599,7 +5681,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmQQuJkHbKBPKpQg4TsBSoYjhSwRStPmVwNcUTAvrNxpNd",
+                "url": "ipfs://QmYV9ykXLEESFo9Ga6pkHfHHY9zmdSWRQeDPaGERK5d8PK",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x92D1c57Bfb7655327186380CD8bb69f4a972Fd2C",
@@ -7161,10 +7243,11 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmZ1hiw427uFky1VPrWP4GddtJCvtHMyf7ygk2F64cFvbA",
+                    "url": "ipfs://Qmctdas9u8avuJ1qmdt6D9M1YvGgUC2Ln84bnuynjPv6hQ",
                     "tags": [
                       "latest"
                     ],
+                    "target": "oracle-manager:latest@with-synthetix",
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
@@ -7927,6 +8010,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "invoke.CoreProxy_createPool_SpartanCouncil": {
@@ -8118,10 +8202,11 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://Qmb1NJjo2NNEdFdiUfkF7A3rXZr7czUD9j6C9b2iA5kNLs",
+            "url": "ipfs://QmWMZ4yisHBUGHGCNGdAarCumhzCB4bxspiH5Tw8gF6NDX",
             "tags": [
               "latest"
             ],
+            "target": "synthetix-perps-market:3.3.19@main",
             "preset": "main",
             "contracts": {
               "AsyncOrderCancelModule": {
@@ -9122,7 +9207,7 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmTuwrDnKQ7tr3DXroV2NLgSknyGDbvRo9Rvm3sXynbGTt",
+                "url": "ipfs://QmTBALvZL7CVPJyvuzyaAZpoTxiZmAE5bHcceFQnasaqaV",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0xF1aCD87E7EcFf92B7aC0793C6EF9812bc9e72a00",
@@ -9900,7 +9985,7 @@
                 },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://QmQQuJkHbKBPKpQg4TsBSoYjhSwRStPmVwNcUTAvrNxpNd",
+                    "url": "ipfs://QmYV9ykXLEESFo9Ga6pkHfHHY9zmdSWRQeDPaGERK5d8PK",
                     "contracts": {
                       "AccountModule": {
                         "address": "0x92D1c57Bfb7655327186380CD8bb69f4a972Fd2C",
@@ -11462,10 +11547,11 @@
                         }
                       },
                       "oracle_manager": {
-                        "url": "ipfs://QmZ1hiw427uFky1VPrWP4GddtJCvtHMyf7ygk2F64cFvbA",
+                        "url": "ipfs://Qmctdas9u8avuJ1qmdt6D9M1YvGgUC2Ln84bnuynjPv6hQ",
                         "tags": [
                           "latest"
                         ],
+                        "target": "oracle-manager:latest@with-synthetix",
                         "preset": "with-synthetix",
                         "contracts": {
                           "NodeModule": {
@@ -12227,7 +12313,7 @@
                 }
               },
               "synthetix": {
-                "url": "ipfs://QmQQuJkHbKBPKpQg4TsBSoYjhSwRStPmVwNcUTAvrNxpNd",
+                "url": "ipfs://QmYV9ykXLEESFo9Ga6pkHfHHY9zmdSWRQeDPaGERK5d8PK",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x92D1c57Bfb7655327186380CD8bb69f4a972Fd2C",
@@ -13789,10 +13875,11 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmZ1hiw427uFky1VPrWP4GddtJCvtHMyf7ygk2F64cFvbA",
+                    "url": "ipfs://Qmctdas9u8avuJ1qmdt6D9M1YvGgUC2Ln84bnuynjPv6hQ",
                     "tags": [
                       "latest"
                     ],
+                    "target": "oracle-manager:latest@with-synthetix",
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
@@ -14578,6 +14665,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "invoke.CoreProxy_configureCollateral_dai": {
@@ -15692,6 +15780,324 @@
         "settings": {}
       },
       "hash": "c259c5630137a392492cef4e107899cf",
+      "version": 7
+    },
+    "provision.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+      "artifacts": {
+        "imports": {
+          "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+            "url": "ipfs://QmRGxEwdo8xdk7w2hjmAFePtP35fH4JxWUe3r46Tjjih73",
+            "tags": [
+              "latest"
+            ],
+            "target": "synthetix-rewards-distributor:0.0.2@main",
+            "preset": "main",
+            "settings": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            },
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0x8Db7E7E3f00c2Fd011Bb715935d33BfA0570cDB6",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0x76490713314fCEC173f44e99346F54c6e92a8E42",
+                  "1",
+                  "0x7b356eEdABc1035834cd1f714658627fcb4820E3",
+                  "0x7b356eEdABc1035834cd1f714658627fcb4820E3",
+                  "18",
+                  "Spartan Council Pool ARB Rewards for ARB LP"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x1a4e42a87c7bc7012599196aad0dec4aa79f527001ccc8260ab89c83476cff77",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 1057483,
+                "gasCost": "274790000"
+              }
+            },
+            "extras": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "provision.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
+      "artifacts": {
+        "imports": {
+          "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
+            "url": "ipfs://QmWDdFALv5ix7o1aRwJsARDyBJhJCEsRKnHzANreht95J4",
+            "tags": [
+              "latest"
+            ],
+            "target": "synthetix-rewards-distributor:0.0.2@main",
+            "preset": "main",
+            "settings": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            },
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0x26c9B83fA781e93Ec4cA5fBAC07AC82135872512",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0x76490713314fCEC173f44e99346F54c6e92a8E42",
+                  "1",
+                  "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+                  "0x7b356eEdABc1035834cd1f714658627fcb4820E3",
+                  "18",
+                  "Spartan Council Pool ARB Rewards for USDC LP"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xd57c1fa944210b804bbcaea121b98dbc531ffc162b4e8e9c404a3429a7055d57",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 1059220,
+                "gasCost": "271430000"
+              }
+            },
+            "extras": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "provision.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
+      "artifacts": {
+        "imports": {
+          "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
+            "url": "ipfs://QmbP2LPfPRTHNitrTPVyUaKCJidTwoBRTLkHVdoZgww4Fq",
+            "tags": [
+              "latest"
+            ],
+            "target": "synthetix-rewards-distributor:0.0.2@main",
+            "preset": "main",
+            "settings": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            },
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0x3974935755a50295b727Ab40ae144BE29391d818",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0x76490713314fCEC173f44e99346F54c6e92a8E42",
+                  "1",
+                  "0x980B62Da83eFf3D4576C647993b0c1D7faf17c73",
+                  "0x7b356eEdABc1035834cd1f714658627fcb4820E3",
+                  "18",
+                  "Spartan Council Pool ARB Rewards for WETH LP"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0xce1697c53aed6179c2b3a94c3e6673fcc0f2a10a17ee546e09bfeec8dee0dad4",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 1059074,
+                "gasCost": "271780000"
+              }
+            },
+            "extras": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+            "hash": "0x3205abc95a14f209d72923f295ea77cbf166f93a83cea2c8318fcc1273197cd0",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x7b356eEdABc1035834cd1f714658627fcb4820E3",
+                    "0x8Db7E7E3f00c2Fd011Bb715935d33BfA0570cDB6"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp",
+            "gasUsed": 135206,
+            "gasCost": "267410000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "69e1df0ea487ea2a77c5966c53a647be",
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
+            "hash": "0x4a6b2f45b20d6f0a3aaf258503daebd75f71b4e653650ad8229879e8949246b5",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+                    "0x26c9B83fA781e93Ec4cA5fBAC07AC82135872512"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp",
+            "gasUsed": 135235,
+            "gasCost": "266190000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "89726d93b4c50604c1f0ac8baada0ad0",
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
+            "hash": "0x4fa180ac8d1dc6d9c1eea583b1ffe345edf87717462558c8ceeb03a3f899f466",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x980B62Da83eFf3D4576C647993b0c1D7faf17c73",
+                    "0x3974935755a50295b727Ab40ae144BE29391d818"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp",
+            "gasUsed": 135275,
+            "gasCost": "264490000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "32c7217cc1933525714a4c0bdc2ea804",
       "version": 7
     }
   },
