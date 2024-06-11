@@ -129,8 +129,7 @@
           "<%= settings.minimum_liquidity_ratio %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.minimum_liquidity_ratio"
+          "provision.system"
         ]
       },
       "setAccountTimeoutWithdraw": {
@@ -146,8 +145,7 @@
           "<%= hexZeroPad(hexlify(parseInt(settings.account_timeout_withdraw)), 32) %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.account_timeout_withdraw"
+          "provision.system"
         ]
       },
       "configureChainlinkCrossChain": {
@@ -163,9 +161,7 @@
           "<%= settings.ccip_token_pool %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.ccip_router",
-          "setting.ccip_token_pool"
+          "provision.system"
         ]
       },
       "setSupportedCrossChainNetworks": {
@@ -203,8 +199,7 @@
           "<%= settings.deployer %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.deployer"
+          "provision.system"
         ]
       },
       "registerSnxOracleManager": {
@@ -224,8 +219,7 @@
           }
         },
         "depends": [
-          "provision.system",
-          "setting.snx_aggregator_address"
+          "provision.system"
         ]
       },
       "configureSnxCollateral": {
@@ -248,10 +242,7 @@
           }
         ],
         "depends": [
-          "invoke.registerSnxOracleManager",
-          "provision.system",
-          "setting.snx_address",
-          "setting.snx_liquidation_reward"
+          "invoke.registerSnxOracleManager"
         ]
       },
       "createScPool": {
@@ -265,11 +256,7 @@
           "<%= settings.pool_owner %>"
         ],
         "depends": [
-          "invoke.permitCreatePool",
-          "provision.system",
-          "setting.deployer",
-          "setting.pool_owner",
-          "setting.sc_pool_id"
+          "invoke.permitCreatePool"
         ]
       },
       "setScPoolName": {
@@ -288,9 +275,7 @@
           "Spartan Council Pool"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "setPreferredPool": {
@@ -305,9 +290,7 @@
           "<%= settings.sc_pool_id %>"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "create_snx_pool": {
@@ -321,11 +304,7 @@
           "<%= settings.pool_owner %>"
         ],
         "depends": [
-          "invoke.permitCreatePool",
-          "provision.system",
-          "setting.deployer",
-          "setting.pool_owner",
-          "setting.snx_pool_id"
+          "invoke.permitCreatePool"
         ]
       },
       "set_snx_pool_name": {
@@ -344,9 +323,7 @@
           "Passive SNX Pool"
         ],
         "depends": [
-          "invoke.create_snx_pool",
-          "provision.system",
-          "setting.snx_pool_id"
+          "invoke.create_snx_pool"
         ]
       },
       "approve_snx_pool": {
@@ -361,9 +338,7 @@
           "<%= settings.snx_pool_id %>"
         ],
         "depends": [
-          "invoke.create_snx_pool",
-          "provision.system",
-          "setting.snx_pool_id"
+          "invoke.create_snx_pool"
         ]
       },
       "allowAllTransferCrossChain": {
@@ -399,8 +374,7 @@
           }
         },
         "depends": [
-          "provision.system",
-          "setting.eth_aggregator_address"
+          "provision.system"
         ]
       },
       "createEthSynth": {
@@ -427,8 +401,7 @@
           }
         },
         "depends": [
-          "provision.spotFactory",
-          "setting.owner"
+          "provision.spotFactory"
         ]
       },
       "setSynthPriceEth": {
@@ -449,8 +422,7 @@
         ],
         "depends": [
           "invoke.createEthSynth",
-          "invoke.registerEthOracleNode",
-          "provision.spotFactory"
+          "invoke.registerEthOracleNode"
         ]
       },
       "setSynthAtomicFixedFeeEth": {
@@ -469,8 +441,7 @@
           "<%= MaxUint256 %>"
         ],
         "depends": [
-          "invoke.createEthSynth",
-          "provision.spotFactory"
+          "invoke.createEthSynth"
         ]
       },
       "setSynthSettlementStrategyEth": {
@@ -501,14 +472,7 @@
           }
         ],
         "depends": [
-          "invoke.createEthSynth",
-          "provision.spotFactory",
-          "setting.bigCapSettlementDelay",
-          "setting.bigCapSettlementDeviationTolerance",
-          "setting.bigCapSettlementWindowDuration",
-          "setting.pythEthFeedId",
-          "setting.pythFeedUrl",
-          "setting.pythPriceVerificationAddress"
+          "invoke.createEthSynth"
         ]
       },
       "setSynthAsyncFixedFeeEth": {
@@ -527,9 +491,7 @@
           "<%= parseEther(settings.synthEthAsyncFixedFee) %>"
         ],
         "depends": [
-          "invoke.createEthSynth",
-          "provision.spotFactory",
-          "setting.synthEthAsyncFixedFee"
+          "invoke.createEthSynth"
         ]
       },
       "setSynthMaxMarketCollateralEth": {
@@ -547,10 +509,7 @@
           "<%= parseEther(settings.synthEthMaxMarketCollateral) %>"
         ],
         "depends": [
-          "invoke.createEthSynth",
-          "provision.system",
-          "setting.synthEthMaxMarketCollateral",
-          "setting.weth_address"
+          "invoke.createEthSynth"
         ]
       },
       "configureSynthWrapperEth": {
@@ -570,10 +529,7 @@
           "<%= parseEther(settings.synthEthMaxMarketCollateral) %>"
         ],
         "depends": [
-          "invoke.createEthSynth",
-          "provision.spotFactory",
-          "setting.synthEthMaxMarketCollateral",
-          "setting.weth_address"
+          "invoke.createEthSynth"
         ]
       },
       "setSynthSkewScaleEth": {
@@ -592,9 +548,7 @@
           "<%= parseEther(settings.synthEthSkewScale) %>"
         ],
         "depends": [
-          "invoke.createEthSynth",
-          "provision.spotFactory",
-          "setting.synthEthSkewScale"
+          "invoke.createEthSynth"
         ]
       },
       "setSynthWrapperFeesEth": {
@@ -614,10 +568,7 @@
           "<%= parseEther(settings.synthEthUnwrapFee) %>"
         ],
         "depends": [
-          "invoke.createEthSynth",
-          "provision.spotFactory",
-          "setting.synthEthUnwrapFee",
-          "setting.synthEthWrapFee"
+          "invoke.createEthSynth"
         ]
       },
       "setScPoolConfig": {
@@ -643,9 +594,7 @@
         ],
         "depends": [
           "invoke.createEthSynth",
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       }
     },
@@ -669,10 +618,7 @@
           "synthetixPackage": "<%= settings.snx_package %>"
         },
         "depends": [
-          "provision.system",
-          "setting.owner",
-          "setting.snx_package",
-          "setting.spot_market_package"
+          "provision.system"
         ]
       }
     },
