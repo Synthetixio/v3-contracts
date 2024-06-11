@@ -77,8 +77,7 @@
           "<%= settings.minimum_liquidity_ratio %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.minimum_liquidity_ratio"
+          "provision.system"
         ]
       },
       "setAccountTimeoutWithdraw": {
@@ -94,8 +93,7 @@
           "<%= hexZeroPad(hexlify(parseInt(settings.account_timeout_withdraw)), 32) %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.account_timeout_withdraw"
+          "provision.system"
         ]
       },
       "setSupportedCrossChainNetworks": {
@@ -142,8 +140,7 @@
           "<%= settings.deployer %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.deployer"
+          "provision.system"
         ]
       },
       "registerEthOracleNode": {
@@ -163,8 +160,7 @@
           }
         },
         "depends": [
-          "provision.system",
-          "setting.eth_aggregator_address"
+          "provision.system"
         ]
       },
       "configureWethCollateral": {
@@ -188,8 +184,7 @@
         ],
         "depends": [
           "invoke.registerEthOracleNode",
-          "provision.system",
-          "setting.weth_address"
+          "provision.system"
         ]
       },
       "createScPool": {
@@ -204,10 +199,7 @@
         ],
         "depends": [
           "invoke.permitCreatePool",
-          "provision.system",
-          "setting.deployer",
-          "setting.pool_owner",
-          "setting.sc_pool_id"
+          "provision.system"
         ]
       },
       "setScPoolName": {
@@ -227,8 +219,7 @@
         ],
         "depends": [
           "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "provision.system"
         ]
       },
       "setPreferredPool": {
@@ -244,8 +235,7 @@
         ],
         "depends": [
           "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "provision.system"
         ]
       },
       "allowAllCreatePool": {
@@ -293,9 +283,7 @@
           "<%= settings.ccip_token_pool %>"
         ],
         "depends": [
-          "provision.system",
-          "setting.ccip_router",
-          "setting.ccip_token_pool"
+          "provision.system"
         ]
       },
       "allowAllTransferCrossChain": {
