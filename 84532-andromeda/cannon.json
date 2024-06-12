@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.14.3",
-  "timestamp": 1717093663,
+  "generator": "cannon cli 2.15.0",
+  "timestamp": 1718210327,
   "def": {
     "setting": {
       "snx_package": {
@@ -2041,12 +2041,7 @@
           "synthetixPreset": "<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.system",
-          "setting.owner",
-          "setting.salt",
-          "setting.snx_package",
-          "setting.spot_market_package",
-          "setting.target_preset"
+          "provision.system"
         ]
       },
       "perpsFactory": {
@@ -2060,13 +2055,7 @@
           "spotMarketPackage": "<%= settings.spot_market_package %>@<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.spotFactory",
-          "setting.owner",
-          "setting.perps_market_package",
-          "setting.salt",
-          "setting.snx_package",
-          "setting.spot_market_package",
-          "setting.target_preset"
+          "provision.spotFactory"
         ]
       },
       "usdc_mock_collateral": {
@@ -2253,11 +2242,7 @@
           "<%= settings.pool_owner %>"
         ],
         "depends": [
-          "invoke.permitCreatePool",
-          "provision.system",
-          "setting.deployer",
-          "setting.pool_owner",
-          "setting.sc_pool_id"
+          "invoke.permitCreatePool"
         ]
       },
       "setScPoolName": {
@@ -2276,9 +2261,7 @@
           "Spartan Council Pool"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "setPreferredPool": {
@@ -2293,9 +2276,7 @@
           "<%= settings.sc_pool_id %>"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "setPerpsMarketName": {
@@ -2857,11 +2838,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "invoke.registerBtcOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.btcPerpsMarketId"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "addPerpsBtcSettlementStrategy": {
@@ -2892,9 +2869,7 @@
           }
         },
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "setPerpsBtcSettlementStrategy": {
@@ -2945,11 +2920,7 @@
           "<%= parseEther(settings.perpsBtcMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId",
-          "setting.perpsBtcMaxFundingVelocity",
-          "setting.perpsBtcSkewScale"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "setPerpsBtcOrderFees": {
@@ -2966,11 +2937,7 @@
           "<%= parseEther(settings.perpsBtcTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId",
-          "setting.perpsBtcMakerFeeRatio",
-          "setting.perpsBtcTakerFeeRatio"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "setPerpsBtcMaxMarketSize": {
@@ -2986,10 +2953,7 @@
           "<%= parseEther(settings.perpsBtcMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId",
-          "setting.perpsBtcMaxMarketSize"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "setPerpsBtcMaxMarketValue": {
@@ -3005,10 +2969,7 @@
           "<%= parseEther(settings.perpsBtcMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId",
-          "setting.perpsBtcMaxMarketValue"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "setPerpsBtcMaxLiquidationParameters": {
@@ -3027,13 +2988,7 @@
           "<%= settings.perpsBtcEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId",
-          "setting.perpsBtcEndorsedLiquidator",
-          "setting.perpsBtcMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsBtcMaxLiquidationPd",
-          "setting.perpsBtcMaxSecondsInLiquidationWindow"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "setPerpsBtcLiquidationParameters": {
@@ -3053,14 +3008,7 @@
           "<%= parseEther(settings.perpsBtcMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId",
-          "setting.perpsBtcFlagRewardRatioD18",
-          "setting.perpsBtcInitialMarginRatio",
-          "setting.perpsBtcMaintenanceMarginScalar",
-          "setting.perpsBtcMinimumInitialMarginRatio",
-          "setting.perpsBtcMinimumPositionMargin"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "setPerpsBtcLockedOiRatio": {
@@ -3076,10 +3024,7 @@
           "<%= parseEther(settings.perpsBtcLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createBtcPerpsMarket",
-          "provision.perpsFactory",
-          "setting.btcPerpsMarketId",
-          "setting.perpsBtcLockedOiRatio"
+          "invoke.createBtcPerpsMarket"
         ]
       },
       "registerPythBtcOracleNode": {
@@ -3175,11 +3120,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "invoke.registerEthOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.ethPerpsMarketId"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "addPerpsEthSettlementStrategy": {
@@ -3210,9 +3151,7 @@
           }
         },
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "setPerpsEthSettlementStrategy": {
@@ -3263,11 +3202,7 @@
           "<%= parseEther(settings.perpsEthMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId",
-          "setting.perpsEthMaxFundingVelocity",
-          "setting.perpsEthSkewScale"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "setPerpsEthOrderFees": {
@@ -3284,11 +3219,7 @@
           "<%= parseEther(settings.perpsEthTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId",
-          "setting.perpsEthMakerFeeRatio",
-          "setting.perpsEthTakerFeeRatio"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "setPerpsEthMaxMarketSize": {
@@ -3304,10 +3235,7 @@
           "<%= parseEther(settings.perpsEthMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId",
-          "setting.perpsEthMaxMarketSize"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "setPerpsEthMaxMarketValue": {
@@ -3323,10 +3251,7 @@
           "<%= parseEther(settings.perpsEthMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId",
-          "setting.perpsEthMaxMarketValue"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "setPerpsEthMaxLiquidationParameters": {
@@ -3345,13 +3270,7 @@
           "<%= settings.perpsEthEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId",
-          "setting.perpsEthEndorsedLiquidator",
-          "setting.perpsEthMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsEthMaxLiquidationPd",
-          "setting.perpsEthMaxSecondsInLiquidationWindow"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "setPerpsEthLiquidationParameters": {
@@ -3371,14 +3290,7 @@
           "<%= parseEther(settings.perpsEthMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId",
-          "setting.perpsEthFlagRewardRatioD18",
-          "setting.perpsEthInitialMarginRatio",
-          "setting.perpsEthMaintenanceMarginScalar",
-          "setting.perpsEthMinimumInitialMarginRatio",
-          "setting.perpsEthMinimumPositionMargin"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "setPerpsEthLockedOiRatio": {
@@ -3394,10 +3306,7 @@
           "<%= parseEther(settings.perpsEthLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createEthPerpsMarket",
-          "provision.perpsFactory",
-          "setting.ethPerpsMarketId",
-          "setting.perpsEthLockedOiRatio"
+          "invoke.createEthPerpsMarket"
         ]
       },
       "registerPythEthOracleNode": {
@@ -3493,11 +3402,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "invoke.registerSnxOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsSnxMarketId"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "addPerpsSnxSettlementStrategy": {
@@ -3528,9 +3433,7 @@
           }
         },
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxMarketId"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "setPerpsSnxSettlementStrategy": {
@@ -3581,11 +3484,7 @@
           "<%= parseEther(settings.perpsSnxMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxMarketId",
-          "setting.perpsSnxMaxFundingVelocity",
-          "setting.perpsSnxSkewScale"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "setPerpsSnxOrderFees": {
@@ -3602,11 +3501,7 @@
           "<%= parseEther(settings.perpsSnxTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxMakerFeeRatio",
-          "setting.perpsSnxMarketId",
-          "setting.perpsSnxTakerFeeRatio"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "setPerpsSnxMaxMarketSize": {
@@ -3622,10 +3517,7 @@
           "<%= parseEther(settings.perpsSnxMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxMarketId",
-          "setting.perpsSnxMaxMarketSize"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "setPerpsSnxMaxMarketValue": {
@@ -3641,10 +3533,7 @@
           "<%= parseEther(settings.perpsSnxMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxMarketId",
-          "setting.perpsSnxMaxMarketValue"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "setPerpsSnxMaxLiquidationParameters": {
@@ -3663,13 +3552,7 @@
           "<%= settings.perpsSnxEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxEndorsedLiquidator",
-          "setting.perpsSnxMarketId",
-          "setting.perpsSnxMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsSnxMaxLiquidationPd",
-          "setting.perpsSnxMaxSecondsInLiquidationWindow"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "setPerpsSnxLiquidationParameters": {
@@ -3689,14 +3572,7 @@
           "<%= parseEther(settings.perpsSnxMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxFlagRewardRatioD18",
-          "setting.perpsSnxInitialMarginRatio",
-          "setting.perpsSnxMaintenanceMarginScalar",
-          "setting.perpsSnxMarketId",
-          "setting.perpsSnxMinimumInitialMarginRatio",
-          "setting.perpsSnxMinimumPositionMargin"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "setPerpsSnxLockedOiRatio": {
@@ -3712,10 +3588,7 @@
           "<%= parseEther(settings.perpsSnxLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createSnxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSnxLockedOiRatio",
-          "setting.perpsSnxMarketId"
+          "invoke.createSnxPerpsMarket"
         ]
       },
       "registerPythSnxOracleNode": {
@@ -3811,11 +3684,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "invoke.registerSolOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsSolMarketId"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "addPerpsSolSettlementStrategy": {
@@ -3846,9 +3715,7 @@
           }
         },
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolMarketId"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "setPerpsSolSettlementStrategy": {
@@ -3899,11 +3766,7 @@
           "<%= parseEther(settings.perpsSolMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolMarketId",
-          "setting.perpsSolMaxFundingVelocity",
-          "setting.perpsSolSkewScale"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "setPerpsSolOrderFees": {
@@ -3920,11 +3783,7 @@
           "<%= parseEther(settings.perpsSolTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolMakerFeeRatio",
-          "setting.perpsSolMarketId",
-          "setting.perpsSolTakerFeeRatio"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "setPerpsSolMaxMarketSize": {
@@ -3940,10 +3799,7 @@
           "<%= parseEther(settings.perpsSolMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolMarketId",
-          "setting.perpsSolMaxMarketSize"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "setPerpsSolMaxMarketValue": {
@@ -3959,10 +3815,7 @@
           "<%= parseEther(settings.perpsSolMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolMarketId",
-          "setting.perpsSolMaxMarketValue"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "setPerpsSolMaxLiquidationParameters": {
@@ -3981,13 +3834,7 @@
           "<%= settings.perpsSolEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolEndorsedLiquidator",
-          "setting.perpsSolMarketId",
-          "setting.perpsSolMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsSolMaxLiquidationPd",
-          "setting.perpsSolMaxSecondsInLiquidationWindow"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "setPerpsSolLiquidationParameters": {
@@ -4007,14 +3854,7 @@
           "<%= parseEther(settings.perpsSolMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolFlagRewardRatioD18",
-          "setting.perpsSolInitialMarginRatio",
-          "setting.perpsSolMaintenanceMarginScalar",
-          "setting.perpsSolMarketId",
-          "setting.perpsSolMinimumInitialMarginRatio",
-          "setting.perpsSolMinimumPositionMargin"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "setPerpsSolLockedOiRatio": {
@@ -4030,10 +3870,7 @@
           "<%= parseEther(settings.perpsSolLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createSolPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSolLockedOiRatio",
-          "setting.perpsSolMarketId"
+          "invoke.createSolPerpsMarket"
         ]
       },
       "registerPythSolOracleNode": {
@@ -4129,11 +3966,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "invoke.registerWifOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsWifMarketId"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "addPerpsWifSettlementStrategy": {
@@ -4164,9 +3997,7 @@
           }
         },
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifMarketId"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "setPerpsWifSettlementStrategy": {
@@ -4217,11 +4048,7 @@
           "<%= parseEther(settings.perpsWifMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifMarketId",
-          "setting.perpsWifMaxFundingVelocity",
-          "setting.perpsWifSkewScale"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "setPerpsWifOrderFees": {
@@ -4238,11 +4065,7 @@
           "<%= parseEther(settings.perpsWifTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifMakerFeeRatio",
-          "setting.perpsWifMarketId",
-          "setting.perpsWifTakerFeeRatio"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "setPerpsWifMaxMarketSize": {
@@ -4258,10 +4081,7 @@
           "<%= parseEther(settings.perpsWifMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifMarketId",
-          "setting.perpsWifMaxMarketSize"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "setPerpsWifMaxMarketValue": {
@@ -4277,10 +4097,7 @@
           "<%= parseEther(settings.perpsWifMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifMarketId",
-          "setting.perpsWifMaxMarketValue"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "setPerpsWifMaxLiquidationParameters": {
@@ -4299,13 +4116,7 @@
           "<%= settings.perpsWifEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifEndorsedLiquidator",
-          "setting.perpsWifMarketId",
-          "setting.perpsWifMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsWifMaxLiquidationPd",
-          "setting.perpsWifMaxSecondsInLiquidationWindow"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "setPerpsWifLiquidationParameters": {
@@ -4325,14 +4136,7 @@
           "<%= parseEther(settings.perpsWifMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifFlagRewardRatioD18",
-          "setting.perpsWifInitialMarginRatio",
-          "setting.perpsWifMaintenanceMarginScalar",
-          "setting.perpsWifMarketId",
-          "setting.perpsWifMinimumInitialMarginRatio",
-          "setting.perpsWifMinimumPositionMargin"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "setPerpsWifLockedOiRatio": {
@@ -4348,10 +4152,7 @@
           "<%= parseEther(settings.perpsWifLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createWifPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWifLockedOiRatio",
-          "setting.perpsWifMarketId"
+          "invoke.createWifPerpsMarket"
         ]
       },
       "registerPythWifOracleNode": {
@@ -4447,11 +4248,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "invoke.registerWOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsWMarketId"
+          "invoke.createWPerpsMarket"
         ]
       },
       "addPerpsWSettlementStrategy": {
@@ -4482,9 +4279,7 @@
           }
         },
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWMarketId"
+          "invoke.createWPerpsMarket"
         ]
       },
       "setPerpsWSettlementStrategy": {
@@ -4535,11 +4330,7 @@
           "<%= parseEther(settings.perpsWMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWMarketId",
-          "setting.perpsWMaxFundingVelocity",
-          "setting.perpsWSkewScale"
+          "invoke.createWPerpsMarket"
         ]
       },
       "setPerpsWOrderFees": {
@@ -4556,11 +4347,7 @@
           "<%= parseEther(settings.perpsWTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWMakerFeeRatio",
-          "setting.perpsWMarketId",
-          "setting.perpsWTakerFeeRatio"
+          "invoke.createWPerpsMarket"
         ]
       },
       "setPerpsWMaxMarketSize": {
@@ -4576,10 +4363,7 @@
           "<%= parseEther(settings.perpsWMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWMarketId",
-          "setting.perpsWMaxMarketSize"
+          "invoke.createWPerpsMarket"
         ]
       },
       "setPerpsWMaxMarketValue": {
@@ -4595,10 +4379,7 @@
           "<%= parseEther(settings.perpsWMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWMarketId",
-          "setting.perpsWMaxMarketValue"
+          "invoke.createWPerpsMarket"
         ]
       },
       "setPerpsWMaxLiquidationParameters": {
@@ -4617,13 +4398,7 @@
           "<%= settings.perpsWEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWEndorsedLiquidator",
-          "setting.perpsWMarketId",
-          "setting.perpsWMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsWMaxLiquidationPd",
-          "setting.perpsWMaxSecondsInLiquidationWindow"
+          "invoke.createWPerpsMarket"
         ]
       },
       "setPerpsWLiquidationParameters": {
@@ -4643,14 +4418,7 @@
           "<%= parseEther(settings.perpsWMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWFlagRewardRatioD18",
-          "setting.perpsWInitialMarginRatio",
-          "setting.perpsWMaintenanceMarginScalar",
-          "setting.perpsWMarketId",
-          "setting.perpsWMinimumInitialMarginRatio",
-          "setting.perpsWMinimumPositionMargin"
+          "invoke.createWPerpsMarket"
         ]
       },
       "setPerpsWLockedOiRatio": {
@@ -4666,10 +4434,7 @@
           "<%= parseEther(settings.perpsWLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createWPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsWLockedOiRatio",
-          "setting.perpsWMarketId"
+          "invoke.createWPerpsMarket"
         ]
       },
       "registerPythWOracleNode": {
@@ -4765,11 +4530,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "invoke.registerEnaOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsEnaMarketId"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "addPerpsEnaSettlementStrategy": {
@@ -4800,9 +4561,7 @@
           }
         },
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaMarketId"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "setPerpsEnaSettlementStrategy": {
@@ -4853,11 +4612,7 @@
           "<%= parseEther(settings.perpsEnaMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaMarketId",
-          "setting.perpsEnaMaxFundingVelocity",
-          "setting.perpsEnaSkewScale"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "setPerpsEnaOrderFees": {
@@ -4874,11 +4629,7 @@
           "<%= parseEther(settings.perpsEnaTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaMakerFeeRatio",
-          "setting.perpsEnaMarketId",
-          "setting.perpsEnaTakerFeeRatio"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "setPerpsEnaMaxMarketSize": {
@@ -4894,10 +4645,7 @@
           "<%= parseEther(settings.perpsEnaMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaMarketId",
-          "setting.perpsEnaMaxMarketSize"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "setPerpsEnaMaxMarketValue": {
@@ -4913,10 +4661,7 @@
           "<%= parseEther(settings.perpsEnaMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaMarketId",
-          "setting.perpsEnaMaxMarketValue"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "setPerpsEnaMaxLiquidationParameters": {
@@ -4935,13 +4680,7 @@
           "<%= settings.perpsEnaEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaEndorsedLiquidator",
-          "setting.perpsEnaMarketId",
-          "setting.perpsEnaMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsEnaMaxLiquidationPd",
-          "setting.perpsEnaMaxSecondsInLiquidationWindow"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "setPerpsEnaLiquidationParameters": {
@@ -4961,14 +4700,7 @@
           "<%= parseEther(settings.perpsEnaMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaFlagRewardRatioD18",
-          "setting.perpsEnaInitialMarginRatio",
-          "setting.perpsEnaMaintenanceMarginScalar",
-          "setting.perpsEnaMarketId",
-          "setting.perpsEnaMinimumInitialMarginRatio",
-          "setting.perpsEnaMinimumPositionMargin"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "setPerpsEnaLockedOiRatio": {
@@ -4984,10 +4716,7 @@
           "<%= parseEther(settings.perpsEnaLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createEnaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEnaLockedOiRatio",
-          "setting.perpsEnaMarketId"
+          "invoke.createEnaPerpsMarket"
         ]
       },
       "registerPythEnaOracleNode": {
@@ -5083,11 +4812,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "invoke.registerDogeOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsDogeMarketId"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "addPerpsDogeSettlementStrategy": {
@@ -5118,9 +4843,7 @@
           }
         },
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeMarketId"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "setPerpsDogeSettlementStrategy": {
@@ -5171,11 +4894,7 @@
           "<%= parseEther(settings.perpsDogeMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeMarketId",
-          "setting.perpsDogeMaxFundingVelocity",
-          "setting.perpsDogeSkewScale"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "setPerpsDogeOrderFees": {
@@ -5192,11 +4911,7 @@
           "<%= parseEther(settings.perpsDogeTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeMakerFeeRatio",
-          "setting.perpsDogeMarketId",
-          "setting.perpsDogeTakerFeeRatio"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "setPerpsDogeMaxMarketSize": {
@@ -5212,10 +4927,7 @@
           "<%= parseEther(settings.perpsDogeMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeMarketId",
-          "setting.perpsDogeMaxMarketSize"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "setPerpsDogeMaxMarketValue": {
@@ -5231,10 +4943,7 @@
           "<%= parseEther(settings.perpsDogeMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeMarketId",
-          "setting.perpsDogeMaxMarketValue"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "setPerpsDogeMaxLiquidationParameters": {
@@ -5253,13 +4962,7 @@
           "<%= settings.perpsDogeEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeEndorsedLiquidator",
-          "setting.perpsDogeMarketId",
-          "setting.perpsDogeMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsDogeMaxLiquidationPd",
-          "setting.perpsDogeMaxSecondsInLiquidationWindow"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "setPerpsDogeLiquidationParameters": {
@@ -5279,14 +4982,7 @@
           "<%= parseEther(settings.perpsDogeMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeFlagRewardRatioD18",
-          "setting.perpsDogeInitialMarginRatio",
-          "setting.perpsDogeMaintenanceMarginScalar",
-          "setting.perpsDogeMarketId",
-          "setting.perpsDogeMinimumInitialMarginRatio",
-          "setting.perpsDogeMinimumPositionMargin"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "setPerpsDogeLockedOiRatio": {
@@ -5302,10 +4998,7 @@
           "<%= parseEther(settings.perpsDogeLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createDogePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsDogeLockedOiRatio",
-          "setting.perpsDogeMarketId"
+          "invoke.createDogePerpsMarket"
         ]
       },
       "registerPythDogeOracleNode": {
@@ -5401,11 +5094,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "invoke.registerAvaxOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsAvaxMarketId"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "addPerpsAvaxSettlementStrategy": {
@@ -5436,9 +5125,7 @@
           }
         },
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxMarketId"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "setPerpsAvaxSettlementStrategy": {
@@ -5489,11 +5176,7 @@
           "<%= parseEther(settings.perpsAvaxMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxMarketId",
-          "setting.perpsAvaxMaxFundingVelocity",
-          "setting.perpsAvaxSkewScale"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "setPerpsAvaxOrderFees": {
@@ -5510,11 +5193,7 @@
           "<%= parseEther(settings.perpsAvaxTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxMakerFeeRatio",
-          "setting.perpsAvaxMarketId",
-          "setting.perpsAvaxTakerFeeRatio"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "setPerpsAvaxMaxMarketSize": {
@@ -5530,10 +5209,7 @@
           "<%= parseEther(settings.perpsAvaxMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxMarketId",
-          "setting.perpsAvaxMaxMarketSize"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "setPerpsAvaxMaxMarketValue": {
@@ -5549,10 +5225,7 @@
           "<%= parseEther(settings.perpsAvaxMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxMarketId",
-          "setting.perpsAvaxMaxMarketValue"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "setPerpsAvaxMaxLiquidationParameters": {
@@ -5571,13 +5244,7 @@
           "<%= settings.perpsAvaxEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxEndorsedLiquidator",
-          "setting.perpsAvaxMarketId",
-          "setting.perpsAvaxMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsAvaxMaxLiquidationPd",
-          "setting.perpsAvaxMaxSecondsInLiquidationWindow"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "setPerpsAvaxLiquidationParameters": {
@@ -5597,14 +5264,7 @@
           "<%= parseEther(settings.perpsAvaxMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxFlagRewardRatioD18",
-          "setting.perpsAvaxInitialMarginRatio",
-          "setting.perpsAvaxMaintenanceMarginScalar",
-          "setting.perpsAvaxMarketId",
-          "setting.perpsAvaxMinimumInitialMarginRatio",
-          "setting.perpsAvaxMinimumPositionMargin"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "setPerpsAvaxLockedOiRatio": {
@@ -5620,10 +5280,7 @@
           "<%= parseEther(settings.perpsAvaxLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createAvaxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAvaxLockedOiRatio",
-          "setting.perpsAvaxMarketId"
+          "invoke.createAvaxPerpsMarket"
         ]
       },
       "registerPythAvaxOracleNode": {
@@ -5719,11 +5376,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "invoke.registerOpOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsOpMarketId"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "addPerpsOpSettlementStrategy": {
@@ -5754,9 +5407,7 @@
           }
         },
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpMarketId"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "setPerpsOpSettlementStrategy": {
@@ -5807,11 +5458,7 @@
           "<%= parseEther(settings.perpsOpMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpMarketId",
-          "setting.perpsOpMaxFundingVelocity",
-          "setting.perpsOpSkewScale"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "setPerpsOpOrderFees": {
@@ -5828,11 +5475,7 @@
           "<%= parseEther(settings.perpsOpTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpMakerFeeRatio",
-          "setting.perpsOpMarketId",
-          "setting.perpsOpTakerFeeRatio"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "setPerpsOpMaxMarketSize": {
@@ -5848,10 +5491,7 @@
           "<%= parseEther(settings.perpsOpMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpMarketId",
-          "setting.perpsOpMaxMarketSize"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "setPerpsOpMaxMarketValue": {
@@ -5867,10 +5507,7 @@
           "<%= parseEther(settings.perpsOpMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpMarketId",
-          "setting.perpsOpMaxMarketValue"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "setPerpsOpMaxLiquidationParameters": {
@@ -5889,13 +5526,7 @@
           "<%= settings.perpsOpEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpEndorsedLiquidator",
-          "setting.perpsOpMarketId",
-          "setting.perpsOpMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsOpMaxLiquidationPd",
-          "setting.perpsOpMaxSecondsInLiquidationWindow"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "setPerpsOpLiquidationParameters": {
@@ -5915,14 +5546,7 @@
           "<%= parseEther(settings.perpsOpMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpFlagRewardRatioD18",
-          "setting.perpsOpInitialMarginRatio",
-          "setting.perpsOpMaintenanceMarginScalar",
-          "setting.perpsOpMarketId",
-          "setting.perpsOpMinimumInitialMarginRatio",
-          "setting.perpsOpMinimumPositionMargin"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "setPerpsOpLockedOiRatio": {
@@ -5938,10 +5562,7 @@
           "<%= parseEther(settings.perpsOpLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createOpPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOpLockedOiRatio",
-          "setting.perpsOpMarketId"
+          "invoke.createOpPerpsMarket"
         ]
       },
       "registerPythOpOracleNode": {
@@ -6037,11 +5658,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "invoke.registerOrdiOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsOrdiMarketId"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "addPerpsOrdiSettlementStrategy": {
@@ -6072,9 +5689,7 @@
           }
         },
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiMarketId"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "setPerpsOrdiSettlementStrategy": {
@@ -6125,11 +5740,7 @@
           "<%= parseEther(settings.perpsOrdiMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiMarketId",
-          "setting.perpsOrdiMaxFundingVelocity",
-          "setting.perpsOrdiSkewScale"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "setPerpsOrdiOrderFees": {
@@ -6146,11 +5757,7 @@
           "<%= parseEther(settings.perpsOrdiTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiMakerFeeRatio",
-          "setting.perpsOrdiMarketId",
-          "setting.perpsOrdiTakerFeeRatio"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "setPerpsOrdiMaxMarketSize": {
@@ -6166,10 +5773,7 @@
           "<%= parseEther(settings.perpsOrdiMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiMarketId",
-          "setting.perpsOrdiMaxMarketSize"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "setPerpsOrdiMaxMarketValue": {
@@ -6185,10 +5789,7 @@
           "<%= parseEther(settings.perpsOrdiMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiMarketId",
-          "setting.perpsOrdiMaxMarketValue"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "setPerpsOrdiMaxLiquidationParameters": {
@@ -6207,13 +5808,7 @@
           "<%= settings.perpsOrdiEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiEndorsedLiquidator",
-          "setting.perpsOrdiMarketId",
-          "setting.perpsOrdiMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsOrdiMaxLiquidationPd",
-          "setting.perpsOrdiMaxSecondsInLiquidationWindow"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "setPerpsOrdiLiquidationParameters": {
@@ -6233,14 +5828,7 @@
           "<%= parseEther(settings.perpsOrdiMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiFlagRewardRatioD18",
-          "setting.perpsOrdiInitialMarginRatio",
-          "setting.perpsOrdiMaintenanceMarginScalar",
-          "setting.perpsOrdiMarketId",
-          "setting.perpsOrdiMinimumInitialMarginRatio",
-          "setting.perpsOrdiMinimumPositionMargin"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "setPerpsOrdiLockedOiRatio": {
@@ -6256,10 +5844,7 @@
           "<%= parseEther(settings.perpsOrdiLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createOrdiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsOrdiLockedOiRatio",
-          "setting.perpsOrdiMarketId"
+          "invoke.createOrdiPerpsMarket"
         ]
       },
       "registerPythOrdiOracleNode": {
@@ -6355,11 +5940,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "invoke.registerPepeOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsPepeMarketId"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "addPerpsPepeSettlementStrategy": {
@@ -6390,9 +5971,7 @@
           }
         },
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeMarketId"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "setPerpsPepeSettlementStrategy": {
@@ -6443,11 +6022,7 @@
           "<%= parseEther(settings.perpsPepeMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeMarketId",
-          "setting.perpsPepeMaxFundingVelocity",
-          "setting.perpsPepeSkewScale"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "setPerpsPepeOrderFees": {
@@ -6464,11 +6039,7 @@
           "<%= parseEther(settings.perpsPepeTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeMakerFeeRatio",
-          "setting.perpsPepeMarketId",
-          "setting.perpsPepeTakerFeeRatio"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "setPerpsPepeMaxMarketSize": {
@@ -6484,10 +6055,7 @@
           "<%= parseEther(settings.perpsPepeMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeMarketId",
-          "setting.perpsPepeMaxMarketSize"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "setPerpsPepeMaxMarketValue": {
@@ -6503,10 +6071,7 @@
           "<%= parseEther(settings.perpsPepeMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeMarketId",
-          "setting.perpsPepeMaxMarketValue"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "setPerpsPepeMaxLiquidationParameters": {
@@ -6525,13 +6090,7 @@
           "<%= settings.perpsPepeEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeEndorsedLiquidator",
-          "setting.perpsPepeMarketId",
-          "setting.perpsPepeMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsPepeMaxLiquidationPd",
-          "setting.perpsPepeMaxSecondsInLiquidationWindow"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "setPerpsPepeLiquidationParameters": {
@@ -6551,14 +6110,7 @@
           "<%= parseEther(settings.perpsPepeMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeFlagRewardRatioD18",
-          "setting.perpsPepeInitialMarginRatio",
-          "setting.perpsPepeMaintenanceMarginScalar",
-          "setting.perpsPepeMarketId",
-          "setting.perpsPepeMinimumInitialMarginRatio",
-          "setting.perpsPepeMinimumPositionMargin"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "setPerpsPepeLockedOiRatio": {
@@ -6574,10 +6126,7 @@
           "<%= parseEther(settings.perpsPepeLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createPepePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPepeLockedOiRatio",
-          "setting.perpsPepeMarketId"
+          "invoke.createPepePerpsMarket"
         ]
       },
       "registerPythPepeOracleNode": {
@@ -6673,11 +6222,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "invoke.registerRuneOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsRuneMarketId"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "addPerpsRuneSettlementStrategy": {
@@ -6708,9 +6253,7 @@
           }
         },
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneMarketId"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "setPerpsRuneSettlementStrategy": {
@@ -6761,11 +6304,7 @@
           "<%= parseEther(settings.perpsRuneMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneMarketId",
-          "setting.perpsRuneMaxFundingVelocity",
-          "setting.perpsRuneSkewScale"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "setPerpsRuneOrderFees": {
@@ -6782,11 +6321,7 @@
           "<%= parseEther(settings.perpsRuneTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneMakerFeeRatio",
-          "setting.perpsRuneMarketId",
-          "setting.perpsRuneTakerFeeRatio"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "setPerpsRuneMaxMarketSize": {
@@ -6802,10 +6337,7 @@
           "<%= parseEther(settings.perpsRuneMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneMarketId",
-          "setting.perpsRuneMaxMarketSize"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "setPerpsRuneMaxMarketValue": {
@@ -6821,10 +6353,7 @@
           "<%= parseEther(settings.perpsRuneMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneMarketId",
-          "setting.perpsRuneMaxMarketValue"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "setPerpsRuneMaxLiquidationParameters": {
@@ -6843,13 +6372,7 @@
           "<%= settings.perpsRuneEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneEndorsedLiquidator",
-          "setting.perpsRuneMarketId",
-          "setting.perpsRuneMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsRuneMaxLiquidationPd",
-          "setting.perpsRuneMaxSecondsInLiquidationWindow"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "setPerpsRuneLiquidationParameters": {
@@ -6869,14 +6392,7 @@
           "<%= parseEther(settings.perpsRuneMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneFlagRewardRatioD18",
-          "setting.perpsRuneInitialMarginRatio",
-          "setting.perpsRuneMaintenanceMarginScalar",
-          "setting.perpsRuneMarketId",
-          "setting.perpsRuneMinimumInitialMarginRatio",
-          "setting.perpsRuneMinimumPositionMargin"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "setPerpsRuneLockedOiRatio": {
@@ -6892,10 +6408,7 @@
           "<%= parseEther(settings.perpsRuneLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createRunePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsRuneLockedOiRatio",
-          "setting.perpsRuneMarketId"
+          "invoke.createRunePerpsMarket"
         ]
       },
       "registerPythRuneOracleNode": {
@@ -6991,11 +6504,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "invoke.registerBonkOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsBonkMarketId"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "addPerpsBonkSettlementStrategy": {
@@ -7026,9 +6535,7 @@
           }
         },
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkMarketId"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "setPerpsBonkSettlementStrategy": {
@@ -7079,11 +6586,7 @@
           "<%= parseEther(settings.perpsBonkMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkMarketId",
-          "setting.perpsBonkMaxFundingVelocity",
-          "setting.perpsBonkSkewScale"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "setPerpsBonkOrderFees": {
@@ -7100,11 +6603,7 @@
           "<%= parseEther(settings.perpsBonkTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkMakerFeeRatio",
-          "setting.perpsBonkMarketId",
-          "setting.perpsBonkTakerFeeRatio"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "setPerpsBonkMaxMarketSize": {
@@ -7120,10 +6619,7 @@
           "<%= parseEther(settings.perpsBonkMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkMarketId",
-          "setting.perpsBonkMaxMarketSize"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "setPerpsBonkMaxMarketValue": {
@@ -7139,10 +6635,7 @@
           "<%= parseEther(settings.perpsBonkMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkMarketId",
-          "setting.perpsBonkMaxMarketValue"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "setPerpsBonkMaxLiquidationParameters": {
@@ -7161,13 +6654,7 @@
           "<%= settings.perpsBonkEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkEndorsedLiquidator",
-          "setting.perpsBonkMarketId",
-          "setting.perpsBonkMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsBonkMaxLiquidationPd",
-          "setting.perpsBonkMaxSecondsInLiquidationWindow"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "setPerpsBonkLiquidationParameters": {
@@ -7187,14 +6674,7 @@
           "<%= parseEther(settings.perpsBonkMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkFlagRewardRatioD18",
-          "setting.perpsBonkInitialMarginRatio",
-          "setting.perpsBonkMaintenanceMarginScalar",
-          "setting.perpsBonkMarketId",
-          "setting.perpsBonkMinimumInitialMarginRatio",
-          "setting.perpsBonkMinimumPositionMargin"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "setPerpsBonkLockedOiRatio": {
@@ -7210,10 +6690,7 @@
           "<%= parseEther(settings.perpsBonkLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createBonkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBonkLockedOiRatio",
-          "setting.perpsBonkMarketId"
+          "invoke.createBonkPerpsMarket"
         ]
       },
       "registerPythBonkOracleNode": {
@@ -7309,11 +6786,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "invoke.registerFtmOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsFtmMarketId"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "addPerpsFtmSettlementStrategy": {
@@ -7344,9 +6817,7 @@
           }
         },
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmMarketId"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "setPerpsFtmSettlementStrategy": {
@@ -7397,11 +6868,7 @@
           "<%= parseEther(settings.perpsFtmMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmMarketId",
-          "setting.perpsFtmMaxFundingVelocity",
-          "setting.perpsFtmSkewScale"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "setPerpsFtmOrderFees": {
@@ -7418,11 +6885,7 @@
           "<%= parseEther(settings.perpsFtmTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmMakerFeeRatio",
-          "setting.perpsFtmMarketId",
-          "setting.perpsFtmTakerFeeRatio"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "setPerpsFtmMaxMarketSize": {
@@ -7438,10 +6901,7 @@
           "<%= parseEther(settings.perpsFtmMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmMarketId",
-          "setting.perpsFtmMaxMarketSize"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "setPerpsFtmMaxMarketValue": {
@@ -7457,10 +6917,7 @@
           "<%= parseEther(settings.perpsFtmMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmMarketId",
-          "setting.perpsFtmMaxMarketValue"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "setPerpsFtmMaxLiquidationParameters": {
@@ -7479,13 +6936,7 @@
           "<%= settings.perpsFtmEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmEndorsedLiquidator",
-          "setting.perpsFtmMarketId",
-          "setting.perpsFtmMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsFtmMaxLiquidationPd",
-          "setting.perpsFtmMaxSecondsInLiquidationWindow"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "setPerpsFtmLiquidationParameters": {
@@ -7505,14 +6956,7 @@
           "<%= parseEther(settings.perpsFtmMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmFlagRewardRatioD18",
-          "setting.perpsFtmInitialMarginRatio",
-          "setting.perpsFtmMaintenanceMarginScalar",
-          "setting.perpsFtmMarketId",
-          "setting.perpsFtmMinimumInitialMarginRatio",
-          "setting.perpsFtmMinimumPositionMargin"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "setPerpsFtmLockedOiRatio": {
@@ -7528,10 +6972,7 @@
           "<%= parseEther(settings.perpsFtmLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createFtmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsFtmLockedOiRatio",
-          "setting.perpsFtmMarketId"
+          "invoke.createFtmPerpsMarket"
         ]
       },
       "registerPythFtmOracleNode": {
@@ -7627,11 +7068,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "invoke.registerArbOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsArbMarketId"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "addPerpsArbSettlementStrategy": {
@@ -7662,9 +7099,7 @@
           }
         },
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbMarketId"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "setPerpsArbSettlementStrategy": {
@@ -7715,11 +7150,7 @@
           "<%= parseEther(settings.perpsArbMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbMarketId",
-          "setting.perpsArbMaxFundingVelocity",
-          "setting.perpsArbSkewScale"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "setPerpsArbOrderFees": {
@@ -7736,11 +7167,7 @@
           "<%= parseEther(settings.perpsArbTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbMakerFeeRatio",
-          "setting.perpsArbMarketId",
-          "setting.perpsArbTakerFeeRatio"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "setPerpsArbMaxMarketSize": {
@@ -7756,10 +7183,7 @@
           "<%= parseEther(settings.perpsArbMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbMarketId",
-          "setting.perpsArbMaxMarketSize"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "setPerpsArbMaxMarketValue": {
@@ -7775,10 +7199,7 @@
           "<%= parseEther(settings.perpsArbMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbMarketId",
-          "setting.perpsArbMaxMarketValue"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "setPerpsArbMaxLiquidationParameters": {
@@ -7797,13 +7218,7 @@
           "<%= settings.perpsArbEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbEndorsedLiquidator",
-          "setting.perpsArbMarketId",
-          "setting.perpsArbMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsArbMaxLiquidationPd",
-          "setting.perpsArbMaxSecondsInLiquidationWindow"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "setPerpsArbLiquidationParameters": {
@@ -7823,14 +7238,7 @@
           "<%= parseEther(settings.perpsArbMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbFlagRewardRatioD18",
-          "setting.perpsArbInitialMarginRatio",
-          "setting.perpsArbMaintenanceMarginScalar",
-          "setting.perpsArbMarketId",
-          "setting.perpsArbMinimumInitialMarginRatio",
-          "setting.perpsArbMinimumPositionMargin"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "setPerpsArbLockedOiRatio": {
@@ -7846,10 +7254,7 @@
           "<%= parseEther(settings.perpsArbLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createArbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArbLockedOiRatio",
-          "setting.perpsArbMarketId"
+          "invoke.createArbPerpsMarket"
         ]
       },
       "registerPythArbOracleNode": {
@@ -7945,11 +7350,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "invoke.registerMaticOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsMaticMarketId"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "addPerpsMaticSettlementStrategy": {
@@ -7980,9 +7381,7 @@
           }
         },
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticMarketId"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "setPerpsMaticSettlementStrategy": {
@@ -8033,11 +7432,7 @@
           "<%= parseEther(settings.perpsMaticMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticMarketId",
-          "setting.perpsMaticMaxFundingVelocity",
-          "setting.perpsMaticSkewScale"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "setPerpsMaticOrderFees": {
@@ -8054,11 +7449,7 @@
           "<%= parseEther(settings.perpsMaticTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticMakerFeeRatio",
-          "setting.perpsMaticMarketId",
-          "setting.perpsMaticTakerFeeRatio"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "setPerpsMaticMaxMarketSize": {
@@ -8074,10 +7465,7 @@
           "<%= parseEther(settings.perpsMaticMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticMarketId",
-          "setting.perpsMaticMaxMarketSize"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "setPerpsMaticMaxMarketValue": {
@@ -8093,10 +7481,7 @@
           "<%= parseEther(settings.perpsMaticMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticMarketId",
-          "setting.perpsMaticMaxMarketValue"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "setPerpsMaticMaxLiquidationParameters": {
@@ -8115,13 +7500,7 @@
           "<%= settings.perpsMaticEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticEndorsedLiquidator",
-          "setting.perpsMaticMarketId",
-          "setting.perpsMaticMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsMaticMaxLiquidationPd",
-          "setting.perpsMaticMaxSecondsInLiquidationWindow"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "setPerpsMaticLiquidationParameters": {
@@ -8141,14 +7520,7 @@
           "<%= parseEther(settings.perpsMaticMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticFlagRewardRatioD18",
-          "setting.perpsMaticInitialMarginRatio",
-          "setting.perpsMaticMaintenanceMarginScalar",
-          "setting.perpsMaticMarketId",
-          "setting.perpsMaticMinimumInitialMarginRatio",
-          "setting.perpsMaticMinimumPositionMargin"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "setPerpsMaticLockedOiRatio": {
@@ -8164,10 +7536,7 @@
           "<%= parseEther(settings.perpsMaticLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createMaticPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsMaticLockedOiRatio",
-          "setting.perpsMaticMarketId"
+          "invoke.createMaticPerpsMarket"
         ]
       },
       "registerPythMaticOracleNode": {
@@ -8263,11 +7632,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "invoke.registerBnbOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsBnbMarketId"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "addPerpsBnbSettlementStrategy": {
@@ -8298,9 +7663,7 @@
           }
         },
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbMarketId"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "setPerpsBnbSettlementStrategy": {
@@ -8351,11 +7714,7 @@
           "<%= parseEther(settings.perpsBnbMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbMarketId",
-          "setting.perpsBnbMaxFundingVelocity",
-          "setting.perpsBnbSkewScale"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "setPerpsBnbOrderFees": {
@@ -8372,11 +7731,7 @@
           "<%= parseEther(settings.perpsBnbTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbMakerFeeRatio",
-          "setting.perpsBnbMarketId",
-          "setting.perpsBnbTakerFeeRatio"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "setPerpsBnbMaxMarketSize": {
@@ -8392,10 +7747,7 @@
           "<%= parseEther(settings.perpsBnbMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbMarketId",
-          "setting.perpsBnbMaxMarketSize"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "setPerpsBnbMaxMarketValue": {
@@ -8411,10 +7763,7 @@
           "<%= parseEther(settings.perpsBnbMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbMarketId",
-          "setting.perpsBnbMaxMarketValue"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "setPerpsBnbMaxLiquidationParameters": {
@@ -8433,13 +7782,7 @@
           "<%= settings.perpsBnbEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbEndorsedLiquidator",
-          "setting.perpsBnbMarketId",
-          "setting.perpsBnbMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsBnbMaxLiquidationPd",
-          "setting.perpsBnbMaxSecondsInLiquidationWindow"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "setPerpsBnbLiquidationParameters": {
@@ -8459,14 +7802,7 @@
           "<%= parseEther(settings.perpsBnbMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbFlagRewardRatioD18",
-          "setting.perpsBnbInitialMarginRatio",
-          "setting.perpsBnbMaintenanceMarginScalar",
-          "setting.perpsBnbMarketId",
-          "setting.perpsBnbMinimumInitialMarginRatio",
-          "setting.perpsBnbMinimumPositionMargin"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "setPerpsBnbLockedOiRatio": {
@@ -8482,10 +7818,7 @@
           "<%= parseEther(settings.perpsBnbLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createBnbPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBnbLockedOiRatio",
-          "setting.perpsBnbMarketId"
+          "invoke.createBnbPerpsMarket"
         ]
       },
       "registerPythBnbOracleNode": {
@@ -8581,11 +7914,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "invoke.registerLinkOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsLinkMarketId"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "addPerpsLinkSettlementStrategy": {
@@ -8616,9 +7945,7 @@
           }
         },
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkMarketId"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "setPerpsLinkSettlementStrategy": {
@@ -8669,11 +7996,7 @@
           "<%= parseEther(settings.perpsLinkMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkMarketId",
-          "setting.perpsLinkMaxFundingVelocity",
-          "setting.perpsLinkSkewScale"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "setPerpsLinkOrderFees": {
@@ -8690,11 +8013,7 @@
           "<%= parseEther(settings.perpsLinkTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkMakerFeeRatio",
-          "setting.perpsLinkMarketId",
-          "setting.perpsLinkTakerFeeRatio"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "setPerpsLinkMaxMarketSize": {
@@ -8710,10 +8029,7 @@
           "<%= parseEther(settings.perpsLinkMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkMarketId",
-          "setting.perpsLinkMaxMarketSize"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "setPerpsLinkMaxMarketValue": {
@@ -8729,10 +8045,7 @@
           "<%= parseEther(settings.perpsLinkMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkMarketId",
-          "setting.perpsLinkMaxMarketValue"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "setPerpsLinkMaxLiquidationParameters": {
@@ -8751,13 +8064,7 @@
           "<%= settings.perpsLinkEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkEndorsedLiquidator",
-          "setting.perpsLinkMarketId",
-          "setting.perpsLinkMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsLinkMaxLiquidationPd",
-          "setting.perpsLinkMaxSecondsInLiquidationWindow"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "setPerpsLinkLiquidationParameters": {
@@ -8777,14 +8084,7 @@
           "<%= parseEther(settings.perpsLinkMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkFlagRewardRatioD18",
-          "setting.perpsLinkInitialMarginRatio",
-          "setting.perpsLinkMaintenanceMarginScalar",
-          "setting.perpsLinkMarketId",
-          "setting.perpsLinkMinimumInitialMarginRatio",
-          "setting.perpsLinkMinimumPositionMargin"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "setPerpsLinkLockedOiRatio": {
@@ -8800,10 +8100,7 @@
           "<%= parseEther(settings.perpsLinkLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createLinkPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsLinkLockedOiRatio",
-          "setting.perpsLinkMarketId"
+          "invoke.createLinkPerpsMarket"
         ]
       },
       "registerPythLinkOracleNode": {
@@ -8899,11 +8196,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "invoke.registerPendleOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsPendleMarketId"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "addPerpsPendleSettlementStrategy": {
@@ -8934,9 +8227,7 @@
           }
         },
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleMarketId"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "setPerpsPendleSettlementStrategy": {
@@ -8987,11 +8278,7 @@
           "<%= parseEther(settings.perpsPendleMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleMarketId",
-          "setting.perpsPendleMaxFundingVelocity",
-          "setting.perpsPendleSkewScale"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "setPerpsPendleOrderFees": {
@@ -9008,11 +8295,7 @@
           "<%= parseEther(settings.perpsPendleTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleMakerFeeRatio",
-          "setting.perpsPendleMarketId",
-          "setting.perpsPendleTakerFeeRatio"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "setPerpsPendleMaxMarketSize": {
@@ -9028,10 +8311,7 @@
           "<%= parseEther(settings.perpsPendleMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleMarketId",
-          "setting.perpsPendleMaxMarketSize"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "setPerpsPendleMaxMarketValue": {
@@ -9047,10 +8327,7 @@
           "<%= parseEther(settings.perpsPendleMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleMarketId",
-          "setting.perpsPendleMaxMarketValue"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "setPerpsPendleMaxLiquidationParameters": {
@@ -9069,13 +8346,7 @@
           "<%= settings.perpsPendleEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleEndorsedLiquidator",
-          "setting.perpsPendleMarketId",
-          "setting.perpsPendleMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsPendleMaxLiquidationPd",
-          "setting.perpsPendleMaxSecondsInLiquidationWindow"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "setPerpsPendleLiquidationParameters": {
@@ -9095,14 +8366,7 @@
           "<%= parseEther(settings.perpsPendleMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleFlagRewardRatioD18",
-          "setting.perpsPendleInitialMarginRatio",
-          "setting.perpsPendleMaintenanceMarginScalar",
-          "setting.perpsPendleMarketId",
-          "setting.perpsPendleMinimumInitialMarginRatio",
-          "setting.perpsPendleMinimumPositionMargin"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "setPerpsPendleLockedOiRatio": {
@@ -9118,10 +8382,7 @@
           "<%= parseEther(settings.perpsPendleLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createPendlePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsPendleLockedOiRatio",
-          "setting.perpsPendleMarketId"
+          "invoke.createPendlePerpsMarket"
         ]
       },
       "registerPythPendleOracleNode": {
@@ -9217,11 +8478,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "invoke.registerInjOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsInjMarketId"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "addPerpsInjSettlementStrategy": {
@@ -9252,9 +8509,7 @@
           }
         },
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjMarketId"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "setPerpsInjSettlementStrategy": {
@@ -9305,11 +8560,7 @@
           "<%= parseEther(settings.perpsInjMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjMarketId",
-          "setting.perpsInjMaxFundingVelocity",
-          "setting.perpsInjSkewScale"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "setPerpsInjOrderFees": {
@@ -9326,11 +8577,7 @@
           "<%= parseEther(settings.perpsInjTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjMakerFeeRatio",
-          "setting.perpsInjMarketId",
-          "setting.perpsInjTakerFeeRatio"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "setPerpsInjMaxMarketSize": {
@@ -9346,10 +8593,7 @@
           "<%= parseEther(settings.perpsInjMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjMarketId",
-          "setting.perpsInjMaxMarketSize"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "setPerpsInjMaxMarketValue": {
@@ -9365,10 +8609,7 @@
           "<%= parseEther(settings.perpsInjMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjMarketId",
-          "setting.perpsInjMaxMarketValue"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "setPerpsInjMaxLiquidationParameters": {
@@ -9387,13 +8628,7 @@
           "<%= settings.perpsInjEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjEndorsedLiquidator",
-          "setting.perpsInjMarketId",
-          "setting.perpsInjMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsInjMaxLiquidationPd",
-          "setting.perpsInjMaxSecondsInLiquidationWindow"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "setPerpsInjLiquidationParameters": {
@@ -9413,14 +8648,7 @@
           "<%= parseEther(settings.perpsInjMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjFlagRewardRatioD18",
-          "setting.perpsInjInitialMarginRatio",
-          "setting.perpsInjMaintenanceMarginScalar",
-          "setting.perpsInjMarketId",
-          "setting.perpsInjMinimumInitialMarginRatio",
-          "setting.perpsInjMinimumPositionMargin"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "setPerpsInjLockedOiRatio": {
@@ -9436,10 +8664,7 @@
           "<%= parseEther(settings.perpsInjLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createInjPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsInjLockedOiRatio",
-          "setting.perpsInjMarketId"
+          "invoke.createInjPerpsMarket"
         ]
       },
       "registerPythInjOracleNode": {
@@ -9535,11 +8760,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "invoke.registerGmxOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsGmxMarketId"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "addPerpsGmxSettlementStrategy": {
@@ -9570,9 +8791,7 @@
           }
         },
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxMarketId"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "setPerpsGmxSettlementStrategy": {
@@ -9623,11 +8842,7 @@
           "<%= parseEther(settings.perpsGmxMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxMarketId",
-          "setting.perpsGmxMaxFundingVelocity",
-          "setting.perpsGmxSkewScale"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "setPerpsGmxOrderFees": {
@@ -9644,11 +8859,7 @@
           "<%= parseEther(settings.perpsGmxTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxMakerFeeRatio",
-          "setting.perpsGmxMarketId",
-          "setting.perpsGmxTakerFeeRatio"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "setPerpsGmxMaxMarketSize": {
@@ -9664,10 +8875,7 @@
           "<%= parseEther(settings.perpsGmxMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxMarketId",
-          "setting.perpsGmxMaxMarketSize"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "setPerpsGmxMaxMarketValue": {
@@ -9683,10 +8891,7 @@
           "<%= parseEther(settings.perpsGmxMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxMarketId",
-          "setting.perpsGmxMaxMarketValue"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "setPerpsGmxMaxLiquidationParameters": {
@@ -9705,13 +8910,7 @@
           "<%= settings.perpsGmxEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxEndorsedLiquidator",
-          "setting.perpsGmxMarketId",
-          "setting.perpsGmxMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsGmxMaxLiquidationPd",
-          "setting.perpsGmxMaxSecondsInLiquidationWindow"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "setPerpsGmxLiquidationParameters": {
@@ -9731,14 +8930,7 @@
           "<%= parseEther(settings.perpsGmxMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxFlagRewardRatioD18",
-          "setting.perpsGmxInitialMarginRatio",
-          "setting.perpsGmxMaintenanceMarginScalar",
-          "setting.perpsGmxMarketId",
-          "setting.perpsGmxMinimumInitialMarginRatio",
-          "setting.perpsGmxMinimumPositionMargin"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "setPerpsGmxLockedOiRatio": {
@@ -9754,10 +8946,7 @@
           "<%= parseEther(settings.perpsGmxLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createGmxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGmxLockedOiRatio",
-          "setting.perpsGmxMarketId"
+          "invoke.createGmxPerpsMarket"
         ]
       },
       "registerPythGmxOracleNode": {
@@ -9853,11 +9042,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "invoke.registerTiaOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsTiaMarketId"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "addPerpsTiaSettlementStrategy": {
@@ -9888,9 +9073,7 @@
           }
         },
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaMarketId"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "setPerpsTiaSettlementStrategy": {
@@ -9941,11 +9124,7 @@
           "<%= parseEther(settings.perpsTiaMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaMarketId",
-          "setting.perpsTiaMaxFundingVelocity",
-          "setting.perpsTiaSkewScale"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "setPerpsTiaOrderFees": {
@@ -9962,11 +9141,7 @@
           "<%= parseEther(settings.perpsTiaTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaMakerFeeRatio",
-          "setting.perpsTiaMarketId",
-          "setting.perpsTiaTakerFeeRatio"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "setPerpsTiaMaxMarketSize": {
@@ -9982,10 +9157,7 @@
           "<%= parseEther(settings.perpsTiaMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaMarketId",
-          "setting.perpsTiaMaxMarketSize"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "setPerpsTiaMaxMarketValue": {
@@ -10001,10 +9173,7 @@
           "<%= parseEther(settings.perpsTiaMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaMarketId",
-          "setting.perpsTiaMaxMarketValue"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "setPerpsTiaMaxLiquidationParameters": {
@@ -10023,13 +9192,7 @@
           "<%= settings.perpsTiaEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaEndorsedLiquidator",
-          "setting.perpsTiaMarketId",
-          "setting.perpsTiaMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsTiaMaxLiquidationPd",
-          "setting.perpsTiaMaxSecondsInLiquidationWindow"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "setPerpsTiaLiquidationParameters": {
@@ -10049,14 +9212,7 @@
           "<%= parseEther(settings.perpsTiaMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaFlagRewardRatioD18",
-          "setting.perpsTiaInitialMarginRatio",
-          "setting.perpsTiaMaintenanceMarginScalar",
-          "setting.perpsTiaMarketId",
-          "setting.perpsTiaMinimumInitialMarginRatio",
-          "setting.perpsTiaMinimumPositionMargin"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "setPerpsTiaLockedOiRatio": {
@@ -10072,10 +9228,7 @@
           "<%= parseEther(settings.perpsTiaLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createTiaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTiaLockedOiRatio",
-          "setting.perpsTiaMarketId"
+          "invoke.createTiaPerpsMarket"
         ]
       },
       "registerPythTiaOracleNode": {
@@ -10171,11 +9324,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "invoke.registerSuiOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsSuiMarketId"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "addPerpsSuiSettlementStrategy": {
@@ -10206,9 +9355,7 @@
           }
         },
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiMarketId"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "setPerpsSuiSettlementStrategy": {
@@ -10259,11 +9406,7 @@
           "<%= parseEther(settings.perpsSuiMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiMarketId",
-          "setting.perpsSuiMaxFundingVelocity",
-          "setting.perpsSuiSkewScale"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "setPerpsSuiOrderFees": {
@@ -10280,11 +9423,7 @@
           "<%= parseEther(settings.perpsSuiTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiMakerFeeRatio",
-          "setting.perpsSuiMarketId",
-          "setting.perpsSuiTakerFeeRatio"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "setPerpsSuiMaxMarketSize": {
@@ -10300,10 +9439,7 @@
           "<%= parseEther(settings.perpsSuiMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiMarketId",
-          "setting.perpsSuiMaxMarketSize"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "setPerpsSuiMaxMarketValue": {
@@ -10319,10 +9455,7 @@
           "<%= parseEther(settings.perpsSuiMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiMarketId",
-          "setting.perpsSuiMaxMarketValue"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "setPerpsSuiMaxLiquidationParameters": {
@@ -10341,13 +9474,7 @@
           "<%= settings.perpsSuiEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiEndorsedLiquidator",
-          "setting.perpsSuiMarketId",
-          "setting.perpsSuiMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsSuiMaxLiquidationPd",
-          "setting.perpsSuiMaxSecondsInLiquidationWindow"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "setPerpsSuiLiquidationParameters": {
@@ -10367,14 +9494,7 @@
           "<%= parseEther(settings.perpsSuiMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiFlagRewardRatioD18",
-          "setting.perpsSuiInitialMarginRatio",
-          "setting.perpsSuiMaintenanceMarginScalar",
-          "setting.perpsSuiMarketId",
-          "setting.perpsSuiMinimumInitialMarginRatio",
-          "setting.perpsSuiMinimumPositionMargin"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "setPerpsSuiLockedOiRatio": {
@@ -10390,10 +9510,7 @@
           "<%= parseEther(settings.perpsSuiLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createSuiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsSuiLockedOiRatio",
-          "setting.perpsSuiMarketId"
+          "invoke.createSuiPerpsMarket"
         ]
       },
       "registerPythSuiOracleNode": {
@@ -10489,11 +9606,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "invoke.registerTonOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsTonMarketId"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "addPerpsTonSettlementStrategy": {
@@ -10524,9 +9637,7 @@
           }
         },
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonMarketId"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "setPerpsTonSettlementStrategy": {
@@ -10577,11 +9688,7 @@
           "<%= parseEther(settings.perpsTonMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonMarketId",
-          "setting.perpsTonMaxFundingVelocity",
-          "setting.perpsTonSkewScale"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "setPerpsTonOrderFees": {
@@ -10598,11 +9705,7 @@
           "<%= parseEther(settings.perpsTonTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonMakerFeeRatio",
-          "setting.perpsTonMarketId",
-          "setting.perpsTonTakerFeeRatio"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "setPerpsTonMaxMarketSize": {
@@ -10618,10 +9721,7 @@
           "<%= parseEther(settings.perpsTonMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonMarketId",
-          "setting.perpsTonMaxMarketSize"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "setPerpsTonMaxMarketValue": {
@@ -10637,10 +9737,7 @@
           "<%= parseEther(settings.perpsTonMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonMarketId",
-          "setting.perpsTonMaxMarketValue"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "setPerpsTonMaxLiquidationParameters": {
@@ -10659,13 +9756,7 @@
           "<%= settings.perpsTonEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonEndorsedLiquidator",
-          "setting.perpsTonMarketId",
-          "setting.perpsTonMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsTonMaxLiquidationPd",
-          "setting.perpsTonMaxSecondsInLiquidationWindow"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "setPerpsTonLiquidationParameters": {
@@ -10685,14 +9776,7 @@
           "<%= parseEther(settings.perpsTonMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonFlagRewardRatioD18",
-          "setting.perpsTonInitialMarginRatio",
-          "setting.perpsTonMaintenanceMarginScalar",
-          "setting.perpsTonMarketId",
-          "setting.perpsTonMinimumInitialMarginRatio",
-          "setting.perpsTonMinimumPositionMargin"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "setPerpsTonLockedOiRatio": {
@@ -10708,10 +9792,7 @@
           "<%= parseEther(settings.perpsTonLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createTonPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTonLockedOiRatio",
-          "setting.perpsTonMarketId"
+          "invoke.createTonPerpsMarket"
         ]
       },
       "registerPythTonOracleNode": {
@@ -10807,11 +9888,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "invoke.registerArkmOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsArkmMarketId"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "addPerpsArkmSettlementStrategy": {
@@ -10842,9 +9919,7 @@
           }
         },
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmMarketId"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "setPerpsArkmSettlementStrategy": {
@@ -10895,11 +9970,7 @@
           "<%= parseEther(settings.perpsArkmMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmMarketId",
-          "setting.perpsArkmMaxFundingVelocity",
-          "setting.perpsArkmSkewScale"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "setPerpsArkmOrderFees": {
@@ -10916,11 +9987,7 @@
           "<%= parseEther(settings.perpsArkmTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmMakerFeeRatio",
-          "setting.perpsArkmMarketId",
-          "setting.perpsArkmTakerFeeRatio"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "setPerpsArkmMaxMarketSize": {
@@ -10936,10 +10003,7 @@
           "<%= parseEther(settings.perpsArkmMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmMarketId",
-          "setting.perpsArkmMaxMarketSize"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "setPerpsArkmMaxMarketValue": {
@@ -10955,10 +10019,7 @@
           "<%= parseEther(settings.perpsArkmMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmMarketId",
-          "setting.perpsArkmMaxMarketValue"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "setPerpsArkmMaxLiquidationParameters": {
@@ -10977,13 +10038,7 @@
           "<%= settings.perpsArkmEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmEndorsedLiquidator",
-          "setting.perpsArkmMarketId",
-          "setting.perpsArkmMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsArkmMaxLiquidationPd",
-          "setting.perpsArkmMaxSecondsInLiquidationWindow"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "setPerpsArkmLiquidationParameters": {
@@ -11003,14 +10058,7 @@
           "<%= parseEther(settings.perpsArkmMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmFlagRewardRatioD18",
-          "setting.perpsArkmInitialMarginRatio",
-          "setting.perpsArkmMaintenanceMarginScalar",
-          "setting.perpsArkmMarketId",
-          "setting.perpsArkmMinimumInitialMarginRatio",
-          "setting.perpsArkmMinimumPositionMargin"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "setPerpsArkmLockedOiRatio": {
@@ -11026,10 +10074,7 @@
           "<%= parseEther(settings.perpsArkmLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createArkmPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsArkmLockedOiRatio",
-          "setting.perpsArkmMarketId"
+          "invoke.createArkmPerpsMarket"
         ]
       },
       "registerPythArkmOracleNode": {
@@ -11125,11 +10170,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "invoke.registerGalaOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsGalaMarketId"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "addPerpsGalaSettlementStrategy": {
@@ -11160,9 +10201,7 @@
           }
         },
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaMarketId"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "setPerpsGalaSettlementStrategy": {
@@ -11213,11 +10252,7 @@
           "<%= parseEther(settings.perpsGalaMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaMarketId",
-          "setting.perpsGalaMaxFundingVelocity",
-          "setting.perpsGalaSkewScale"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "setPerpsGalaOrderFees": {
@@ -11234,11 +10269,7 @@
           "<%= parseEther(settings.perpsGalaTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaMakerFeeRatio",
-          "setting.perpsGalaMarketId",
-          "setting.perpsGalaTakerFeeRatio"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "setPerpsGalaMaxMarketSize": {
@@ -11254,10 +10285,7 @@
           "<%= parseEther(settings.perpsGalaMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaMarketId",
-          "setting.perpsGalaMaxMarketSize"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "setPerpsGalaMaxMarketValue": {
@@ -11273,10 +10301,7 @@
           "<%= parseEther(settings.perpsGalaMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaMarketId",
-          "setting.perpsGalaMaxMarketValue"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "setPerpsGalaMaxLiquidationParameters": {
@@ -11295,13 +10320,7 @@
           "<%= settings.perpsGalaEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaEndorsedLiquidator",
-          "setting.perpsGalaMarketId",
-          "setting.perpsGalaMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsGalaMaxLiquidationPd",
-          "setting.perpsGalaMaxSecondsInLiquidationWindow"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "setPerpsGalaLiquidationParameters": {
@@ -11321,14 +10340,7 @@
           "<%= parseEther(settings.perpsGalaMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaFlagRewardRatioD18",
-          "setting.perpsGalaInitialMarginRatio",
-          "setting.perpsGalaMaintenanceMarginScalar",
-          "setting.perpsGalaMarketId",
-          "setting.perpsGalaMinimumInitialMarginRatio",
-          "setting.perpsGalaMinimumPositionMargin"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "setPerpsGalaLockedOiRatio": {
@@ -11344,10 +10356,7 @@
           "<%= parseEther(settings.perpsGalaLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createGalaPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsGalaLockedOiRatio",
-          "setting.perpsGalaMarketId"
+          "invoke.createGalaPerpsMarket"
         ]
       },
       "registerPythGalaOracleNode": {
@@ -11443,11 +10452,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "invoke.registerTaoOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsTaoMarketId"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "addPerpsTaoSettlementStrategy": {
@@ -11478,9 +10483,7 @@
           }
         },
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoMarketId"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "setPerpsTaoSettlementStrategy": {
@@ -11531,11 +10534,7 @@
           "<%= parseEther(settings.perpsTaoMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoMarketId",
-          "setting.perpsTaoMaxFundingVelocity",
-          "setting.perpsTaoSkewScale"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "setPerpsTaoOrderFees": {
@@ -11552,11 +10551,7 @@
           "<%= parseEther(settings.perpsTaoTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoMakerFeeRatio",
-          "setting.perpsTaoMarketId",
-          "setting.perpsTaoTakerFeeRatio"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "setPerpsTaoMaxMarketSize": {
@@ -11572,10 +10567,7 @@
           "<%= parseEther(settings.perpsTaoMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoMarketId",
-          "setting.perpsTaoMaxMarketSize"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "setPerpsTaoMaxMarketValue": {
@@ -11591,10 +10583,7 @@
           "<%= parseEther(settings.perpsTaoMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoMarketId",
-          "setting.perpsTaoMaxMarketValue"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "setPerpsTaoMaxLiquidationParameters": {
@@ -11613,13 +10602,7 @@
           "<%= settings.perpsTaoEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoEndorsedLiquidator",
-          "setting.perpsTaoMarketId",
-          "setting.perpsTaoMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsTaoMaxLiquidationPd",
-          "setting.perpsTaoMaxSecondsInLiquidationWindow"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "setPerpsTaoLiquidationParameters": {
@@ -11639,14 +10622,7 @@
           "<%= parseEther(settings.perpsTaoMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoFlagRewardRatioD18",
-          "setting.perpsTaoInitialMarginRatio",
-          "setting.perpsTaoMaintenanceMarginScalar",
-          "setting.perpsTaoMarketId",
-          "setting.perpsTaoMinimumInitialMarginRatio",
-          "setting.perpsTaoMinimumPositionMargin"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "setPerpsTaoLockedOiRatio": {
@@ -11662,10 +10638,7 @@
           "<%= parseEther(settings.perpsTaoLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createTaoPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsTaoLockedOiRatio",
-          "setting.perpsTaoMarketId"
+          "invoke.createTaoPerpsMarket"
         ]
       },
       "registerPythTaoOracleNode": {
@@ -11761,11 +10734,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "invoke.registerBomeOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsBomeMarketId"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "addPerpsBomeSettlementStrategy": {
@@ -11796,9 +10765,7 @@
           }
         },
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeMarketId"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "setPerpsBomeSettlementStrategy": {
@@ -11849,11 +10816,7 @@
           "<%= parseEther(settings.perpsBomeMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeMarketId",
-          "setting.perpsBomeMaxFundingVelocity",
-          "setting.perpsBomeSkewScale"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "setPerpsBomeOrderFees": {
@@ -11870,11 +10833,7 @@
           "<%= parseEther(settings.perpsBomeTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeMakerFeeRatio",
-          "setting.perpsBomeMarketId",
-          "setting.perpsBomeTakerFeeRatio"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "setPerpsBomeMaxMarketSize": {
@@ -11890,10 +10849,7 @@
           "<%= parseEther(settings.perpsBomeMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeMarketId",
-          "setting.perpsBomeMaxMarketSize"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "setPerpsBomeMaxMarketValue": {
@@ -11909,10 +10865,7 @@
           "<%= parseEther(settings.perpsBomeMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeMarketId",
-          "setting.perpsBomeMaxMarketValue"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "setPerpsBomeMaxLiquidationParameters": {
@@ -11931,13 +10884,7 @@
           "<%= settings.perpsBomeEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeEndorsedLiquidator",
-          "setting.perpsBomeMarketId",
-          "setting.perpsBomeMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsBomeMaxLiquidationPd",
-          "setting.perpsBomeMaxSecondsInLiquidationWindow"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "setPerpsBomeLiquidationParameters": {
@@ -11957,14 +10904,7 @@
           "<%= parseEther(settings.perpsBomeMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeFlagRewardRatioD18",
-          "setting.perpsBomeInitialMarginRatio",
-          "setting.perpsBomeMaintenanceMarginScalar",
-          "setting.perpsBomeMarketId",
-          "setting.perpsBomeMinimumInitialMarginRatio",
-          "setting.perpsBomeMinimumPositionMargin"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "setPerpsBomeLockedOiRatio": {
@@ -11980,10 +10920,7 @@
           "<%= parseEther(settings.perpsBomeLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createBomePerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsBomeLockedOiRatio",
-          "setting.perpsBomeMarketId"
+          "invoke.createBomePerpsMarket"
         ]
       },
       "registerPythBomeOracleNode": {
@@ -12079,11 +11016,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "invoke.registerEthfiOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsEthfiMarketId"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "addPerpsEthfiSettlementStrategy": {
@@ -12114,9 +11047,7 @@
           }
         },
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiMarketId"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "setPerpsEthfiSettlementStrategy": {
@@ -12167,11 +11098,7 @@
           "<%= parseEther(settings.perpsEthfiMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiMarketId",
-          "setting.perpsEthfiMaxFundingVelocity",
-          "setting.perpsEthfiSkewScale"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "setPerpsEthfiOrderFees": {
@@ -12188,11 +11115,7 @@
           "<%= parseEther(settings.perpsEthfiTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiMakerFeeRatio",
-          "setting.perpsEthfiMarketId",
-          "setting.perpsEthfiTakerFeeRatio"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "setPerpsEthfiMaxMarketSize": {
@@ -12208,10 +11131,7 @@
           "<%= parseEther(settings.perpsEthfiMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiMarketId",
-          "setting.perpsEthfiMaxMarketSize"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "setPerpsEthfiMaxMarketValue": {
@@ -12227,10 +11147,7 @@
           "<%= parseEther(settings.perpsEthfiMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiMarketId",
-          "setting.perpsEthfiMaxMarketValue"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "setPerpsEthfiMaxLiquidationParameters": {
@@ -12249,13 +11166,7 @@
           "<%= settings.perpsEthfiEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiEndorsedLiquidator",
-          "setting.perpsEthfiMarketId",
-          "setting.perpsEthfiMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsEthfiMaxLiquidationPd",
-          "setting.perpsEthfiMaxSecondsInLiquidationWindow"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "setPerpsEthfiLiquidationParameters": {
@@ -12275,14 +11186,7 @@
           "<%= parseEther(settings.perpsEthfiMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiFlagRewardRatioD18",
-          "setting.perpsEthfiInitialMarginRatio",
-          "setting.perpsEthfiMaintenanceMarginScalar",
-          "setting.perpsEthfiMarketId",
-          "setting.perpsEthfiMinimumInitialMarginRatio",
-          "setting.perpsEthfiMinimumPositionMargin"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "setPerpsEthfiLockedOiRatio": {
@@ -12298,10 +11202,7 @@
           "<%= parseEther(settings.perpsEthfiLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createEthfiPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsEthfiLockedOiRatio",
-          "setting.perpsEthfiMarketId"
+          "invoke.createEthfiPerpsMarket"
         ]
       },
       "registerPythEthfiOracleNode": {
@@ -12397,11 +11298,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "invoke.registerStxOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsStxMarketId"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "addPerpsStxSettlementStrategy": {
@@ -12432,9 +11329,7 @@
           }
         },
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxMarketId"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "setPerpsStxSettlementStrategy": {
@@ -12485,11 +11380,7 @@
           "<%= parseEther(settings.perpsStxMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxMarketId",
-          "setting.perpsStxMaxFundingVelocity",
-          "setting.perpsStxSkewScale"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "setPerpsStxOrderFees": {
@@ -12506,11 +11397,7 @@
           "<%= parseEther(settings.perpsStxTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxMakerFeeRatio",
-          "setting.perpsStxMarketId",
-          "setting.perpsStxTakerFeeRatio"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "setPerpsStxMaxMarketSize": {
@@ -12526,10 +11413,7 @@
           "<%= parseEther(settings.perpsStxMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxMarketId",
-          "setting.perpsStxMaxMarketSize"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "setPerpsStxMaxMarketValue": {
@@ -12545,10 +11429,7 @@
           "<%= parseEther(settings.perpsStxMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxMarketId",
-          "setting.perpsStxMaxMarketValue"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "setPerpsStxMaxLiquidationParameters": {
@@ -12567,13 +11448,7 @@
           "<%= settings.perpsStxEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxEndorsedLiquidator",
-          "setting.perpsStxMarketId",
-          "setting.perpsStxMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsStxMaxLiquidationPd",
-          "setting.perpsStxMaxSecondsInLiquidationWindow"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "setPerpsStxLiquidationParameters": {
@@ -12593,14 +11468,7 @@
           "<%= parseEther(settings.perpsStxMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxFlagRewardRatioD18",
-          "setting.perpsStxInitialMarginRatio",
-          "setting.perpsStxMaintenanceMarginScalar",
-          "setting.perpsStxMarketId",
-          "setting.perpsStxMinimumInitialMarginRatio",
-          "setting.perpsStxMinimumPositionMargin"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "setPerpsStxLockedOiRatio": {
@@ -12616,10 +11484,7 @@
           "<%= parseEther(settings.perpsStxLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createStxPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsStxLockedOiRatio",
-          "setting.perpsStxMarketId"
+          "invoke.createStxPerpsMarket"
         ]
       },
       "registerPythStxOracleNode": {
@@ -12715,11 +11580,7 @@
           "<%= settings.bigCapStrictStalenessTolerance %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "invoke.registerAxlOracleNode",
-          "provision.perpsFactory",
-          "setting.bigCapStrictStalenessTolerance",
-          "setting.perpsAxlMarketId"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "addPerpsAxlSettlementStrategy": {
@@ -12750,9 +11611,7 @@
           }
         },
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlMarketId"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "setPerpsAxlSettlementStrategy": {
@@ -12803,11 +11662,7 @@
           "<%= parseEther(settings.perpsAxlMaxFundingVelocity) %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlMarketId",
-          "setting.perpsAxlMaxFundingVelocity",
-          "setting.perpsAxlSkewScale"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "setPerpsAxlOrderFees": {
@@ -12824,11 +11679,7 @@
           "<%= parseEther(settings.perpsAxlTakerFeeRatio) %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlMakerFeeRatio",
-          "setting.perpsAxlMarketId",
-          "setting.perpsAxlTakerFeeRatio"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "setPerpsAxlMaxMarketSize": {
@@ -12844,10 +11695,7 @@
           "<%= parseEther(settings.perpsAxlMaxMarketSize) %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlMarketId",
-          "setting.perpsAxlMaxMarketSize"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "setPerpsAxlMaxMarketValue": {
@@ -12863,10 +11711,7 @@
           "<%= parseEther(settings.perpsAxlMaxMarketValue) %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlMarketId",
-          "setting.perpsAxlMaxMarketValue"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "setPerpsAxlMaxLiquidationParameters": {
@@ -12885,13 +11730,7 @@
           "<%= settings.perpsAxlEndorsedLiquidator %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlEndorsedLiquidator",
-          "setting.perpsAxlMarketId",
-          "setting.perpsAxlMaxLiquidationLimitAccumulationMultiplier",
-          "setting.perpsAxlMaxLiquidationPd",
-          "setting.perpsAxlMaxSecondsInLiquidationWindow"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "setPerpsAxlLiquidationParameters": {
@@ -12911,14 +11750,7 @@
           "<%= parseEther(settings.perpsAxlMinimumPositionMargin) %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlFlagRewardRatioD18",
-          "setting.perpsAxlInitialMarginRatio",
-          "setting.perpsAxlMaintenanceMarginScalar",
-          "setting.perpsAxlMarketId",
-          "setting.perpsAxlMinimumInitialMarginRatio",
-          "setting.perpsAxlMinimumPositionMargin"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "setPerpsAxlLockedOiRatio": {
@@ -12934,10 +11766,7 @@
           "<%= parseEther(settings.perpsAxlLockedOiRatio) %>"
         ],
         "depends": [
-          "invoke.createAxlPerpsMarket",
-          "provision.perpsFactory",
-          "setting.perpsAxlLockedOiRatio",
-          "setting.perpsAxlMarketId"
+          "invoke.createAxlPerpsMarket"
         ]
       },
       "registerPythAxlOracleNode": {
@@ -13068,7 +11897,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "32",
+    "version": "33",
     "description": "Andromeda dev deployment",
     "preset": "andromeda"
   },
@@ -15771,7 +14600,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmXwKs5vZkqADjLUsQnj7oGi1e96DjHbPMeeuT9TZNMqC3",
+            "url": "ipfs://Qmd3Rzrd26Ca98DKsP9xYXV75nVnrc2z8H2gSSpvhFPEs4",
             "tags": [
               "latest"
             ],
@@ -18994,7 +17823,7 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://QmTj48e4VGQ1wcHdwB98ZsBocw6KQ2rTja5tNL3oaCR2KS",
+            "url": "ipfs://QmUSqVvpoXXR3qU69JD8mzNPGWpUoo7UhKy7HkBwEiWQSW",
             "tags": [
               "latest"
             ],
@@ -19002,7 +17831,7 @@
             "preset": "andromeda",
             "contracts": {
               "AsyncOrderCancelModule": {
-                "address": "0xa69604c2A865072Fd922DEf716d139C86a90BC45",
+                "address": "0x180C8f0C2554E6BBf2604F95Dc40c01D8cB3832b",
                 "abi": [
                   "error AcceptablePriceNotExceeded(uint256 fillPrice, uint256 acceptablePrice)",
                   "error AccountLiquidatable(uint128 accountId)",
@@ -19025,17 +17854,16 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xfe7403f82444cb13be2d421b8688872b3e71eacf3283915b542f0bb5f3f7f2e9",
+                "deployTxnHash": "0xd1d180316a0b12b65c223ec74e035bc3454a12d2b730c9da8061bab366ab4f9f",
                 "sourceName": "contracts/modules/AsyncOrderCancelModule.sol",
                 "contractName": "AsyncOrderCancelModule",
                 "deployedOn": "contract.AsyncOrderCancelModule",
-                "gasUsed": 1461354,
-                "gasCost": "1000318"
+                "gasUsed": 1461342,
+                "gasCost": "1000321"
               },
               "AsyncOrderModule": {
-                "address": "0xA942baEC94Ffba0a15c3507b5B4Ae81418E354bB",
+                "address": "0x303ed3Be34AB414BEd9E646342869087E0ebb20F",
                 "abi": [
-                  "error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice)",
                   "error AccountLiquidatable(uint128 accountId)",
                   "error AccountNotFound(uint128 accountId)",
                   "error FeatureUnavailable(bytes32 which)",
@@ -19068,15 +17896,15 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x906b854d4101ec1657fe35b50a049b0daae50e3a2bcbea4206bbb5bb89f6c1fc",
+                "deployTxnHash": "0xf550e10d724b8c7c96695263288a781fcc4e1752918485e038537b20e276a767",
                 "sourceName": "contracts/modules/AsyncOrderModule.sol",
                 "contractName": "AsyncOrderModule",
                 "deployedOn": "contract.AsyncOrderModule",
-                "gasUsed": 2864856,
-                "gasCost": "1000319"
+                "gasUsed": 2854862,
+                "gasCost": "1000321"
               },
               "AsyncOrderSettlementPythModule": {
-                "address": "0xD925FC22e4EB28AB6512ef6953736c38370B58C6",
+                "address": "0xBf8025dB444f18C730BE0bD38822f11260a7870b",
                 "abi": [
                   "error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice)",
                   "error AccountLiquidatable(uint128 accountId)",
@@ -19112,12 +17940,12 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x47619765cf04c94d1994de28a118f5d6166fdb28eb0ad44e3eca2d0d294a3c9e",
+                "deployTxnHash": "0x2bb4419dc8273ece53f64aae99d3c8e8444ed6650c03297d7a6549691e174667",
                 "sourceName": "contracts/modules/AsyncOrderSettlementPythModule.sol",
                 "contractName": "AsyncOrderSettlementPythModule",
                 "deployedOn": "contract.AsyncOrderSettlementPythModule",
-                "gasUsed": 3773740,
-                "gasCost": "1000319"
+                "gasUsed": 3802256,
+                "gasCost": "1000321"
               },
               "CoreModule": {
                 "address": "0x0c487767e6e0d598f48fc43150D2159aA84EA66e",
@@ -19182,7 +18010,7 @@
                 "gasCost": "1000320"
               },
               "GlobalPerpsMarketModule": {
-                "address": "0x71e693C64b585Db62ba79b57930D73Eba4F4C602",
+                "address": "0x616E23cb2e889DC75F324e82D7aA4B713292881f",
                 "abi": [
                   "error InvalidFeeCollectorInterface(address invalidFeeCollector)",
                   "error InvalidInterestRateParameters(uint128 lowUtilizationInterestRateGradient, uint128 highUtilizationInterestRateGradient)",
@@ -19215,6 +18043,7 @@
                   "function getReferrerShare(address referrer) view returns (uint256 shareRatioD18)",
                   "function getSupportedCollaterals() view returns (uint256[] supportedCollaterals)",
                   "function getSynthDeductionPriority() view returns (uint128[])",
+                  "function globalCollateralValue(uint128 collateralId) view returns (uint256 collateralValue)",
                   "function setCollateralConfiguration(uint128 synthMarketId, uint256 maxCollateralAmount)",
                   "function setFeeCollector(address feeCollector)",
                   "function setInterestRateParameters(uint128 lowUtilizationInterestRateGradient, uint128 interestRateGradientBreakpoint, uint128 highUtilizationInterestRateGradient)",
@@ -19228,15 +18057,15 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x8de6a3ebffee192c548bacec2fe629ef068ad8f4bd1561654315eb8dd65f4b32",
+                "deployTxnHash": "0x13ceff03442d6691e5d53bae84901b9572bb0d1ce08c32f23c56dde197914a90",
                 "sourceName": "contracts/modules/GlobalPerpsMarketModule.sol",
                 "contractName": "GlobalPerpsMarketModule",
                 "deployedOn": "contract.GlobalPerpsMarketModule",
-                "gasUsed": 1845565,
-                "gasCost": "1000327"
+                "gasUsed": 1885483,
+                "gasCost": "1000321"
               },
               "LiquidationModule": {
-                "address": "0x388301c26e0D7eb2fC2Ec4A2dBE8D364609E62ff",
+                "address": "0x699e0F85540e483AeaFA19892233eb9c04107eaF",
                 "abi": [
                   "error FeatureUnavailable(bytes32 which)",
                   "error NotEligibleForLiquidation(uint128 accountId)",
@@ -19263,15 +18092,15 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xd137555a3a2931473860e55cfb0c00d13a468be480a416637cd40d095e69cc8c",
+                "deployTxnHash": "0x25c11c4cf14c318b2fedf4463b1b88a8b25d5b57ed5df2fa88446d01d3a381ae",
                 "sourceName": "contracts/modules/LiquidationModule.sol",
                 "contractName": "LiquidationModule",
                 "deployedOn": "contract.LiquidationModule",
-                "gasUsed": 3239213,
-                "gasCost": "1000320"
+                "gasUsed": 3264467,
+                "gasCost": "1000321"
               },
               "MarketConfigurationModule": {
-                "address": "0x3035B88AEd111854F98E11D7d2d90FB1b1633f62",
+                "address": "0x0407307268942Ab7150E989e5b1C0Fcf73ebeEbD",
                 "abi": [
                   "error InvalidSettlementStrategy(uint256 settlementStrategyId)",
                   "error InvalidSettlementWindowDuration(uint256 duration)",
@@ -19309,7 +18138,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x23ddd09ec96cbac5af0b71021a0cbad95724c652c6c7088187ff0722f1d1c364",
+                "deployTxnHash": "0xb18a39962a88564586439fc55f440121009eeef954e6b44d74446fa65b6eee14",
                 "sourceName": "contracts/modules/MarketConfigurationModule.sol",
                 "contractName": "MarketConfigurationModule",
                 "deployedOn": "contract.MarketConfigurationModule",
@@ -19317,7 +18146,7 @@
                 "gasCost": "1000320"
               },
               "PerpsAccountModule": {
-                "address": "0x9E4F63f2B665F248c297e5B0Fb7b7d6cD6A6c6ef",
+                "address": "0x6c72f060AE48321469FDEc8A28e4255EE397c997",
                 "abi": [
                   "error AccountLiquidatable(uint128 accountId)",
                   "error AccountNotFound(uint128 accountId)",
@@ -19356,15 +18185,15 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x0d8b74545dd946c7e832c56fe50b9765409481f8b0775ec1e734d0184c2e1393",
+                "deployTxnHash": "0x0b226d5bbafc82864513399c84cbe24d63937d38576dc0a5deb3df2a157fa5e7",
                 "sourceName": "contracts/modules/PerpsAccountModule.sol",
                 "contractName": "PerpsAccountModule",
                 "deployedOn": "contract.PerpsAccountModule",
-                "gasUsed": 2729195,
-                "gasCost": "1000323"
+                "gasUsed": 2747070,
+                "gasCost": "1000320"
               },
               "PerpsMarketFactoryModule": {
-                "address": "0x3E8dA3E642a949A475c64a0932F60ac562E60629",
+                "address": "0x44dd66E00e804d88977f709c53E1cdA432466125",
                 "abi": [
                   "error FeatureUnavailable(bytes32 which)",
                   "error InvalidMarket(uint128 marketId)",
@@ -19391,15 +18220,15 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x1f9824df214e6c75cdda7e314bc0ab673d4f2039f0531e54827a3892d8d415a4",
+                "deployTxnHash": "0x3dd42d42bc883354d1ef180c6bbd7c889315860817bfb1c63b3454191751f052",
                 "sourceName": "contracts/modules/PerpsMarketFactoryModule.sol",
                 "contractName": "PerpsMarketFactoryModule",
                 "deployedOn": "contract.PerpsMarketFactoryModule",
-                "gasUsed": 1688602,
-                "gasCost": "1000326"
+                "gasUsed": 1712590,
+                "gasCost": "1000319"
               },
               "PerpsMarketModule": {
-                "address": "0xE097D3A66415C858815CE7C9cA26958c259f4e51",
+                "address": "0x8D5F354b5591808379a32724861e7EE5Fa5336CF",
                 "abi": [
                   "error OverflowInt256ToUint256()",
                   "error OverflowUint256ToInt256()",
@@ -19415,12 +18244,12 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x87e85acd1a3b61dfbb5a0a3e844218ed127cc99292286edb570bad6be93276c1",
+                "deployTxnHash": "0x9bf9d2a704a398be2c1ff55f2956d1d4dde24d16712d00e36a0d815a8a06156e",
                 "sourceName": "contracts/modules/PerpsMarketModule.sol",
                 "contractName": "PerpsMarketModule",
                 "deployedOn": "contract.PerpsMarketModule",
-                "gasUsed": 878953,
-                "gasCost": "1000323"
+                "gasUsed": 896870,
+                "gasCost": "1000319"
               },
               "InitialProxy": {
                 "address": "0xf53Ca60F031FAf0E347D44FbaA4870da68250c8d",
@@ -19457,7 +18286,7 @@
                 "gasCost": "1000326"
               },
               "PerpsMarketRouter": {
-                "address": "0xd59b850f442aecd66cc78663b91d7a7ee46ef3fd",
+                "address": "0x5afddaa40baebec69566f750c912cff63ddf3652",
                 "abi": [
                   "error FeatureUnavailable(bytes32 which)",
                   "error InvalidAccountId(uint128 accountId)",
@@ -19560,7 +18389,6 @@
                   "function metadata(uint128 marketId) view returns (string name, string symbol)",
                   "function size(uint128 marketId) view returns (uint256)",
                   "function skew(uint128 marketId) view returns (int256)",
-                  "error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice)",
                   "error InsufficientMargin(int256 availableMargin, uint256 minMargin)",
                   "error InvalidSettlementStrategy(uint256 settlementStrategyId)",
                   "error MaxOpenInterestReached(uint128 marketId, uint256 maxMarketSize, int256 newSideSize)",
@@ -19577,6 +18405,7 @@
                   "function getSettlementRewardCost(uint128 marketId, uint128 settlementStrategyId) view returns (uint256)",
                   "function requiredMarginForOrder(uint128 accountId, uint128 marketId, int128 sizeDelta) view returns (uint256 requiredMargin)",
                   "function requiredMarginForOrderWithPrice(uint128 accountId, uint128 marketId, int128 sizeDelta, uint256 price) view returns (uint256 requiredMargin)",
+                  "error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice)",
                   "error InsufficientAccountMargin(uint256 leftover)",
                   "error OrderNotValid()",
                   "error OverflowInt128ToUint128()",
@@ -19670,6 +18499,7 @@
                   "function getReferrerShare(address referrer) view returns (uint256 shareRatioD18)",
                   "function getSupportedCollaterals() view returns (uint256[] supportedCollaterals)",
                   "function getSynthDeductionPriority() view returns (uint128[])",
+                  "function globalCollateralValue(uint128 collateralId) view returns (uint256 collateralValue)",
                   "function setCollateralConfiguration(uint128 synthMarketId, uint256 maxCollateralAmount)",
                   "function setFeeCollector(address feeCollector)",
                   "function setInterestRateParameters(uint128 lowUtilizationInterestRateGradient, uint128 interestRateGradientBreakpoint, uint128 highUtilizationInterestRateGradient)",
@@ -19682,11 +18512,11 @@
                   "function updateReferrerShare(address referrer, uint256 shareRatioD18)"
                 ],
                 "deployedOn": "router.PerpsMarketRouter",
-                "deployTxnHash": "0xa139052a7918a8814afc9c141de591c8a08c90de7b057d8bbb7460e169fdd18f",
+                "deployTxnHash": "0xfbaafca493909ddc49bb4e14fa6dc6311fd2c2fa92aeb6a8118f87eb4b85d2a6",
                 "contractName": "PerpsMarketRouter",
                 "sourceName": "PerpsMarketRouter.sol",
-                "gasUsed": 1191926,
-                "gasCost": "1000260"
+                "gasUsed": 1200358,
+                "gasCost": "1000319"
               },
               "PerpsMarketProxy": {
                 "address": "0xf53Ca60F031FAf0E347D44FbaA4870da68250c8d",
@@ -19792,7 +18622,6 @@
                   "function metadata(uint128 marketId) view returns (string name, string symbol)",
                   "function size(uint128 marketId) view returns (uint256)",
                   "function skew(uint128 marketId) view returns (int256)",
-                  "error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice)",
                   "error InsufficientMargin(int256 availableMargin, uint256 minMargin)",
                   "error InvalidSettlementStrategy(uint256 settlementStrategyId)",
                   "error MaxOpenInterestReached(uint128 marketId, uint256 maxMarketSize, int256 newSideSize)",
@@ -19809,6 +18638,7 @@
                   "function getSettlementRewardCost(uint128 marketId, uint128 settlementStrategyId) view returns (uint256)",
                   "function requiredMarginForOrder(uint128 accountId, uint128 marketId, int128 sizeDelta) view returns (uint256 requiredMargin)",
                   "function requiredMarginForOrderWithPrice(uint128 accountId, uint128 marketId, int128 sizeDelta, uint256 price) view returns (uint256 requiredMargin)",
+                  "error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice)",
                   "error InsufficientAccountMargin(uint256 leftover)",
                   "error OrderNotValid()",
                   "error OverflowInt128ToUint128()",
@@ -19902,6 +18732,7 @@
                   "function getReferrerShare(address referrer) view returns (uint256 shareRatioD18)",
                   "function getSupportedCollaterals() view returns (uint256[] supportedCollaterals)",
                   "function getSynthDeductionPriority() view returns (uint128[])",
+                  "function globalCollateralValue(uint128 collateralId) view returns (uint256 collateralValue)",
                   "function setCollateralConfiguration(uint128 synthMarketId, uint256 maxCollateralAmount)",
                   "function setFeeCollector(address feeCollector)",
                   "function setInterestRateParameters(uint128 lowUtilizationInterestRateGradient, uint128 interestRateGradientBreakpoint, uint128 highUtilizationInterestRateGradient)",
@@ -19998,7 +18829,7 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmXwKs5vZkqADjLUsQnj7oGi1e96DjHbPMeeuT9TZNMqC3",
+                "url": "ipfs://Qmd3Rzrd26Ca98DKsP9xYXV75nVnrc2z8H2gSSpvhFPEs4",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0x2CdD83591bFcc25Be08561b3E9C18869D459C192",
@@ -25332,21 +24163,21 @@
             },
             "txns": {
               "upgrade_proxy": {
-                "hash": "0x6d4a26bb19c012e1d85c20b293bfcd1916575561a29934d5245ad2b5c6da64bd",
+                "hash": "0xd2b5c3f5b60fb35b2c241732641f02ac75ec0b52262b38a8c90ea1678227547d",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0xf53Ca60F031FAf0E347D44FbaA4870da68250c8d",
-                        "0xD59B850F442aECD66cc78663b91D7A7Ee46ef3fD"
+                        "0x5AfdDaa40bAEbeC69566f750C912Cff63DDF3652"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_proxy",
                 "gasUsed": 55631,
-                "gasCost": "1000260",
+                "gasCost": "1000319",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "addCreateMarketToFeatureFlag": {
