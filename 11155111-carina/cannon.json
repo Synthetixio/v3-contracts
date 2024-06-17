@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.13.3",
-  "timestamp": 1716782018,
+  "generator": "cannon cli 2.15.0",
+  "timestamp": 1718640912,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -339,11 +339,7 @@
           "<%= settings.pool_owner %>"
         ],
         "depends": [
-          "invoke.permitCreatePool",
-          "provision.system",
-          "setting.deployer",
-          "setting.pool_owner",
-          "setting.sc_pool_id"
+          "invoke.permitCreatePool"
         ]
       },
       "setScPoolName": {
@@ -362,9 +358,7 @@
           "Spartan Council Pool"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "setPreferredPool": {
@@ -379,9 +373,7 @@
           "<%= settings.sc_pool_id %>"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "OracleManger_registerNode_wbtc": {
@@ -739,12 +731,7 @@
           "synthetixPreset": "<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.system",
-          "setting.bfp_market_package",
-          "setting.owner",
-          "setting.salt",
-          "setting.snx_package",
-          "setting.target_preset"
+          "provision.system"
         ]
       },
       "weth_mock_collateral": {
@@ -768,7 +755,7 @@
     },
     "name": "synthetix-omnibus",
     "preset": "carina",
-    "version": "1",
+    "version": "2",
     "description": "Includes the full synthetix system with configurations applied"
   },
   "state": {
@@ -1271,10 +1258,11 @@
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmfWpM9UxApK2deXLU81VDF5rZz7FyU4ntt3JqWDNJSALf",
+            "url": "ipfs://QmTHw996EG8oUFCEWa96FSKkt1zJheUQd4cUKgPfPPsKzA",
             "tags": [
               "latest"
             ],
+            "target": "synthetix:3.3.18@carina",
             "preset": "carina",
             "contracts": {
               "AccountModule": {
@@ -2837,10 +2825,11 @@
                 }
               },
               "oracle_manager": {
-                "url": "ipfs://QmW65TRBkesnj3KjJPLyBj7q2ixbnYtB6Dc2uDBdkxXVvP",
+                "url": "ipfs://Qmd2DWM7nNGjjBKEcaQoWnxi9RASLKe5XCxgnQzBqo3DJ6",
                 "tags": [
                   "latest"
                 ],
+                "target": "oracle-manager:latest@with-synthetix",
                 "preset": "with-synthetix",
                 "contracts": {
                   "NodeModule": {
@@ -3503,6 +3492,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.wbtc_mock_collateral": {
@@ -3574,6 +3564,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.weth_mock_collateral": {
@@ -3645,6 +3636,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "setting.deployer": {
@@ -3838,10 +3830,11 @@
       "artifacts": {
         "imports": {
           "bfp_market_factory": {
-            "url": "ipfs://QmdGx5Wg7SJDtLQfxbxk3W6G84WUJDxq8XNdcK1dgTRwjG",
+            "url": "ipfs://QmcKGijUQ2ts564L4yx1ZFpR53kDuWSxCgBCF87seHrdVM",
             "tags": [
               "latest"
             ],
+            "target": "synthetix-bfp-market:1.0.0-alpha.2@carina",
             "preset": "carina",
             "contracts": {
               "CoreModule": {
@@ -4771,7 +4764,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmfWpM9UxApK2deXLU81VDF5rZz7FyU4ntt3JqWDNJSALf",
+                "url": "ipfs://QmTHw996EG8oUFCEWa96FSKkt1zJheUQd4cUKgPfPPsKzA",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x66379373B4df3D93cd6A50114594B66F21b3Aaee",
@@ -6333,10 +6326,11 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmW65TRBkesnj3KjJPLyBj7q2ixbnYtB6Dc2uDBdkxXVvP",
+                    "url": "ipfs://Qmd2DWM7nNGjjBKEcaQoWnxi9RASLKe5XCxgnQzBqo3DJ6",
                     "tags": [
                       "latest"
                     ],
+                    "target": "oracle-manager:latest@with-synthetix",
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
@@ -7073,6 +7067,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "setting.wbtc_address": {
