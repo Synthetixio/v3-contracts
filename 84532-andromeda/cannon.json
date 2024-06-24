@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.15.0",
-  "timestamp": 1718720621,
+  "generator": "cannon cli 2.15.1",
+  "timestamp": 1719198554,
   "def": {
     "setting": {
       "snx_package": {
@@ -4783,7 +4783,7 @@
           true
         ]
       },
-      "allowAllPerpsLowCapSystem": {
+      "revokeAllPerpsLowCapSystem": {
         "target": [
           "perpsLowCapFactory.PerpsMarketProxy"
         ],
@@ -4793,7 +4793,7 @@
         "func": "setFeatureFlagAllowAll",
         "args": [
           "<%= formatBytes32String('perpsSystem') %>",
-          true
+          false
         ]
       },
       "setPolynomialAsReferrerOnPerpsMarket": {
@@ -25152,12 +25152,7 @@
           [
             {
               "marketId": "<%= imports.perpsFactory.extras.superMarketId %>",
-              "weightD18": 95,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            },
-            {
-              "marketId": "<%= imports.perpsLowCapFactory.extras.superMarketId %>",
-              "weightD18": 5,
+              "weightD18": 1,
               "maxDebtShareValueD18": "<%= parseEther('1') %>"
             }
           ]
@@ -25204,7 +25199,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "34",
+    "version": "35",
     "description": "Andromeda dev deployment",
     "preset": "andromeda"
   },
@@ -38281,7 +38276,7 @@
         "contracts": {},
         "txns": {
           "setScPoolConfig": {
-            "hash": "0xacc7caf9cc90211e7d22a3040db5177c03f1ee2342ac7403eb00aa91c5d5c1e2",
+            "hash": "0x2d31ac31474b126fbfadcf5da77ddc3949a0523713ae08d6f82513afae1e6a3d",
             "events": {
               "PoolConfigurationSet": [
                 {
@@ -38291,12 +38286,7 @@
                     [
                       {
                         "marketId": "2",
-                        "weightD18": "95",
-                        "maxDebtShareValueD18": "1000000000000000000"
-                      },
-                      {
-                        "marketId": "5",
-                        "weightD18": "5",
+                        "weightD18": "1",
                         "maxDebtShareValueD18": "1000000000000000000"
                       }
                     ],
@@ -38306,14 +38296,14 @@
               ]
             },
             "deployedOn": "invoke.setScPoolConfig",
-            "gasUsed": 3116864,
-            "gasCost": "1000525",
+            "gasUsed": 5631937,
+            "gasCost": "1013225",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "44320910ad0d3defaab38f7493326124",
+      "hash": "08bbcef472fba2ccd66fac9866aad36b",
       "version": 7
     },
     "invoke.setScPoolName": {
@@ -89970,6 +89960,34 @@
         "settings": {}
       },
       "hash": "108de2a4df107e988036f499ea2b13ea",
+      "version": 7
+    },
+    "invoke.revokeAllPerpsLowCapSystem": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "revokeAllPerpsLowCapSystem": {
+            "hash": "0x9692ca5add42153d69305e67726d48646c584efc56886c70ccadd3ad71d597b7",
+            "events": {
+              "FeatureFlagAllowAllSet": [
+                {
+                  "name": "FeatureFlagAllowAllSet",
+                  "args": [
+                    "0x706572707353797374656d000000000000000000000000000000000000000000",
+                    false
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.revokeAllPerpsLowCapSystem",
+            "gasUsed": 34695,
+            "gasCost": "1013337",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "7d580f95840011a3ba426162537ae350",
       "version": 7
     }
   },
