@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.15.1",
-  "timestamp": 1718761447,
+  "timestamp": 1719202993,
   "def": {
     "setting": {
       "snx_package": {
@@ -70,7 +70,7 @@
         "defaultValue": "<%= parseEther('0.01') %>"
       },
       "sUSDe_max_collateral_limit": {
-        "defaultValue": "<%= parseEther(String(50_000_000)) %>"
+        "defaultValue": "<%= parseEther(String(0)) %>"
       },
       "sUSDe_issuance_ratio": {
         "defaultValue": "<%= parseEther('2.00') %>"
@@ -1479,7 +1479,7 @@
             "liquidationRatioD18": "<%= settings.sUSDe_liquidation_ratio %>",
             "liquidationRewardD18": "<%= settings.sUSDe_liquidation_reward %>",
             "minDelegationD18": "<%= settings.sUSDe_min_delegation %>",
-            "depositingEnabled": true
+            "depositingEnabled": false
           }
         ]
       },
@@ -1714,7 +1714,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "10",
+    "version": "11",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -16468,10 +16468,10 @@
     "setting.sUSDe_max_collateral_limit": {
       "artifacts": {
         "settings": {
-          "sUSDe_max_collateral_limit": "50000000000000000000000000"
+          "sUSDe_max_collateral_limit": "0"
         }
       },
-      "hash": "3131f53d918c10094a2a15ecbb56c7d6",
+      "hash": "4dcc24a97eaa6583aab6a5b0cb07d27e",
       "version": 7
     },
     "setting.sUSDe_min_delegation": {
@@ -16946,7 +16946,7 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_sUSDe": {
-            "hash": "0xd217be2a1b036b9ad409d9494f5b02e9236848f8088215ab9cf8476859b0bff2",
+            "hash": "0xa56a6aa452f88953ea53a06a0892a38660395ae09b4011c4de087e6fa27b9cf8",
             "events": {
               "CollateralConfigured": [
                 {
@@ -16954,7 +16954,7 @@
                   "args": [
                     "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
                     {
-                      "depositingEnabled": true,
+                      "depositingEnabled": false,
                       "issuanceRatioD18": "2000000000000000000",
                       "liquidationRatioD18": "1050000000000000000",
                       "liquidationRewardD18": "1000000000000000000",
@@ -16967,14 +16967,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_sUSDe",
-            "gasUsed": 243209,
+            "gasUsed": 54244,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "07590f40f153f9b5e37c4a2de4eea069",
+      "hash": "5e8ca573f597278a1d8bd63727113000",
       "version": 7
     },
     "invoke.CoreProxy_setPoolCollateralConfiguration_USDe": {
@@ -17014,7 +17014,7 @@
         "contracts": {},
         "txns": {
           "CoreProxy_setPoolCollateralConfiguration_sUSDe": {
-            "hash": "0x23d9e07d61e8dadd4fc17b8b75e03cefe9d7293648637f5513e10ad1efc28436",
+            "hash": "0x82d8a4ff8d89b24d710e5c740a61db9bbf2f0ef55057ea68f2daaee3f835612e",
             "events": {
               "PoolCollateralConfigurationUpdated": [
                 {
@@ -17023,7 +17023,7 @@
                     "1",
                     "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
                     {
-                      "collateralLimitD18": "50000000000000000000000000",
+                      "collateralLimitD18": "0",
                       "issuanceRatioD18": "0"
                     }
                   ]
@@ -17031,14 +17031,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_setPoolCollateralConfiguration_sUSDe",
-            "gasUsed": 62454,
+            "gasUsed": 40458,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "65d8264f4c0f95737fb0ba155ff87a47",
+      "hash": "106967287ecab7bec6647ad638882e82",
       "version": 7
     },
     "provision.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
