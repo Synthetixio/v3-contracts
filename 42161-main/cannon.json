@@ -1,6 +1,6 @@
 {
-  "generator": "cannon website 2.12.1",
-  "timestamp": 1718621297,
+  "generator": "cannon website 2.15.2",
+  "timestamp": 1719205929,
   "def": {
     "setting": {
       "snx_package": {
@@ -56,6 +56,21 @@
       },
       "weth_min_delegation": {
         "defaultValue": "<%= parseEther('0.01') %>"
+      },
+      "USDe_max_collateral_limit": {
+        "defaultValue": "<%= parseEther(String(50_000_000)) %>"
+      },
+      "USDe_issuance_ratio": {
+        "defaultValue": "<%= parseEther('2.00') %>"
+      },
+      "USDe_liquidation_ratio": {
+        "defaultValue": "<%= parseEther('1.05') %>"
+      },
+      "USDe_liquidation_reward": {
+        "defaultValue": "<%= parseEther('1') %>"
+      },
+      "USDe_min_delegation": {
+        "defaultValue": "<%= parseEther('100') %>"
       },
       "buyback_snx_package": {
         "defaultValue": "buyback-snx:3.3.15",
@@ -145,6 +160,14 @@
       "max_collateral_limit_arb": {
         "defaultValue": "<%= parseEther(String(10_000_000)) %>"
       },
+      "USDe_address": {
+        "defaultValue": "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34",
+        "description": "https://coinmarketcap.com/currencies/ethena-usde/"
+      },
+      "pyth_feed_id_USDe": {
+        "defaultValue": "0x6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d",
+        "description": "https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet"
+      },
       "usd_token_name": {
         "defaultValue": "<%= formatBytes32String('USDToken') %>"
       }
@@ -173,30 +196,9 @@
           "provision.system"
         ]
       },
-      "pyth_erc7412_wrapper": {
-        "source": "pyth-erc7412-wrapper:3.3.15",
-        "targetPreset": "<%= settings.target_preset %>",
-        "options": {
-          "salt": "<%= settings.salt %>",
-          "pythAddress": "<%= settings.pyth_price_verification_address %>"
-        }
-      },
-      "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
-        "source": "synthetix-rewards-distributor:0.0.2",
-        "targetPreset": "<%= settings.target_preset %>",
-        "options": {
-          "salt": "<%= settings.salt %>",
-          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
-          "poolId": "<%= extras.spartan_council_pool_id %>",
-          "collateralType": "<%= settings.arb_address %>",
-          "payoutToken": "<%= settings.arb_address %>",
-          "payoutTokenDecimals": "18",
-          "name": "Spartan Council Pool ARB Rewards for ARB LP"
-        }
-      },
       "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
         "source": "synthetix-rewards-distributor:0.0.2",
-        "targetPreset": "<%= settings.target_preset %>",
+        "target": "synthetix-rewards-distributor:0.0.2@ARB_rewards_for_USDC_lp",
         "options": {
           "salt": "<%= settings.salt %>",
           "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
@@ -207,9 +209,22 @@
           "name": "Spartan Council Pool ARB Rewards for USDC LP"
         }
       },
+      "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "target": "synthetix-rewards-distributor:0.0.2@ARB_rewards_for_ARB_lp",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= extras.spartan_council_pool_id %>",
+          "collateralType": "<%= settings.arb_address %>",
+          "payoutToken": "<%= settings.arb_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Spartan Council Pool ARB Rewards for ARB LP"
+        }
+      },
       "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
         "source": "synthetix-rewards-distributor:0.0.2",
-        "targetPreset": "<%= settings.target_preset %>",
+        "target": "synthetix-rewards-distributor:0.0.2@ARB_rewards_for_WETH_lp",
         "options": {
           "salt": "<%= settings.salt %>",
           "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
@@ -218,6 +233,27 @@
           "payoutToken": "<%= settings.arb_address %>",
           "payoutTokenDecimals": "18",
           "name": "Spartan Council Pool ARB Rewards for WETH LP"
+        }
+      },
+      "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
+        "source": "synthetix-rewards-distributor:0.0.2",
+        "target": "synthetix-rewards-distributor:0.0.2@ARB_rewards_for_USDe_lp",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= extras.spartan_council_pool_id %>",
+          "collateralType": "<%= settings.USDe_address %>",
+          "payoutToken": "<%= settings.arb_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Spartan Council Pool ARB Rewards for USDe LP"
+        }
+      },
+      "pyth_erc7412_wrapper": {
+        "source": "pyth-erc7412-wrapper:3.3.15",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "pythAddress": "<%= settings.pyth_price_verification_address %>"
         }
       }
     },
@@ -737,6 +773,23 @@
           }
         ]
       },
+      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.usdc_address %>",
+          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp.contracts.RewardsDistributor.address %>"
+        ]
+      },
       "OracleManagerProxy_registerNode_pyth_arb": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
         "target": [
@@ -842,6 +895,23 @@
             "collateralLimitD18": "<%= settings.max_collateral_limit_arb %>",
             "issuanceRatioD18": 0
           }
+        ]
+      },
+      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.arb_address %>",
+          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp.contracts.RewardsDistributor.address %>"
         ]
       },
       "OracleManagerProxy_registerNode_pyth_eth": {
@@ -951,6 +1021,147 @@
           }
         ]
       },
+      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.weth_address %>",
+          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp.contracts.RewardsDistributor.address %>"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_USDe": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_USDe, false]) %>",
+          []
+        ],
+        "extra": {
+          "USDe_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_USDe",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_USDe": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_USDe, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "USDe_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_USDe"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_USDe": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.USDe_pyth_oracle_id %>",
+            "<%= extras.USDe_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "USDe_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "CoreProxy_configureCollateral_USDe": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= settings.USDe_address %>",
+            "oracleNodeId": "<%= extras.USDe_oracle_id %>",
+            "issuanceRatioD18": "<%= settings.USDe_issuance_ratio %>",
+            "liquidationRatioD18": "<%= settings.USDe_liquidation_ratio %>",
+            "liquidationRewardD18": "<%= settings.USDe_liquidation_reward %>",
+            "minDelegationD18": "<%= settings.USDe_min_delegation %>",
+            "depositingEnabled": true
+          }
+        ]
+      },
+      "CoreProxy_setPoolCollateralConfiguration_USDe": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "setPoolCollateralConfiguration",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.USDe_address %>",
+          {
+            "collateralLimitD18": "<%= settings.USDe_max_collateral_limit %>",
+            "issuanceRatioD18": 0
+          }
+        ]
+      },
+      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.USDe_address %>",
+          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp.contracts.RewardsDistributor.address %>"
+        ]
+      },
       "CoreProxy_setMinLiquidityRatio": {
         "target": [
           "system.CoreProxy"
@@ -1013,61 +1224,10 @@
           18,
           "<%= imports.system.contracts.USDRouter.address %>"
         ]
-      },
-      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.arb_address %>",
-          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_ARB_lp.contracts.RewardsDistributor.address %>"
-        ]
-      },
-      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.usdc_address %>",
-          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDC_lp.contracts.RewardsDistributor.address %>"
-        ]
-      },
-      "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.weth_address %>",
-          "<%= imports.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_WETH_lp.contracts.RewardsDistributor.address %>"
-        ]
       }
     },
     "name": "synthetix-omnibus",
-    "version": "2",
+    "version": "5",
     "description": "Includes the full synthetix system with configurations applied",
     "preset": "main"
   },
@@ -15175,6 +15335,342 @@
         "settings": {}
       },
       "hash": "d926cd316163d44f9c5ad670282e6c8f",
+      "version": 7
+    },
+    "setting.USDe_address": {
+      "artifacts": {
+        "settings": {
+          "USDe_address": "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34"
+        }
+      },
+      "hash": "8a4315953a1bbd422814fd8385e39d8a",
+      "version": 7
+    },
+    "setting.USDe_issuance_ratio": {
+      "artifacts": {
+        "settings": {
+          "USDe_issuance_ratio": "2000000000000000000"
+        }
+      },
+      "hash": "09553939422a81e0204384bf690274c4",
+      "version": 7
+    },
+    "setting.USDe_liquidation_ratio": {
+      "artifacts": {
+        "settings": {
+          "USDe_liquidation_ratio": "1050000000000000000"
+        }
+      },
+      "hash": "b8ef3cf0b2ae29972f2b898f8e1fa78f",
+      "version": 7
+    },
+    "setting.USDe_liquidation_reward": {
+      "artifacts": {
+        "settings": {
+          "USDe_liquidation_reward": "1000000000000000000"
+        }
+      },
+      "hash": "845fb85d1e0ccaf6b0afd054626bbe97",
+      "version": 7
+    },
+    "setting.USDe_max_collateral_limit": {
+      "artifacts": {
+        "settings": {
+          "USDe_max_collateral_limit": "50000000000000000000000000"
+        }
+      },
+      "hash": "3131f53d918c10094a2a15ecbb56c7d6",
+      "version": 7
+    },
+    "setting.USDe_min_delegation": {
+      "artifacts": {
+        "settings": {
+          "USDe_min_delegation": "100000000000000000000"
+        }
+      },
+      "hash": "ad27ad0c2fad068c59a31bad017dda13",
+      "version": 7
+    },
+    "setting.pyth_feed_id_USDe": {
+      "artifacts": {
+        "settings": {
+          "pyth_feed_id_USDe": "0x6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d"
+        }
+      },
+      "hash": "bf5161159e0ac0e23d1cb94a563ce46f",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_USDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_USDe": {
+            "hash": "0xad16782c1aa8af9e524f3debbba6ba3f2e5bf5bfc031c49fdbd00e259103cc1c",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x1260dab2dc056dabcc6651568ba942cfed7cc1093eab7e1d104f5ea33edc2657",
+                    5,
+                    "0x000000000000000000000000ff1a0f4744e8582df1ae09d5611b887b6a12925c6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d0000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_USDe",
+            "gasUsed": 146116,
+            "gasCost": "10000000",
+            "signer": "0xe2163dd599067919d1e9108929b568Bf41D3A420"
+          }
+        },
+        "settings": {
+          "USDe_pyth_oracle_id": "0x1260dab2dc056dabcc6651568ba942cfed7cc1093eab7e1d104f5ea33edc2657"
+        }
+      },
+      "hash": "e0bbb3c5cc66d9e767a297e69e900056",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_USDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_USDe": {
+            "hash": "0x4531c27a5a5183f1554ceffdee1860e677f6b5547dce0b454b6b61d36bf3a915",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x977ed29195ab3aa9accca2164747ba2b6a71340303bfc6e8e3dc0b7bbe9f3d4c",
+                    9,
+                    "0x0000000000000000000000007b118596be900f3c0feb2f23758d9798965b72a36ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d0000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_USDe",
+            "gasUsed": 154761,
+            "gasCost": "10000000",
+            "signer": "0xe2163dd599067919d1e9108929b568Bf41D3A420"
+          }
+        },
+        "settings": {
+          "USDe_lookup_oracle_id": "0x977ed29195ab3aa9accca2164747ba2b6a71340303bfc6e8e3dc0b7bbe9f3d4c"
+        }
+      },
+      "hash": "eaa4c1a1363c1902231423cc59f9c1ea",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_USDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_USDe": {
+            "hash": "0x8a2557728eea7b43e726a0a6defb0e5af1ba81f090e6564cad9d96f9d96f762b",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x10fb1e94fc4c894e1fd8a51dc27df6877b1746a6f065282abc06f688f5f73c1c",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0x1260dab2dc056dabcc6651568ba942cfed7cc1093eab7e1d104f5ea33edc2657",
+                      "0x977ed29195ab3aa9accca2164747ba2b6a71340303bfc6e8e3dc0b7bbe9f3d4c"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_USDe",
+            "gasUsed": 220629,
+            "gasCost": "10000000",
+            "signer": "0xe2163dd599067919d1e9108929b568Bf41D3A420"
+          }
+        },
+        "settings": {
+          "USDe_oracle_id": "0x10fb1e94fc4c894e1fd8a51dc27df6877b1746a6f065282abc06f688f5f73c1c"
+        }
+      },
+      "hash": "8a1f9106b54867fb7582fe534b9ecd5a",
+      "version": 7
+    },
+    "provision.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
+      "artifacts": {
+        "imports": {
+          "RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
+            "url": "ipfs://QmTsj7QhRc9SaDPKkb6CMmuPiH4VEcSroYuZADFFzLHGuj",
+            "tags": [
+              "latest"
+            ],
+            "target": "synthetix-rewards-distributor:0.0.2@ARB_rewards_for_USDe_lp",
+            "preset": "ARB_rewards_for_USDe_lp",
+            "settings": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            },
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0x5eff594E10aCb20919a577794C4e9B4bb1221F17",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address collateralType_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function collateralType() view returns (address)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address collateralType_, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardsAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0xffffffaEff0B96Ea8e4f94b2253f31abdD875847",
+                  "1",
+                  "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34",
+                  "0x912CE59144191C1204E64559FE8253a0e49E6548",
+                  "18",
+                  "Spartan Council Pool ARB Rewards for USDe LP"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x5d7e4cfc94c80840da1adc76b482383df2a8a3fbcf9823f8385ee6b7d0a2142f",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 975563,
+                "gasCost": "10000000"
+              }
+            },
+            "extras": {
+              "collateralType": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_USDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_USDe": {
+            "hash": "",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+                    {
+                      "depositingEnabled": true,
+                      "issuanceRatioD18": "2000000000000000000",
+                      "liquidationRatioD18": "1050000000000000000",
+                      "liquidationRewardD18": "1000000000000000000",
+                      "oracleNodeId": "0x10fb1e94fc4c894e1fd8a51dc27df6877b1746a6f065282abc06f688f5f73c1c",
+                      "tokenAddress": "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+                      "minDelegationD18": "100000000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_USDe",
+            "gasUsed": 243209,
+            "gasCost": "1007656250",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "db9fa10998b3aa12f46d70a7a70378f4",
+      "version": 7
+    },
+    "invoke.CoreProxy_setPoolCollateralConfiguration_USDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_setPoolCollateralConfiguration_USDe": {
+            "hash": "",
+            "events": {
+              "PoolCollateralConfigurationUpdated": [
+                {
+                  "name": "PoolCollateralConfigurationUpdated",
+                  "args": [
+                    "1",
+                    "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+                    {
+                      "collateralLimitD18": "50000000000000000000000000",
+                      "issuanceRatioD18": "0"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_setPoolCollateralConfiguration_USDe",
+            "gasUsed": 62454,
+            "gasCost": "1006714736",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "381448a9657f7348e1ecd1984c891390",
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
+            "hash": "",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34",
+                    "0x5eff594E10aCb20919a577794C4e9B4bb1221F17"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp",
+            "gasUsed": 129016,
+            "gasCost": "1005878889",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "540b6652fdc16d06bc6d5060c39e5a8d",
       "version": 7
     }
   },
