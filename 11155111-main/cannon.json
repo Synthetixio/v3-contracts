@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.15.5",
-  "timestamp": 1720433801,
+  "timestamp": 1720540767,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -30,13 +30,21 @@
       "wsteth_aggregator_address": {
         "defaultValue": "0xaaabb530434B0EeAAc9A42E25dbC6A22D7bE218E"
       },
+      "wsteth_chainlink_staleness_tolerance": {
+        "defaultValue": "86400"
+      },
       "susde_aggregator_address": {
         "defaultValue": "0x6f7be09227d98Ce1Df812d5Bc745c0c775507E92"
+      },
+      "susde_chainlink_staleness_tolerance": {
+        "defaultValue": "86400"
       },
       "snx_aggregator_address": {
         "defaultValue": "0xc0F82A46033b8BdBA4Bb0B0e28Bc2006F64355bC"
       },
-      "snx_chainlink_staleness_tolerance": {},
+      "snx_chainlink_staleness_tolerance": {
+        "defaultValue": "86400"
+      },
       "snx_address": {
         "defaultValue": "<%= imports.legacyMarket.imports.v2x.contracts.ProxySynthetix.address %>"
       },
@@ -104,6 +112,9 @@
         "depends": [
           "clone.wsteth_deploy"
         ]
+      },
+      "usde_chainlink_staleness_tolerance": {
+        "defaultValue": "86400"
       },
       "weth_liquidation_reward": {
         "defaultValue": "10000000000000000000"
@@ -206,7 +217,7 @@
           []
         ],
         "extra": {
-          "wsteth_oracle_id": {
+          "wsteth_oracle_id_raw": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -216,7 +227,26 @@
           "setting.wsteth_aggregator_address"
         ]
       },
-      "register_susde_oracle_node": {
+      "registerWstethWithStaleness": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.wsteth_chainlink_staleness_tolerance]) %>",
+          [
+            "<%= extras.wsteth_oracle_id_raw %>"
+          ]
+        ],
+        "extra": {
+          "wsteth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "registerSusdeOracleManagerNode": {
         "target": [
           "system.oracle_manager.Proxy"
         ],
@@ -227,7 +257,7 @@
           []
         ],
         "extra": {
-          "susde_oracle_id": {
+          "susde_oracle_id_raw": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -236,6 +266,25 @@
           "provision.system",
           "setting.susde_aggregator_address"
         ]
+      },
+      "registerSusdeWithStaleness": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.susde_chainlink_staleness_tolerance]) %>",
+          [
+            "<%= extras.susde_oracle_id_raw %>"
+          ]
+        ],
+        "extra": {
+          "susde_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
       },
       "registerSnxOracleManagerNode": {
         "target": [
@@ -726,7 +775,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "2",
+    "version": "3",
     "description": "Includes the full synthetix system with configurations applied",
     "clone": {
       "usde": {
@@ -12851,9 +12900,9 @@
         "contracts": {},
         "txns": {
           "configureSnxCollateral": {
-            "hash": "0x6693fd815ba0b7166ded264a1d3c51236cb636de7e31ab916b02362b3ac51a35",
-            "blockNumber": "6269429",
-            "timestamp": "1720433772",
+            "hash": "0xe4199131d263bc34d22934dd3f13942887198af90c4a7072fc1b5a294ad6caff",
+            "blockNumber": "6277506",
+            "timestamp": "1720540740",
             "events": {
               "CollateralConfigured": [
                 {
@@ -12865,7 +12914,7 @@
                       "issuanceRatioD18": "4000000000000000000",
                       "liquidationRatioD18": "1500000000000000000",
                       "liquidationRewardD18": "0",
-                      "oracleNodeId": "0x9e90e79fc2a420c80c191d8c4d5906eaa59d2073106d1f09a850b6aa49914fe9",
+                      "oracleNodeId": "0xfa2382e79237e15c657bd9687d184d297d8814e1adb00c339c12db596256d5b9",
                       "tokenAddress": "0x079E7E1C0cBFee4B2D2798A9d426009D08b1F9cb",
                       "minDelegationD18": "0"
                     }
@@ -12875,13 +12924,13 @@
             },
             "deployedOn": "invoke.configureSnxCollateral",
             "gasUsed": 58878,
-            "gasCost": "252419925061",
+            "gasCost": "9065258548",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "45bb04d838f01f8507f022a01feb6a2d",
+      "hash": "853354618b29545cbf489fd981759c1a",
       "version": 7
     },
     "invoke.configureSusdeCollateral": {
@@ -12889,9 +12938,9 @@
         "contracts": {},
         "txns": {
           "configureSusdeCollateral": {
-            "hash": "0x15a1759c9bf0e6faabdb2ef3de6ffbb031426e3a71de69a9d744695c008eb577",
-            "blockNumber": "6269430",
-            "timestamp": "1720433784",
+            "hash": "0x43e00914dd945fe480396a85f7687feddfa33a324669da70fce0b75736cb9263",
+            "blockNumber": "6277507",
+            "timestamp": "1720540752",
             "events": {
               "CollateralConfigured": [
                 {
@@ -12903,7 +12952,7 @@
                       "issuanceRatioD18": "1100000000000000000",
                       "liquidationRatioD18": "1010000000000000000",
                       "liquidationRewardD18": "1000000000000000000",
-                      "oracleNodeId": "0x6e01f0cdf9487008e574236be87ad7980469f717f8af49112e4ba428f1465f24",
+                      "oracleNodeId": "0x7d9247f06acb8db5adc395c853d8f06b1b75f62f7f795e08062d9f5c48630c1b",
                       "tokenAddress": "0xFDa8192b495Cb568c6C556a6F6D89A1E3Ab87106",
                       "minDelegationD18": "1000000000000000000"
                     }
@@ -12912,14 +12961,14 @@
               ]
             },
             "deployedOn": "invoke.configureSusdeCollateral",
-            "gasUsed": 243187,
-            "gasCost": "255104065324",
+            "gasUsed": 59034,
+            "gasCost": "8653307434",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "f5c506319eb9dfea4264308712ef75b4",
+      "hash": "36919c4aba74355af28b3cf3cb37c49a",
       "version": 7
     },
     "invoke.configureWstethCollateral": {
@@ -12927,9 +12976,9 @@
         "contracts": {},
         "txns": {
           "configureWstethCollateral": {
-            "hash": "0x3e7f6733362f25b72739074b1cc12ed7f1487ec216f180b4f8f89d1cc7322e45",
-            "blockNumber": "6269426",
-            "timestamp": "1720433736",
+            "hash": "0xe17f81008aa9b82381fe3470383e8edd9bd0df2dbd229f792187fb5a5928cf3c",
+            "blockNumber": "6277508",
+            "timestamp": "1720540764",
             "events": {
               "CollateralConfigured": [
                 {
@@ -12941,7 +12990,7 @@
                       "issuanceRatioD18": "1500000000000000000",
                       "liquidationRatioD18": "1100000000000000000",
                       "liquidationRewardD18": "10000000000000000",
-                      "oracleNodeId": "0xa8111245ab1051fbe8184fa303f5c75909e43533631383688e8c7b0133cceb00",
+                      "oracleNodeId": "0x37afb8ab01e456a480b8b1516b3c945a84f8011f60494ed6b1d7021547c790aa",
                       "tokenAddress": "0xB82381A3fBD3FaFA77B3a7bE693342618240067b",
                       "minDelegationD18": "10000000000000000"
                     }
@@ -12950,14 +12999,14 @@
               ]
             },
             "deployedOn": "invoke.configureWstethCollateral",
-            "gasUsed": 58998,
-            "gasCost": "257485408568",
+            "gasUsed": 78910,
+            "gasCost": "8414425421",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "3e9a850591409372e0e7477942d4ea9a",
+      "hash": "67f137b2607576c4fe65266148594f64",
       "version": 7
     },
     "invoke.registerRewardsDistributor": {
@@ -13245,10 +13294,10 @@
     "setting.snx_chainlink_staleness_tolerance": {
       "artifacts": {
         "settings": {
-          "snx_chainlink_staleness_tolerance": ""
+          "snx_chainlink_staleness_tolerance": "86400"
         }
       },
-      "hash": "99914b932bd37a50b983c5e7c90ae93b",
+      "hash": "3acf2387dde14e993634ca9badf5f564",
       "version": 7
     },
     "clone.susde_deploy": {
@@ -13515,9 +13564,9 @@
         "contracts": {},
         "txns": {
           "registerWstethOracleNode": {
-            "hash": "0xc663fd4b946d7575af6de60ecfe4d020fa2b9fd8e02772e0d1eced5c3ea24e67",
-            "blockNumber": "6269420",
-            "timestamp": "1720433664",
+            "hash": "0xbff37389badd3e8c36296260f142d1abea78e0a273f7deb27c805a4f675ce0a0",
+            "blockNumber": "6277502",
+            "timestamp": "1720540680",
             "events": {
               "NodeRegistered": [
                 {
@@ -13532,16 +13581,16 @@
               ]
             },
             "deployedOn": "invoke.registerWstethOracleNode",
-            "gasUsed": 154771,
-            "gasCost": "275794428951",
+            "gasUsed": 51010,
+            "gasCost": "9478776502",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {
-          "wsteth_oracle_id": "0xa8111245ab1051fbe8184fa303f5c75909e43533631383688e8c7b0133cceb00"
+          "wsteth_oracle_id_raw": "0xa8111245ab1051fbe8184fa303f5c75909e43533631383688e8c7b0133cceb00"
         }
       },
-      "hash": "7640b84c97f7ec4022314fde6edd59a9",
+      "hash": "fee2d50dc672bc51fb4b5f8b5af9fb1c",
       "version": 7
     },
     "invoke.register_susde_oracle_node": {
@@ -13592,17 +13641,17 @@
         "contracts": {},
         "txns": {
           "registerSnxWithStaleness": {
-            "hash": "0x1c754158427db5a65df788db6274f68c77609c7070f74b9b0fec046a1c6e9869",
-            "blockNumber": "6269427",
-            "timestamp": "1720433748",
+            "hash": "0x5cdda02c41c724287f21736ed0b03746d1f4ea08d9fbbec83c4ba0ca7a108f24",
+            "blockNumber": "6277503",
+            "timestamp": "1720540692",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0x9e90e79fc2a420c80c191d8c4d5906eaa59d2073106d1f09a850b6aa49914fe9",
+                    "0xfa2382e79237e15c657bd9687d184d297d8814e1adb00c339c12db596256d5b9",
                     7,
-                    "0x0000000000000000000000000000000000000000000000000000000000000000",
+                    "0x0000000000000000000000000000000000000000000000000000000000015180",
                     [
                       "0xd2ecd19ffabdec991a3ed919bc2565574bf2bb7a0fb09de7413c3115c5d15778"
                     ]
@@ -13611,16 +13660,149 @@
               ]
             },
             "deployedOn": "invoke.registerSnxWithStaleness",
-            "gasUsed": 169641,
-            "gasCost": "253358534833",
+            "gasUsed": 189577,
+            "gasCost": "9303839902",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {
-          "snx_oracle_id": "0x9e90e79fc2a420c80c191d8c4d5906eaa59d2073106d1f09a850b6aa49914fe9"
+          "snx_oracle_id": "0xfa2382e79237e15c657bd9687d184d297d8814e1adb00c339c12db596256d5b9"
         }
       },
-      "hash": "5e2f94bb9ca94d5f2ad332b5c850a8ed",
+      "hash": "4f7bb0332eaa13a3157cd70284db29a1",
+      "version": 7
+    },
+    "setting.susde_chainlink_staleness_tolerance": {
+      "artifacts": {
+        "settings": {
+          "susde_chainlink_staleness_tolerance": "86400"
+        }
+      },
+      "hash": "3acf2387dde14e993634ca9badf5f564",
+      "version": 7
+    },
+    "setting.usde_chainlink_staleness_tolerance": {
+      "artifacts": {
+        "settings": {
+          "usde_chainlink_staleness_tolerance": "86400"
+        }
+      },
+      "hash": "3acf2387dde14e993634ca9badf5f564",
+      "version": 7
+    },
+    "setting.wsteth_chainlink_staleness_tolerance": {
+      "artifacts": {
+        "settings": {
+          "wsteth_chainlink_staleness_tolerance": "86400"
+        }
+      },
+      "hash": "3acf2387dde14e993634ca9badf5f564",
+      "version": 7
+    },
+    "invoke.registerSusdeOracleManagerNode": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "registerSusdeOracleManagerNode": {
+            "hash": "0x890056c7a3d519023972fa2670f6320b251219ae4f63b4a7f2bb0644a63de629",
+            "blockNumber": "6277501",
+            "timestamp": "1720540668",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x6e01f0cdf9487008e574236be87ad7980469f717f8af49112e4ba428f1465f24",
+                    3,
+                    "0x0000000000000000000000006f7be09227d98ce1df812d5bc745c0c775507e9200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.registerSusdeOracleManagerNode",
+            "gasUsed": 51010,
+            "gasCost": "9544205005",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {
+          "susde_oracle_id_raw": "0x6e01f0cdf9487008e574236be87ad7980469f717f8af49112e4ba428f1465f24"
+        }
+      },
+      "hash": "b6b322f3a85c053b773350fc5a1d829f",
+      "version": 7
+    },
+    "invoke.registerSusdeWithStaleness": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "registerSusdeWithStaleness": {
+            "hash": "0xd19df407725ddd295031a4da621babdc180bb88f3e5485f0d7646e65f212097e",
+            "blockNumber": "6277504",
+            "timestamp": "1720540716",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x7d9247f06acb8db5adc395c853d8f06b1b75f62f7f795e08062d9f5c48630c1b",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000015180",
+                    [
+                      "0x6e01f0cdf9487008e574236be87ad7980469f717f8af49112e4ba428f1465f24"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.registerSusdeWithStaleness",
+            "gasUsed": 189203,
+            "gasCost": "9305360429",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {
+          "susde_oracle_id": "0x7d9247f06acb8db5adc395c853d8f06b1b75f62f7f795e08062d9f5c48630c1b"
+        }
+      },
+      "hash": "8f6c6575e13d9b50d692c325da24fe0d",
+      "version": 7
+    },
+    "invoke.registerWstethWithStaleness": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "registerWstethWithStaleness": {
+            "hash": "0x267f13fba964f2d0b29cc6a67c9cc7423ae724a7e6e6d2f2160731eed34c9113",
+            "blockNumber": "6277505",
+            "timestamp": "1720540728",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x37afb8ab01e456a480b8b1516b3c945a84f8011f60494ed6b1d7021547c790aa",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000015180",
+                    [
+                      "0xa8111245ab1051fbe8184fa303f5c75909e43533631383688e8c7b0133cceb00"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.registerWstethWithStaleness",
+            "gasUsed": 189191,
+            "gasCost": "9537906445",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {
+          "wsteth_oracle_id": "0x37afb8ab01e456a480b8b1516b3c945a84f8011f60494ed6b1d7021547c790aa"
+        }
+      },
+      "hash": "dc6ec08e0feb65f005a87fd321f238a0",
       "version": 7
     }
   },
