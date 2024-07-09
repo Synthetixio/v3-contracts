@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1720161637,
+  "timestamp": 1720450932,
   "def": {
     "setting": {
       "snx_package": {
@@ -94,6 +94,15 @@
       },
       "perps_keeper_l2_cost_liquidate_gas_units": {
         "defaultValue": "<%= String(600_000) %>"
+      },
+      "perps_keeper_settle_tx_size": {
+        "defaultValue": "<%= String(5_000) %>"
+      },
+      "perps_keeper_flag_tx_size": {
+        "defaultValue": "<%= String(3_100) %>"
+      },
+      "perps_keeper_liquidate_tx_size": {
+        "defaultValue": "<%= String(1_100) %>"
       },
       "perps_liquidation_min_keeper_reward_usd": {
         "defaultValue": "5"
@@ -4191,7 +4200,7 @@
         "defaultValue": "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
       },
       "perps_keeper_cost_package": {
-        "defaultValue": "op-gas-price-oracle:3.3.15"
+        "defaultValue": "op-gas-price-oracle:3.4.0"
       },
       "buyback_snx_package": {
         "defaultValue": "buyback-snx:3.3.5"
@@ -4725,7 +4734,7 @@
         "func": "registerNode",
         "args": [
           2,
-          "<%= defaultAbiCoder.encode(['address', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256'], [imports.perps_gas_oracle_node.contracts.OpGasPriceOracle.address, settings.perps_keeper_l1_cost_settle_gas_units, settings.perps_keeper_l2_cost_settle_gas_units, settings.perps_keeper_l1_cost_flag_gas_units, settings.perps_keeper_l2_cost_flag_gas_units, settings.perps_keeper_l1_cost_liquidate_gas_units, settings.perps_keeper_l2_cost_liquidate_gas_units]) %>",
+          "<%= defaultAbiCoder.encode(['address', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256', 'uint256'], [imports.perps_gas_oracle_node.contracts.OpGasPriceOracle.address, settings.perps_keeper_l1_cost_settle_gas_units, settings.perps_keeper_l2_cost_settle_gas_units, settings.perps_keeper_l1_cost_flag_gas_units, settings.perps_keeper_l2_cost_flag_gas_units, settings.perps_keeper_l1_cost_liquidate_gas_units, settings.perps_keeper_l2_cost_liquidate_gas_units, settings.perps_keeper_settle_tx_size, settings.perps_keeper_flag_tx_size, settings.perps_keeper_liquidate_tx_size]) %>",
           []
         ],
         "extra": {
@@ -4737,12 +4746,15 @@
         "depends": [
           "provision.perps_gas_oracle_node",
           "provision.system",
+          "setting.perps_keeper_flag_tx_size",
           "setting.perps_keeper_l1_cost_flag_gas_units",
           "setting.perps_keeper_l1_cost_liquidate_gas_units",
           "setting.perps_keeper_l1_cost_settle_gas_units",
           "setting.perps_keeper_l2_cost_flag_gas_units",
           "setting.perps_keeper_l2_cost_liquidate_gas_units",
-          "setting.perps_keeper_l2_cost_settle_gas_units"
+          "setting.perps_keeper_l2_cost_settle_gas_units",
+          "setting.perps_keeper_liquidate_tx_size",
+          "setting.perps_keeper_settle_tx_size"
         ]
       },
       "registerPerps_KeeperCostUsdOracleNode": {
@@ -24942,7 +24954,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "41",
+    "version": "42",
     "description": "Andromeda deployment",
     "preset": "andromeda"
   },
@@ -24951,17 +24963,18 @@
       "artifacts": {
         "imports": {
           "perps_gas_oracle_node": {
-            "url": "ipfs://QmQ6VtfEuC5BF3iGo5ZWPKJNaWyrCSFwebNFTQx5675jQd",
+            "url": "ipfs://QmSvqeBHTKNW3PjqmgEPhyuHLRAuKJraKDPJGv46UECDiP",
             "tags": [
               "latest"
             ],
+            "target": "op-gas-price-oracle:3.4.0@andromeda",
             "preset": "andromeda",
             "settings": {
               "ovmGasPriceOracleAddress": "0x420000000000000000000000000000000000000F"
             },
             "contracts": {
               "OpGasPriceOracle": {
-                "address": "0x6d12a3cdf4dDF71BAAB4876891B7690a9d4F7027",
+                "address": "0x9930Cd712D6Ad27Ef8e8992664B183892b499dF0",
                 "abi": [
                   "constructor(address _ovmGasPriceOracleAddress)",
                   "error OverflowUint256ToInt256()",
@@ -24977,12 +24990,14 @@
                   "0x420000000000000000000000000000000000000F"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "",
+                "deployTxnHash": "0x8183d7bc60bde65fc93f66d9ebde8515d60b9211d4206b0787db0f229ef410c6",
+                "deployTxnBlockNumber": "16830767",
+                "deployTimestamp": "1720450882",
                 "sourceName": "contracts/OpGasPriceOracle.sol",
                 "contractName": "OpGasPriceOracle",
                 "deployedOn": "contract.OpGasPriceOracle",
-                "gasUsed": 0,
-                "gasCost": "0"
+                "gasUsed": 1184361,
+                "gasCost": "1009052029"
               }
             },
             "extras": {
@@ -27490,31 +27505,33 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostEthOracleNode": {
-            "hash": "0xccfff2c1878b2c6bccc057bc66e24ae02144cdc0f6189e30f41518d62dc6b1e7",
+            "hash": "",
+            "blockNumber": "16830768",
+            "timestamp": "1720450899",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0x706c338ac5e4f348a55af3f1a7b2cd7ebfdb99893053ef9daad4f308db551822",
+                    "0x21b3277e63d3cd4c5d1246a2b16d89518f3ac17d648032e60ed83c96030c712e",
                     2,
-                    "0x0000000000000000000000006d12a3cdf4ddf71baab4876891b7690a9d4f7027000000000000000000000000000000000000000000000000000000000000753000000000000000000000000000000000000000000000000000000000002562500000000000000000000000000000000000000000000000000000000000007918000000000000000000000000000000000000000000000000000000000011b340000000000000000000000000000000000000000000000000000000000000157c00000000000000000000000000000000000000000000000000000000000927c0",
+                    "0x0000000000000000000000009930cd712d6ad27ef8e8992664b183892b499df0000000000000000000000000000000000000000000000000000000000000753000000000000000000000000000000000000000000000000000000000002562500000000000000000000000000000000000000000000000000000000000007918000000000000000000000000000000000000000000000000000000000011b340000000000000000000000000000000000000000000000000000000000000157c00000000000000000000000000000000000000000000000000000000000927c000000000000000000000000000000000000000000000000000000000000013880000000000000000000000000000000000000000000000000000000000000c1c000000000000000000000000000000000000000000000000000000000000044c",
                     []
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.registerPerps_KeeperCostEthOracleNode",
-            "gasUsed": 273046,
-            "gasCost": "1065811627",
+            "gasUsed": 341861,
+            "gasCost": "1008009866",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "settings": {
-          "perps_keeper_cost_eth_oracle_id": "0x706c338ac5e4f348a55af3f1a7b2cd7ebfdb99893053ef9daad4f308db551822"
+          "perps_keeper_cost_eth_oracle_id": "0x21b3277e63d3cd4c5d1246a2b16d89518f3ac17d648032e60ed83c96030c712e"
         }
       },
-      "hash": "2b0ae9e76de32ef791425b4a5c053cbc",
+      "hash": "192d4a57f32d6fb3182d24b57285df5e",
       "version": 7
     },
     "invoke.registerPythBtcOracleNode": {
@@ -37748,17 +37765,19 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostUsdOracleNode": {
-            "hash": "0xf090da69558647d2afe2febf03f4ab8e702ec09eab018632681940522c707411",
+            "hash": "",
+            "blockNumber": "16830769",
+            "timestamp": "1720450913",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0x793d6cbac2d3c730912cb416ee90e6c04f4f38ebd3fd7bf001998c147573a210",
+                    "0x3e89cd1ac93e5ca596d30896bbf9692092e82c260139e04c7dac54a91f9e2ec3",
                     1,
                     "0x0000000000000000000000000000000000000000000000000000000000000007",
                     [
-                      "0x706c338ac5e4f348a55af3f1a7b2cd7ebfdb99893053ef9daad4f308db551822",
+                      "0x21b3277e63d3cd4c5d1246a2b16d89518f3ac17d648032e60ed83c96030c712e",
                       "0x7e714744a9bfaa0bd9c6dfb379e49fb7eb07f04b90af8880d860f2b5b5a675fb"
                     ]
                   ]
@@ -37766,16 +37785,16 @@
               ]
             },
             "deployedOn": "invoke.registerPerps_KeeperCostUsdOracleNode",
-            "gasUsed": 286887,
-            "gasCost": "1057734921",
+            "gasUsed": 294109,
+            "gasCost": "1007031452",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "settings": {
-          "perps_keeper_cost_usd_oracle_id": "0x793d6cbac2d3c730912cb416ee90e6c04f4f38ebd3fd7bf001998c147573a210"
+          "perps_keeper_cost_usd_oracle_id": "0x3e89cd1ac93e5ca596d30896bbf9692092e82c260139e04c7dac54a91f9e2ec3"
         }
       },
-      "hash": "424719ead265c4e37d439ce84b57c1e8",
+      "hash": "797d4eff0747c65db2e8e60e4be0dca4",
       "version": 7
     },
     "invoke.setKwentaAsReferrerOnPerpsMarket": {
@@ -38782,26 +38801,28 @@
         "contracts": {},
         "txns": {
           "setPerpsMarketKeeperCostNodeId": {
-            "hash": "0x29493786edb86621dc3c0ab81aba14079a4f768525da3700a6ed21fcb80472e9",
+            "hash": "",
+            "blockNumber": "16830770",
+            "timestamp": "1720450925",
             "events": {
               "KeeperCostNodeIdUpdated": [
                 {
                   "name": "KeeperCostNodeIdUpdated",
                   "args": [
-                    "0x793d6cbac2d3c730912cb416ee90e6c04f4f38ebd3fd7bf001998c147573a210"
+                    "0x3e89cd1ac93e5ca596d30896bbf9692092e82c260139e04c7dac54a91f9e2ec3"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMarketKeeperCostNodeId",
-            "gasUsed": 39146,
-            "gasCost": "1013379394",
+            "gasUsed": 39168,
+            "gasCost": "1006169754",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "settings": {}
       },
-      "hash": "1334152ac530f0e549105af0427be2b4",
+      "hash": "19fdd576c83acb1d433d3f87b9770cd0",
       "version": 7
     },
     "invoke.setPerpsPriceBtc": {
@@ -42298,10 +42319,10 @@
     "setting.perps_keeper_cost_package": {
       "artifacts": {
         "settings": {
-          "perps_keeper_cost_package": "op-gas-price-oracle:3.3.15"
+          "perps_keeper_cost_package": "op-gas-price-oracle:3.4.0"
         }
       },
-      "hash": "8f979213744929fa1f47371a937b07a8",
+      "hash": "733008bb54949f848761d59255c5afad",
       "version": 7
     },
     "setting.perps_keeper_l1_cost_flag_gas_units": {
@@ -83703,6 +83724,33 @@
         "settings": {}
       },
       "hash": "a5ea4b3d6166030d985f70b20ea709ee",
+      "version": 7
+    },
+    "setting.perps_keeper_flag_tx_size": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_flag_tx_size": "3100"
+        }
+      },
+      "hash": "6554a2a38ba865e0378f3f3875ecde06",
+      "version": 7
+    },
+    "setting.perps_keeper_liquidate_tx_size": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_liquidate_tx_size": "1100"
+        }
+      },
+      "hash": "a84d76ed941ce31433d58f4509fa1a33",
+      "version": 7
+    },
+    "setting.perps_keeper_settle_tx_size": {
+      "artifacts": {
+        "settings": {
+          "perps_keeper_settle_tx_size": "5000"
+        }
+      },
+      "hash": "76e80b50221daeac0b2d5e9580005132",
       "version": 7
     }
   },
