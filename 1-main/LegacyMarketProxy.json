@@ -1,0 +1,690 @@
+[
+  {
+    "type": "constructor",
+    "payable": false,
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ImplementationIsSterile",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "implementation"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientCollateralMigrated",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "amountRequested"
+      },
+      {
+        "type": "uint256",
+        "name": "amountAvailable"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidParameter",
+    "inputs": [
+      {
+        "type": "string",
+        "name": "parameter"
+      },
+      {
+        "type": "string",
+        "name": "reason"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MarketAlreadyRegistered",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "existingMarketId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MigrationInProgress",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NoChange",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotAContract",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "contr"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotNominated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "addr"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NothingToMigrate",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint256ToUint128",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Paused",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Unauthorized",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "addr"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "UpgradeSimulationFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "V2xPaused",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ZeroAddress",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "AccountLiquidatedInMigration",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "staker",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "collateralAmount",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "debtAmount",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "cratio",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "AccountMigrated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "staker",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "collateralAmount",
+        "indexed": false
+      },
+      {
+        "type": "uint256",
+        "name": "debtAmount",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "ConvertedUSD",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "amount",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarketRegistered",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "marketAddress",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "sender",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OwnerChanged",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "oldOwner",
+        "indexed": false
+      },
+      {
+        "type": "address",
+        "name": "newOwner",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OwnerNominated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newOwner",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "PauseMigrationSet",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "sender",
+        "indexed": true
+      },
+      {
+        "type": "bool",
+        "name": "paused",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "PauseStablecoinConversionSet",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "sender",
+        "indexed": true
+      },
+      {
+        "type": "bool",
+        "name": "paused",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "Upgraded",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "self",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "implementation",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "MIN_DELEGATION_TIME",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint32"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "acceptOwnership",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "convertUSD",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "amount"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getImplementation",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "marketId",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint128"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "migrate",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "migrateOnBehalf",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "staker"
+      },
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "minimumCredit",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "lockedAmount"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "name",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "nominateNewOwner",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newNominatedOwner"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "nominatedOwner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "onERC721Received",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "operator"
+      },
+      {
+        "type": "address"
+      },
+      {
+        "type": "uint256"
+      },
+      {
+        "type": "bytes"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes4"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "pauseMigration",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "pauseStablecoinConversion",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "registerMarket",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint128",
+        "name": "newMarketId"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "renounceNomination",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "reportedDebt",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "requestedMarketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "debt"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "rewardsDistributor",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "setPauseMigration",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bool",
+        "name": "paused"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setPauseStablecoinConversion",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bool",
+        "name": "paused"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setSystemAddresses",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "v2xResolverAddress"
+      },
+      {
+        "type": "address",
+        "name": "v3SystemAddress"
+      },
+      {
+        "type": "address",
+        "name": "snxDistributor"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "didInitialize"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "simulateUpgradeTo",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newImplementation"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "supportsInterface",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes4",
+        "name": "interfaceId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "upgradeTo",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "to"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "v2xResolver",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "v3System",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  }
+]
