@@ -538,24 +538,6 @@
   },
   {
     "type": "error",
-    "name": "DeniedMulticallTarget",
-    "inputs": [
-      {
-        "type": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "RecursiveMulticall",
-    "inputs": [
-      {
-        "type": "address"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "CapacityLocked",
     "inputs": [
       {
@@ -809,6 +791,20 @@
   },
   {
     "type": "error",
+    "name": "OracleDataRequired",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "oracleContract"
+      },
+      {
+        "type": "bytes",
+        "name": "oracleQuery"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "OverflowInt56ToInt24",
     "inputs": []
   },
@@ -825,7 +821,20 @@
   {
     "type": "error",
     "name": "StalenessToleranceExceeded",
-    "inputs": []
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "parentId"
+      },
+      {
+        "type": "int256",
+        "name": "price"
+      },
+      {
+        "type": "uint256",
+        "name": "staleTimestamp"
+      }
+    ]
   },
   {
     "type": "error",
@@ -846,5 +855,436 @@
         "name": "operation"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientCollateralMigrated",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "amountRequested"
+      },
+      {
+        "type": "uint256",
+        "name": "amountAvailable"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MarketAlreadyRegistered",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "existingMarketId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MigrationInProgress",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NothingToMigrate",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Paused",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "V2xPaused",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AddressInsufficientBalance",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderExpiredRequest",
+    "inputs": [
+      {
+        "type": "uint48",
+        "name": "deadline"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderInvalidSigner",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "signer"
+      },
+      {
+        "type": "address",
+        "name": "from"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderMismatchedValue",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "requestedValue"
+      },
+      {
+        "type": "uint256",
+        "name": "msgValue"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771UntrustfulTarget",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "target"
+      },
+      {
+        "type": "address",
+        "name": "forwarder"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FailedInnerCall",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidAccountNonce",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account"
+      },
+      {
+        "type": "uint256",
+        "name": "currentNonce"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidShortString",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "StringTooLong",
+    "inputs": [
+      {
+        "type": "string",
+        "name": "str"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidMarketOwner",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidSynthImplementation",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "synthImplementation"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OnlyMarketOwner",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "marketOwner"
+      },
+      {
+        "type": "address",
+        "name": "sender"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ExceedsMaxSynthAmount",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "maxSynthAmount"
+      },
+      {
+        "type": "uint256",
+        "name": "synthAmountCharged"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ExceedsMaxUsdAmount",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "maxUsdAmount"
+      },
+      {
+        "type": "uint256",
+        "name": "usdAmountCharged"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientAmountReceived",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "expected"
+      },
+      {
+        "type": "uint256",
+        "name": "current"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidMarket",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidPrices",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IneligibleForCancellation",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "timestamp"
+      },
+      {
+        "type": "uint256",
+        "name": "expirationTime"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientSharesAmount",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "expected"
+      },
+      {
+        "type": "uint256",
+        "name": "actual"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidAsyncTransactionType",
+    "inputs": [
+      {
+        "type": "uint8",
+        "name": "transactionType"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidClaim",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "asyncOrderId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidCommitmentAmount",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "minimumAmount"
+      },
+      {
+        "type": "uint256",
+        "name": "amount"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidSettlementStrategy",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "settlementStrategyId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OrderAlreadySettled",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "asyncOrderId"
+      },
+      {
+        "type": "uint256",
+        "name": "settledAt"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidSettlementStrategy",
+    "inputs": [
+      {
+        "type": "uint8",
+        "name": "strategyType"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidVerificationResponse",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MinimumSettlementAmountNotMet",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "minimum"
+      },
+      {
+        "type": "uint256",
+        "name": "actual"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OutsideSettlementWindow",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "timestamp"
+      },
+      {
+        "type": "uint256",
+        "name": "startTime"
+      },
+      {
+        "type": "uint256",
+        "name": "expirationTime"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "SettlementStrategyNotFound",
+    "inputs": [
+      {
+        "type": "uint8",
+        "name": "strategyType"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidSettlementWindowDuration",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "duration"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidCollateralType",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "configuredCollateralType"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "WrapperExceedsMaxAmount",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "maxWrappableAmount"
+      },
+      {
+        "type": "uint256",
+        "name": "currentSupply"
+      },
+      {
+        "type": "uint256",
+        "name": "amountToWrap"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidCollateralLeverage",
+    "inputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidFeeCollectorInterface",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "invalidFeeCollector"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidWrapperFees",
+    "inputs": []
   }
 ]
