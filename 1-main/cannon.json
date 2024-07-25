@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1721384439,
+  "timestamp": 1721387409,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -3739,7 +3739,7 @@
       "artifacts": {
         "imports": {
           "legacyMarket": {
-            "url": "ipfs://QmV8h8yR6mZtyVnSZuyCHid5jQhduGW5qNbuRwte9Nunqc",
+            "url": "ipfs://QmXq1jXQVQLzt6oos1iwnuyzdk7firghVEHM6jRN83XnRJ",
             "tags": [
               "latest"
             ],
@@ -3947,6 +3947,32 @@
                 "gasUsed": 0,
                 "gasCost": "0",
                 "highlight": true
+              },
+              "SNXDistributor": {
+                "address": "0xEb1285672BA71CD73e6f54EC5Be717b1d008e7DD",
+                "abi": [
+                  "constructor(address lm)",
+                  "error Unauthorized(address)",
+                  "function legacyMarket() view returns (address)",
+                  "function name() pure returns (string)",
+                  "function notifyRewardAmount(uint256 reward)",
+                  "function onPositionUpdated(uint128 accountId, uint128 poolId, address collateralType, uint256 newShares)",
+                  "function payout(uint128, uint128, address, address sender, uint256 amount) returns (bool)",
+                  "function supportsInterface(bytes4 interfaceID) pure returns (bool)",
+                  "function token() view returns (address)"
+                ],
+                "constructorArgs": [
+                  "0x3AcF163B9E6a384D539e10dAc7e11213c638b2f5"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x2448ba11815d8324647ad934b51fdecf11f5b4f27b428dd18a0225a1486409b8",
+                "deployTxnBlockNumber": "20340174",
+                "deployTimestamp": "1721387231",
+                "sourceName": "contracts/SNXDistributor.sol",
+                "contractName": "SNXDistributor",
+                "deployedOn": "contract.SNXDistributor",
+                "gasUsed": 621164,
+                "gasCost": "5380051385"
               }
             },
             "settings": {
@@ -3955,7 +3981,8 @@
               "pool_owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
               "sc_pool_id": "1",
               "v2x_package": "synthetix:2.101.2",
-              "v3_package": "synthetix:3.3.15"
+              "v3_package": "synthetix:3.3.15",
+              "marketId": "1"
             },
             "imports": {
               "v2x": {
@@ -11054,6 +11081,37 @@
                 "gasUsed": 101633,
                 "gasCost": "1117868003",
                 "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+              },
+              "setSystemAddresses": {
+                "hash": "",
+                "blockNumber": "20340183",
+                "timestamp": "1721387391",
+                "events": {},
+                "deployedOn": "invoke.setSystemAddresses",
+                "gasUsed": 155430,
+                "gasCost": "5417626304",
+                "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+              },
+              "registerMarket": {
+                "hash": "",
+                "blockNumber": "20340184",
+                "timestamp": "1721387393",
+                "events": {
+                  "MarketRegistered": [
+                    {
+                      "name": "MarketRegistered",
+                      "args": [
+                        "0x3AcF163B9E6a384D539e10dAc7e11213c638b2f5",
+                        "1",
+                        "0x3AcF163B9E6a384D539e10dAc7e11213c638b2f5"
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.registerMarket",
+                "gasUsed": 198152,
+                "gasCost": "4871144947",
+                "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
               }
             },
             "extras": {
@@ -11062,7 +11120,8 @@
               "pool_owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
               "sc_pool_id": "1",
               "v2x_package": "synthetix:2.101.2",
-              "v3_package": "synthetix:3.3.15"
+              "v3_package": "synthetix:3.3.15",
+              "marketId": "1"
             }
           }
         }
@@ -14408,6 +14467,74 @@
         "settings": {}
       },
       "hash": "531b4f0057cafe3a958edc09169a27c3",
+      "version": 7
+    },
+    "invoke.setScPoolConfig": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setScPoolConfig": {
+            "hash": "",
+            "blockNumber": "20340185",
+            "timestamp": "1721387403",
+            "events": {
+              "PoolConfigurationSet": [
+                {
+                  "name": "PoolConfigurationSet",
+                  "args": [
+                    "1",
+                    [
+                      {
+                        "marketId": "1",
+                        "weightD18": "100",
+                        "maxDebtShareValueD18": "1000000000000000000"
+                      }
+                    ],
+                    "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setScPoolConfig",
+            "gasUsed": 350373,
+            "gasCost": "4393644122",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "ddcf36cee09c44315f0079828d3abd29",
+      "version": 7
+    },
+    "invoke.registerRewardsDistributor": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "registerRewardsDistributor": {
+            "hash": "",
+            "blockNumber": "20340186",
+            "timestamp": "1721387409",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+                    "0xEb1285672BA71CD73e6f54EC5Be717b1d008e7DD"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.registerRewardsDistributor",
+            "gasUsed": 128983,
+            "gasCost": "3979347285",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "92b04aabbe5ac53b0f02ba58312540c3",
       "version": 7
     }
   },
