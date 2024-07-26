@@ -1,6 +1,6 @@
 {
-  "generator": "cannon website 2.15.5",
-  "timestamp": 1720820588,
+  "generator": "cannon cli 2.15.8",
+  "timestamp": 1721981747,
   "def": {
     "setting": {
       "snx_package": {
@@ -66,12 +66,6 @@
         "defaultValue": "3600"
       },
       "bigCapStrictStalenessTolerance": {
-        "defaultValue": "60"
-      },
-      "synthUsdcMaxMarketCollateral": {
-        "defaultValue": "<%= parseEther(String(100_000_000)) %>"
-      },
-      "spotStrictStalenessTolerance": {
         "defaultValue": "60"
       },
       "referrerFee": {
@@ -152,8 +146,26 @@
       "susdc_min_delegation": {
         "defaultValue": "<%= parseEther('100') %>"
       },
-      "usdc_address": {
-        "defaultValue": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      "synthUsdcMaxMarketCollateral": {
+        "defaultValue": "<%= parseEther(String(100_000_000)) %>"
+      },
+      "spotStrictStalenessTolerance": {
+        "defaultValue": "60"
+      },
+      "sstatausdc_issuance_ratio": {
+        "defaultValue": "<%= MaxUint256 %>"
+      },
+      "sstatausdc_liquidation_ratio": {
+        "defaultValue": "<%= parseEther('1.1') %>"
+      },
+      "sstatausdc_liquidation_reward": {
+        "defaultValue": "<%= parseEther('0.005') %>"
+      },
+      "sstatausdc_min_delegation": {
+        "defaultValue": "<%= parseEther('100') %>"
+      },
+      "synthStataUsdcMaxMarketCollateral": {
+        "defaultValue": "<%= parseEther(String(5_000_000)) %>"
       },
       "pythBtcFeedId": {
         "defaultValue": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43"
@@ -4210,6 +4222,13 @@
       },
       "pdao": {
         "defaultValue": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+      },
+      "usdc_address": {
+        "defaultValue": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+      },
+      "stataBasUSDC_address": {
+        "defaultValue": "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc",
+        "description": "https://basescan.org/token/0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc"
       }
     },
     "provision": {
@@ -4461,100 +4480,6 @@
           "<%= settings.perps_super_market_name %>"
         ]
       },
-      "createUsdcSynth": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "createSynth",
-        "args": [
-          "Synthetic USD Coin",
-          "sUSDC",
-          "<%= settings.owner %>"
-        ],
-        "extra": {
-          "synth_usdc_market_id": {
-            "event": "SynthRegistered",
-            "arg": 0
-          },
-          "synth_usdc_token_address": {
-            "event": "SynthRegistered",
-            "arg": 1
-          }
-        }
-      },
-      "setSynthPriceUsdc": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "getMarketOwner",
-          "args": [
-            "<%= extras.synth_usdc_market_id %>"
-          ]
-        },
-        "func": "updatePriceData",
-        "args": [
-          "<%= extras.synth_usdc_market_id %>",
-          "<%= imports.system.extras.const_one_oracle_id %>",
-          "<%= imports.system.extras.const_one_oracle_id %>",
-          "<%= settings.spotStrictStalenessTolerance %>"
-        ]
-      },
-      "setSynthMaxMarketCollateralUsdc": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner",
-          "args": []
-        },
-        "func": "configureMaximumMarketCollateral",
-        "args": [
-          "<%= extras.synth_usdc_market_id %>",
-          "<%= settings.usdc_address %>",
-          "<%= settings.synthUsdcMaxMarketCollateral %>"
-        ]
-      },
-      "configureSynthWrapperUsdc": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "getMarketOwner",
-          "args": [
-            "<%= extras.synth_usdc_market_id %>"
-          ]
-        },
-        "func": "setWrapper",
-        "args": [
-          "<%= extras.synth_usdc_market_id %>",
-          "<%= settings.usdc_address %>",
-          "<%= settings.synthUsdcMaxMarketCollateral %>"
-        ]
-      },
-      "configure_usdc_collateral": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "configureCollateral",
-        "args": [
-          {
-            "tokenAddress": "<%= settings.usdc_address %>",
-            "oracleNodeId": "<%= imports.system.extras.const_one_oracle_id %>",
-            "issuanceRatioD18": "<%= MaxUint256 %>",
-            "liquidationRatioD18": "<%= parseEther('1.005') %>",
-            "liquidationRewardD18": "<%= parseEther('0.005') %>",
-            "minDelegationD18": "<%= parseEther('100') %>",
-            "depositingEnabled": false
-          }
-        ]
-      },
       "allowAllPerpsSystem": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -4591,6 +4516,32 @@
         "func": "removeFromFeatureFlagAllowlist",
         "args": [
           "<%= formatBytes32String('createMarket') %>",
+          "<%= settings.deployer %>"
+        ]
+      },
+      "allowPdaoToCreateSynth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "addToFeatureFlagAllowlist",
+        "args": [
+          "<%= formatBytes32String('createSynth') %>",
+          "<%= settings.pdao %>"
+        ]
+      },
+      "removeDeployerFromCreateSynth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "removeFromFeatureFlagAllowlist",
+        "args": [
+          "<%= formatBytes32String('createSynth') %>",
           "<%= settings.deployer %>"
         ]
       },
@@ -4872,6 +4823,238 @@
             "minDelegationD18": "<%= settings.susdc_min_delegation %>",
             "depositingEnabled": true
           }
+        ]
+      },
+      "createUsdcSynth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "createSynth",
+        "args": [
+          "Synthetic USD Coin",
+          "sUSDC",
+          "<%= settings.owner %>"
+        ],
+        "extra": {
+          "synth_usdc_market_id": {
+            "event": "SynthRegistered",
+            "arg": 0
+          },
+          "synth_usdc_token_address": {
+            "event": "SynthRegistered",
+            "arg": 1
+          }
+        }
+      },
+      "setSynthPriceUsdc": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_usdc_market_id %>"
+          ]
+        },
+        "func": "updatePriceData",
+        "args": [
+          "<%= extras.synth_usdc_market_id %>",
+          "<%= imports.system.extras.const_one_oracle_id %>",
+          "<%= imports.system.extras.const_one_oracle_id %>",
+          "<%= settings.spotStrictStalenessTolerance %>"
+        ]
+      },
+      "setSynthMaxMarketCollateralUsdc": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= extras.synth_usdc_market_id %>",
+          "<%= settings.usdc_address %>",
+          "<%= settings.synthUsdcMaxMarketCollateral %>"
+        ]
+      },
+      "configureSynthWrapperUsdc": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_usdc_market_id %>"
+          ]
+        },
+        "func": "setWrapper",
+        "args": [
+          "<%= extras.synth_usdc_market_id %>",
+          "<%= settings.usdc_address %>",
+          "<%= settings.synthUsdcMaxMarketCollateral %>"
+        ]
+      },
+      "configure_usdc_collateral": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= settings.usdc_address %>",
+            "oracleNodeId": "<%= imports.system.extras.const_one_oracle_id %>",
+            "issuanceRatioD18": "<%= MaxUint256 %>",
+            "liquidationRatioD18": "<%= parseEther('1.005') %>",
+            "liquidationRewardD18": "<%= parseEther('0.005') %>",
+            "minDelegationD18": "<%= parseEther('100') %>",
+            "depositingEnabled": false
+          }
+        ]
+      },
+      "configure_sstatausdc_collateral": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= extras.synth_stata_usdc_token_address %>",
+            "oracleNodeId": "<%= extras.erc_4626_to_assets_ratio_oracle_id %>",
+            "issuanceRatioD18": "<%= settings.sstatausdc_issuance_ratio %>",
+            "liquidationRatioD18": "<%= settings.sstatausdc_liquidation_ratio %>",
+            "liquidationRewardD18": "<%= settings.sstatausdc_liquidation_reward %>",
+            "minDelegationD18": "<%= settings.sstatausdc_min_delegation %>",
+            "depositingEnabled": true
+          }
+        ]
+      },
+      "SpotMarketProxy_createSynth_stataUSDC": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "createSynth",
+        "args": [
+          "Synthetic Static aUSDC",
+          "sStataUSDC",
+          "<%= settings.pdao %>"
+        ],
+        "extra": {
+          "synth_stata_usdc_market_id": {
+            "event": "SynthRegistered",
+            "arg": 0
+          },
+          "synth_stata_usdc_token_address": {
+            "event": "SynthRegistered",
+            "arg": 1
+          }
+        },
+        "depends": [
+          "invoke.allowPdaoToCreateSynth"
+        ]
+      },
+      "SpotMarketProxy_updatePriceData_stataUSDC": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_stata_usdc_market_id %>"
+          ]
+        },
+        "func": "updatePriceData",
+        "args": [
+          "<%= extras.synth_stata_usdc_market_id %>",
+          "<%= extras.erc_4626_to_assets_ratio_oracle_id %>",
+          "<%= extras.erc_4626_to_assets_ratio_oracle_id %>",
+          "<%= settings.spotStrictStalenessTolerance %>"
+        ]
+      },
+      "CoreProxy_configureMaximumMarketCollateral_stataUSDC": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= extras.synth_stata_usdc_market_id %>",
+          "<%= settings.stataBasUSDC_address %>",
+          "<%= settings.synthStataUsdcMaxMarketCollateral %>"
+        ]
+      },
+      "SpotMarketProxy_setWrapper_stataUSDC": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_stata_usdc_market_id %>"
+          ]
+        },
+        "func": "setWrapper",
+        "args": [
+          "<%= extras.synth_stata_usdc_market_id %>",
+          "<%= settings.stataBasUSDC_address %>",
+          "<%= settings.synthStataUsdcMaxMarketCollateral %>"
+        ]
+      },
+      "CoreProxy_configureCollateral_stataUSDC": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= settings.stataBasUSDC_address %>",
+            "oracleNodeId": "<%= extras.erc_4626_to_assets_ratio_oracle_id %>",
+            "issuanceRatioD18": "<%= settings.sstatausdc_issuance_ratio %>",
+            "liquidationRatioD18": "<%= settings.sstatausdc_liquidation_ratio %>",
+            "liquidationRewardD18": "<%= settings.sstatausdc_liquidation_reward  %>",
+            "minDelegationD18": "<%= settings.sstatausdc_min_delegation %>",
+            "depositingEnabled": false
+          }
+        ]
+      },
+      "register_erc_4626_to_assets_ratio_oracle_node": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          2,
+          "<%= defaultAbiCoder.encode(['address'], [imports.erc_4626_to_assets_ratio_oracle.contracts.ERC4626ToAssetsRatioOracle.address]) %>",
+          []
+        ],
+        "extra": {
+          "erc_4626_to_assets_ratio_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "clone.erc_4626_to_assets_ratio_oracle",
+          "provision.system"
         ]
       },
       "createBtcPerpsMarket": {
@@ -24953,8 +25136,17 @@
         ]
       }
     },
+    "clone": {
+      "erc_4626_to_assets_ratio_oracle": {
+        "source": "erc-4626-to-assets-ratio-oracle:3.3.19",
+        "target": "erc-4626-to-assets-ratio-oracle:3.3.19@stataBasUSDC_USDC",
+        "options": {
+          "vault": "<%= settings.stataBasUSDC_address %>"
+        }
+      }
+    },
     "name": "synthetix-omnibus",
-    "version": "43",
+    "version": "44",
     "description": "Andromeda deployment",
     "preset": "andromeda"
   },
@@ -25062,7 +25254,7 @@
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmQ5uXivam1AAwGHWgsm2RwVWrn1q5DkDu1q4vrTV9RHMV",
+            "url": "ipfs://QmXCyh3SEXNb96ouYBR13cjqVKqj2apVNrU5SntPq8XNMp",
             "tags": [
               "latest"
             ],
@@ -26629,7 +26821,7 @@
                 }
               },
               "oracle_manager": {
-                "url": "ipfs://QmcNQWHw7x3aMdhrTzSkMR4FqrgQfGDMqK6WLXckfdYLnf",
+                "url": "ipfs://QmTMcNcrehFGbX8CVWRZR65koaYAAyp4ZcxWmepQEe2qyP",
                 "tags": [
                   "latest"
                 ],
@@ -26637,7 +26829,7 @@
                 "preset": "with-synthetix",
                 "contracts": {
                   "NodeModule": {
-                    "address": "0x67a5a7785D0ebd65e44eaB4FeC55ca81c80c95b1",
+                    "address": "0xCA8c8688914e0F7096c920146cd0Ad85cD7Ae8b9",
                     "abi": [
                       "error DeviationToleranceExceeded(int256 deviation)",
                       "error InvalidInputPrice()",
@@ -26651,7 +26843,7 @@
                       "error OverflowUint256ToInt256()",
                       "error OverflowUint256ToUint160()",
                       "error OverflowUint56ToInt56()",
-                      "error StalenessToleranceExceeded()",
+                      "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                       "error UnprocessableNode(bytes32 nodeId)",
                       "error UnsupportedOperation(uint8 operation)",
                       "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -26663,12 +26855,14 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x6bc8ed560d7cc55c392fd0d2741fbe945e6f2288553109e30a267ba0ae918088",
+                    "deployTxnHash": "0xca433672941c01a8bd3505b59a01c5c17da754d7f80bfcdb851ee26dbb2174f4",
+                    "deployTxnBlockNumber": "17596172",
+                    "deployTimestamp": "1721981695",
                     "sourceName": "contracts/modules/NodeModule.sol",
                     "contractName": "NodeModule",
                     "deployedOn": "contract.NodeModule",
-                    "gasUsed": 4094153,
-                    "gasCost": "1439961319"
+                    "gasUsed": 4106509,
+                    "gasCost": "1002906661"
                   },
                   "CoreModule": {
                     "address": "0xef0E3210A07A803527ed20B87E0F5A204cdc653f",
@@ -26736,7 +26930,7 @@
                     "gasCost": "1500000057"
                   },
                   "OracleRouter": {
-                    "address": "0xb5dc6c08d7019fea2e4bde577c2951ff4f529000",
+                    "address": "0xb0f05d25e41fbc2b52013099ed9616f1206ae21b",
                     "abi": [
                       "error ImplementationIsSterile(address implementation)",
                       "error NoChange()",
@@ -26768,7 +26962,7 @@
                       "error OverflowUint256ToInt256()",
                       "error OverflowUint256ToUint160()",
                       "error OverflowUint56ToInt56()",
-                      "error StalenessToleranceExceeded()",
+                      "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                       "error UnprocessableNode(bytes32 nodeId)",
                       "error UnsupportedOperation(uint8 operation)",
                       "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -26779,11 +26973,13 @@
                       "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                     ],
                     "deployedOn": "router.OracleRouter",
-                    "deployTxnHash": "0x98b3ed9606d88c046c2973b0b49c582f01c30a008096bdd88766bead8258fa73",
+                    "deployTxnHash": "0x39cd7b29dcb3428e720d907e49b59ac1fb4abdefb689950873085024477e6914",
+                    "deployTxnBlockNumber": "17596173",
+                    "deployTimestamp": "1721981696",
                     "contractName": "OracleRouter",
                     "sourceName": "OracleRouter.sol",
                     "gasUsed": 246006,
-                    "gasCost": "1437572225"
+                    "gasCost": "1002569854"
                   },
                   "Proxy": {
                     "address": "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
@@ -26818,7 +27014,7 @@
                       "error OverflowUint256ToInt256()",
                       "error OverflowUint256ToUint160()",
                       "error OverflowUint56ToInt56()",
-                      "error StalenessToleranceExceeded()",
+                      "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                       "error UnprocessableNode(bytes32 nodeId)",
                       "error UnsupportedOperation(uint8 operation)",
                       "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -26829,6 +27025,8 @@
                       "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                     ],
                     "deployTxnHash": "",
+                    "deployTxnBlockNumber": "",
+                    "deployTimestamp": "",
                     "sourceName": "",
                     "contractName": "",
                     "deployedOn": "invoke.upgrade_proxy",
@@ -26907,21 +27105,23 @@
                 },
                 "txns": {
                   "upgrade_proxy": {
-                    "hash": "0x2033c4f85788fef31582fe7681118ccfa2f6ae1d46372c4f841c464c50ff55ea",
+                    "hash": "0xd0ac8d1a101793437fe18c9fc996b65067e2edcccc735a4050ce6e1a037d991b",
+                    "blockNumber": "17596174",
+                    "timestamp": "1721981697",
                     "events": {
                       "Upgraded": [
                         {
                           "name": "Upgraded",
                           "args": [
                             "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
-                            "0xB5Dc6C08d7019FEA2e4Bde577c2951fF4f529000"
+                            "0xB0f05d25e41FbC2b52013099ED9616f1206Ae21B"
                           ]
                         }
                       ]
                     },
                     "deployedOn": "invoke.upgrade_proxy",
-                    "gasUsed": 55334,
-                    "gasCost": "1028928479",
+                    "gasUsed": 55346,
+                    "gasCost": "1002250028",
                     "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
                   }
                 },
@@ -27724,7 +27924,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmQSTV86RcN1mvKcVwe6F4dsEobdXbMFU1jye8pfxfG3nW",
+            "url": "ipfs://QmRQLUfZQ4Heh5H51YQjUTb5bzvXfAknU1cj1cWetYxzjx",
             "tags": [
               "latest"
             ],
@@ -28507,7 +28707,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmQ5uXivam1AAwGHWgsm2RwVWrn1q5DkDu1q4vrTV9RHMV",
+                "url": "ipfs://QmXCyh3SEXNb96ouYBR13cjqVKqj2apVNrU5SntPq8XNMp",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xB19c1D84c7c14e50E408f132459D724EB3367526",
@@ -30069,7 +30269,7 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmcNQWHw7x3aMdhrTzSkMR4FqrgQfGDMqK6WLXckfdYLnf",
+                    "url": "ipfs://QmTMcNcrehFGbX8CVWRZR65koaYAAyp4ZcxWmepQEe2qyP",
                     "tags": [
                       "latest"
                     ],
@@ -30077,7 +30277,7 @@
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
-                        "address": "0x67a5a7785D0ebd65e44eaB4FeC55ca81c80c95b1",
+                        "address": "0xCA8c8688914e0F7096c920146cd0Ad85cD7Ae8b9",
                         "abi": [
                           "error DeviationToleranceExceeded(int256 deviation)",
                           "error InvalidInputPrice()",
@@ -30091,7 +30291,7 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded()",
+                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                           "error UnprocessableNode(bytes32 nodeId)",
                           "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -30103,12 +30303,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x6bc8ed560d7cc55c392fd0d2741fbe945e6f2288553109e30a267ba0ae918088",
+                        "deployTxnHash": "0xca433672941c01a8bd3505b59a01c5c17da754d7f80bfcdb851ee26dbb2174f4",
+                        "deployTxnBlockNumber": "17596172",
+                        "deployTimestamp": "1721981695",
                         "sourceName": "contracts/modules/NodeModule.sol",
                         "contractName": "NodeModule",
                         "deployedOn": "contract.NodeModule",
-                        "gasUsed": 4094153,
-                        "gasCost": "1439961319"
+                        "gasUsed": 4106509,
+                        "gasCost": "1002906661"
                       },
                       "CoreModule": {
                         "address": "0xef0E3210A07A803527ed20B87E0F5A204cdc653f",
@@ -30176,7 +30378,7 @@
                         "gasCost": "1500000057"
                       },
                       "OracleRouter": {
-                        "address": "0xb5dc6c08d7019fea2e4bde577c2951ff4f529000",
+                        "address": "0xb0f05d25e41fbc2b52013099ed9616f1206ae21b",
                         "abi": [
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
@@ -30208,7 +30410,7 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded()",
+                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                           "error UnprocessableNode(bytes32 nodeId)",
                           "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -30219,11 +30421,13 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployedOn": "router.OracleRouter",
-                        "deployTxnHash": "0x98b3ed9606d88c046c2973b0b49c582f01c30a008096bdd88766bead8258fa73",
+                        "deployTxnHash": "0x39cd7b29dcb3428e720d907e49b59ac1fb4abdefb689950873085024477e6914",
+                        "deployTxnBlockNumber": "17596173",
+                        "deployTimestamp": "1721981696",
                         "contractName": "OracleRouter",
                         "sourceName": "OracleRouter.sol",
                         "gasUsed": 246006,
-                        "gasCost": "1437572225"
+                        "gasCost": "1002569854"
                       },
                       "Proxy": {
                         "address": "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
@@ -30258,7 +30462,7 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded()",
+                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                           "error UnprocessableNode(bytes32 nodeId)",
                           "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -30269,6 +30473,8 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployTxnHash": "",
+                        "deployTxnBlockNumber": "",
+                        "deployTimestamp": "",
                         "sourceName": "",
                         "contractName": "",
                         "deployedOn": "invoke.upgrade_proxy",
@@ -30347,21 +30553,23 @@
                     },
                     "txns": {
                       "upgrade_proxy": {
-                        "hash": "0x2033c4f85788fef31582fe7681118ccfa2f6ae1d46372c4f841c464c50ff55ea",
+                        "hash": "0xd0ac8d1a101793437fe18c9fc996b65067e2edcccc735a4050ce6e1a037d991b",
+                        "blockNumber": "17596174",
+                        "timestamp": "1721981697",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
-                                "0xB5Dc6C08d7019FEA2e4Bde577c2951fF4f529000"
+                                "0xB0f05d25e41FbC2b52013099ED9616f1206Ae21B"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.upgrade_proxy",
-                        "gasUsed": 55334,
-                        "gasCost": "1028928479",
+                        "gasUsed": 55346,
+                        "gasCost": "1002250028",
                         "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
                       }
                     },
@@ -31054,7 +31262,7 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://QmeRpqwVUeq5uZ1HwVWSRxUgF14DN22rCS5oAf4WJVpnn4",
+            "url": "ipfs://QmasQJELJGNXcuKcE4gYSAXS3pNNyvFT9iBE9VfH2YPgpx",
             "tags": [
               "latest"
             ],
@@ -32060,7 +32268,7 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmQSTV86RcN1mvKcVwe6F4dsEobdXbMFU1jye8pfxfG3nW",
+                "url": "ipfs://QmRQLUfZQ4Heh5H51YQjUTb5bzvXfAknU1cj1cWetYxzjx",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0x72054FBDaDBa5B8619dE02BfE8BCA34276e1B940",
@@ -32838,7 +33046,7 @@
                 },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://QmQ5uXivam1AAwGHWgsm2RwVWrn1q5DkDu1q4vrTV9RHMV",
+                    "url": "ipfs://QmXCyh3SEXNb96ouYBR13cjqVKqj2apVNrU5SntPq8XNMp",
                     "contracts": {
                       "AccountModule": {
                         "address": "0xB19c1D84c7c14e50E408f132459D724EB3367526",
@@ -34400,7 +34608,7 @@
                         }
                       },
                       "oracle_manager": {
-                        "url": "ipfs://QmcNQWHw7x3aMdhrTzSkMR4FqrgQfGDMqK6WLXckfdYLnf",
+                        "url": "ipfs://QmTMcNcrehFGbX8CVWRZR65koaYAAyp4ZcxWmepQEe2qyP",
                         "tags": [
                           "latest"
                         ],
@@ -34408,7 +34616,7 @@
                         "preset": "with-synthetix",
                         "contracts": {
                           "NodeModule": {
-                            "address": "0x67a5a7785D0ebd65e44eaB4FeC55ca81c80c95b1",
+                            "address": "0xCA8c8688914e0F7096c920146cd0Ad85cD7Ae8b9",
                             "abi": [
                               "error DeviationToleranceExceeded(int256 deviation)",
                               "error InvalidInputPrice()",
@@ -34422,7 +34630,7 @@
                               "error OverflowUint256ToInt256()",
                               "error OverflowUint256ToUint160()",
                               "error OverflowUint56ToInt56()",
-                              "error StalenessToleranceExceeded()",
+                              "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                               "error UnprocessableNode(bytes32 nodeId)",
                               "error UnsupportedOperation(uint8 operation)",
                               "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -34434,12 +34642,14 @@
                             ],
                             "constructorArgs": [],
                             "linkedLibraries": {},
-                            "deployTxnHash": "0x6bc8ed560d7cc55c392fd0d2741fbe945e6f2288553109e30a267ba0ae918088",
+                            "deployTxnHash": "0xca433672941c01a8bd3505b59a01c5c17da754d7f80bfcdb851ee26dbb2174f4",
+                            "deployTxnBlockNumber": "17596172",
+                            "deployTimestamp": "1721981695",
                             "sourceName": "contracts/modules/NodeModule.sol",
                             "contractName": "NodeModule",
                             "deployedOn": "contract.NodeModule",
-                            "gasUsed": 4094153,
-                            "gasCost": "1439961319"
+                            "gasUsed": 4106509,
+                            "gasCost": "1002906661"
                           },
                           "CoreModule": {
                             "address": "0xef0E3210A07A803527ed20B87E0F5A204cdc653f",
@@ -34507,7 +34717,7 @@
                             "gasCost": "1500000057"
                           },
                           "OracleRouter": {
-                            "address": "0xb5dc6c08d7019fea2e4bde577c2951ff4f529000",
+                            "address": "0xb0f05d25e41fbc2b52013099ed9616f1206ae21b",
                             "abi": [
                               "error ImplementationIsSterile(address implementation)",
                               "error NoChange()",
@@ -34539,7 +34749,7 @@
                               "error OverflowUint256ToInt256()",
                               "error OverflowUint256ToUint160()",
                               "error OverflowUint56ToInt56()",
-                              "error StalenessToleranceExceeded()",
+                              "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                               "error UnprocessableNode(bytes32 nodeId)",
                               "error UnsupportedOperation(uint8 operation)",
                               "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -34550,11 +34760,13 @@
                               "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                             ],
                             "deployedOn": "router.OracleRouter",
-                            "deployTxnHash": "0x98b3ed9606d88c046c2973b0b49c582f01c30a008096bdd88766bead8258fa73",
+                            "deployTxnHash": "0x39cd7b29dcb3428e720d907e49b59ac1fb4abdefb689950873085024477e6914",
+                            "deployTxnBlockNumber": "17596173",
+                            "deployTimestamp": "1721981696",
                             "contractName": "OracleRouter",
                             "sourceName": "OracleRouter.sol",
                             "gasUsed": 246006,
-                            "gasCost": "1437572225"
+                            "gasCost": "1002569854"
                           },
                           "Proxy": {
                             "address": "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
@@ -34589,7 +34801,7 @@
                               "error OverflowUint256ToInt256()",
                               "error OverflowUint256ToUint160()",
                               "error OverflowUint56ToInt56()",
-                              "error StalenessToleranceExceeded()",
+                              "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                               "error UnprocessableNode(bytes32 nodeId)",
                               "error UnsupportedOperation(uint8 operation)",
                               "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -34600,6 +34812,8 @@
                               "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                             ],
                             "deployTxnHash": "",
+                            "deployTxnBlockNumber": "",
+                            "deployTimestamp": "",
                             "sourceName": "",
                             "contractName": "",
                             "deployedOn": "invoke.upgrade_proxy",
@@ -34678,21 +34892,23 @@
                         },
                         "txns": {
                           "upgrade_proxy": {
-                            "hash": "0x2033c4f85788fef31582fe7681118ccfa2f6ae1d46372c4f841c464c50ff55ea",
+                            "hash": "0xd0ac8d1a101793437fe18c9fc996b65067e2edcccc735a4050ce6e1a037d991b",
+                            "blockNumber": "17596174",
+                            "timestamp": "1721981697",
                             "events": {
                               "Upgraded": [
                                 {
                                   "name": "Upgraded",
                                   "args": [
                                     "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
-                                    "0xB5Dc6C08d7019FEA2e4Bde577c2951fF4f529000"
+                                    "0xB0f05d25e41FbC2b52013099ED9616f1206Ae21B"
                                   ]
                                 }
                               ]
                             },
                             "deployedOn": "invoke.upgrade_proxy",
-                            "gasUsed": 55334,
-                            "gasCost": "1028928479",
+                            "gasUsed": 55346,
+                            "gasCost": "1002250028",
                             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
                           }
                         },
@@ -35195,7 +35411,7 @@
                 }
               },
               "synthetix": {
-                "url": "ipfs://QmQ5uXivam1AAwGHWgsm2RwVWrn1q5DkDu1q4vrTV9RHMV",
+                "url": "ipfs://QmXCyh3SEXNb96ouYBR13cjqVKqj2apVNrU5SntPq8XNMp",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xB19c1D84c7c14e50E408f132459D724EB3367526",
@@ -36757,7 +36973,7 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmcNQWHw7x3aMdhrTzSkMR4FqrgQfGDMqK6WLXckfdYLnf",
+                    "url": "ipfs://QmTMcNcrehFGbX8CVWRZR65koaYAAyp4ZcxWmepQEe2qyP",
                     "tags": [
                       "latest"
                     ],
@@ -36765,7 +36981,7 @@
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
-                        "address": "0x67a5a7785D0ebd65e44eaB4FeC55ca81c80c95b1",
+                        "address": "0xCA8c8688914e0F7096c920146cd0Ad85cD7Ae8b9",
                         "abi": [
                           "error DeviationToleranceExceeded(int256 deviation)",
                           "error InvalidInputPrice()",
@@ -36779,7 +36995,7 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded()",
+                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                           "error UnprocessableNode(bytes32 nodeId)",
                           "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -36791,12 +37007,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x6bc8ed560d7cc55c392fd0d2741fbe945e6f2288553109e30a267ba0ae918088",
+                        "deployTxnHash": "0xca433672941c01a8bd3505b59a01c5c17da754d7f80bfcdb851ee26dbb2174f4",
+                        "deployTxnBlockNumber": "17596172",
+                        "deployTimestamp": "1721981695",
                         "sourceName": "contracts/modules/NodeModule.sol",
                         "contractName": "NodeModule",
                         "deployedOn": "contract.NodeModule",
-                        "gasUsed": 4094153,
-                        "gasCost": "1439961319"
+                        "gasUsed": 4106509,
+                        "gasCost": "1002906661"
                       },
                       "CoreModule": {
                         "address": "0xef0E3210A07A803527ed20B87E0F5A204cdc653f",
@@ -36864,7 +37082,7 @@
                         "gasCost": "1500000057"
                       },
                       "OracleRouter": {
-                        "address": "0xb5dc6c08d7019fea2e4bde577c2951ff4f529000",
+                        "address": "0xb0f05d25e41fbc2b52013099ed9616f1206ae21b",
                         "abi": [
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
@@ -36896,7 +37114,7 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded()",
+                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                           "error UnprocessableNode(bytes32 nodeId)",
                           "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -36907,11 +37125,13 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployedOn": "router.OracleRouter",
-                        "deployTxnHash": "0x98b3ed9606d88c046c2973b0b49c582f01c30a008096bdd88766bead8258fa73",
+                        "deployTxnHash": "0x39cd7b29dcb3428e720d907e49b59ac1fb4abdefb689950873085024477e6914",
+                        "deployTxnBlockNumber": "17596173",
+                        "deployTimestamp": "1721981696",
                         "contractName": "OracleRouter",
                         "sourceName": "OracleRouter.sol",
                         "gasUsed": 246006,
-                        "gasCost": "1437572225"
+                        "gasCost": "1002569854"
                       },
                       "Proxy": {
                         "address": "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
@@ -36946,7 +37166,7 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded()",
+                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
                           "error UnprocessableNode(bytes32 nodeId)",
                           "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
@@ -36957,6 +37177,8 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployTxnHash": "",
+                        "deployTxnBlockNumber": "",
+                        "deployTimestamp": "",
                         "sourceName": "",
                         "contractName": "",
                         "deployedOn": "invoke.upgrade_proxy",
@@ -37035,21 +37257,23 @@
                     },
                     "txns": {
                       "upgrade_proxy": {
-                        "hash": "0x2033c4f85788fef31582fe7681118ccfa2f6ae1d46372c4f841c464c50ff55ea",
+                        "hash": "0xd0ac8d1a101793437fe18c9fc996b65067e2edcccc735a4050ce6e1a037d991b",
+                        "blockNumber": "17596174",
+                        "timestamp": "1721981697",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0x3d07CBC5Cb9376A67E76C0655Fe239dDa8E2B264",
-                                "0xB5Dc6C08d7019FEA2e4Bde577c2951fF4f529000"
+                                "0xB0f05d25e41FbC2b52013099ED9616f1206Ae21B"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.upgrade_proxy",
-                        "gasUsed": 55334,
-                        "gasCost": "1028928479",
+                        "gasUsed": 55346,
+                        "gasCost": "1002250028",
                         "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
                       }
                     },
@@ -83752,9 +83976,571 @@
       },
       "hash": "76e80b50221daeac0b2d5e9580005132",
       "version": 7
+    },
+    "setting.sstatausdc_issuance_ratio": {
+      "artifacts": {
+        "settings": {
+          "sstatausdc_issuance_ratio": "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+        }
+      },
+      "hash": "c58bed99bbb29bc55be4aca797032c53",
+      "version": 7
+    },
+    "setting.sstatausdc_liquidation_ratio": {
+      "artifacts": {
+        "settings": {
+          "sstatausdc_liquidation_ratio": "1100000000000000000"
+        }
+      },
+      "hash": "109f80ca4fb572bb6f910537ee0e25cf",
+      "version": 7
+    },
+    "setting.sstatausdc_liquidation_reward": {
+      "artifacts": {
+        "settings": {
+          "sstatausdc_liquidation_reward": "5000000000000000"
+        }
+      },
+      "hash": "7b54ff46e6768da73f16016d4be6f513",
+      "version": 7
+    },
+    "setting.sstatausdc_min_delegation": {
+      "artifacts": {
+        "settings": {
+          "sstatausdc_min_delegation": "100000000000000000000"
+        }
+      },
+      "hash": "ad27ad0c2fad068c59a31bad017dda13",
+      "version": 7
+    },
+    "setting.stataBasUSDC_address": {
+      "artifacts": {
+        "settings": {
+          "stataBasUSDC_address": "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc"
+        }
+      },
+      "hash": "a37e3b1a47cc9f07e5992778fd089088",
+      "version": 7
+    },
+    "setting.synthStataUsdcMaxMarketCollateral": {
+      "artifacts": {
+        "settings": {
+          "synthStataUsdcMaxMarketCollateral": "5000000000000000000000000"
+        }
+      },
+      "hash": "40dfe572475f6cde9234159fff2a3402",
+      "version": 7
+    },
+    "clone.erc_4626_to_assets_ratio_oracle": {
+      "artifacts": {
+        "imports": {
+          "erc_4626_to_assets_ratio_oracle": {
+            "url": "ipfs://QmY2ZNjVypdYKXr3ZcW12STDeyREdKX6GfdxTCpSNqbqMX",
+            "tags": [
+              "latest"
+            ],
+            "target": "erc-4626-to-assets-ratio-oracle:3.3.19@stataBasUSDC_USDC",
+            "preset": "stataBasUSDC_USDC",
+            "imports": {
+              "ausdc_token_mock": {
+                "url": "ipfs://QmfRUbdhXLZ4LRsosDM36mxwqWkLrXLFtmTJXosNa5raTK",
+                "tags": [
+                  "latest"
+                ],
+                "target": "synthetix-mock-tokens:latest@ausdc",
+                "preset": "ausdc",
+                "settings": {
+                  "decimals": "18",
+                  "name": "Token",
+                  "salt": "",
+                  "symbol": "TKN"
+                },
+                "contracts": {
+                  "MintableToken": {
+                    "address": "0x862AB59572e38F93197C29Aa7a562e986c80e928",
+                    "abi": [
+                      "constructor(string name, string symbol, uint8 tokenDecimals) payable",
+                      "function allowance(address owner, address spender) view returns (uint256)",
+                      "function approve(address spender, uint256 amount) returns (bool)",
+                      "function balanceOf(address account) view returns (uint256)",
+                      "function decimals() view returns (uint8)",
+                      "function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)",
+                      "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
+                      "function mint(uint256 amount, address to)",
+                      "function name() view returns (string)",
+                      "function symbol() view returns (string)",
+                      "function totalSupply() view returns (uint256)",
+                      "function transfer(address to, uint256 amount) returns (bool)",
+                      "function transferFrom(address from, address to, uint256 amount) returns (bool)",
+                      "event Approval(address indexed owner, address indexed spender, uint256 value)",
+                      "event Transfer(address indexed from, address indexed to, uint256 value)"
+                    ],
+                    "constructorArgs": [
+                      "aUSDC Mock",
+                      "aUSDC",
+                      "6"
+                    ],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "",
+                    "deployTxnBlockNumber": "",
+                    "deployTimestamp": "1721981687",
+                    "sourceName": "src/MintableTokenPermissionlessMint.sol",
+                    "contractName": "MintableTokenPermissionlessMint",
+                    "deployedOn": "contract.MintableToken",
+                    "highlight": true,
+                    "gasUsed": 0,
+                    "gasCost": "0"
+                  }
+                },
+                "extras": {
+                  "decimals": "18",
+                  "name": "Token",
+                  "salt": "",
+                  "symbol": "TKN"
+                }
+              },
+              "statausdc_token_mock": {
+                "url": "ipfs://QmZeung2gzD7dTRaqSGgSh8QSqpMV1g7GF7eYXpfLCtd1Z",
+                "tags": [
+                  "latest"
+                ],
+                "target": "synthetix-mock-tokens:latest@statausdc",
+                "preset": "statausdc",
+                "settings": {
+                  "name": "",
+                  "symbol": "",
+                  "asset": ""
+                },
+                "contracts": {
+                  "Token": {
+                    "address": "0x6F6f570F45833E249e27022648a26F4076F48f78",
+                    "abi": [
+                      "constructor(address asset, string vaultName, string vaultSymbol)",
+                      "function allowance(address owner, address spender) view returns (uint256)",
+                      "function approve(address spender, uint256 value) returns (bool)",
+                      "function asset() view returns (address)",
+                      "function balanceOf(address account) view returns (uint256)",
+                      "function convertToAssets(uint256 shares) view returns (uint256)",
+                      "function convertToShares(uint256 assets) view returns (uint256)",
+                      "function decimals() view returns (uint8)",
+                      "function deposit(uint256 assets, address receiver) returns (uint256)",
+                      "function maxDeposit(address) view returns (uint256)",
+                      "function maxMint(address) view returns (uint256)",
+                      "function maxRedeem(address owner) view returns (uint256)",
+                      "function maxWithdraw(address owner) view returns (uint256)",
+                      "function mint(uint256 shares, address receiver) returns (uint256)",
+                      "function name() view returns (string)",
+                      "function previewDeposit(uint256 assets) view returns (uint256)",
+                      "function previewMint(uint256 shares) view returns (uint256)",
+                      "function previewRedeem(uint256 shares) view returns (uint256)",
+                      "function previewWithdraw(uint256 assets) view returns (uint256)",
+                      "function redeem(uint256 shares, address receiver, address owner) returns (uint256)",
+                      "function symbol() view returns (string)",
+                      "function totalAssets() view returns (uint256)",
+                      "function totalSupply() view returns (uint256)",
+                      "function transfer(address to, uint256 value) returns (bool)",
+                      "function transferFrom(address from, address to, uint256 value) returns (bool)",
+                      "function withdraw(uint256 assets, address receiver, address owner) returns (uint256)",
+                      "event Approval(address indexed owner, address indexed spender, uint256 value)",
+                      "event Deposit(address indexed sender, address indexed owner, uint256 assets, uint256 shares)",
+                      "event Transfer(address indexed from, address indexed to, uint256 value)",
+                      "event Withdraw(address indexed sender, address indexed receiver, address indexed owner, uint256 assets, uint256 shares)",
+                      "error AddressEmptyCode(address target)",
+                      "error ERC20InsufficientAllowance(address spender, uint256 allowance, uint256 needed)",
+                      "error ERC20InsufficientBalance(address sender, uint256 balance, uint256 needed)",
+                      "error ERC20InvalidApprover(address approver)",
+                      "error ERC20InvalidReceiver(address receiver)",
+                      "error ERC20InvalidSender(address sender)",
+                      "error ERC20InvalidSpender(address spender)",
+                      "error ERC4626ExceededMaxDeposit(address receiver, uint256 assets, uint256 max)",
+                      "error ERC4626ExceededMaxMint(address receiver, uint256 shares, uint256 max)",
+                      "error ERC4626ExceededMaxRedeem(address owner, uint256 shares, uint256 max)",
+                      "error ERC4626ExceededMaxWithdraw(address owner, uint256 assets, uint256 max)",
+                      "error FailedCall()",
+                      "error InsufficientBalance(uint256 balance, uint256 needed)",
+                      "error SafeERC20FailedOperation(address token)"
+                    ],
+                    "constructorArgs": [
+                      "0x862AB59572e38F93197C29Aa7a562e986c80e928",
+                      "stataUSDC Mock",
+                      "stataUSDC"
+                    ],
+                    "linkedLibraries": {},
+                    "deployTxnHash": "0xd274d0967e7cb0ccce8a41d1e736a3eb43cdb1dc3153ec337c5e4ed7a5056fae",
+                    "deployTxnBlockNumber": "17596171",
+                    "deployTimestamp": "1721981694",
+                    "sourceName": "contracts/implementations/token/ERC4626Impl.sol",
+                    "contractName": "ERC4626Impl",
+                    "deployedOn": "deploy.Token",
+                    "gasUsed": 1140905,
+                    "gasCost": "1003312300"
+                  }
+                },
+                "extras": {
+                  "name": "",
+                  "symbol": "",
+                  "asset": ""
+                }
+              }
+            },
+            "settings": {
+              "vault": "0x6F6f570F45833E249e27022648a26F4076F48f78"
+            },
+            "contracts": {
+              "ERC4626ToAssetsRatioOracle": {
+                "address": "0x84D38142E6Fb5a7Ee3daE751822fb75e0c2C8432",
+                "abi": [
+                  "constructor(address _vaultAddress)",
+                  "error OverflowUint256ToInt256()",
+                  "function ASSET_ADDRESS() view returns (address)",
+                  "function ASSET_DECIMALS() view returns (uint256)",
+                  "function BASE_UNIT() view returns (uint256)",
+                  "function VAULT_ADDRESS() view returns (address)",
+                  "function VAULT_DECIMALS() view returns (uint256)",
+                  "function isValid(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeDefinition) view returns (bool valid)",
+                  "function process(tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[], bytes, bytes32[], bytes32[]) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2))",
+                  "function supportsInterface(bytes4 interfaceId) pure returns (bool)"
+                ],
+                "constructorArgs": [
+                  "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "",
+                "deployTxnBlockNumber": "",
+                "deployTimestamp": "1721981694",
+                "sourceName": "contracts/ERC4626ToAssetsRatioOracle.sol",
+                "contractName": "ERC4626ToAssetsRatioOracle",
+                "deployedOn": "deploy.ERC4626ToAssetsRatioOracle",
+                "gasUsed": 0,
+                "gasCost": "0"
+              }
+            },
+            "extras": {
+              "vault": "0x6F6f570F45833E249e27022648a26F4076F48f78"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "invoke.register_erc_4626_to_assets_ratio_oracle_node": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "register_erc_4626_to_assets_ratio_oracle_node": {
+            "hash": "0xdf9db4901740bf00d40b91110c10a3d4f9af58cac75d880696ac23238ae3ac4d",
+            "blockNumber": "17596175",
+            "timestamp": "1721981698",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x9eb2d8eee0f6f1ac71474963e2ed5fae48bd598dfb2fd695f0194381b133d54a",
+                    2,
+                    "0x00000000000000000000000084d38142e6fb5a7ee3dae751822fb75e0c2c8432",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.register_erc_4626_to_assets_ratio_oracle_node",
+            "gasUsed": 45611,
+            "gasCost": "1001969052",
+            "signer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+          }
+        },
+        "settings": {
+          "erc_4626_to_assets_ratio_oracle_id": "0x9eb2d8eee0f6f1ac71474963e2ed5fae48bd598dfb2fd695f0194381b133d54a"
+        }
+      },
+      "hash": "53a25bc28aeabceeafadaacbc6034a0c",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_stataUSDC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_stataUSDC": {
+            "hash": "0x3d0ec081c9eec57d4307610f0b1026904a83ec1660806559c069d63c3e60e24b",
+            "blockNumber": "17596176",
+            "timestamp": "1721981699",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc",
+                    {
+                      "depositingEnabled": false,
+                      "issuanceRatioD18": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                      "liquidationRatioD18": "1100000000000000000",
+                      "liquidationRewardD18": "5000000000000000",
+                      "oracleNodeId": "0x9eb2d8eee0f6f1ac71474963e2ed5fae48bd598dfb2fd695f0194381b133d54a",
+                      "tokenAddress": "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc",
+                      "minDelegationD18": "100000000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_stataUSDC",
+            "gasUsed": 223609,
+            "gasCost": "1001723121",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "61db9e882908d14c857cb20ad49e4569",
+      "version": 7
+    },
+    "invoke.allowPdaoToCreateSynth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "allowPdaoToCreateSynth": {
+            "hash": "0xd45194d149988379f5a46290495d23aa0ecf58f2ffa4e058b0fb06021e25419e",
+            "blockNumber": "17596177",
+            "timestamp": "1721981700",
+            "events": {
+              "FeatureFlagAllowlistAdded": [
+                {
+                  "name": "FeatureFlagAllowlistAdded",
+                  "args": [
+                    "0x63726561746553796e7468000000000000000000000000000000000000000000",
+                    "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.allowPdaoToCreateSynth",
+            "gasUsed": 84651,
+            "gasCost": "1001508588",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "1651d162765bf30ea2a1b3356a1db551",
+      "version": 7
+    },
+    "invoke.removeDeployerFromCreateSynth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "removeDeployerFromCreateSynth": {
+            "hash": "0xf57dea988408c68e364d44856c060c741c50962a576d5bedbfe920afbbf2074d",
+            "blockNumber": "17596178",
+            "timestamp": "1721981701",
+            "events": {
+              "FeatureFlagAllowlistRemoved": [
+                {
+                  "name": "FeatureFlagAllowlistRemoved",
+                  "args": [
+                    "0x63726561746553796e7468000000000000000000000000000000000000000000",
+                    "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.removeDeployerFromCreateSynth",
+            "gasUsed": 51819,
+            "gasCost": "1001320299",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "cc3e09ba9599c05e954aa73265956e85",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_createSynth_stataUSDC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_createSynth_stataUSDC": {
+            "hash": "0x28ea4ddacb66045a0d4de073df096060f3cd98c7daa64405db36e9ec5299e96c",
+            "blockNumber": "17596179",
+            "timestamp": "1721981702",
+            "events": {
+              "AssociatedSystemSet": [
+                {
+                  "name": "AssociatedSystemSet",
+                  "args": [
+                    "0x6572633230000000000000000000000000000000000000000000000000000000",
+                    "0xa7cda8d84747f149aaf3e10134e0c4c7a6d83ff52ad07bd867c1982ecfc56076",
+                    "0x729Ef31D86d31440ecBF49f27F7cD7c16c6616d2",
+                    "0x6D200dd8eE1f619FEfD43a5FA08B27C465D44415"
+                  ]
+                }
+              ],
+              "SynthRegistered": [
+                {
+                  "name": "SynthRegistered",
+                  "args": [
+                    "3",
+                    "0x729Ef31D86d31440ecBF49f27F7cD7c16c6616d2"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_createSynth_stataUSDC",
+            "gasUsed": 489516,
+            "gasCost": "1001155414",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {
+          "synth_stata_usdc_market_id": "3",
+          "synth_stata_usdc_token_address": "0x729Ef31D86d31440ecBF49f27F7cD7c16c6616d2"
+        }
+      },
+      "hash": "ebf1c4ecef36f0090b2eaafdf2790b12",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureMaximumMarketCollateral_stataUSDC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureMaximumMarketCollateral_stataUSDC": {
+            "hash": "0x6d4c1de01a256557dab242d3679e47b4b46059570e527eb7602e301d22063992",
+            "blockNumber": "17596180",
+            "timestamp": "1721981706",
+            "events": {
+              "MaximumMarketCollateralConfigured": [
+                {
+                  "name": "MaximumMarketCollateralConfigured",
+                  "args": [
+                    "3",
+                    "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc",
+                    "5000000000000000000000000",
+                    "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureMaximumMarketCollateral_stataUSDC",
+            "gasUsed": 57782,
+            "gasCost": "1001012245",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "5d2a7828f67188e2992cd5cde3fc5fde",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setWrapper_stataUSDC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setWrapper_stataUSDC": {
+            "hash": "0x1a2f1c36bc75181a60e67378e5e14f14f1631a3666ae16280e1a9253c7362f1c",
+            "blockNumber": "17596181",
+            "timestamp": "1721981707",
+            "events": {
+              "WrapperSet": [
+                {
+                  "name": "WrapperSet",
+                  "args": [
+                    "3",
+                    "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc",
+                    "5000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setWrapper_stataUSDC",
+            "gasUsed": 96395,
+            "gasCost": "1000885845",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "cf9398f5adc63eeeb18a4036a812ae86",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_updatePriceData_stataUSDC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_updatePriceData_stataUSDC": {
+            "hash": "0x3e6da4131c2cd97959de1e8b94bfefee77e3f2a523ba595842a1d89368a491b4",
+            "blockNumber": "17596182",
+            "timestamp": "1721981708",
+            "events": {
+              "SynthPriceDataUpdated": [
+                {
+                  "name": "SynthPriceDataUpdated",
+                  "args": [
+                    "3",
+                    "0x9eb2d8eee0f6f1ac71474963e2ed5fae48bd598dfb2fd695f0194381b133d54a",
+                    "0x9eb2d8eee0f6f1ac71474963e2ed5fae48bd598dfb2fd695f0194381b133d54a",
+                    "60"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_updatePriceData_stataUSDC",
+            "gasUsed": 102820,
+            "gasCost": "1000775305",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "17b01c3b5e64814485441a552ad0bcb0",
+      "version": 7
+    },
+    "invoke.configure_sstatausdc_collateral": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "configure_sstatausdc_collateral": {
+            "hash": "0xb46aa03e0b6d17982878db79a6cd39bdcd8a76569b3fbfc6ec7d6f4275349717",
+            "blockNumber": "17596183",
+            "timestamp": "1721981710",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0x729Ef31D86d31440ecBF49f27F7cD7c16c6616d2",
+                    {
+                      "depositingEnabled": true,
+                      "issuanceRatioD18": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                      "liquidationRatioD18": "1100000000000000000",
+                      "liquidationRewardD18": "5000000000000000",
+                      "oracleNodeId": "0x9eb2d8eee0f6f1ac71474963e2ed5fae48bd598dfb2fd695f0194381b133d54a",
+                      "tokenAddress": "0x729Ef31D86d31440ecBF49f27F7cD7c16c6616d2",
+                      "minDelegationD18": "100000000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.configure_sstatausdc_collateral",
+            "gasUsed": 243521,
+            "gasCost": "1000678570",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "6a8e046dbd2591164a02a66eca7bc2bd",
+      "version": 7
     }
   },
   "options": {},
-  "meta": {},
-  "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k"
+  "status": "complete",
+  "meta": {
+    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
+    "commitHash": "f09e9ea6f127a56b9f8ba10650ee383c734c3556",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
+  },
+  "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
+  "chainId": 8453
 }
