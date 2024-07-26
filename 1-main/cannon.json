@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1721387409,
+  "timestamp": 1721984956,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -232,7 +232,7 @@
             "tokenAddress": "<%= settings.snx_address %>",
             "oracleNodeId": "<%= extras.snx_oracle_id %>",
             "issuanceRatioD18": "<%= parseEther('5') %>",
-            "liquidationRatioD18": "<%= parseEther('1.6') %>",
+            "liquidationRatioD18": "<%= parseEther('1.2') %>",
             "liquidationRewardD18": "<%= settings.snx_liquidation_reward %>",
             "minDelegationD18": "<%= 2 * settings.snx_liquidation_reward %>",
             "depositingEnabled": true
@@ -535,7 +535,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "7",
+    "version": "8",
     "description": "Includes the full synthetix system with configurations applied",
     "import": {
       "usde": {
@@ -2928,8 +2928,8 @@
         "txns": {
           "configureSnxCollateral": {
             "hash": "",
-            "blockNumber": "20339967",
-            "timestamp": "1721384439",
+            "blockNumber": "20389730",
+            "timestamp": "1721984956",
             "events": {
               "CollateralConfigured": [
                 {
@@ -2939,7 +2939,7 @@
                     {
                       "depositingEnabled": true,
                       "issuanceRatioD18": "5000000000000000000",
-                      "liquidationRatioD18": "1600000000000000000",
+                      "liquidationRatioD18": "1200000000000000000",
                       "liquidationRewardD18": "50000000000000000000",
                       "oracleNodeId": "0xe68abf6ddc460cb9989f6cfd808b3af937f896a38dd4a271b81c2b60c3511516",
                       "tokenAddress": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
@@ -2950,14 +2950,14 @@
               ]
             },
             "deployedOn": "invoke.configureSnxCollateral",
-            "gasUsed": 67458,
-            "gasCost": "1046539633",
+            "gasUsed": 59058,
+            "gasCost": "3190954837",
             "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
           }
         },
         "settings": {}
       },
-      "hash": "f31f2268791c2d38692dba1df6981b2d",
+      "hash": "eb6af22b6c5d2af8b18324c01adf1d49",
       "version": 7
     },
     "invoke.setAccountTimeoutWithdraw": {
@@ -14535,6 +14535,50 @@
         "settings": {}
       },
       "hash": "92b04aabbe5ac53b0f02ba58312540c3",
+      "version": 7
+    },
+    "invoke.createUsdeSynth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "createUsdeSynth": {
+            "hash": "",
+            "blockNumber": "20389729",
+            "timestamp": "1721984953",
+            "events": {
+              "AssociatedSystemSet": [
+                {
+                  "name": "AssociatedSystemSet",
+                  "args": [
+                    "0x6572633230000000000000000000000000000000000000000000000000000000",
+                    "0xb8dbcf7ce16e156a8d43319ed5b90e37f573e563159aad9f32277ff88f97dacb",
+                    "0x3f3eD1002F55121b8213182f09d4BE544E08B9F9",
+                    "0xD485Ae5977B85dd7a4Df73ca2A524be61Eb80e65"
+                  ]
+                }
+              ],
+              "SynthRegistered": [
+                {
+                  "name": "SynthRegistered",
+                  "args": [
+                    "2",
+                    "0x3f3eD1002F55121b8213182f09d4BE544E08B9F9"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.createUsdeSynth",
+            "gasUsed": 523554,
+            "gasCost": "3491525071",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {
+          "synth_usde_market_id": "2",
+          "synth_usde_token_address": "0x3f3eD1002F55121b8213182f09d4BE544E08B9F9"
+        }
+      },
+      "hash": "760282b71fdf89dc3918fe8832d8e7d2",
       "version": 7
     }
   },
