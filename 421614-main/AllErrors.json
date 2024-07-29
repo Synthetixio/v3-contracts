@@ -821,7 +821,20 @@
   {
     "type": "error",
     "name": "StalenessToleranceExceeded",
-    "inputs": []
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "parentId"
+      },
+      {
+        "type": "int256",
+        "name": "price"
+      },
+      {
+        "type": "uint256",
+        "name": "staleTimestamp"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1374,20 +1387,6 @@
   },
   {
     "type": "error",
-    "name": "AcceptablePriceExceeded",
-    "inputs": [
-      {
-        "type": "uint256",
-        "name": "fillPrice"
-      },
-      {
-        "type": "uint256",
-        "name": "acceptablePrice"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "InsufficientMargin",
     "inputs": [
       {
@@ -1454,6 +1453,20 @@
     "type": "error",
     "name": "ZeroSizeOrder",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AcceptablePriceExceeded",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "fillPrice"
+      },
+      {
+        "type": "uint256",
+        "name": "acceptablePrice"
+      }
+    ]
   },
   {
     "type": "error",
@@ -1572,38 +1585,6 @@
   },
   {
     "type": "error",
-    "name": "FailedTransfer",
-    "inputs": [
-      {
-        "type": "address",
-        "name": "from"
-      },
-      {
-        "type": "address",
-        "name": "to"
-      },
-      {
-        "type": "uint256",
-        "name": "value"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "InvalidParameter",
-    "inputs": [
-      {
-        "type": "string",
-        "name": "parameter"
-      },
-      {
-        "type": "string",
-        "name": "reason"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "NotEnoughBalance",
     "inputs": [
       {
@@ -1627,16 +1608,6 @@
       {
         "type": "uint256",
         "name": "amountLeft"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "Unauthorized",
-    "inputs": [
-      {
-        "type": "address",
-        "name": "addr"
       }
     ]
   }
