@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.13.3",
-  "timestamp": 1715566518,
+  "generator": "cannon cli 2.15.8",
+  "timestamp": 1722222904,
   "def": {
     "invoke": {
       "enable_feature_createAccount": {
@@ -279,11 +279,7 @@
           "<%= settings.pool_owner %>"
         ],
         "depends": [
-          "invoke.permitCreatePool",
-          "provision.system",
-          "setting.deployer",
-          "setting.pool_owner",
-          "setting.sc_pool_id"
+          "invoke.permitCreatePool"
         ]
       },
       "setScPoolName": {
@@ -302,9 +298,7 @@
           "Spartan Council Pool"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "setPreferredPool": {
@@ -319,9 +313,7 @@
           "<%= settings.sc_pool_id %>"
         ],
         "depends": [
-          "invoke.createScPool",
-          "provision.system",
-          "setting.sc_pool_id"
+          "invoke.createScPool"
         ]
       },
       "setPerpsMarketName": {
@@ -1153,8 +1145,7 @@
           false
         ],
         "depends": [
-          "invoke.allowAllPerpsSystem",
-          "provision.perpsFactory"
+          "invoke.allowAllPerpsSystem"
         ]
       },
       "setUsdTokenName": {
@@ -1430,12 +1421,7 @@
           "synthetixPreset": "<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.system",
-          "setting.owner",
-          "setting.salt",
-          "setting.snx_package",
-          "setting.spot_market_package",
-          "setting.target_preset"
+          "provision.system"
         ]
       },
       "perpsFactory": {
@@ -1449,13 +1435,7 @@
           "spotMarketPackage": "<%= settings.spot_market_package %>@<%= settings.target_preset %>"
         },
         "depends": [
-          "provision.spotFactory",
-          "setting.owner",
-          "setting.perps_market_package",
-          "setting.salt",
-          "setting.snx_package",
-          "setting.spot_market_package",
-          "setting.target_preset"
+          "provision.spotFactory"
         ]
       },
       "perps_gas_oracle_node": {
@@ -1525,6 +1505,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.pyth_erc7412_wrapper": {
@@ -1573,16 +1554,18 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.system": {
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
+            "url": "ipfs://QmNX5YDAkJud3NzvhVxAuKx2x3tvvfgZgtH9nZZswM4LJ8",
             "tags": [
               "latest"
             ],
+            "target": "synthetix:3.3.15@arbthetix",
             "preset": "arbthetix",
             "contracts": {
               "AccountModule": {
@@ -3142,10 +3125,11 @@
                 }
               },
               "oracle_manager": {
-                "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
+                "url": "ipfs://QmcYbxYqwtuxE5XVhteKAuCCiGBXXLU4Jq9rSbqXawM3QH",
                 "tags": [
                   "latest"
                 ],
+                "target": "oracle-manager:3.3.15@with-synthetix",
                 "preset": "with-synthetix",
                 "contracts": {
                   "NodeModule": {
@@ -3807,6 +3791,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "invoke.allowCreateAccount_revert": {
@@ -4102,10 +4087,11 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://QmcxSts9kVnfkz63KfGniJ4DQD67syi8iT26MiGMS8NYYr",
+            "url": "ipfs://QmZ8r5npRbZpjnBD4GLkoRx1mA8A6oVTsGRSkpUhZJ7Dd1",
             "tags": [
               "latest"
             ],
+            "target": "synthetix-perps-market:3.3.17@arbthetix",
             "preset": "arbthetix",
             "contracts": {
               "AsyncOrderCancelModule": {
@@ -5105,7 +5091,7 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmTJwP3dvcfscATWArQFZxoVYsWH18vsv9AvBgcMciEHMs",
+                "url": "ipfs://QmYevRJSuT9DNPiWYhY7GiLbqiJZF939KBxVKDYxJwFdUB",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0x3400f899EE37Db540681Fbf0fb49bEF2Bc7F351B",
@@ -5883,7 +5869,7 @@
                 },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
+                    "url": "ipfs://QmNX5YDAkJud3NzvhVxAuKx2x3tvvfgZgtH9nZZswM4LJ8",
                     "contracts": {
                       "AccountModule": {
                         "address": "0xBb0CBCa9CE28a8C6c7Aaa13584A76c0B1a35Fff7",
@@ -7442,10 +7428,11 @@
                         }
                       },
                       "oracle_manager": {
-                        "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
+                        "url": "ipfs://QmcYbxYqwtuxE5XVhteKAuCCiGBXXLU4Jq9rSbqXawM3QH",
                         "tags": [
                           "latest"
                         ],
+                        "target": "oracle-manager:3.3.15@with-synthetix",
                         "preset": "with-synthetix",
                         "contracts": {
                           "NodeModule": {
@@ -8206,7 +8193,7 @@
                 }
               },
               "synthetix": {
-                "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
+                "url": "ipfs://QmNX5YDAkJud3NzvhVxAuKx2x3tvvfgZgtH9nZZswM4LJ8",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xBb0CBCa9CE28a8C6c7Aaa13584A76c0B1a35Fff7",
@@ -9765,10 +9752,11 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
+                    "url": "ipfs://QmcYbxYqwtuxE5XVhteKAuCCiGBXXLU4Jq9rSbqXawM3QH",
                     "tags": [
                       "latest"
                     ],
+                    "target": "oracle-manager:3.3.15@with-synthetix",
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
@@ -10553,16 +10541,18 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "provision.spotFactory": {
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmTJwP3dvcfscATWArQFZxoVYsWH18vsv9AvBgcMciEHMs",
+            "url": "ipfs://QmYevRJSuT9DNPiWYhY7GiLbqiJZF939KBxVKDYxJwFdUB",
             "tags": [
               "latest"
             ],
+            "target": "synthetix-spot-market:3.3.15@arbthetix",
             "preset": "arbthetix",
             "contracts": {
               "AsyncOrderConfigurationModule": {
@@ -11341,7 +11331,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmToLQRVQ1KMNqCebKX6B4Yth6MkSeegxPWAgfE7iqvjGF",
+                "url": "ipfs://QmNX5YDAkJud3NzvhVxAuKx2x3tvvfgZgtH9nZZswM4LJ8",
                 "contracts": {
                   "AccountModule": {
                     "address": "0xBb0CBCa9CE28a8C6c7Aaa13584A76c0B1a35Fff7",
@@ -12900,10 +12890,11 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmSMUbSE7cTDirT7RBMwQAdYuX7PTtotP9HwRKhK4NUGm5",
+                    "url": "ipfs://QmcYbxYqwtuxE5XVhteKAuCCiGBXXLU4Jq9rSbqXawM3QH",
                     "tags": [
                       "latest"
                     ],
+                    "target": "oracle-manager:3.3.15@with-synthetix",
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
@@ -13665,6 +13656,7 @@
           }
         }
       },
+      "hash": null,
       "version": 7
     },
     "invoke.createScPool": {
@@ -16159,7 +16151,11 @@
   },
   "options": {},
   "status": "complete",
-  "meta": {},
+  "meta": {
+    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
+    "commitHash": "69dcc616e1bb9246fa20d1e61b68d70d1355c547",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
+  },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 42161
 }
