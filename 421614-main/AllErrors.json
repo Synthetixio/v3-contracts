@@ -969,6 +969,16 @@
   },
   {
     "type": "error",
+    "name": "InvalidTransactionTypeIndex",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "txnType"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "OnlyMarketOwner",
     "inputs": [
       {
@@ -1269,7 +1279,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       },
       {
         "type": "uint256",
@@ -1286,12 +1296,12 @@
     "name": "InsufficientCollateralAvailableForWithdraw",
     "inputs": [
       {
-        "type": "uint256",
-        "name": "availableUsdDenominated"
+        "type": "int256",
+        "name": "withdrawableMarginUsd"
       },
       {
         "type": "uint256",
-        "name": "requiredUsdDenominated"
+        "name": "requestedMarginUsd"
       }
     ]
   },
@@ -1301,7 +1311,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       },
       {
         "type": "uint256",
@@ -1325,6 +1335,16 @@
   },
   {
     "type": "error",
+    "name": "InvalidId",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "id"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "KeeperCostsNotSet",
     "inputs": []
   },
@@ -1334,7 +1354,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       },
       {
         "type": "uint256",
@@ -1362,6 +1382,16 @@
   },
   {
     "type": "error",
+    "name": "NonexistentDebt",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "PendingOrderExists",
     "inputs": []
   },
@@ -1381,7 +1411,21 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ExceedsMarketCreditCapacity",
+    "inputs": [
+      {
+        "type": "int256",
+        "name": "delegatedCollateral"
+      },
+      {
+        "type": "int256",
+        "name": "newLockedCredit"
       }
     ]
   },
@@ -1470,16 +1514,6 @@
   },
   {
     "type": "error",
-    "name": "InsufficientAccountMargin",
-    "inputs": [
-      {
-        "type": "uint256",
-        "name": "leftover"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "OrderNotValid",
     "inputs": []
   },
@@ -1531,11 +1565,55 @@
   },
   {
     "type": "error",
+    "name": "AccountHasOpenPositions",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidDistributor",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "id"
+      },
+      {
+        "type": "address",
+        "name": "distributor"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NotEligibleForLiquidation",
     "inputs": [
       {
         "type": "uint128",
         "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotEligibleForMarginLiquidation",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidDistributorContract",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "distributor"
       }
     ]
   },
