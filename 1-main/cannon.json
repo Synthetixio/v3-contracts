@@ -1,6 +1,6 @@
 {
-  "generator": "cannon website 2.15.5",
-  "timestamp": 1722838141,
+  "generator": "cannon cli 2.16.1",
+  "timestamp": 1723223705,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -237,23 +237,6 @@
             "minDelegationD18": "<%= 2 * settings.snx_liquidation_reward %>",
             "depositingEnabled": true
           }
-        ]
-      },
-      "registerRewardsDistributor": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= settings.sc_pool_id %>",
-          "<%= imports.legacyMarket.imports.v2x.contracts.ProxySynthetix.address %>",
-          "<%= imports.legacyMarket.contracts.SNXDistributor.address %>"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "depends": [
-          "invoke.createScPool"
         ]
       },
       "registerUsdeOracleManagerNode": {
@@ -513,7 +496,8 @@
           "v3_package": "<%= settings.snx_package %>",
           "salt": "<%= settings.salt %>",
           "synthetixPackage": "<%= settings.snx_package %>@<%= settings.target_preset %>",
-          "synthetixPreset": "<%= settings.target_preset %>"
+          "synthetixPreset": "<%= settings.target_preset %>",
+          "market_id": "1"
         },
         "depends": [
           "provision.system"
@@ -548,7 +532,7 @@
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmTVxHGnXqe4TyN8h6kTFtPBeKzmn2zENu5sjmZVhZyGxQ",
+            "url": "ipfs://QmTJCZJ2LRySGsas2LW6xA7iU3a5z4gCV2jFdfh3LjaEjA",
             "tags": [
               "latest"
             ],
@@ -2164,7 +2148,7 @@
                 }
               },
               "oracle_manager": {
-                "url": "ipfs://QmPgmjqrwPgPQrtTdxAYAvV5EFgUZLKSHJapjTvvPQfQ98",
+                "url": "ipfs://QmUj42dhL4cEynD1g2tyUHvRpQEUGiSKi5idkXocNeYrvb",
                 "tags": [
                   "latest"
                 ],
@@ -2172,7 +2156,7 @@
                 "preset": "with-synthetix",
                 "contracts": {
                   "NodeModule": {
-                    "address": "0x3a6fb39DC244576f994132099997F122A9473f00",
+                    "address": "0x33f4f8bf90d8AA3d19fF812B50e79c15Df0d0b03",
                     "abi": [
                       "error DeviationToleranceExceeded(int256 deviation)",
                       "error InvalidInputPrice()",
@@ -2198,14 +2182,14 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x06960765cf3d9eb47e3a1000622836dc8be1f697e5a7658a1aac26247c335123",
-                    "deployTxnBlockNumber": "20333378",
-                    "deployTimestamp": "1721305367",
+                    "deployTxnHash": "0xf1934b004c92c5b24bd8e864c8d655156acdd0c6e11691bb6c4cccabbf23fb73",
+                    "deployTxnBlockNumber": "20492468",
+                    "deployTimestamp": "1723223688",
                     "sourceName": "contracts/modules/NodeModule.sol",
                     "contractName": "NodeModule",
                     "deployedOn": "contract.NodeModule",
                     "gasUsed": 4106509,
-                    "gasCost": "10752648722"
+                    "gasCost": "4157105045"
                   },
                   "CoreModule": {
                     "address": "0x874573f87a53e6D9D6F11eE8Bb994E247dB55509",
@@ -2269,7 +2253,7 @@
                     "deployedOn": "contract.InitialProxy"
                   },
                   "OracleRouter": {
-                    "address": "0xa690826d775f971c0cfa68f7c6a009c0e9f00aa9",
+                    "address": "0x1f2c6e90f3df741e0191eabb1170f0b9673f12b3",
                     "abi": [
                       "error ImplementationIsSterile(address implementation)",
                       "error NoChange()",
@@ -2312,13 +2296,13 @@
                       "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                     ],
                     "deployedOn": "router.OracleRouter",
-                    "deployTxnHash": "0x86f62b7b1bf64e19c2a6a729c8794a568f474748e0309a5774dc0f8cb57efdf2",
-                    "deployTxnBlockNumber": "20333381",
-                    "deployTimestamp": "1721305403",
+                    "deployTxnHash": "0x239d524b5991c739d1b19499eaa60276a17bd4e5e1f7c8b3d6a169b48d5406ba",
+                    "deployTxnBlockNumber": "20492469",
+                    "deployTimestamp": "1723223689",
                     "contractName": "OracleRouter",
                     "sourceName": "OracleRouter.sol",
-                    "gasUsed": 243076,
-                    "gasCost": "9686939793"
+                    "gasUsed": 243136,
+                    "gasCost": "3870505917"
                   },
                   "Proxy": {
                     "address": "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
@@ -2447,23 +2431,23 @@
                 },
                 "txns": {
                   "upgrade_proxy": {
-                    "hash": "",
-                    "blockNumber": "20339934",
-                    "timestamp": "1721384401",
+                    "hash": "0xfd86fa0c5f27b041a1bb93338eaffcb21f26ffb56d48c41ec38fc62db2dca96d",
+                    "blockNumber": "20492470",
+                    "timestamp": "1723223690",
                     "events": {
                       "Upgraded": [
                         {
                           "name": "Upgraded",
                           "args": [
                             "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
-                            "0xA690826D775f971c0cfa68F7C6a009c0E9F00AA9"
+                            "0x1F2C6E90F3DF741E0191eAbB1170f0B9673F12b3"
                           ]
                         }
                       ]
                     },
                     "deployedOn": "invoke.upgrade_proxy",
-                    "gasUsed": 55336,
-                    "gasCost": "4727800552",
+                    "gasUsed": 55316,
+                    "gasCost": "3517508706",
                     "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
                   }
                 },
@@ -3739,7 +3723,7 @@
       "artifacts": {
         "imports": {
           "legacyMarket": {
-            "url": "ipfs://QmX81mr9tqpbQeYzwFzfJBVmWgiLnce9yRfDGpgXgytKYz",
+            "url": "ipfs://QmePoG5qBGCvHTEv8iJBXHwmzzxryBhtNyF2SGUUbsiEEt",
             "tags": [
               "latest"
             ],
@@ -8625,7 +8609,7 @@
                 }
               },
               "v3": {
-                "url": "ipfs://QmTVxHGnXqe4TyN8h6kTFtPBeKzmn2zENu5sjmZVhZyGxQ",
+                "url": "ipfs://QmTJCZJ2LRySGsas2LW6xA7iU3a5z4gCV2jFdfh3LjaEjA",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x39ab721a0A843e6184cf92cCbC96a133f3d1Bb68",
@@ -10236,7 +10220,7 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmPgmjqrwPgPQrtTdxAYAvV5EFgUZLKSHJapjTvvPQfQ98",
+                    "url": "ipfs://QmUj42dhL4cEynD1g2tyUHvRpQEUGiSKi5idkXocNeYrvb",
                     "tags": [
                       "latest"
                     ],
@@ -10244,7 +10228,7 @@
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
-                        "address": "0x3a6fb39DC244576f994132099997F122A9473f00",
+                        "address": "0x33f4f8bf90d8AA3d19fF812B50e79c15Df0d0b03",
                         "abi": [
                           "error DeviationToleranceExceeded(int256 deviation)",
                           "error InvalidInputPrice()",
@@ -10270,14 +10254,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x06960765cf3d9eb47e3a1000622836dc8be1f697e5a7658a1aac26247c335123",
-                        "deployTxnBlockNumber": "20333378",
-                        "deployTimestamp": "1721305367",
+                        "deployTxnHash": "0xf1934b004c92c5b24bd8e864c8d655156acdd0c6e11691bb6c4cccabbf23fb73",
+                        "deployTxnBlockNumber": "20492468",
+                        "deployTimestamp": "1723223688",
                         "sourceName": "contracts/modules/NodeModule.sol",
                         "contractName": "NodeModule",
                         "deployedOn": "contract.NodeModule",
                         "gasUsed": 4106509,
-                        "gasCost": "10752648722"
+                        "gasCost": "4157105045"
                       },
                       "CoreModule": {
                         "address": "0x874573f87a53e6D9D6F11eE8Bb994E247dB55509",
@@ -10341,7 +10325,7 @@
                         "deployedOn": "contract.InitialProxy"
                       },
                       "OracleRouter": {
-                        "address": "0xa690826d775f971c0cfa68f7c6a009c0e9f00aa9",
+                        "address": "0x1f2c6e90f3df741e0191eabb1170f0b9673f12b3",
                         "abi": [
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
@@ -10384,13 +10368,13 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployedOn": "router.OracleRouter",
-                        "deployTxnHash": "0x86f62b7b1bf64e19c2a6a729c8794a568f474748e0309a5774dc0f8cb57efdf2",
-                        "deployTxnBlockNumber": "20333381",
-                        "deployTimestamp": "1721305403",
+                        "deployTxnHash": "0x239d524b5991c739d1b19499eaa60276a17bd4e5e1f7c8b3d6a169b48d5406ba",
+                        "deployTxnBlockNumber": "20492469",
+                        "deployTimestamp": "1723223689",
                         "contractName": "OracleRouter",
                         "sourceName": "OracleRouter.sol",
-                        "gasUsed": 243076,
-                        "gasCost": "9686939793"
+                        "gasUsed": 243136,
+                        "gasCost": "3870505917"
                       },
                       "Proxy": {
                         "address": "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
@@ -10519,23 +10503,23 @@
                     },
                     "txns": {
                       "upgrade_proxy": {
-                        "hash": "",
-                        "blockNumber": "20339934",
-                        "timestamp": "1721384401",
+                        "hash": "0xfd86fa0c5f27b041a1bb93338eaffcb21f26ffb56d48c41ec38fc62db2dca96d",
+                        "blockNumber": "20492470",
+                        "timestamp": "1723223690",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
-                                "0xA690826D775f971c0cfa68F7C6a009c0E9F00AA9"
+                                "0x1F2C6E90F3DF741E0191eAbB1170f0B9673F12b3"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.upgrade_proxy",
-                        "gasUsed": 55336,
-                        "gasCost": "4727800552",
+                        "gasUsed": 55316,
+                        "gasCost": "3517508706",
                         "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
                       }
                     },
@@ -11133,7 +11117,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmYFV4KQTYHvMPiyP59GAPGskPPfTZMMgwFEhswo8B89Mp",
+            "url": "ipfs://QmTD3AuYzKAnYdZEmc1XNwzmdt3r5BatSrSgnT68iaXhtU",
             "tags": [
               "latest"
             ],
@@ -11944,7 +11928,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmTVxHGnXqe4TyN8h6kTFtPBeKzmn2zENu5sjmZVhZyGxQ",
+                "url": "ipfs://QmTJCZJ2LRySGsas2LW6xA7iU3a5z4gCV2jFdfh3LjaEjA",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x39ab721a0A843e6184cf92cCbC96a133f3d1Bb68",
@@ -13555,7 +13539,7 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmPgmjqrwPgPQrtTdxAYAvV5EFgUZLKSHJapjTvvPQfQ98",
+                    "url": "ipfs://QmUj42dhL4cEynD1g2tyUHvRpQEUGiSKi5idkXocNeYrvb",
                     "tags": [
                       "latest"
                     ],
@@ -13563,7 +13547,7 @@
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
-                        "address": "0x3a6fb39DC244576f994132099997F122A9473f00",
+                        "address": "0x33f4f8bf90d8AA3d19fF812B50e79c15Df0d0b03",
                         "abi": [
                           "error DeviationToleranceExceeded(int256 deviation)",
                           "error InvalidInputPrice()",
@@ -13589,14 +13573,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x06960765cf3d9eb47e3a1000622836dc8be1f697e5a7658a1aac26247c335123",
-                        "deployTxnBlockNumber": "20333378",
-                        "deployTimestamp": "1721305367",
+                        "deployTxnHash": "0xf1934b004c92c5b24bd8e864c8d655156acdd0c6e11691bb6c4cccabbf23fb73",
+                        "deployTxnBlockNumber": "20492468",
+                        "deployTimestamp": "1723223688",
                         "sourceName": "contracts/modules/NodeModule.sol",
                         "contractName": "NodeModule",
                         "deployedOn": "contract.NodeModule",
                         "gasUsed": 4106509,
-                        "gasCost": "10752648722"
+                        "gasCost": "4157105045"
                       },
                       "CoreModule": {
                         "address": "0x874573f87a53e6D9D6F11eE8Bb994E247dB55509",
@@ -13660,7 +13644,7 @@
                         "deployedOn": "contract.InitialProxy"
                       },
                       "OracleRouter": {
-                        "address": "0xa690826d775f971c0cfa68f7c6a009c0e9f00aa9",
+                        "address": "0x1f2c6e90f3df741e0191eabb1170f0b9673f12b3",
                         "abi": [
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
@@ -13703,13 +13687,13 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployedOn": "router.OracleRouter",
-                        "deployTxnHash": "0x86f62b7b1bf64e19c2a6a729c8794a568f474748e0309a5774dc0f8cb57efdf2",
-                        "deployTxnBlockNumber": "20333381",
-                        "deployTimestamp": "1721305403",
+                        "deployTxnHash": "0x239d524b5991c739d1b19499eaa60276a17bd4e5e1f7c8b3d6a169b48d5406ba",
+                        "deployTxnBlockNumber": "20492469",
+                        "deployTimestamp": "1723223689",
                         "contractName": "OracleRouter",
                         "sourceName": "OracleRouter.sol",
-                        "gasUsed": 243076,
-                        "gasCost": "9686939793"
+                        "gasUsed": 243136,
+                        "gasCost": "3870505917"
                       },
                       "Proxy": {
                         "address": "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
@@ -13838,23 +13822,23 @@
                     },
                     "txns": {
                       "upgrade_proxy": {
-                        "hash": "",
-                        "blockNumber": "20339934",
-                        "timestamp": "1721384401",
+                        "hash": "0xfd86fa0c5f27b041a1bb93338eaffcb21f26ffb56d48c41ec38fc62db2dca96d",
+                        "blockNumber": "20492470",
+                        "timestamp": "1723223690",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
-                                "0xA690826D775f971c0cfa68F7C6a009c0E9F00AA9"
+                                "0x1F2C6E90F3DF741E0191eAbB1170f0B9673F12b3"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.upgrade_proxy",
-                        "gasUsed": 55336,
-                        "gasCost": "4727800552",
+                        "gasUsed": 55316,
+                        "gasCost": "3517508706",
                         "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
                       }
                     },
@@ -14580,13 +14564,107 @@
       },
       "hash": "760282b71fdf89dc3918fe8832d8e7d2",
       "version": 7
+    },
+    "invoke.setSynthAsyncFixedFeeUsde": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSynthAsyncFixedFeeUsde": {
+            "hash": "0x980477411802869a72b3dce0c818fc846a93a397c5734fc5194abd3230f22be3",
+            "blockNumber": "20492471",
+            "timestamp": "1723223694",
+            "events": {
+              "AsyncFixedFeeSet": [
+                {
+                  "name": "AsyncFixedFeeSet",
+                  "args": [
+                    "2",
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSynthAsyncFixedFeeUsde",
+            "gasUsed": 36766,
+            "gasCost": "3203980606",
+            "signer": "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "61f1b43e9a4c7b2178736620e208e4a3",
+      "version": 7
+    },
+    "invoke.setSynthPriceUsde": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSynthPriceUsde": {
+            "hash": "0x78af0de6b5a5a2da1b57e8ab76b2886115643f62b729123e5193d1103dcf0729",
+            "blockNumber": "20492472",
+            "timestamp": "1723223695",
+            "events": {
+              "SynthPriceDataUpdated": [
+                {
+                  "name": "SynthPriceDataUpdated",
+                  "args": [
+                    "2",
+                    "0xc36fbc07601eafcdc7f67c5d7ad39295b34f95704b133fceeaf273cf1f0115b3",
+                    "0xc36fbc07601eafcdc7f67c5d7ad39295b34f95704b133fceeaf273cf1f0115b3",
+                    "60"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSynthPriceUsde",
+            "gasUsed": 102810,
+            "gasCost": "2929158294",
+            "signer": "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "9f4103a34765fdecbb1fc7a981fc5cb3",
+      "version": 7
+    },
+    "invoke.setSynthSkewScaleUsde": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSynthSkewScaleUsde": {
+            "hash": "0xc45b0fd6230321e471f804fb3b51fc5e5b8e724d0000dbf7e3bc7cd3c94c27c5",
+            "blockNumber": "20492473",
+            "timestamp": "1723223696",
+            "events": {
+              "MarketSkewScaleSet": [
+                {
+                  "name": "MarketSkewScaleSet",
+                  "args": [
+                    "2",
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSynthSkewScaleUsde",
+            "gasUsed": 36710,
+            "gasCost": "2689666314",
+            "signer": "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "7c1015f3a53977132b8fdb07e4b06c05",
+      "version": 7
     }
   },
   "options": {},
+  "status": "complete",
   "meta": {
-    "gitUrl": "https///github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "08ec5b010377475997a6c4a498d0fb37fa983981",
-    "readme": "https///github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
+    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
+    "commitHash": "e889152287d162e1e431bbd9a70de81b4c503f46",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
-  "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k"
+  "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
+  "chainId": 1
 }
