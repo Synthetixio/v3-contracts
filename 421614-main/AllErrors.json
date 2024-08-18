@@ -587,6 +587,11 @@
   },
   {
     "type": "error",
+    "name": "RewardDistributorNotFound",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "RewardUnavailable",
     "inputs": [
       {
@@ -816,20 +821,7 @@
   {
     "type": "error",
     "name": "StalenessToleranceExceeded",
-    "inputs": [
-      {
-        "type": "bytes32",
-        "name": "parentId"
-      },
-      {
-        "type": "int256",
-        "name": "price"
-      },
-      {
-        "type": "uint256",
-        "name": "staleTimestamp"
-      }
-    ]
+    "inputs": []
   },
   {
     "type": "error",
@@ -959,16 +951,6 @@
       {
         "type": "uint256",
         "name": "synthImplementation"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "InvalidTransactionTypeIndex",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "txnType"
       }
     ]
   },
@@ -1274,7 +1256,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "collateralId"
+        "name": "synthMarketId"
       },
       {
         "type": "uint256",
@@ -1291,12 +1273,12 @@
     "name": "InsufficientCollateralAvailableForWithdraw",
     "inputs": [
       {
-        "type": "int256",
-        "name": "withdrawableMarginUsd"
+        "type": "uint256",
+        "name": "availableUsdDenominated"
       },
       {
         "type": "uint256",
-        "name": "requestedMarginUsd"
+        "name": "requiredUsdDenominated"
       }
     ]
   },
@@ -1306,7 +1288,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "collateralId"
+        "name": "synthMarketId"
       },
       {
         "type": "uint256",
@@ -1330,16 +1312,6 @@
   },
   {
     "type": "error",
-    "name": "InvalidId",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "id"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "KeeperCostsNotSet",
     "inputs": []
   },
@@ -1349,7 +1321,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "collateralId"
+        "name": "synthMarketId"
       },
       {
         "type": "uint256",
@@ -1377,16 +1349,6 @@
   },
   {
     "type": "error",
-    "name": "NonexistentDebt",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "PendingOrderExists",
     "inputs": []
   },
@@ -1406,21 +1368,21 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "collateralId"
+        "name": "synthMarketId"
       }
     ]
   },
   {
     "type": "error",
-    "name": "ExceedsMarketCreditCapacity",
+    "name": "AcceptablePriceExceeded",
     "inputs": [
       {
-        "type": "int256",
-        "name": "delegatedCollateral"
+        "type": "uint256",
+        "name": "fillPrice"
       },
       {
-        "type": "int256",
-        "name": "newLockedCredit"
+        "type": "uint256",
+        "name": "acceptablePrice"
       }
     ]
   },
@@ -1495,15 +1457,11 @@
   },
   {
     "type": "error",
-    "name": "AcceptablePriceExceeded",
+    "name": "InsufficientAccountMargin",
     "inputs": [
       {
         "type": "uint256",
-        "name": "fillPrice"
-      },
-      {
-        "type": "uint256",
-        "name": "acceptablePrice"
+        "name": "leftover"
       }
     ]
   },
@@ -1560,55 +1518,11 @@
   },
   {
     "type": "error",
-    "name": "AccountHasOpenPositions",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "InvalidDistributor",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "id"
-      },
-      {
-        "type": "address",
-        "name": "distributor"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "NotEligibleForLiquidation",
     "inputs": [
       {
         "type": "uint128",
         "name": "accountId"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "NotEligibleForMarginLiquidation",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "InvalidDistributorContract",
-    "inputs": [
-      {
-        "type": "address",
-        "name": "distributor"
       }
     ]
   },
@@ -1653,34 +1567,6 @@
       {
         "type": "uint8",
         "name": "updateType"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "NotEnoughBalance",
-    "inputs": [
-      {
-        "type": "uint256",
-        "name": "amountRequested"
-      },
-      {
-        "type": "uint256",
-        "name": "currentBalance"
-      }
-    ]
-  },
-  {
-    "type": "error",
-    "name": "NotEnoughRewardsLeft",
-    "inputs": [
-      {
-        "type": "uint256",
-        "name": "amountRequested"
-      },
-      {
-        "type": "uint256",
-        "name": "amountLeft"
       }
     ]
   }

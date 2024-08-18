@@ -1915,6 +1915,31 @@
   {
     "type": "event",
     "anonymous": false,
+    "name": "IssuanceFeePaid",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "poolId",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "collateralType"
+      },
+      {
+        "type": "uint256",
+        "name": "feeAmount"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
     "name": "UsdBurned",
     "inputs": [
       {
@@ -2610,6 +2635,22 @@
         "type": "address",
         "name": "sender",
         "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarketSystemFeePaid",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "feeAmount"
       }
     ]
   },
@@ -3874,6 +3915,11 @@
   },
   {
     "type": "error",
+    "name": "RewardDistributorNotFound",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "RewardUnavailable",
     "inputs": [
       {
@@ -3991,35 +4037,6 @@
   },
   {
     "type": "function",
-    "name": "claimPoolRewards",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      },
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      },
-      {
-        "type": "address",
-        "name": "distributor"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "function",
     "name": "claimRewards",
     "constant": false,
     "payable": false,
@@ -4074,82 +4091,13 @@
         "name": "duration"
       }
     ],
-    "outputs": [
-      {
-        "type": "int256"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "distributeRewardsByOwner",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      },
-      {
-        "type": "address",
-        "name": "rewardsDistributor"
-      },
-      {
-        "type": "uint256",
-        "name": "amount"
-      },
-      {
-        "type": "uint64",
-        "name": "start"
-      },
-      {
-        "type": "uint32",
-        "name": "duration"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "int256"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "getAvailablePoolRewards",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      },
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      },
-      {
-        "type": "address",
-        "name": "distributor"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256"
-      }
-    ]
+    "outputs": []
   },
   {
     "type": "function",
     "name": "getAvailableRewards",
-    "constant": false,
+    "constant": true,
+    "stateMutability": "view",
     "payable": false,
     "inputs": [
       {
@@ -4268,9 +4216,6 @@
       },
       {
         "type": "address[]"
-      },
-      {
-        "type": "uint256"
       }
     ]
   },
