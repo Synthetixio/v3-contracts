@@ -1915,6 +1915,31 @@
   {
     "type": "event",
     "anonymous": false,
+    "name": "IssuanceFeePaid",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "poolId",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "collateralType"
+      },
+      {
+        "type": "uint256",
+        "name": "feeAmount"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
     "name": "UsdBurned",
     "inputs": [
       {
@@ -2354,22 +2379,6 @@
         "type": "address",
         "name": "sender",
         "indexed": true
-      },
-      {
-        "type": "int128",
-        "name": "creditCapacity"
-      },
-      {
-        "type": "int128",
-        "name": "netIssuance"
-      },
-      {
-        "type": "uint256",
-        "name": "depositedCollateralValue"
-      },
-      {
-        "type": "uint256",
-        "name": "reportedDebt"
       }
     ]
   },
@@ -2396,22 +2405,6 @@
         "type": "address",
         "name": "sender",
         "indexed": true
-      },
-      {
-        "type": "int128",
-        "name": "creditCapacity"
-      },
-      {
-        "type": "int128",
-        "name": "netIssuance"
-      },
-      {
-        "type": "uint256",
-        "name": "depositedCollateralValue"
-      },
-      {
-        "type": "uint256",
-        "name": "reportedDebt"
       }
     ]
   },
@@ -2616,6 +2609,22 @@
   {
     "type": "event",
     "anonymous": false,
+    "name": "MarketSystemFeePaid",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "feeAmount"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
     "name": "MarketUsdDeposited",
     "inputs": [
       {
@@ -2636,18 +2645,6 @@
         "type": "address",
         "name": "market",
         "indexed": true
-      },
-      {
-        "type": "int128",
-        "name": "creditCapacity"
-      },
-      {
-        "type": "int128",
-        "name": "netIssuance"
-      },
-      {
-        "type": "uint256",
-        "name": "depositedCollateralValue"
       }
     ]
   },
@@ -2674,18 +2671,6 @@
         "type": "address",
         "name": "market",
         "indexed": true
-      },
-      {
-        "type": "int128",
-        "name": "creditCapacity"
-      },
-      {
-        "type": "int128",
-        "name": "netIssuance"
-      },
-      {
-        "type": "uint256",
-        "name": "depositedCollateralValue"
       }
     ]
   },
@@ -3130,6 +3115,99 @@
     ]
   },
   {
+    "type": "error",
+    "name": "DeniedMulticallTarget",
+    "inputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "RecursiveMulticall",
+    "inputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMessageSender",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "multicall",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes[]",
+        "name": "data"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes[]",
+        "name": "results"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "multicallThrough",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "address[]",
+        "name": "to"
+      },
+      {
+        "type": "bytes[]",
+        "name": "data"
+      },
+      {
+        "type": "uint256[]",
+        "name": "values"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes[]",
+        "name": "results"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "setAllowlistedMulticallTarget",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "target"
+      },
+      {
+        "type": "bool",
+        "name": "allowlisted"
+      }
+    ],
+    "outputs": []
+  },
+  {
     "type": "event",
     "anonymous": false,
     "name": "PoolApprovedAdded",
@@ -3465,23 +3543,6 @@
   {
     "type": "event",
     "anonymous": false,
-    "name": "PoolOwnershipRenounced",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "poolId",
-        "indexed": true
-      },
-      {
-        "type": "address",
-        "name": "owner",
-        "indexed": true
-      }
-    ]
-  },
-  {
-    "type": "event",
-    "anonymous": false,
     "name": "SetMinLiquidityRatio",
     "inputs": [
       {
@@ -3548,39 +3609,6 @@
     "outputs": [
       {
         "type": "address"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "getPoolCollateralConfiguration",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "tuple",
-        "name": "config",
-        "components": [
-          {
-            "type": "uint256",
-            "name": "collateralLimitD18"
-          },
-          {
-            "type": "uint256",
-            "name": "issuanceRatioD18"
-          }
-        ]
       }
     ]
   },
@@ -3712,19 +3740,6 @@
   {
     "type": "function",
     "name": "renouncePoolNomination",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "poolId"
-      }
-    ],
-    "outputs": []
-  },
-  {
-    "type": "function",
-    "name": "renouncePoolOwnership",
     "constant": false,
     "payable": false,
     "inputs": [
@@ -3874,6 +3889,11 @@
   },
   {
     "type": "error",
+    "name": "RewardDistributorNotFound",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "RewardUnavailable",
     "inputs": [
       {
@@ -3991,35 +4011,6 @@
   },
   {
     "type": "function",
-    "name": "claimPoolRewards",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      },
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      },
-      {
-        "type": "address",
-        "name": "distributor"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "function",
     "name": "claimRewards",
     "constant": false,
     "payable": false,
@@ -4074,106 +4065,7 @@
         "name": "duration"
       }
     ],
-    "outputs": [
-      {
-        "type": "int256"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "distributeRewardsByOwner",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      },
-      {
-        "type": "address",
-        "name": "rewardsDistributor"
-      },
-      {
-        "type": "uint256",
-        "name": "amount"
-      },
-      {
-        "type": "uint64",
-        "name": "start"
-      },
-      {
-        "type": "uint32",
-        "name": "duration"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "int256"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "getAvailablePoolRewards",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      },
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      },
-      {
-        "type": "address",
-        "name": "distributor"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "getAvailableRewards",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "accountId"
-      },
-      {
-        "type": "uint128",
-        "name": "poolId"
-      },
-      {
-        "type": "address",
-        "name": "collateralType"
-      },
-      {
-        "type": "address",
-        "name": "distributor"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256"
-      }
-    ]
+    "outputs": []
   },
   {
     "type": "function",
@@ -4268,9 +4160,6 @@
       },
       {
         "type": "address[]"
-      },
-      {
-        "type": "uint256"
       }
     ]
   },
@@ -4369,37 +4258,6 @@
       {
         "type": "uint256",
         "name": "v"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "getTrustedForwarder",
-    "constant": true,
-    "stateMutability": "pure",
-    "payable": false,
-    "inputs": [],
-    "outputs": [
-      {
-        "type": "address"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "isTrustedForwarder",
-    "constant": true,
-    "stateMutability": "pure",
-    "payable": false,
-    "inputs": [
-      {
-        "type": "address",
-        "name": "forwarder"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "bool"
       }
     ]
   },
@@ -4632,6 +4490,10 @@
       {
         "type": "uint256",
         "name": "amount"
+      },
+      {
+        "type": "uint256",
+        "name": "value"
       }
     ]
   },
