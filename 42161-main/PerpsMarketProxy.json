@@ -1001,7 +1001,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       },
       {
         "type": "uint256",
@@ -1018,12 +1018,12 @@
     "name": "InsufficientCollateralAvailableForWithdraw",
     "inputs": [
       {
-        "type": "uint256",
-        "name": "availableUsdDenominated"
+        "type": "int256",
+        "name": "withdrawableMarginUsd"
       },
       {
         "type": "uint256",
-        "name": "requiredUsdDenominated"
+        "name": "requestedMarginUsd"
       }
     ]
   },
@@ -1033,7 +1033,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       },
       {
         "type": "uint256",
@@ -1057,6 +1057,16 @@
   },
   {
     "type": "error",
+    "name": "InvalidId",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "id"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "KeeperCostsNotSet",
     "inputs": []
   },
@@ -1066,7 +1076,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       },
       {
         "type": "uint256",
@@ -1089,6 +1099,16 @@
       {
         "type": "uint128",
         "name": "maxCollateralsPerAccount"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NonexistentDebt",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
       }
     ]
   },
@@ -1118,7 +1138,7 @@
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       }
     ]
   },
@@ -1134,7 +1154,7 @@
       },
       {
         "type": "uint128",
-        "name": "synthMarketId",
+        "name": "collateralId",
         "indexed": true
       },
       {
@@ -1145,6 +1165,62 @@
         "type": "address",
         "name": "sender",
         "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "DebtPaid",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "amount"
+      },
+      {
+        "type": "address",
+        "name": "sender",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "InterestRateUpdated",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "superMarketId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "interestRate"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "debt",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "accountDebt"
       }
     ]
   },
@@ -1216,7 +1292,7 @@
       },
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       }
     ],
     "outputs": [
@@ -1341,11 +1417,28 @@
       },
       {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "collateralId"
       },
       {
         "type": "int256",
         "name": "amountDelta"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "payDebt",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint256",
+        "name": "amount"
       }
     ],
     "outputs": []
@@ -1590,15 +1683,15 @@
   },
   {
     "type": "error",
-    "name": "AcceptablePriceExceeded",
+    "name": "ExceedsMarketCreditCapacity",
     "inputs": [
       {
-        "type": "uint256",
-        "name": "fillPrice"
+        "type": "int256",
+        "name": "delegatedCollateral"
       },
       {
-        "type": "uint256",
-        "name": "acceptablePrice"
+        "type": "int256",
+        "name": "newLockedCredit"
       }
     ]
   },
@@ -2065,11 +2158,15 @@
   },
   {
     "type": "error",
-    "name": "InsufficientAccountMargin",
+    "name": "AcceptablePriceExceeded",
     "inputs": [
       {
         "type": "uint256",
-        "name": "leftover"
+        "name": "fillPrice"
+      },
+      {
+        "type": "uint256",
+        "name": "acceptablePrice"
       }
     ]
   },
@@ -2133,19 +2230,19 @@
   {
     "type": "event",
     "anonymous": false,
-    "name": "CollateralDeducted",
+    "name": "AccountCharged",
     "inputs": [
       {
-        "type": "uint256",
-        "name": "account"
-      },
-      {
         "type": "uint128",
-        "name": "synthMarketId"
+        "name": "accountId"
+      },
+      {
+        "type": "int256",
+        "name": "amount"
       },
       {
         "type": "uint256",
-        "name": "amount"
+        "name": "accountDebt"
       }
     ]
   },
@@ -2609,7 +2706,41 @@
   },
   {
     "type": "error",
+    "name": "AccountHasOpenPositions",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidDistributor",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "id"
+      },
+      {
+        "type": "address",
+        "name": "distributor"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "NotEligibleForLiquidation",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotEligibleForMarginLiquidation",
     "inputs": [
       {
         "type": "uint128",
@@ -2668,6 +2799,26 @@
   {
     "type": "event",
     "anonymous": false,
+    "name": "AccountMarginLiquidation",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "seizedMarginValue"
+      },
+      {
+        "type": "uint256",
+        "name": "liquidationReward"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
     "name": "PositionLiquidated",
     "inputs": [
       {
@@ -2693,6 +2844,25 @@
   {
     "type": "function",
     "name": "canLiquidate",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool",
+        "name": "isEligible"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "canLiquidateMarginOnly",
     "constant": true,
     "stateMutability": "view",
     "payable": false,
@@ -2768,6 +2938,24 @@
       {
         "type": "uint128[]",
         "name": "accountIds"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "liquidationReward"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "liquidateMarginOnly",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
       }
     ],
     "outputs": [
@@ -3666,6 +3854,238 @@
   },
   {
     "type": "error",
+    "name": "InvalidDistributorContract",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "distributor"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "CollateralConfigurationSet",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "collateralId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "maxCollateralAmount"
+      },
+      {
+        "type": "uint256",
+        "name": "upperLimitDiscount"
+      },
+      {
+        "type": "uint256",
+        "name": "lowerLimitDiscount"
+      },
+      {
+        "type": "uint256",
+        "name": "discountScalar"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "CollateralLiquidateRewardRatioSet",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "collateralLiquidateRewardRatioD18"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "RewardDistributorRegistered",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "distributor"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getCollateralConfiguration",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "collateralId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "maxCollateralAmount"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getCollateralConfigurationFull",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "collateralId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "maxCollateralAmount"
+      },
+      {
+        "type": "uint256",
+        "name": "upperLimitDiscount"
+      },
+      {
+        "type": "uint256",
+        "name": "lowerLimitDiscount"
+      },
+      {
+        "type": "uint256",
+        "name": "discountScalar"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getCollateralLiquidateRewardRatio",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint128",
+        "name": "collateralLiquidateRewardRatioD18"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getRegisteredDistributor",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "collateralId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "distributor"
+      },
+      {
+        "type": "address[]",
+        "name": "poolDelegatedCollateralTypes"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "isRegistered",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "distributor"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "registerDistributor",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "token"
+      },
+      {
+        "type": "address",
+        "name": "distributor"
+      },
+      {
+        "type": "uint128",
+        "name": "collateralId"
+      },
+      {
+        "type": "address[]",
+        "name": "poolDelegatedCollateralTypes"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setCollateralConfiguration",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "collateralId"
+      },
+      {
+        "type": "uint256",
+        "name": "maxCollateralAmount"
+      },
+      {
+        "type": "uint256",
+        "name": "upperLimitDiscount"
+      },
+      {
+        "type": "uint256",
+        "name": "lowerLimitDiscount"
+      },
+      {
+        "type": "uint256",
+        "name": "discountScalar"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setCollateralLiquidateRewardRatio",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "collateralLiquidateRewardRatioD18"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
     "name": "InvalidFeeCollectorInterface",
     "inputs": [
       {
@@ -3701,22 +4121,6 @@
   {
     "type": "event",
     "anonymous": false,
-    "name": "CollateralConfigurationSet",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "synthMarketId",
-        "indexed": true
-      },
-      {
-        "type": "uint256",
-        "name": "maxCollateralAmount"
-      }
-    ]
-  },
-  {
-    "type": "event",
-    "anonymous": false,
     "name": "FeeCollectorSet",
     "inputs": [
       {
@@ -3741,22 +4145,6 @@
       {
         "type": "uint256",
         "name": "highUtilizationInterestRateGradient"
-      }
-    ]
-  },
-  {
-    "type": "event",
-    "anonymous": false,
-    "name": "InterestRateUpdated",
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "superMarketId",
-        "indexed": true
-      },
-      {
-        "type": "uint128",
-        "name": "interestRate"
       }
     ]
   },
@@ -3821,36 +4209,6 @@
       {
         "type": "uint256",
         "name": "shareRatioD18"
-      }
-    ]
-  },
-  {
-    "type": "event",
-    "anonymous": false,
-    "name": "SynthDeductionPrioritySet",
-    "inputs": [
-      {
-        "type": "uint128[]",
-        "name": "newSynthDeductionPriority"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "getCollateralConfiguration",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128",
-        "name": "synthMarketId"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "uint256",
-        "name": "maxCollateralAmount"
       }
     ]
   },
@@ -3997,33 +4355,22 @@
   },
   {
     "type": "function",
-    "name": "getSynthDeductionPriority",
+    "name": "globalCollateralValue",
     "constant": true,
     "stateMutability": "view",
-    "payable": false,
-    "inputs": [],
-    "outputs": [
-      {
-        "type": "uint128[]"
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "setCollateralConfiguration",
-    "constant": false,
     "payable": false,
     "inputs": [
       {
         "type": "uint128",
-        "name": "synthMarketId"
-      },
-      {
-        "type": "uint256",
-        "name": "maxCollateralAmount"
+        "name": "collateralId"
       }
     ],
-    "outputs": []
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "collateralValue"
+      }
+    ]
   },
   {
     "type": "function",
@@ -4097,19 +4444,6 @@
       {
         "type": "uint128",
         "name": "maxCollateralsPerAccount"
-      }
-    ],
-    "outputs": []
-  },
-  {
-    "type": "function",
-    "name": "setSynthDeductionPriority",
-    "constant": false,
-    "payable": false,
-    "inputs": [
-      {
-        "type": "uint128[]",
-        "name": "newSynthDeductionPriority"
       }
     ],
     "outputs": []
