@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.15.8",
-  "timestamp": 1722962102,
+  "generator": "cannon cli 2.16.5-alpha.0",
+  "timestamp": 1724952799,
   "def": {
     "setting": {
       "snx_package": {
@@ -1120,7 +1120,7 @@
         "defaultValue": "0.0010"
       },
       "perpsMaticMaxMarketSize": {
-        "defaultValue": "<%= String(6_000_000) %>"
+        "defaultValue": "<%= String(0) %>"
       },
       "perpsMaticInitialMarginRatio": {
         "defaultValue": "4.41"
@@ -1151,7 +1151,7 @@
         "defaultValue": "0x5de33a9112c2b700b8d30b8a3402c103578ccfa2765696471cc672bd5cf6ac52"
       },
       "perpsMaticMaxMarketValue": {
-        "defaultValue": "<%= String(2_000_000) %>"
+        "defaultValue": "<%= String(0) %>"
       },
       "perpsMaticMinimumInitialMarginRatio": {
         "defaultValue": "0.02"
@@ -25149,28 +25149,6 @@
           }
         }
       },
-      "setScPoolConfig": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= settings.sc_pool_id %>"
-          ]
-        },
-        "func": "setPoolConfiguration",
-        "args": [
-          "<%= settings.sc_pool_id %>",
-          [
-            {
-              "marketId": "<%= imports.perpsFactory.extras.superMarketId %>",
-              "weightD18": 1,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            }
-          ]
-        ]
-      },
       "register_spartan_council_pool_rewards": {
         "target": [
           "system.CoreProxy"
@@ -25213,7 +25191,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "46",
+    "version": "47",
     "description": "Andromeda dev deployment",
     "preset": "andromeda"
   },
@@ -42955,19 +42933,19 @@
     "setting.perpsMaticMaxMarketSize": {
       "artifacts": {
         "settings": {
-          "perpsMaticMaxMarketSize": "6000000"
+          "perpsMaticMaxMarketSize": "0"
         }
       },
-      "hash": "f400a6ce08dd215475e44eaaca0b7aac",
+      "hash": "4dcc24a97eaa6583aab6a5b0cb07d27e",
       "version": 7
     },
     "setting.perpsMaticMaxMarketValue": {
       "artifacts": {
         "settings": {
-          "perpsMaticMaxMarketValue": "2000000"
+          "perpsMaticMaxMarketValue": "0"
         }
       },
-      "hash": "bca322a5b8530d87102054fe65617185",
+      "hash": "4dcc24a97eaa6583aab6a5b0cb07d27e",
       "version": 7
     },
     "setting.perpsMaticMaxSecondsInLiquidationWindow": {
@@ -48454,27 +48432,29 @@
         "contracts": {},
         "txns": {
           "setPerpsMaticMaxMarketSize": {
-            "hash": "0x736a347714b9bcf4c0e31751e74709de3da162d6d614b4cc4c348a3b184c86f8",
+            "hash": "0xb71d62557cdc81a490302adc679b075eaa5ff9a5dbdbe30c444d1a0d9274eaef",
+            "blockNumber": "14592248",
+            "timestamp": "1724952784",
             "events": {
               "MaxMarketSizeSet": [
                 {
                   "name": "MaxMarketSizeSet",
                   "args": [
                     "1700",
-                    "6000000000000000000000000"
+                    "0"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMaticMaxMarketSize",
-            "gasUsed": 36713,
-            "gasCost": "1000265",
+            "gasUsed": 34617,
+            "gasCost": "1001050",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "d6fabe72764e45549ca56f839a9e18aa",
+      "hash": "b2cea94fea4be4e082effae1ad1d196c",
       "version": 7
     },
     "invoke.setPerpsMaticMaxMarketValue": {
@@ -48482,27 +48462,29 @@
         "contracts": {},
         "txns": {
           "setPerpsMaticMaxMarketValue": {
-            "hash": "0xf799ba948fc211b4b1d8623dd23ccafd3c32fc91a5a01aab83e1d98db44dcc19",
+            "hash": "0x0a88930861715595b04304384a6a649e813444335d13f5ec578cb9d9a33026ed",
+            "blockNumber": "14592250",
+            "timestamp": "1724952788",
             "events": {
               "MaxMarketValueSet": [
                 {
                   "name": "MaxMarketValueSet",
                   "args": [
                     "1700",
-                    "2000000000000000000000000"
+                    "0"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMaticMaxMarketValue",
-            "gasUsed": 36758,
-            "gasCost": "1000265",
+            "gasUsed": 34640,
+            "gasCost": "1001049",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "61ab0f706869c269d2e055a88fa31ae2",
+      "hash": "ef0d2ab0aa694b3c5831edd3504408f8",
       "version": 7
     },
     "invoke.setPerpsMaticOrderFees": {
@@ -90169,7 +90151,7 @@
   "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "8a68df28caf415e6df0177aba4d6f524d1a81919",
+    "commitHash": "595a4530b2d2b720a7935890020cfe820d64b242",
     "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
