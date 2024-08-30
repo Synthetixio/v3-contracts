@@ -217,6 +217,16 @@
   },
   {
     "type": "error",
+    "name": "InvalidTransactionTypeIndex",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "txnType"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "MismatchAssociatedSystemKind",
     "inputs": [
       {
@@ -402,6 +412,10 @@
         "type": "bytes32",
         "name": "sellFeedId",
         "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "strictStalenessTolerance"
       }
     ]
   },
@@ -523,6 +537,52 @@
   },
   {
     "type": "function",
+    "name": "getNominatedMarketOwner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "synthMarketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "marketOwner"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getPriceData",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "synthMarketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes32",
+        "name": "buyFeedId"
+      },
+      {
+        "type": "bytes32",
+        "name": "sellFeedId"
+      },
+      {
+        "type": "uint256",
+        "name": "strictPriceStalenessTolerance"
+      }
+    ]
+  },
+  {
+    "type": "function",
     "name": "getSynth",
     "constant": true,
     "stateMutability": "view",
@@ -556,6 +616,33 @@
       {
         "type": "address",
         "name": "implAddress"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "indexPrice",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint128",
+        "name": "transactionType"
+      },
+      {
+        "type": "uint8",
+        "name": "priceTolerance"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "price"
       }
     ]
   },
@@ -813,6 +900,10 @@
       {
         "type": "bytes32",
         "name": "sellFeedId"
+      },
+      {
+        "type": "uint256",
+        "name": "strictPriceStalenessTolerance"
       }
     ],
     "outputs": []
@@ -1158,6 +1249,25 @@
   },
   {
     "type": "function",
+    "name": "getMarketSkew",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "int256",
+        "name": "marketSkew"
+      }
+    ]
+  },
+  {
+    "type": "function",
     "name": "quoteBuyExactIn",
     "constant": true,
     "stateMutability": "view",
@@ -1170,6 +1280,10 @@
       {
         "type": "uint256",
         "name": "usdAmount"
+      },
+      {
+        "type": "uint8",
+        "name": "stalenessTolerance"
       }
     ],
     "outputs": [
@@ -1215,6 +1329,10 @@
       {
         "type": "uint256",
         "name": "synthAmount"
+      },
+      {
+        "type": "uint8",
+        "name": "stalenessTolerance"
       }
     ],
     "outputs": [
@@ -1260,6 +1378,10 @@
       {
         "type": "uint256",
         "name": "synthAmount"
+      },
+      {
+        "type": "uint8",
+        "name": "stalenessTolerance"
       }
     ],
     "outputs": [
@@ -1305,6 +1427,10 @@
       {
         "type": "uint256",
         "name": "usdAmount"
+      },
+      {
+        "type": "uint8",
+        "name": "stalenessTolerance"
       }
     ],
     "outputs": [
@@ -1624,7 +1750,7 @@
           },
           {
             "type": "uint256",
-            "name": "settlementTime",
+            "name": "commitmentTime",
             "indexed": false
           },
           {
@@ -1760,7 +1886,7 @@
           },
           {
             "type": "uint256",
-            "name": "settlementTime"
+            "name": "commitmentTime"
           },
           {
             "type": "uint256",
@@ -1821,7 +1947,7 @@
           },
           {
             "type": "uint256",
-            "name": "settlementTime"
+            "name": "commitmentTime"
           },
           {
             "type": "uint256",
@@ -1870,32 +1996,6 @@
   },
   {
     "type": "error",
-    "name": "OffchainLookup",
-    "inputs": [
-      {
-        "type": "address",
-        "name": "sender"
-      },
-      {
-        "type": "string[]",
-        "name": "urls"
-      },
-      {
-        "type": "bytes",
-        "name": "callData"
-      },
-      {
-        "type": "bytes4",
-        "name": "callbackFunction"
-      },
-      {
-        "type": "bytes",
-        "name": "extraData"
-      }
-    ]
-  },
-  {
-    "type": "error",
     "name": "OutsideSettlementWindow",
     "inputs": [
       {
@@ -1916,20 +2016,6 @@
     "type": "error",
     "name": "OverflowUint256ToUint64",
     "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "PriceDeviationToleranceExceeded",
-    "inputs": [
-      {
-        "type": "uint256",
-        "name": "deviation"
-      },
-      {
-        "type": "uint256",
-        "name": "tolerance"
-      }
-    ]
   },
   {
     "type": "error",
@@ -2007,19 +2093,6 @@
   },
   {
     "type": "function",
-    "name": "PRECISION",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [],
-    "outputs": [
-      {
-        "type": "int256"
-      }
-    ]
-  },
-  {
-    "type": "function",
     "name": "settleOrder",
     "constant": false,
     "payable": false,
@@ -2063,47 +2136,12 @@
     ]
   },
   {
-    "type": "function",
-    "name": "settlePythOrder",
-    "constant": false,
-    "stateMutability": "payable",
-    "payable": true,
+    "type": "error",
+    "name": "InvalidSettlementWindowDuration",
     "inputs": [
       {
-        "type": "bytes",
-        "name": "result"
-      },
-      {
-        "type": "bytes",
-        "name": "extraData"
-      }
-    ],
-    "outputs": [
-      {
         "type": "uint256",
-        "name": "finalOrderAmount"
-      },
-      {
-        "type": "tuple",
-        "name": "fees",
-        "components": [
-          {
-            "type": "uint256",
-            "name": "fixedFees"
-          },
-          {
-            "type": "uint256",
-            "name": "utilizationFees"
-          },
-          {
-            "type": "int256",
-            "name": "skewFees"
-          },
-          {
-            "type": "int256",
-            "name": "wrapperFees"
-          }
-        ]
+        "name": "duration"
       }
     ]
   },
@@ -2127,7 +2165,7 @@
   {
     "type": "event",
     "anonymous": false,
-    "name": "SettlementStrategyUpdated",
+    "name": "SettlementStrategySet",
     "inputs": [
       {
         "type": "uint128",
@@ -2140,8 +2178,65 @@
         "indexed": true
       },
       {
-        "type": "bool",
-        "name": "enabled"
+        "type": "tuple",
+        "name": "strategy",
+        "components": [
+          {
+            "type": "uint8",
+            "name": "strategyType",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "settlementDelay",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "settlementWindowDuration",
+            "indexed": false
+          },
+          {
+            "type": "address",
+            "name": "priceVerificationContract",
+            "indexed": false
+          },
+          {
+            "type": "bytes32",
+            "name": "feedId",
+            "indexed": false
+          },
+          {
+            "type": "string",
+            "name": "url",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "settlementReward",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "priceDeviationTolerance",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "minimumUsdExchangeAmount",
+            "indexed": false
+          },
+          {
+            "type": "uint256",
+            "name": "maxRoundingLoss",
+            "indexed": false
+          },
+          {
+            "type": "bool",
+            "name": "disabled",
+            "indexed": false
+          }
+        ]
       }
     ]
   },
@@ -2284,6 +2379,73 @@
   },
   {
     "type": "function",
+    "name": "setSettlementStrategy",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint256",
+        "name": "strategyId"
+      },
+      {
+        "type": "tuple",
+        "name": "strategy",
+        "components": [
+          {
+            "type": "uint8",
+            "name": "strategyType"
+          },
+          {
+            "type": "uint256",
+            "name": "settlementDelay"
+          },
+          {
+            "type": "uint256",
+            "name": "settlementWindowDuration"
+          },
+          {
+            "type": "address",
+            "name": "priceVerificationContract"
+          },
+          {
+            "type": "bytes32",
+            "name": "feedId"
+          },
+          {
+            "type": "string",
+            "name": "url"
+          },
+          {
+            "type": "uint256",
+            "name": "settlementReward"
+          },
+          {
+            "type": "uint256",
+            "name": "priceDeviationTolerance"
+          },
+          {
+            "type": "uint256",
+            "name": "minimumUsdExchangeAmount"
+          },
+          {
+            "type": "uint256",
+            "name": "maxRoundingLoss"
+          },
+          {
+            "type": "bool",
+            "name": "disabled"
+          }
+        ]
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
     "name": "setSettlementStrategyEnabled",
     "constant": false,
     "payable": false,
@@ -2326,8 +2488,8 @@
     "name": "InvalidCollateralType",
     "inputs": [
       {
-        "type": "bytes32",
-        "name": "message"
+        "type": "address",
+        "name": "configuredCollateralType"
       }
     ]
   },
@@ -2455,6 +2617,29 @@
         "type": "address",
         "name": "wrapCollateralType",
         "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "maxWrappableAmount"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getWrapper",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "wrapCollateralType"
       },
       {
         "type": "uint256",

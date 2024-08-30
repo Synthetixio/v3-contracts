@@ -1,0 +1,796 @@
+[
+  {
+    "type": "constructor",
+    "payable": false,
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AddressInsufficientBalance",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderExpiredRequest",
+    "inputs": [
+      {
+        "type": "uint48",
+        "name": "deadline"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderInvalidSigner",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "signer"
+      },
+      {
+        "type": "address",
+        "name": "from"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderMismatchedValue",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "requestedValue"
+      },
+      {
+        "type": "uint256",
+        "name": "msgValue"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771UntrustfulTarget",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "target"
+      },
+      {
+        "type": "address",
+        "name": "forwarder"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FailedInnerCall",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidAccountNonce",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "account"
+      },
+      {
+        "type": "uint256",
+        "name": "currentNonce"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidShortString",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "StringTooLong",
+    "inputs": [
+      {
+        "type": "string",
+        "name": "str"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "EIP712DomainChanged",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "ExecutedForwardRequest",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "signer",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "nonce"
+      },
+      {
+        "type": "bool",
+        "name": "success"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "aggregate",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "calls",
+        "components": [
+          {
+            "type": "address",
+            "name": "target"
+          },
+          {
+            "type": "bytes",
+            "name": "callData"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "blockNumber"
+      },
+      {
+        "type": "bytes[]",
+        "name": "returnData"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "aggregate3",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "calls",
+        "components": [
+          {
+            "type": "address",
+            "name": "target"
+          },
+          {
+            "type": "bool",
+            "name": "requireSuccess"
+          },
+          {
+            "type": "bytes",
+            "name": "callData"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "returnData",
+        "components": [
+          {
+            "type": "bool",
+            "name": "success"
+          },
+          {
+            "type": "bytes",
+            "name": "returnData"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "aggregate3Value",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "calls",
+        "components": [
+          {
+            "type": "address",
+            "name": "target"
+          },
+          {
+            "type": "bool",
+            "name": "requireSuccess"
+          },
+          {
+            "type": "uint256",
+            "name": "value"
+          },
+          {
+            "type": "bytes",
+            "name": "callData"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "returnData",
+        "components": [
+          {
+            "type": "bool",
+            "name": "success"
+          },
+          {
+            "type": "bytes",
+            "name": "returnData"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "blockAndAggregate",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "calls",
+        "components": [
+          {
+            "type": "address",
+            "name": "target"
+          },
+          {
+            "type": "bytes",
+            "name": "callData"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "blockNumber"
+      },
+      {
+        "type": "bytes32",
+        "name": "blockHash"
+      },
+      {
+        "type": "tuple[]",
+        "name": "returnData",
+        "components": [
+          {
+            "type": "bool",
+            "name": "success"
+          },
+          {
+            "type": "bytes",
+            "name": "returnData"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "eip712Domain",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bytes1",
+        "name": "fields"
+      },
+      {
+        "type": "string",
+        "name": "name"
+      },
+      {
+        "type": "string",
+        "name": "version"
+      },
+      {
+        "type": "uint256",
+        "name": "chainId"
+      },
+      {
+        "type": "address",
+        "name": "verifyingContract"
+      },
+      {
+        "type": "bytes32",
+        "name": "salt"
+      },
+      {
+        "type": "uint256[]",
+        "name": "extensions"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "execute",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "request",
+        "components": [
+          {
+            "type": "address",
+            "name": "from"
+          },
+          {
+            "type": "address",
+            "name": "to"
+          },
+          {
+            "type": "uint256",
+            "name": "value"
+          },
+          {
+            "type": "uint256",
+            "name": "gas"
+          },
+          {
+            "type": "uint48",
+            "name": "deadline"
+          },
+          {
+            "type": "bytes",
+            "name": "data"
+          },
+          {
+            "type": "bytes",
+            "name": "signature"
+          }
+        ]
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "executeBatch",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "requests",
+        "components": [
+          {
+            "type": "address",
+            "name": "from"
+          },
+          {
+            "type": "address",
+            "name": "to"
+          },
+          {
+            "type": "uint256",
+            "name": "value"
+          },
+          {
+            "type": "uint256",
+            "name": "gas"
+          },
+          {
+            "type": "uint48",
+            "name": "deadline"
+          },
+          {
+            "type": "bytes",
+            "name": "data"
+          },
+          {
+            "type": "bytes",
+            "name": "signature"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "returnData",
+        "components": [
+          {
+            "type": "bool",
+            "name": "success"
+          },
+          {
+            "type": "bytes",
+            "name": "returnData"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "executeBatch",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "tuple[]",
+        "name": "requests",
+        "components": [
+          {
+            "type": "address",
+            "name": "from"
+          },
+          {
+            "type": "address",
+            "name": "to"
+          },
+          {
+            "type": "uint256",
+            "name": "value"
+          },
+          {
+            "type": "uint256",
+            "name": "gas"
+          },
+          {
+            "type": "uint48",
+            "name": "deadline"
+          },
+          {
+            "type": "bytes",
+            "name": "data"
+          },
+          {
+            "type": "bytes",
+            "name": "signature"
+          }
+        ]
+      },
+      {
+        "type": "address",
+        "name": "refundReceiver"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getBasefee",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "basefee"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getBlockHash",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "blockNumber"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes32",
+        "name": "blockHash"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getBlockNumber",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "blockNumber"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getChainId",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "chainid"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getCurrentBlockCoinbase",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "coinbase"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getCurrentBlockGasLimit",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "gaslimit"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getCurrentBlockTimestamp",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "timestamp"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getEthBalance",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "addr"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "balance"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getLastBlockHash",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bytes32",
+        "name": "blockHash"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getPrevRandao",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "prevrandao"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "nonces",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "owner"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "tryAggregate",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bool",
+        "name": "requireSuccess"
+      },
+      {
+        "type": "tuple[]",
+        "name": "calls",
+        "components": [
+          {
+            "type": "address",
+            "name": "target"
+          },
+          {
+            "type": "bytes",
+            "name": "callData"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "returnData",
+        "components": [
+          {
+            "type": "bool",
+            "name": "success"
+          },
+          {
+            "type": "bytes",
+            "name": "returnData"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "tryBlockAndAggregate",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "bool",
+        "name": "requireSuccess"
+      },
+      {
+        "type": "tuple[]",
+        "name": "calls",
+        "components": [
+          {
+            "type": "address",
+            "name": "target"
+          },
+          {
+            "type": "bytes",
+            "name": "callData"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "blockNumber"
+      },
+      {
+        "type": "bytes32",
+        "name": "blockHash"
+      },
+      {
+        "type": "tuple[]",
+        "name": "returnData",
+        "components": [
+          {
+            "type": "bool",
+            "name": "success"
+          },
+          {
+            "type": "bytes",
+            "name": "returnData"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "verify",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "request",
+        "components": [
+          {
+            "type": "address",
+            "name": "from"
+          },
+          {
+            "type": "address",
+            "name": "to"
+          },
+          {
+            "type": "uint256",
+            "name": "value"
+          },
+          {
+            "type": "uint256",
+            "name": "gas"
+          },
+          {
+            "type": "uint48",
+            "name": "deadline"
+          },
+          {
+            "type": "bytes",
+            "name": "data"
+          },
+          {
+            "type": "bytes",
+            "name": "signature"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  }
+]
