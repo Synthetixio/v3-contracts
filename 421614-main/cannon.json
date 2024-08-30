@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.16.4",
-  "timestamp": 1724663259,
+  "generator": "cannon cli 2.16.6",
+  "timestamp": 1725022751,
   "def": {
     "setting": {
       "snx_package": {
@@ -159,7 +159,7 @@
         "defaultValue": "2"
       },
       "settlement_reward": {
-        "defaultValue": "<%= parseEther('0.5') %>"
+        "defaultValue": "<%= parseEther('1') %>"
       },
       "settlement_minimum_usd_exchange_amount": {
         "defaultValue": "<%= parseEther('0.000001') %>"
@@ -1947,7 +1947,7 @@
           "<%= settings.big_cap_strict_staleness_tolerance %>"
         ]
       },
-      "CoreProxy_configureMaximumMarketCollateral_btc": {
+      "CoreProxy_configureMaximumMarketCollateral_eth": {
         "target": [
           "system.CoreProxy"
         ],
@@ -1957,9 +1957,9 @@
         },
         "func": "configureMaximumMarketCollateral",
         "args": [
-          "<%= extras.synth_btc_market_id %>",
-          "<%= settings.btc_address %>",
-          "<%= settings.synth_btc_max_collateral_amount %>"
+          "<%= extras.synth_eth_market_id %>",
+          "<%= settings.weth_address %>",
+          "<%= settings.synth_eth_max_collateral_amount %>"
         ]
       },
       "SpotMarketProxy_setMarketSkewScale_eth": {
@@ -2133,6 +2133,21 @@
           "<%= extras.btc_oracle_id %>",
           "<%= extras.btc_oracle_id %>",
           "<%= settings.big_cap_strict_staleness_tolerance %>"
+        ]
+      },
+      "CoreProxy_configureMaximumMarketCollateral_btc": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= extras.synth_btc_market_id %>",
+          "<%= settings.btc_address %>",
+          "<%= settings.synth_btc_max_collateral_amount %>"
         ]
       },
       "SpotMarketProxy_setMarketSkewScale_btc": {
@@ -2454,14 +2469,10 @@
         },
         "func": "setKeeperRewardGuards",
         "args": [
-          "<%= parseEther(settings.perps_liquidation_min_keeper_reward_usd) %>",
-          "<%= parseEther(settings.perps_liquidation_min_keeper_profit_ratio_d18) %>",
-          "<%= parseEther(settings.perps_liquidation_max_keeper_reward_usd) %>",
-          "<%= parseEther(settings.perps_liquidation_max_keeper_scaling_ratio_d18) %>"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "var.perps_global_settings"
+          "<%= settings.perps_liquidation_min_keeper_reward_usd %>",
+          "<%= settings.perps_liquidation_min_keeper_profit_ratio_d18 %>",
+          "<%= settings.perps_liquidation_max_keeper_reward_usd %>",
+          "<%= settings.perps_liquidation_max_keeper_scaling_ratio_d18 %>"
         ]
       },
       "setPerAccountCapsPerps": {
@@ -2498,13 +2509,9 @@
         },
         "func": "setInterestRateParameters",
         "args": [
-          "<%= parseEther(settings.perps_low_util_gradient) %>",
-          "<%= parseEther(settings.perps_gradient_breakpoint) %>",
-          "<%= parseEther(settings.perps_high_util_gradient) %>"
-        ],
-        "depends": [
-          "provision.perpsFactory",
-          "var.perps_global_settings"
+          "<%= settings.perps_low_util_gradient %>",
+          "<%= settings.perps_gradient_breakpoint %>",
+          "<%= settings.perps_high_util_gradient %>"
         ]
       },
       "PerpsMarketProxy_setCollateralLiquidationRatio_btc": {
@@ -2516,10 +2523,7 @@
         },
         "func": "setCollateralLiquidateRewardRatio",
         "args": [
-          "<%= parseEther(settings.perps_collateral_liquidation_ratio) %>"
-        ],
-        "depends": [
-          "var.perps_global_settings"
+          "<%= settings.perps_collateral_liquidation_ratio %>"
         ]
       },
       "setPolynomialAsReferrerOnPerpsMarket": {
@@ -2573,9 +2577,6 @@
           "<%= settings.btc_perps_market_id %>",
           "Bitcoin",
           "BTC"
-        ],
-        "depends": [
-          "var.perps_btc_market_settings"
         ]
       },
       "setPerpsPriceBtc": {
@@ -2590,10 +2591,6 @@
           "<%= settings.btc_perps_market_id %>",
           "<%= extras.btc_oracle_id %>",
           "<%= settings.big_cap_strict_staleness_tolerance %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
         ]
       },
       "addPerpsBtcSettlementStrategy": {
@@ -2622,10 +2619,7 @@
             "event": "SettlementStrategyAdded",
             "arg": 2
           }
-        },
-        "depends": [
-          "invoke.createBtcPerpsMarket"
-        ]
+        }
       },
       "setPerpsBtcSettlementStrategy": {
         "target": [
@@ -2648,12 +2642,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsBtcSettlementStrategy",
-          "provision.perpsFactory",
-          "provision.pyth_erc7412_wrapper",
-          "var.perps_btc_market_settings"
         ]
       },
       "setPerpsBtcFundingParameters": {
@@ -2666,12 +2654,8 @@
         "func": "setFundingParameters",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= parseEther(settings.btc_perps_market_skew_scale) %>",
-          "<%= parseEther(settings.btc_perps_market_max_funding_velocity) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
+          "<%= settings.btc_perps_market_skew_scale %>",
+          "<%= settings.btc_perps_market_max_funding_velocity %>"
         ]
       },
       "setPerpsBtcOrderFees": {
@@ -2684,12 +2668,8 @@
         "func": "setOrderFees",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= parseEther(settings.btc_perps_maker_fee_ratio) %>",
-          "<%= parseEther(settings.btc_perps_taker_fee_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
+          "<%= settings.btc_perps_maker_fee_ratio %>",
+          "<%= settings.btc_perps_taker_fee_ratio %>"
         ]
       },
       "setPerpsBtcMaxMarketSize": {
@@ -2702,11 +2682,7 @@
         "func": "setMaxMarketSize",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= parseEther(settings.btc_perps_max_market_size) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
+          "<%= settings.btc_perps_max_market_size %>"
         ]
       },
       "setPerpsBtcMaxMarketValue": {
@@ -2719,11 +2695,7 @@
         "func": "setMaxMarketValue",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= parseEther(settings.btc_perps_max_market_value) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
+          "<%= settings.btc_perps_max_market_value %>"
         ]
       },
       "setPerpsBtcMaxLiquidationParameters": {
@@ -2736,14 +2708,10 @@
         "func": "setMaxLiquidationParameters",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= parseEther(settings.btc_perps_max_liquidation_limit_accumulation_multiplier) %>",
+          "<%= settings.btc_perps_max_liquidation_limit_accumulation_multiplier %>",
           "<%= settings.btc_perps_max_seconds_in_liquidation_window %>",
-          "<%= parseEther(settings.btc_perps_max_liquidation_pd) %>",
+          "<%= settings.btc_perps_max_liquidation_pd %>",
           "<%= settings.btc_perps_endorsed_liquidator %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
         ]
       },
       "setPerpsBtcLiquidationParameters": {
@@ -2756,15 +2724,11 @@
         "func": "setLiquidationParameters",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= parseEther(settings.btc_perps_initial_margin_ratio) %>",
-          "<%= parseEther(settings.btc_perps_minimum_initial_margin_ratio) %>",
-          "<%= parseEther(settings.btc_perps_maintenance_margin_scalar) %>",
-          "<%= parseEther(settings.btc_perps_flag_reward_ratio_d18) %>",
-          "<%= parseEther(settings.btc_perps_minimum_position_margin) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
+          "<%= settings.btc_perps_initial_margin_ratio %>",
+          "<%= settings.btc_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.btc_perps_maintenance_margin_scalar %>",
+          "<%= settings.btc_perps_flag_reward_ratio_d18 %>",
+          "<%= settings.btc_perps_minimum_position_margin %>"
         ]
       },
       "setPerpsBtcLockedOiRatio": {
@@ -2777,11 +2741,7 @@
         "func": "setLockedOiRatio",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= parseEther(settings.btc_perps_locked_oi_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createBtcPerpsMarket",
-          "var.perps_btc_market_settings"
+          "<%= settings.btc_perps_locked_oi_ratio %>"
         ]
       },
       "createEthPerpsMarket": {
@@ -2798,9 +2758,7 @@
           "ETH"
         ],
         "depends": [
-          "invoke.PerpsMarketProxy_addToFeatureFlagAllowlist_createMarket_deployer",
-          "invoke.PerpsMarketProxy_setFeatureFlagAllowAll_perpsSystem",
-          "var.perps_eth_market_settings"
+          "invoke.PerpsMarketProxy_addToFeatureFlagAllowlist_createMarket_deployer"
         ]
       },
       "setPerpsPriceEth": {
@@ -2815,10 +2773,6 @@
           "<%= settings.eth_perps_market_id %>",
           "<%= extras.eth_oracle_id %>",
           "<%= settings.big_cap_strict_staleness_tolerance %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
         ]
       },
       "addPerpsEthSettlementStrategy": {
@@ -2847,11 +2801,7 @@
             "event": "SettlementStrategyAdded",
             "arg": 2
           }
-        },
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
-        ]
+        }
       },
       "setPerpsEthSettlementStrategy": {
         "target": [
@@ -2874,17 +2824,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsEthSettlementStrategy",
-          "provision.perpsFactory",
-          "provision.pyth_erc7412_wrapper",
-          "setting.big_cap_settlement_delay",
-          "setting.big_cap_settlement_window_duration",
-          "setting.commitment_price_delay",
-          "setting.pyth_feed_id_eth",
-          "setting.settlement_reward",
-          "var.perps_eth_market_settings"
         ]
       },
       "setPerpsEthFundingParameters": {
@@ -2897,12 +2836,8 @@
         "func": "setFundingParameters",
         "args": [
           "<%= settings.eth_perps_market_id %>",
-          "<%= parseEther(settings.eth_perps_market_skew_scale) %>",
-          "<%= parseEther(settings.eth_perps_market_max_funding_velocity) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
+          "<%= settings.eth_perps_market_skew_scale %>",
+          "<%= settings.eth_perps_market_max_funding_velocity %>"
         ]
       },
       "setPerpsEthOrderFees": {
@@ -2915,12 +2850,8 @@
         "func": "setOrderFees",
         "args": [
           "<%= settings.eth_perps_market_id %>",
-          "<%= parseEther(settings.eth_perps_maker_fee_ratio) %>",
-          "<%= parseEther(settings.eth_perps_taker_fee_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
+          "<%= settings.eth_perps_maker_fee_ratio %>",
+          "<%= settings.eth_perps_taker_fee_ratio %>"
         ]
       },
       "setPerpsEthMaxMarketSize": {
@@ -2933,11 +2864,7 @@
         "func": "setMaxMarketSize",
         "args": [
           "<%= settings.eth_perps_market_id %>",
-          "<%= parseEther(settings.eth_perps_max_market_size) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
+          "<%= settings.eth_perps_max_market_size %>"
         ]
       },
       "setPerpsEthMaxMarketValue": {
@@ -2950,11 +2877,7 @@
         "func": "setMaxMarketValue",
         "args": [
           "<%= settings.eth_perps_market_id %>",
-          "<%= parseEther(settings.eth_perps_max_market_value) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
+          "<%= settings.eth_perps_max_market_value %>"
         ]
       },
       "setPerpsEthMaxLiquidationParameters": {
@@ -2967,14 +2890,10 @@
         "func": "setMaxLiquidationParameters",
         "args": [
           "<%= settings.eth_perps_market_id %>",
-          "<%= parseEther(settings.eth_perps_max_liquidation_limit_accumulation_multiplier) %>",
+          "<%= settings.eth_perps_max_liquidation_limit_accumulation_multiplier %>",
           "<%= settings.eth_perps_max_seconds_in_liquidation_window %>",
-          "<%= parseEther(settings.eth_perps_max_liquidation_pd) %>",
+          "<%= settings.eth_perps_max_liquidation_pd %>",
           "<%= settings.eth_perps_endorsed_liquidator %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
         ]
       },
       "setPerpsEthLiquidationParameters": {
@@ -2987,15 +2906,11 @@
         "func": "setLiquidationParameters",
         "args": [
           "<%= settings.eth_perps_market_id %>",
-          "<%= parseEther(settings.eth_perps_initial_margin_ratio) %>",
-          "<%= parseEther(settings.eth_perps_minimum_initial_margin_ratio) %>",
-          "<%= parseEther(settings.eth_perps_maintenance_margin_scalar) %>",
-          "<%= parseEther(settings.eth_perps_flag_reward_ratio) %>",
-          "<%= parseEther(settings.eth_perps_minimum_position_margin) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
+          "<%= settings.eth_perps_initial_margin_ratio %>",
+          "<%= settings.eth_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.eth_perps_maintenance_margin_scalar %>",
+          "<%= settings.eth_perps_flag_reward_ratio %>",
+          "<%= settings.eth_perps_minimum_position_margin %>"
         ]
       },
       "setPerpsEthLockedOiRatio": {
@@ -3008,11 +2923,7 @@
         "func": "setLockedOiRatio",
         "args": [
           "<%= settings.eth_perps_market_id %>",
-          "<%= parseEther(settings.eth_perps_locked_oi_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createEthPerpsMarket",
-          "var.perps_eth_market_settings"
+          "<%= settings.eth_perps_locked_oi_ratio %>"
         ]
       },
       "createSolPerpsMarket": {
@@ -3044,10 +2955,6 @@
           "<%= settings.sol_perps_market_id %>",
           "<%= extras.sol_oracle_id %>",
           "<%= settings.big_cap_strict_staleness_tolerance %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
         ]
       },
       "addPerpsSolSettlementStrategy": {
@@ -3076,10 +2983,7 @@
             "event": "SettlementStrategyAdded",
             "arg": 2
           }
-        },
-        "depends": [
-          "invoke.createSolPerpsMarket"
-        ]
+        }
       },
       "setPerpsSolSettlementStrategy": {
         "target": [
@@ -3102,12 +3006,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsSolSettlementStrategy",
-          "provision.perpsFactory",
-          "provision.pyth_erc7412_wrapper",
-          "var.perps_sol_market_settings"
         ]
       },
       "setPerpsSolFundingParameters": {
@@ -3120,12 +3018,8 @@
         "func": "setFundingParameters",
         "args": [
           "<%= settings.sol_perps_market_id %>",
-          "<%= parseEther(settings.sol_perps_market_skew_scale) %>",
-          "<%= parseEther(settings.sol_perps_market_max_funding_velocity) %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
+          "<%= settings.sol_perps_market_skew_scale %>",
+          "<%= settings.sol_perps_market_max_funding_velocity %>"
         ]
       },
       "setPerpsSolOrderFees": {
@@ -3138,12 +3032,8 @@
         "func": "setOrderFees",
         "args": [
           "<%= settings.sol_perps_market_id %>",
-          "<%= parseEther(settings.sol_perps_maker_fee_ratio) %>",
-          "<%= parseEther(settings.sol_perps_taker_fee_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
+          "<%= settings.sol_perps_maker_fee_ratio %>",
+          "<%= settings.sol_perps_taker_fee_ratio %>"
         ]
       },
       "setPerpsSolMaxMarketSize": {
@@ -3156,11 +3046,7 @@
         "func": "setMaxMarketSize",
         "args": [
           "<%= settings.sol_perps_market_id %>",
-          "<%= parseEther(settings.sol_perps_max_market_size) %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
+          "<%= settings.sol_perps_max_market_size %>"
         ]
       },
       "setPerpsSolMaxMarketValue": {
@@ -3173,11 +3059,7 @@
         "func": "setMaxMarketValue",
         "args": [
           "<%= settings.sol_perps_market_id %>",
-          "<%= parseEther(settings.sol_perps_max_market_value) %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
+          "<%= settings.sol_perps_max_market_value %>"
         ]
       },
       "setPerpsSolMaxLiquidationParameters": {
@@ -3190,14 +3072,10 @@
         "func": "setMaxLiquidationParameters",
         "args": [
           "<%= settings.sol_perps_market_id %>",
-          "<%= parseEther(settings.sol_perps_max_liquidation_limit_accumulation_multiplier) %>",
+          "<%= settings.sol_perps_max_liquidation_limit_accumulation_multiplier %>",
           "<%= settings.sol_perps_max_seconds_in_liquidation_window %>",
-          "<%= parseEther(settings.sol_perps_max_liquidation_pd) %>",
+          "<%= settings.sol_perps_max_liquidation_pd %>",
           "<%= settings.sol_perps_endorsed_liquidator %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
         ]
       },
       "setPerpsSolLiquidationParameters": {
@@ -3210,15 +3088,11 @@
         "func": "setLiquidationParameters",
         "args": [
           "<%= settings.sol_perps_market_id %>",
-          "<%= parseEther(settings.sol_perps_initial_margin_ratio) %>",
-          "<%= parseEther(settings.sol_perps_minimum_initial_margin_ratio) %>",
-          "<%= parseEther(settings.sol_perps_maintenance_margin_scalar) %>",
-          "<%= parseEther(settings.sol_perps_flag_reward_ratio_d18) %>",
-          "<%= parseEther(settings.sol_perps_minimum_position_margin) %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
+          "<%= settings.sol_perps_initial_margin_ratio %>",
+          "<%= settings.sol_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.sol_perps_maintenance_margin_scalar %>",
+          "<%= settings.sol_perps_flag_reward_ratio_d18 %>",
+          "<%= settings.sol_perps_minimum_position_margin %>"
         ]
       },
       "setPerpsSolLockedOiRatio": {
@@ -3231,11 +3105,7 @@
         "func": "setLockedOiRatio",
         "args": [
           "<%= settings.sol_perps_market_id %>",
-          "<%= parseEther(settings.sol_perps_locked_oi_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createSolPerpsMarket",
-          "var.perps_sol_market_settings"
+          "<%= settings.sol_perps_locked_oi_ratio %>"
         ]
       },
       "createWifPerpsMarket": {
@@ -3250,9 +3120,6 @@
           "<%= settings.wif_perps_market_id %>",
           "dogwifhat",
           "Wif"
-        ],
-        "depends": [
-          "var.perps_wif_market_settings"
         ]
       },
       "setPerpsPriceWif": {
@@ -3267,10 +3134,6 @@
           "<%= settings.wif_perps_market_id %>",
           "<%= extras.wif_oracle_id %>",
           "<%= settings.big_cap_strict_staleness_tolerance %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
         ]
       },
       "addPerpsWifSettlementStrategy": {
@@ -3299,10 +3162,7 @@
             "event": "SettlementStrategyAdded",
             "arg": 2
           }
-        },
-        "depends": [
-          "invoke.createWifPerpsMarket"
-        ]
+        }
       },
       "setPerpsWifSettlementStrategy": {
         "target": [
@@ -3325,12 +3185,6 @@
             "disabled": false,
             "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
           }
-        ],
-        "depends": [
-          "invoke.addPerpsWifSettlementStrategy",
-          "provision.perpsFactory",
-          "provision.pyth_erc7412_wrapper",
-          "var.perps_wif_market_settings"
         ]
       },
       "setPerpsWifFundingParameters": {
@@ -3343,12 +3197,8 @@
         "func": "setFundingParameters",
         "args": [
           "<%= settings.wif_perps_market_id %>",
-          "<%= parseEther(settings.wif_perps_market_skew_scale) %>",
-          "<%= parseEther(settings.wif_perps_market_max_funding_velocity) %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
+          "<%= settings.wif_perps_market_skew_scale %>",
+          "<%= settings.wif_perps_market_max_funding_velocity %>"
         ]
       },
       "setPerpsWifOrderFees": {
@@ -3361,12 +3211,8 @@
         "func": "setOrderFees",
         "args": [
           "<%= settings.wif_perps_market_id %>",
-          "<%= parseEther(settings.wif_perps_maker_fee_ratio) %>",
-          "<%= parseEther(settings.wif_perps_taker_fee_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
+          "<%= settings.wif_perps_maker_fee_ratio %>",
+          "<%= settings.wif_perps_taker_fee_ratio %>"
         ]
       },
       "setPerpsWifMaxMarketSize": {
@@ -3379,11 +3225,7 @@
         "func": "setMaxMarketSize",
         "args": [
           "<%= settings.wif_perps_market_id %>",
-          "<%= parseEther(settings.wif_perps_max_market_size) %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
+          "<%= settings.wif_perps_max_market_size %>"
         ]
       },
       "setPerpsWifMaxMarketValue": {
@@ -3396,11 +3238,7 @@
         "func": "setMaxMarketValue",
         "args": [
           "<%= settings.wif_perps_market_id %>",
-          "<%= parseEther(settings.wif_perps_max_market_value) %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
+          "<%= settings.wif_perps_max_market_value %>"
         ]
       },
       "setPerpsWifMaxLiquidationParameters": {
@@ -3413,14 +3251,10 @@
         "func": "setMaxLiquidationParameters",
         "args": [
           "<%= settings.wif_perps_market_id %>",
-          "<%= parseEther(settings.wif_perps_max_liquidation_limit_accumulation_multiplier) %>",
+          "<%= settings.wif_perps_max_liquidation_limit_accumulation_multiplier %>",
           "<%= settings.wif_perps_max_seconds_in_liquidation_window %>",
-          "<%= parseEther(settings.wif_perps_max_liquidation_pd) %>",
+          "<%= settings.wif_perps_max_liquidation_pd %>",
           "<%= settings.wif_perps_endorsed_liquidator %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
         ]
       },
       "setPerpsWifLiquidationParameters": {
@@ -3433,15 +3267,11 @@
         "func": "setLiquidationParameters",
         "args": [
           "<%= settings.wif_perps_market_id %>",
-          "<%= parseEther(settings.wif_perps_initial_margin_ratio) %>",
-          "<%= parseEther(settings.wif_perps_minimum_initial_margin_ratio) %>",
-          "<%= parseEther(settings.wif_perps_maintenance_margin_scalar) %>",
-          "<%= parseEther(settings.wif_perps_flag_reward_ratio_d18) %>",
-          "<%= parseEther(settings.wif_perps_minimum_position_margin) %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
+          "<%= settings.wif_perps_initial_margin_ratio %>",
+          "<%= settings.wif_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.wif_perps_maintenance_margin_scalar %>",
+          "<%= settings.wif_perps_flag_reward_ratio_d18 %>",
+          "<%= settings.wif_perps_minimum_position_margin %>"
         ]
       },
       "setPerpsWifLockedOiRatio": {
@@ -3454,11 +3284,7 @@
         "func": "setLockedOiRatio",
         "args": [
           "<%= settings.wif_perps_market_id %>",
-          "<%= parseEther(settings.wif_perps_locked_oi_ratio) %>"
-        ],
-        "depends": [
-          "invoke.createWifPerpsMarket",
-          "var.perps_wif_market_settings"
+          "<%= settings.wif_perps_locked_oi_ratio %>"
         ]
       },
       "setPerpsMaxCollateralForSnxUsd": {
@@ -3471,10 +3297,10 @@
         "func": "setCollateralConfiguration",
         "args": [
           "0",
-          "<%= MaxUint256 %>",
-          "0",
-          "0",
-          "0"
+          "<%= settings.usd_max_collateral_amount %>",
+          "<%= settings.usd_upper_limit_discount %>",
+          "<%= settings.usd_lower_limit_discount %>",
+          "<%= settings.usd_discount_scalar %>"
         ]
       },
       "PerpsMarketProxy_setCollateralConfiguration_eth": {
@@ -3534,48 +3360,6 @@
           "<%= settings.account_withdraw_timeout %>"
         ]
       },
-      "CoreProxy_setPoolConfiguration_SpartanCouncil": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "setPoolConfiguration",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          [
-            {
-              "marketId": "<%= extras.synth_dai_market_id %>",
-              "weightD18": 1,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            },
-            {
-              "marketId": "<%= extras.synth_usdc_market_id %>",
-              "weightD18": 1,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            },
-            {
-              "marketId": "<%= extras.synth_btc_market_id %>",
-              "weightD18": 1,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            },
-            {
-              "marketId": "<%= extras.synth_eth_market_id %>",
-              "weightD18": 1,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            },
-            {
-              "marketId": "<%= imports.perpsFactory.extras.superMarketId %>",
-              "weightD18": 98,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            }
-          ]
-        ]
-      },
       "CoreProxy_initOrUpgradeToken_USDToken": {
         "target": [
           "system.CoreProxy"
@@ -3611,92 +3395,98 @@
         "perps_keeper_l2_cost_liquidate_gas_units": "<%= String(1_300_000) %>"
       },
       "perps_global_settings": {
-        "perps_liquidation_min_keeper_reward_usd": "1",
-        "perps_liquidation_min_keeper_profit_ratio_d18": "0.30",
-        "perps_liquidation_max_keeper_reward_usd": "30",
-        "perps_liquidation_max_keeper_scaling_ratio_d18": "0.0003",
-        "perps_low_util_gradient": "0",
-        "perps_gradient_breakpoint": "0",
-        "perps_high_util_gradient": "0",
-        "perps_collateral_liquidation_ratio": "0.0003",
+        "perps_liquidation_min_keeper_reward_usd": "<%= parseEther('1') %>",
+        "perps_liquidation_min_keeper_profit_ratio_d18": "<%= parseEther('0.30') %>",
+        "perps_liquidation_max_keeper_reward_usd": "<%= parseEther('30') %>",
+        "perps_liquidation_max_keeper_scaling_ratio_d18": "<%= parseEther('0.0003') %>",
+        "perps_low_util_gradient": "<%= parseEther('0') %>",
+        "perps_gradient_breakpoint": "<%= parseEther('0') %>",
+        "perps_high_util_gradient": "<%= parseEther('0') %>",
+        "perps_collateral_liquidation_ratio": "<%= parseEther('0.0003') %>",
         "perps_max_positions_per_account": "10",
         "perps_max_collaterals_per_account": "3"
       },
       "perps_btc_market_settings": {
         "btc_perps_market_id": "200",
-        "btc_perps_market_skew_scale": "<%= String(35_000) %>",
-        "btc_perps_market_max_funding_velocity": "9",
-        "btc_perps_maker_fee_ratio": "0",
-        "btc_perps_taker_fee_ratio": "0.0005",
-        "btc_perps_max_market_size": "1200",
-        "btc_perps_max_market_value": "<%= String(50_000_000) %>",
-        "btc_perps_initial_margin_ratio": "1.07",
-        "btc_perps_maintenance_margin_scalar": "0.333",
-        "btc_perps_minimum_initial_margin_ratio": "0.02",
-        "btc_perps_flag_reward_ratio_d18": "0.0003",
-        "btc_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+        "btc_perps_market_skew_scale": "<%= parseEther(String(35_000)) %>",
+        "btc_perps_market_max_funding_velocity": "<%= parseEther('9') %>",
+        "btc_perps_maker_fee_ratio": "<%= parseEther('0') %>",
+        "btc_perps_taker_fee_ratio": "<%= parseEther('0.0005') %>",
+        "btc_perps_max_market_size": "<%= parseEther('1200') %>",
+        "btc_perps_max_market_value": "<%= parseEther(String(50_000_000)) %>",
+        "btc_perps_initial_margin_ratio": "<%= parseEther('1.07') %>",
+        "btc_perps_maintenance_margin_scalar": "<%= parseEther('0.333') %>",
+        "btc_perps_minimum_initial_margin_ratio": "<%= parseEther('0.02') %>",
+        "btc_perps_flag_reward_ratio_d18": "<%= parseEther('0.0003') %>",
+        "btc_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
         "btc_perps_max_seconds_in_liquidation_window": "30",
-        "btc_perps_minimum_position_margin": "50",
-        "btc_perps_locked_oi_ratio": "0.25",
-        "btc_perps_max_liquidation_pd": "0.0005",
+        "btc_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "btc_perps_locked_oi_ratio": "<%= parseEther('0.25') %>",
+        "btc_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "btc_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
       },
       "perps_eth_market_settings": {
         "eth_perps_market_id": "100",
-        "eth_perps_market_skew_scale": "<%= String(350_000) %>",
-        "eth_perps_market_max_funding_velocity": "9",
-        "eth_perps_maker_fee_ratio": "0",
-        "eth_perps_taker_fee_ratio": "0.0005",
-        "eth_perps_max_market_size": "<%= String(15_000) %>",
-        "eth_perps_max_market_value": "<%= String(40_000_000) %>",
-        "eth_perps_initial_margin_ratio": "0.744",
-        "eth_perps_minimum_initial_margin_ratio": "0.02",
-        "eth_perps_maintenance_margin_scalar": "0.333",
-        "eth_perps_flag_reward_ratio": "0.0003",
-        "eth_perps_minimum_position_margin": "50",
-        "eth_perps_locked_oi_ratio": "0.25",
-        "eth_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+        "eth_perps_market_skew_scale": "<%= parseEther(String(350_000)) %>",
+        "eth_perps_market_max_funding_velocity": "<%= parseEther('9') %>",
+        "eth_perps_maker_fee_ratio": "<%= parseEther('0') %>",
+        "eth_perps_taker_fee_ratio": "<%= parseEther('0.0005') %>",
+        "eth_perps_max_market_size": "<%= parseEther(String(15_000)) %>",
+        "eth_perps_max_market_value": "<%= parseEther(String(40_000_000)) %>",
+        "eth_perps_initial_margin_ratio": "<%= parseEther('0.744') %>",
+        "eth_perps_minimum_initial_margin_ratio": "<%= parseEther('0.02') %>",
+        "eth_perps_maintenance_margin_scalar": "<%= parseEther('0.333') %>",
+        "eth_perps_flag_reward_ratio": "<%= parseEther('0.0003') %>",
+        "eth_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "eth_perps_locked_oi_ratio": "<%= parseEther('0.25') %>",
+        "eth_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
         "eth_perps_max_seconds_in_liquidation_window": "30",
-        "eth_perps_max_liquidation_pd": "0.0005",
+        "eth_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "eth_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
       },
       "perps_sol_market_settings": {
         "sol_perps_market_id": "300",
-        "sol_perps_market_skew_scale": "<%= String(1_406_250) %>",
-        "sol_perps_market_max_funding_velocity": "9",
-        "sol_perps_maker_fee_ratio": "0",
-        "sol_perps_taker_fee_ratio": "0.0008",
-        "sol_perps_max_market_size": "<%= String(270_000) %>",
-        "sol_perps_max_market_value": "<%= String(40_000_000) %>",
-        "sol_perps_initial_margin_ratio": "5.503",
-        "sol_perps_maintenance_margin_scalar": "0.333",
-        "sol_perps_minimum_initial_margin_ratio": "0.02",
-        "sol_perps_flag_reward_ratio_d18": "0.0003",
-        "sol_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+        "sol_perps_market_skew_scale": "<%= parseEther(String(1_406_250)) %>",
+        "sol_perps_market_max_funding_velocity": "<%= parseEther('9') %>",
+        "sol_perps_maker_fee_ratio": "<%= parseEther('0') %>",
+        "sol_perps_taker_fee_ratio": "<%= parseEther('0.0008') %>",
+        "sol_perps_max_market_size": "<%= parseEther(String(270_000)) %>",
+        "sol_perps_max_market_value": "<%= parseEther(String(40_000_000)) %>",
+        "sol_perps_initial_margin_ratio": "<%= parseEther('5.503') %>",
+        "sol_perps_maintenance_margin_scalar": "<%= parseEther('0.333') %>",
+        "sol_perps_minimum_initial_margin_ratio": "<%= parseEther('0.02') %>",
+        "sol_perps_flag_reward_ratio_d18": "<%= parseEther('0.0003') %>",
+        "sol_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
         "sol_perps_max_seconds_in_liquidation_window": "30",
-        "sol_perps_minimum_position_margin": "50",
-        "sol_perps_locked_oi_ratio": "0.50",
-        "sol_perps_max_liquidation_pd": "0.0005",
+        "sol_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "sol_perps_locked_oi_ratio": "<%= parseEther('0.50') %>",
+        "sol_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "sol_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
       },
       "perps_wif_market_settings": {
         "wif_perps_market_id": "400",
-        "wif_perps_market_skew_scale": "<%= String(15_000_000) %>",
-        "wif_perps_market_max_funding_velocity": "36",
-        "wif_perps_maker_fee_ratio": "0",
-        "wif_perps_taker_fee_ratio": "0.0010",
-        "wif_perps_max_market_size": "<%= String(2_500_000) %>",
-        "wif_perps_max_market_value": "<%= String(3_000_000) %>",
-        "wif_perps_initial_margin_ratio": "1",
-        "wif_perps_maintenance_margin_scalar": "0.5",
-        "wif_perps_minimum_initial_margin_ratio": "0.04",
-        "wif_perps_flag_reward_ratio_d18": "0.0003",
-        "wif_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+        "wif_perps_market_skew_scale": "<%= parseEther(String(15_000_000)) %>",
+        "wif_perps_market_max_funding_velocity": "<%= parseEther('36') %>",
+        "wif_perps_maker_fee_ratio": "<%= parseEther('0') %>",
+        "wif_perps_taker_fee_ratio": "<%= parseEther('0.0010') %>",
+        "wif_perps_max_market_size": "<%= parseEther(String(2_500_000)) %>",
+        "wif_perps_max_market_value": "<%= parseEther(String(3_000_000)) %>",
+        "wif_perps_initial_margin_ratio": "<%= parseEther('1') %>",
+        "wif_perps_maintenance_margin_scalar": "<%= parseEther('0.5') %>",
+        "wif_perps_minimum_initial_margin_ratio": "<%= parseEther('0.04') %>",
+        "wif_perps_flag_reward_ratio_d18": "<%= parseEther('0.0003') %>",
+        "wif_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
         "wif_perps_max_seconds_in_liquidation_window": "30",
-        "wif_perps_minimum_position_margin": "50",
-        "wif_perps_locked_oi_ratio": "0.50",
-        "wif_perps_max_liquidation_pd": "0.0005",
+        "wif_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "wif_perps_locked_oi_ratio": "<%= parseEther('0.50') %>",
+        "wif_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "wif_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
+      },
+      "perps_collateral_USD_settings": {
+        "usd_max_collateral_amount": "<%= MaxUint256 %>",
+        "usd_upper_limit_discount": "0",
+        "usd_lower_limit_discount": "0",
+        "usd_discount_scalar": "0"
       },
       "perps_collateral_sETH_settings": {
         "eth_upper_limit_discount": "<%= parseEther('0.1') %>",
@@ -3710,7 +3500,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "21",
+    "version": "22",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -3988,10 +3778,10 @@
     "setting.settlement_reward": {
       "artifacts": {
         "settings": {
-          "settlement_reward": "500000000000000000"
+          "settlement_reward": "1000000000000000000"
         }
       },
-      "hash": "432e3c15ccbe73e998f322de6cb6a0c3",
+      "hash": "845fb85d1e0ccaf6b0afd054626bbe97",
       "version": 7
     },
     "setting.snx_package": {
@@ -17958,9 +17748,9 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_setSettlementStrategy_dai": {
-            "hash": "0x8b6573806c77a5a731d2e9bf7b126f509cf216ff2aaf86b50c3239a58f5d4367",
-            "blockNumber": "74306387",
-            "timestamp": "1724663248",
+            "hash": "0xf443d67d1bce411b1e2e82917fc12c673ceadf2bf595b4564beab78aa073c0c2",
+            "blockNumber": "75524331",
+            "timestamp": "1725022732",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -17975,7 +17765,7 @@
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0xb0948a5e5313200c632b51bb5ca32f6de0d36e9950a942d19751e833f70dabfd",
                       "url": "https://api.synthetix.io/pyth-mainnet/api/get_vaa_ccip?data={data}",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "priceDeviationTolerance": "1000000000000000000",
                       "minimumUsdExchangeAmount": "1000000000000",
                       "maxRoundingLoss": "1000000000000",
@@ -17986,14 +17776,14 @@
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_setSettlementStrategy_dai",
-            "gasUsed": 4107906,
+            "gasUsed": 92517,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "eff1e575a99e978f006753b837d705a0",
+      "hash": "2b030a9bb41d7832d867e04d85545f22",
       "version": 7
     },
     "invoke.SpotMarketProxy_setSettlementStrategy_usdc": {
@@ -18001,7 +17791,9 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_setSettlementStrategy_usdc": {
-            "hash": "0xa95c97ba4e72f4fe2875c8ff8707e897584e7ec8afa0f9853d538cfcbb13a489",
+            "hash": "0xfe479cd014f0d59918ac88c5344c8040298b5a77e7aef0f8c3fdfaf43413d503",
+            "blockNumber": "75524354",
+            "timestamp": "1725022738",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -18016,7 +17808,7 @@
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
                       "url": "https://api.synthetix.io/pyth-mainnet/api/get_vaa_ccip?data={data}",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "priceDeviationTolerance": "1000000000000000000",
                       "minimumUsdExchangeAmount": "1000000000000",
                       "maxRoundingLoss": "1000000000000",
@@ -18027,14 +17819,14 @@
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_setSettlementStrategy_usdc",
-            "gasUsed": 81919,
-            "gasCost": "458380000",
+            "gasUsed": 92344,
+            "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "0eab7d792803dbe382772fc6947a77de",
+      "hash": "fc244b90a669b20435cf3c1598d36518",
       "version": 7
     },
     "setting.arb_issuance_ratio": {
@@ -20202,9 +19994,9 @@
         "contracts": {},
         "txns": {
           "setPerpsEthSettlementStrategy": {
-            "hash": "0x9688ef888c56ed42269671a02012644016ea11481d2f65d8c61b400149469d76",
-            "blockNumber": "69376070",
-            "timestamp": "1722980229",
+            "hash": "0xfdea282f524de64b5020910cceab6d729696b14b5150d2f5f142a14fbbac6178",
+            "blockNumber": "75524378",
+            "timestamp": "1725022745",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -20218,7 +20010,7 @@
                       "settlementWindowDuration": "60",
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "disabled": false,
                       "commitmentPriceDelay": "2"
                     }
@@ -20227,14 +20019,14 @@
               ]
             },
             "deployedOn": "invoke.setPerpsEthSettlementStrategy",
-            "gasUsed": 62618,
+            "gasUsed": 70821,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "acdb1779e2ab526bf416e3795858c7b5",
+      "hash": "484a5e2faf2aa7764a511b773b718f0e",
       "version": 7
     },
     "setting.pyth_feed_id_btc": {
@@ -20297,25 +20089,25 @@
       "artifacts": {
         "settings": {
           "btc_perps_market_id": "200",
-          "btc_perps_market_skew_scale": "35000",
-          "btc_perps_market_max_funding_velocity": "9",
+          "btc_perps_market_skew_scale": "35000000000000000000000",
+          "btc_perps_market_max_funding_velocity": "9000000000000000000",
           "btc_perps_maker_fee_ratio": "0",
-          "btc_perps_taker_fee_ratio": "0.0005",
-          "btc_perps_max_market_size": "1200",
-          "btc_perps_max_market_value": "50000000",
-          "btc_perps_initial_margin_ratio": "1.07",
-          "btc_perps_maintenance_margin_scalar": "0.333",
-          "btc_perps_minimum_initial_margin_ratio": "0.02",
-          "btc_perps_flag_reward_ratio_d18": "0.0003",
-          "btc_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+          "btc_perps_taker_fee_ratio": "500000000000000",
+          "btc_perps_max_market_size": "1200000000000000000000",
+          "btc_perps_max_market_value": "50000000000000000000000000",
+          "btc_perps_initial_margin_ratio": "1070000000000000000",
+          "btc_perps_maintenance_margin_scalar": "333000000000000000",
+          "btc_perps_minimum_initial_margin_ratio": "20000000000000000",
+          "btc_perps_flag_reward_ratio_d18": "300000000000000",
+          "btc_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
           "btc_perps_max_seconds_in_liquidation_window": "30",
-          "btc_perps_minimum_position_margin": "50",
-          "btc_perps_locked_oi_ratio": "0.25",
-          "btc_perps_max_liquidation_pd": "0.0005",
+          "btc_perps_minimum_position_margin": "50000000000000000000",
+          "btc_perps_locked_oi_ratio": "250000000000000000",
+          "btc_perps_max_liquidation_pd": "500000000000000",
           "btc_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
         }
       },
-      "hash": "f91f06b795011899f2f0df424eb006b6",
+      "hash": "bb31457faef239230a25350bb5f7b81f",
       "version": 7
     },
     "var.perps_collateral_sBTC_settings": {
@@ -20344,93 +20136,93 @@
       "artifacts": {
         "settings": {
           "eth_perps_market_id": "100",
-          "eth_perps_market_skew_scale": "350000",
-          "eth_perps_market_max_funding_velocity": "9",
+          "eth_perps_market_skew_scale": "350000000000000000000000",
+          "eth_perps_market_max_funding_velocity": "9000000000000000000",
           "eth_perps_maker_fee_ratio": "0",
-          "eth_perps_taker_fee_ratio": "0.0005",
-          "eth_perps_max_market_size": "15000",
-          "eth_perps_max_market_value": "40000000",
-          "eth_perps_initial_margin_ratio": "0.744",
-          "eth_perps_minimum_initial_margin_ratio": "0.02",
-          "eth_perps_maintenance_margin_scalar": "0.333",
-          "eth_perps_flag_reward_ratio": "0.0003",
-          "eth_perps_minimum_position_margin": "50",
-          "eth_perps_locked_oi_ratio": "0.25",
-          "eth_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+          "eth_perps_taker_fee_ratio": "500000000000000",
+          "eth_perps_max_market_size": "15000000000000000000000",
+          "eth_perps_max_market_value": "40000000000000000000000000",
+          "eth_perps_initial_margin_ratio": "744000000000000000",
+          "eth_perps_minimum_initial_margin_ratio": "20000000000000000",
+          "eth_perps_maintenance_margin_scalar": "333000000000000000",
+          "eth_perps_flag_reward_ratio": "300000000000000",
+          "eth_perps_minimum_position_margin": "50000000000000000000",
+          "eth_perps_locked_oi_ratio": "250000000000000000",
+          "eth_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
           "eth_perps_max_seconds_in_liquidation_window": "30",
-          "eth_perps_max_liquidation_pd": "0.0005",
+          "eth_perps_max_liquidation_pd": "500000000000000",
           "eth_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
         }
       },
-      "hash": "8522d78ad42fd7ab57dfad752c25dd26",
+      "hash": "c773b12546743e40ea5b534c4de5cf4c",
       "version": 7
     },
     "var.perps_global_settings": {
       "artifacts": {
         "settings": {
-          "perps_liquidation_min_keeper_reward_usd": "1",
-          "perps_liquidation_min_keeper_profit_ratio_d18": "0.30",
-          "perps_liquidation_max_keeper_reward_usd": "30",
-          "perps_liquidation_max_keeper_scaling_ratio_d18": "0.0003",
+          "perps_liquidation_min_keeper_reward_usd": "1000000000000000000",
+          "perps_liquidation_min_keeper_profit_ratio_d18": "300000000000000000",
+          "perps_liquidation_max_keeper_reward_usd": "30000000000000000000",
+          "perps_liquidation_max_keeper_scaling_ratio_d18": "300000000000000",
           "perps_low_util_gradient": "0",
           "perps_gradient_breakpoint": "0",
           "perps_high_util_gradient": "0",
-          "perps_collateral_liquidation_ratio": "0.0003",
+          "perps_collateral_liquidation_ratio": "300000000000000",
           "perps_max_positions_per_account": "10",
           "perps_max_collaterals_per_account": "3"
         }
       },
-      "hash": "abd1785c0a4b3a6e2ce34385a5c0cd11",
+      "hash": "b42cc0c8cf0ddd128862ded8d10e56ce",
       "version": 7
     },
     "var.perps_sol_market_settings": {
       "artifacts": {
         "settings": {
           "sol_perps_market_id": "300",
-          "sol_perps_market_skew_scale": "1406250",
-          "sol_perps_market_max_funding_velocity": "9",
+          "sol_perps_market_skew_scale": "1406250000000000000000000",
+          "sol_perps_market_max_funding_velocity": "9000000000000000000",
           "sol_perps_maker_fee_ratio": "0",
-          "sol_perps_taker_fee_ratio": "0.0008",
-          "sol_perps_max_market_size": "270000",
-          "sol_perps_max_market_value": "40000000",
-          "sol_perps_initial_margin_ratio": "5.503",
-          "sol_perps_maintenance_margin_scalar": "0.333",
-          "sol_perps_minimum_initial_margin_ratio": "0.02",
-          "sol_perps_flag_reward_ratio_d18": "0.0003",
-          "sol_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+          "sol_perps_taker_fee_ratio": "800000000000000",
+          "sol_perps_max_market_size": "270000000000000000000000",
+          "sol_perps_max_market_value": "40000000000000000000000000",
+          "sol_perps_initial_margin_ratio": "5503000000000000000",
+          "sol_perps_maintenance_margin_scalar": "333000000000000000",
+          "sol_perps_minimum_initial_margin_ratio": "20000000000000000",
+          "sol_perps_flag_reward_ratio_d18": "300000000000000",
+          "sol_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
           "sol_perps_max_seconds_in_liquidation_window": "30",
-          "sol_perps_minimum_position_margin": "50",
-          "sol_perps_locked_oi_ratio": "0.50",
-          "sol_perps_max_liquidation_pd": "0.0005",
+          "sol_perps_minimum_position_margin": "50000000000000000000",
+          "sol_perps_locked_oi_ratio": "500000000000000000",
+          "sol_perps_max_liquidation_pd": "500000000000000",
           "sol_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
         }
       },
-      "hash": "8378f7abed9fe484dc04384b9d492e40",
+      "hash": "014632cba338ffec1470b5b11f665023",
       "version": 7
     },
     "var.perps_wif_market_settings": {
       "artifacts": {
         "settings": {
           "wif_perps_market_id": "400",
-          "wif_perps_market_skew_scale": "15000000",
-          "wif_perps_market_max_funding_velocity": "36",
+          "wif_perps_market_skew_scale": "15000000000000000000000000",
+          "wif_perps_market_max_funding_velocity": "36000000000000000000",
           "wif_perps_maker_fee_ratio": "0",
-          "wif_perps_taker_fee_ratio": "0.0010",
-          "wif_perps_max_market_size": "2500000",
-          "wif_perps_max_market_value": "3000000",
-          "wif_perps_initial_margin_ratio": "1",
-          "wif_perps_maintenance_margin_scalar": "0.5",
-          "wif_perps_minimum_initial_margin_ratio": "0.04",
-          "wif_perps_flag_reward_ratio_d18": "0.0003",
-          "wif_perps_max_liquidation_limit_accumulation_multiplier": "1.5",
+          "wif_perps_taker_fee_ratio": "1000000000000000",
+          "wif_perps_max_market_size": "2500000000000000000000000",
+          "wif_perps_max_market_value": "3000000000000000000000000",
+          "wif_perps_initial_margin_ratio": "1000000000000000000",
+          "wif_perps_maintenance_margin_scalar": "500000000000000000",
+          "wif_perps_minimum_initial_margin_ratio": "40000000000000000",
+          "wif_perps_flag_reward_ratio_d18": "300000000000000",
+          "wif_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
           "wif_perps_max_seconds_in_liquidation_window": "30",
-          "wif_perps_minimum_position_margin": "50",
-          "wif_perps_locked_oi_ratio": "0.50",
-          "wif_perps_max_liquidation_pd": "0.0005",
+          "wif_perps_minimum_position_margin": "50000000000000000000",
+          "wif_perps_locked_oi_ratio": "500000000000000000",
+          "wif_perps_max_liquidation_pd": "500000000000000",
           "wif_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
         }
       },
-      "hash": "1cf19ebccc997a924f75c2c4912594f3",
+      "hash": "4ed50427d921abe2ba4d4f3461e2d13e",
       "version": 7
     },
     "provision.btc_mock_collateral": {
@@ -21071,16 +20863,16 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureMaximumMarketCollateral_eth": {
-            "hash": "0x03fe4b783c90aab0187ab4c77651d8b13a0e173bc386922b01582f3b6dfa3742",
-            "blockNumber": "68535439",
-            "timestamp": "1722632290",
+            "hash": "0x6f31c10fe691b862c0cbb5b3e5dfeb547e64a9f38558bdb257fe91088ea6fc1f",
+            "blockNumber": "75524302",
+            "timestamp": "1725022724",
             "events": {
               "MaximumMarketCollateralConfigured": [
                 {
                   "name": "MaximumMarketCollateralConfigured",
                   "args": [
-                    "6",
-                    "0x711d4F22CC39223a7273E45537c9d371E66A8a40",
+                    "5",
+                    "0x980B62Da83eFf3D4576C647993b0c1D7faf17c73",
                     "1000000000000000000000",
                     "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   ]
@@ -21088,14 +20880,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureMaximumMarketCollateral_eth",
-            "gasUsed": 57782,
+            "gasUsed": 43808,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "289aa217154cc84f3ce599a12db7678f",
+      "hash": "fe379f6499408cc14a055044c4d4ed7b",
       "version": 7
     },
     "invoke.CoreProxy_configureMaximumMarketCollateral_sBTC": {
@@ -23837,9 +23629,9 @@
         "contracts": {},
         "txns": {
           "setPerpsBtcSettlementStrategy": {
-            "hash": "0xef4ccf8d15f1614e6e8693dadad33af85c5d0222a5b1c3bcfc220be1283e9651",
-            "blockNumber": "74306422",
-            "timestamp": "1724663258",
+            "hash": "0x14855d6b85661975705380323700df5213c6308077218774221c9860851717ff",
+            "blockNumber": "75524363",
+            "timestamp": "1725022741",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -23853,7 +23645,7 @@
                       "settlementWindowDuration": "60",
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0xc9d8b075a5c69303365ae23633d4e085199bf5c520a3b90fed1322a0342ffc33",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "disabled": false,
                       "commitmentPriceDelay": "2"
                     }
@@ -23862,14 +23654,14 @@
               ]
             },
             "deployedOn": "invoke.setPerpsBtcSettlementStrategy",
-            "gasUsed": 3059456,
+            "gasUsed": 70687,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "e9ef1cdbbad5fd486a45a31dde8f8b9d",
+      "hash": "35242129806122eaf287ccf2a84f0ff4",
       "version": 7
     },
     "invoke.setPerpsSolSettlementStrategy": {
@@ -23877,9 +23669,9 @@
         "contracts": {},
         "txns": {
           "setPerpsSolSettlementStrategy": {
-            "hash": "0xf1a2c6e0ddfc77eaa73be9419946e6f43e6edc1b58f6046e5326b15fe97bc86e",
-            "blockNumber": "70129290",
-            "timestamp": "1723275565",
+            "hash": "0xf838e1868fbd0d99d5324943d6d04089d6470971eda1652b2f145ac431634d07",
+            "blockNumber": "75524388",
+            "timestamp": "1725022747",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -23893,7 +23685,7 @@
                       "settlementWindowDuration": "60",
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "disabled": false,
                       "commitmentPriceDelay": "2"
                     }
@@ -23902,14 +23694,14 @@
               ]
             },
             "deployedOn": "invoke.setPerpsSolSettlementStrategy",
-            "gasUsed": 541952,
+            "gasUsed": 71645,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "e01caaeeb8a53cda98bd5ca87ea5ed80",
+      "hash": "0e8c0163bab0e9426a197570adfca829",
       "version": 7
     },
     "invoke.setPerpsWifSettlementStrategy": {
@@ -23917,9 +23709,9 @@
         "contracts": {},
         "txns": {
           "setPerpsWifSettlementStrategy": {
-            "hash": "0xd43d277194f016031577e3475476b6049978d3e8f5b5ef3d84ebbe51f49b52f2",
-            "blockNumber": "69376064",
-            "timestamp": "1722980227",
+            "hash": "0x787e86dd022f52f62ec60c5fa266744afbc713afca61ff49aa84861d7da1db65",
+            "blockNumber": "75524396",
+            "timestamp": "1725022749",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -23933,7 +23725,7 @@
                       "settlementWindowDuration": "60",
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0x4ca4beeca86f0d164160323817a4e42b10010a724c2217c6ee41b54cd4cc61fc",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "disabled": false,
                       "commitmentPriceDelay": "2"
                     }
@@ -23942,14 +23734,14 @@
               ]
             },
             "deployedOn": "invoke.setPerpsWifSettlementStrategy",
-            "gasUsed": 62630,
+            "gasUsed": 70806,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "389842025ba90825baec0330a49a6c19",
+      "hash": "2ce3dc67b2190d79a38fecec6c5180da",
       "version": 7
     },
     "var.perps_keeper_settings": {
@@ -24762,9 +24554,9 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_setSettlementStrategy_btc": {
-            "hash": "0x167d46632785fa55cfbee3f6c6273b345c9ac71ce7ce2fa2046cae0e8bd50098",
-            "blockNumber": "74306379",
-            "timestamp": "1724663246",
+            "hash": "0xa00f200476f7045a6958a5f0ac74a41ae12cf02c69573ddf72f87e5026cafd8c",
+            "blockNumber": "75524322",
+            "timestamp": "1725022729",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -24779,7 +24571,7 @@
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0xc9d8b075a5c69303365ae23633d4e085199bf5c520a3b90fed1322a0342ffc33",
                       "url": "https://api.synthetix.io/pyth-mainnet/api/get_vaa_ccip?data={data}",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "priceDeviationTolerance": "1000000000000000000",
                       "minimumUsdExchangeAmount": "1000000000000",
                       "maxRoundingLoss": "1000000000000",
@@ -24790,14 +24582,14 @@
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_setSettlementStrategy_btc",
-            "gasUsed": 4130357,
+            "gasUsed": 92840,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "d5f4da9a117204c845e1a64dc56cf059",
+      "hash": "0d8f56ecbc9435e3867c5fe2df3039b5",
       "version": 7
     },
     "invoke.SpotMarketProxy_setSettlementStrategy_sETH": {
@@ -24805,9 +24597,9 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_setSettlementStrategy_sETH": {
-            "hash": "0xc9b84b73a1571157b54372cdd2a130643473640990d809da34d8029e6cdfa230",
-            "blockNumber": "74306393",
-            "timestamp": "1724663250",
+            "hash": "0x31d1aacac7bfafce39a14a43797d56a5e7e86334c924dfaf20023c9da8a29e14",
+            "blockNumber": "75524347",
+            "timestamp": "1725022736",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -24822,7 +24614,7 @@
                       "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
                       "feedId": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace",
                       "url": "https://api.synthetix.io/pyth-mainnet/api/get_vaa_ccip?data={data}",
-                      "settlementReward": "500000000000000000",
+                      "settlementReward": "1000000000000000000",
                       "priceDeviationTolerance": "1000000000000000000",
                       "minimumUsdExchangeAmount": "1000000000000",
                       "maxRoundingLoss": "1000000000000",
@@ -24833,14 +24625,26 @@
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_setSettlementStrategy_sETH",
-            "gasUsed": 4157034,
+            "gasUsed": 92813,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "9b6834bc1e25c1eb2505dff766b69009",
+      "hash": "5c3bcab2a81c1139d1456095bcd23b60",
+      "version": 7
+    },
+    "var.perps_collateral_USD_settings": {
+      "artifacts": {
+        "settings": {
+          "usd_max_collateral_amount": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+          "usd_upper_limit_discount": "0",
+          "usd_lower_limit_discount": "0",
+          "usd_discount_scalar": "0"
+        }
+      },
+      "hash": "9e9baada28207bca9532a219c0f0c3dc",
       "version": 7
     }
   },
@@ -24848,7 +24652,7 @@
   "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "08be7e40c012a8e008812d4375b754cf6ba3dcc9",
+    "commitHash": "087093c78fbff36b4b50e7ef72d69248459adfb6",
     "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
