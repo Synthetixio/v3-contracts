@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1722644911,
+  "timestamp": 1724953568,
   "def": {
     "setting": {
       "snx_package": {
@@ -1107,10 +1107,10 @@
         "defaultValue": "0.0010"
       },
       "perpsMaticMaxMarketSize": {
-        "defaultValue": "<%= String(6_000_000) %>"
+        "defaultValue": "<%= String(0) %>"
       },
       "perpsMaticMaxMarketValue": {
-        "defaultValue": "<%= String(2_000_000) %>"
+        "defaultValue": "<%= String(0) %>"
       },
       "perpsMaticInitialMarginRatio": {
         "defaultValue": "4.41"
@@ -25091,28 +25091,6 @@
           }
         }
       },
-      "setScPoolConfig": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= settings.sc_pool_id %>"
-          ]
-        },
-        "func": "setPoolConfiguration",
-        "args": [
-          "<%= settings.sc_pool_id %>",
-          [
-            {
-              "marketId": "<%= imports.perpsFactory.extras.superMarketId %>",
-              "weightD18": 1,
-              "maxDebtShareValueD18": "<%= parseEther('1') %>"
-            }
-          ]
-        ]
-      },
       "stp_14_register_spartan_council_pool_snx_rewards": {
         "target": [
           "system.CoreProxy"
@@ -25158,7 +25136,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "45",
+    "version": "46",
     "description": "Andromeda deployment",
     "preset": "andromeda"
   },
@@ -44210,19 +44188,19 @@
     "setting.perpsMaticMaxMarketSize": {
       "artifacts": {
         "settings": {
-          "perpsMaticMaxMarketSize": "6000000"
+          "perpsMaticMaxMarketSize": "0"
         }
       },
-      "hash": "f400a6ce08dd215475e44eaaca0b7aac",
+      "hash": "4dcc24a97eaa6583aab6a5b0cb07d27e",
       "version": 7
     },
     "setting.perpsMaticMaxMarketValue": {
       "artifacts": {
         "settings": {
-          "perpsMaticMaxMarketValue": "2000000"
+          "perpsMaticMaxMarketValue": "0"
         }
       },
-      "hash": "bca322a5b8530d87102054fe65617185",
+      "hash": "4dcc24a97eaa6583aab6a5b0cb07d27e",
       "version": 7
     },
     "setting.perpsMaticMaxSecondsInLiquidationWindow": {
@@ -48648,26 +48626,28 @@
         "txns": {
           "setPerpsMaticMaxMarketSize": {
             "hash": "",
+            "blockNumber": "19082044",
+            "timestamp": "1724953553",
             "events": {
               "MaxMarketSizeSet": [
                 {
                   "name": "MaxMarketSizeSet",
                   "args": [
                     "1700",
-                    "6000000000000000000000000"
+                    "0"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMaticMaxMarketSize",
-            "gasUsed": 39513,
-            "gasCost": "1000516972",
+            "gasUsed": 34617,
+            "gasCost": "1005176133",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "settings": {}
       },
-      "hash": "4af4033b5d6136bf12ac769653ee83ed",
+      "hash": "ffd8d26d459ee009a4fad6106353b4a9",
       "version": 7
     },
     "invoke.setPerpsMaticMaxMarketValue": {
@@ -48676,26 +48656,28 @@
         "txns": {
           "setPerpsMaticMaxMarketValue": {
             "hash": "",
+            "blockNumber": "19082045",
+            "timestamp": "1724953555",
             "events": {
               "MaxMarketValueSet": [
                 {
                   "name": "MaxMarketValueSet",
                   "args": [
                     "1700",
-                    "2000000000000000000000000"
+                    "0"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMaticMaxMarketValue",
-            "gasUsed": 39558,
-            "gasCost": "1000452521",
+            "gasUsed": 34640,
+            "gasCost": "1004530610",
             "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
           }
         },
         "settings": {}
       },
-      "hash": "e080768937083701117f991d34916f6a",
+      "hash": "ec28dfba92b99f4ef81d262ea97c1708",
       "version": 7
     },
     "invoke.setPerpsMaticOrderFees": {
@@ -84574,9 +84556,9 @@
   },
   "options": {},
   "meta": {
-    "gitUrl": "https://nk/Synthetixio/synthetix-deployments",
-    "commitHash": "08ec5b010377475997a6c4a498d0fb37fa983981",
-    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/main/README.md"
+    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
+    "commitHash": "ab7b4d9b0baff20ea4b0a21bb85e247166c0d308",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k"
 }
