@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1725106110,
+  "timestamp": 1725391089,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -800,12 +800,12 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "6",
+    "version": "7",
     "description": "Includes the full synthetix system with configurations applied",
     "var": {
       "governance": {
-        "governance_package": "synthetix-governance:3.0.8",
-        "governance_satellite_package": "synthetix-governance-satellite:3.0.8",
+        "governance_package": "synthetix-governance:3.0.9",
+        "governance_satellite_package": "synthetix-governance-satellite:3.0.9",
         "governance_wormhole_core": "0xEe91C335eab126dF5fDB3797EA9d6aD93aeC9722",
         "governance_wormhole_relayer": "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
         "governance_snapshot_record": "0x45c55BF488D3Cb8640f12F63CbeDC027E8261E79",
@@ -37287,8 +37287,8 @@
     "var.governance": {
       "artifacts": {
         "settings": {
-          "governance_package": "synthetix-governance:3.0.8",
-          "governance_satellite_package": "synthetix-governance-satellite:3.0.8",
+          "governance_package": "synthetix-governance:3.0.9",
+          "governance_satellite_package": "synthetix-governance-satellite:3.0.9",
           "governance_wormhole_core": "0xEe91C335eab126dF5fDB3797EA9d6aD93aeC9722",
           "governance_wormhole_relayer": "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
           "governance_snapshot_record": "0x45c55BF488D3Cb8640f12F63CbeDC027E8261E79",
@@ -37304,18 +37304,18 @@
           "governance_initial_epoch_end_date": "1726504075"
         }
       },
-      "hash": "788b0e0620bea3d7392ad6cdf138f9a3",
+      "hash": "2b85e1f6710f839fa65a2640915c5cc3",
       "version": 7
     },
     "clone.governance_satellite_ambassador": {
       "artifacts": {
         "imports": {
           "governance_satellite_ambassador": {
-            "url": "ipfs://QmfGXsNGBg81cAejmb5EtkcKwA1zxwfKFHiCeVtAmanYFu",
+            "url": "ipfs://QmWG5vfPamN1WMXLtkE1wSVz1hzFxCdFMEcTvWArrnKEDG",
             "tags": [
               "latest"
             ],
-            "target": "synthetix-governance-satellite:3.0.8@ambassador",
+            "target": "synthetix-governance-satellite:3.0.9@ambassador",
             "preset": "ambassador",
             "contracts": {
               "AssociatedSystemsModule": {
@@ -37394,7 +37394,7 @@
                 "gasCost": "1096824"
               },
               "ElectionModuleSatellite": {
-                "address": "0xFfCf86a6133fDbb88e934E59d107B94ce009B14f",
+                "address": "0x628c608D5f0f610718e59DCdc859d812724Ea5Bc",
                 "abi": [
                   "error AlreadyACouncilMember()",
                   "error EmptyArray()",
@@ -37405,7 +37405,7 @@
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OnlyRelayer()",
                   "error OverflowUint256ToUint16()",
                   "error OverflowUint256ToUint64()",
@@ -37428,7 +37428,12 @@
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function cast(address[] candidates, uint256[] amounts) payable",
+                  "function getCurrentPeriod() view returns (uint256)",
+                  "function getElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
+                  "function getEpochIndex() view returns (uint256)",
+                  "function getEpochSchedule() view returns (tuple(uint64 startDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 endDate) epoch)",
                   "function getGasLimit() view returns (uint256)",
+                  "function getNextElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
                   "function getRegisteredEmitters() view returns (bytes32[])",
                   "function getSupportedNetworks() view returns (uint16[])",
                   "function getWormholeCore() view returns (address)",
@@ -37445,14 +37450,14 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x5f9f0d124fd78cbf475375a11320f1f9d426ccc038c319b416004a288c5ae519",
-                "deployTxnBlockNumber": "124699166",
-                "deployTimestamp": "1724997109",
+                "deployTxnHash": "0x56475b4dc33850b18bd04af7b92cba32b6123b2795d20b59db51d33590029788",
+                "deployTxnBlockNumber": "124896058",
+                "deployTimestamp": "1725390893",
                 "sourceName": "contracts/modules/core/ElectionModuleSatellite.sol",
                 "contractName": "ElectionModuleSatellite",
                 "deployedOn": "contract.ElectionModuleSatellite",
-                "gasUsed": 2340434,
-                "gasCost": "1096605"
+                "gasUsed": 2535574,
+                "gasCost": "1431760"
               },
               "InitialModuleBundle": {
                 "address": "0x8a0221CabE12b3C8BA33ab13397dDC575DA1CcC1",
@@ -37488,13 +37493,13 @@
                 "gasCost": "0"
               },
               "SnapshotVotePowerModule": {
-                "address": "0x46dD75C4e1158c93111E22e097b4C0c9aA1BEe03",
+                "address": "0x4908BcaE75012b36dc284ae03fdc738b9aef6dE6",
                 "abi": [
                   "error BallotAlreadyPrepared(address voter, uint256 electionId)",
                   "error InvalidSnapshotContract()",
                   "error InvalidWeightType()",
                   "error NoPower(uint256, address)",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OverflowUint256ToUint128()",
                   "error OverflowUint256ToUint64()",
                   "error SnapshotAlreadyTaken(uint128 snapshotId)",
@@ -37504,6 +37509,7 @@
                   "event SnapshotContractSet(address indexed snapshotContract, bool indexed enabled, uint8 weight)",
                   "function getPreparedBallot(address voter) view returns (uint256 power)",
                   "function getVotePowerSnapshotId(address snapshotContract, uint128 electionId) view returns (uint128)",
+                  "function getVotingPowerForUser(address snapshotContract, address voter, uint256 periodId) view returns (uint256)",
                   "function prepareBallotWithSnapshot(address snapshotContract, address voter) returns (uint256 votingPower)",
                   "function setScale(address snapshotContract, uint256 scale)",
                   "function setSnapshotContract(address snapshotContract, uint8 weight, bool enabled)",
@@ -37511,14 +37517,14 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xd24e202a1e0a324173da24c7b97af6f8e9c9142da524cf17af6b849b2d8ba4f6",
-                "deployTxnBlockNumber": "124753240",
-                "deployTimestamp": "1725105257",
+                "deployTxnHash": "0xd7ae79ae916a6402cf09fb5c0005732b6f2d63ab9c075f5a0dc2bc251f9e7954",
+                "deployTxnBlockNumber": "124896059",
+                "deployTimestamp": "1725390895",
                 "sourceName": "contracts/modules/core/SnapshotVotePowerModule.sol",
                 "contractName": "SnapshotVotePowerModule",
                 "deployedOn": "contract.SnapshotVotePowerModule",
-                "gasUsed": 851559,
-                "gasCost": "1112301"
+                "gasUsed": 909455,
+                "gasCost": "1431436"
               },
               "InitialProxy": {
                 "address": "0x93D3A11B8403C2140D0d1f1c0460601e4FBB52DE",
@@ -37557,7 +37563,7 @@
                 "gasCost": "4992028"
               },
               "CoreRouter": {
-                "address": "0xa04ea198a4a65e0b08b19f2760ba329142b56946",
+                "address": "0x90b60f7166511aad740be0d1e58abc2dc04a23c6",
                 "abi": [
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error MissingAssociatedSystem(bytes32 id)",
@@ -37575,7 +37581,7 @@
                   "error MessageAlreadyProcessed()",
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OnlyRelayer()",
                   "error OverflowUint256ToUint16()",
                   "error OverflowUint256ToUint64()",
@@ -37597,7 +37603,12 @@
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function cast(address[] candidates, uint256[] amounts) payable",
+                  "function getCurrentPeriod() view returns (uint256)",
+                  "function getElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
+                  "function getEpochIndex() view returns (uint256)",
+                  "function getEpochSchedule() view returns (tuple(uint64 startDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 endDate) epoch)",
                   "function getGasLimit() view returns (uint256)",
+                  "function getNextElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
                   "function getRegisteredEmitters() view returns (bytes32[])",
                   "function getSupportedNetworks() view returns (uint16[])",
                   "function getWormholeCore() view returns (address)",
@@ -37622,6 +37633,7 @@
                   "event SnapshotContractSet(address indexed snapshotContract, bool indexed enabled, uint8 weight)",
                   "function getPreparedBallot(address voter) view returns (uint256 power)",
                   "function getVotePowerSnapshotId(address snapshotContract, uint128 electionId) view returns (uint128)",
+                  "function getVotingPowerForUser(address snapshotContract, address voter, uint256 periodId) view returns (uint256)",
                   "function prepareBallotWithSnapshot(address snapshotContract, address voter) returns (uint256 votingPower)",
                   "function setScale(address snapshotContract, uint256 scale)",
                   "function setSnapshotContract(address snapshotContract, uint8 weight, bool enabled)",
@@ -37645,13 +37657,13 @@
                   "function upgradeTo(address newImplementation)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0x7c75d32094b811abfb8b4fc7e292b2ae087c3bdef5287c12ec13cdd16920b951",
-                "deployTxnBlockNumber": "124753243",
-                "deployTimestamp": "1725105263",
+                "deployTxnHash": "0x11d2dcd277e9fa9547c064187777bfe95113a5ca0c22adbf38a114663aaf2b2c",
+                "deployTxnBlockNumber": "124896061",
+                "deployTimestamp": "1725390899",
                 "contractName": "CoreRouter",
                 "sourceName": "CoreRouter.sol",
-                "gasUsed": 448651,
-                "gasCost": "1114374"
+                "gasUsed": 516318,
+                "gasCost": "1430522"
               },
               "CouncilTokenRouter": {
                 "address": "0xb270dccad2217d67289e93e31610bb5b02a3d8b8",
@@ -38077,11 +38089,11 @@
       "artifacts": {
         "imports": {
           "governance_satellite_spartan": {
-            "url": "ipfs://QmT5Z4vripFyXKqJW9DZxN2MoL9P1fCgXdNWpLx5UpMyou",
+            "url": "ipfs://QmUYFzF4svj1mXGzN3EPCWtaC4kqUXqmVQdmAkQFZmEnX2",
             "tags": [
               "latest"
             ],
-            "target": "synthetix-governance-satellite:3.0.8@spartan",
+            "target": "synthetix-governance-satellite:3.0.9@spartan",
             "preset": "spartan",
             "contracts": {
               "AssociatedSystemsModule": {
@@ -38160,7 +38172,7 @@
                 "gasCost": "1097410"
               },
               "ElectionModuleSatellite": {
-                "address": "0x39821DB2026b7fCc454b1C8AA4962fE6CEd6eEAc",
+                "address": "0x900A693b953322b780C2b59b1F06eFd0eDEa96c2",
                 "abi": [
                   "error AlreadyACouncilMember()",
                   "error EmptyArray()",
@@ -38171,7 +38183,7 @@
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OnlyRelayer()",
                   "error OverflowUint256ToUint16()",
                   "error OverflowUint256ToUint64()",
@@ -38194,7 +38206,12 @@
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function cast(address[] candidates, uint256[] amounts) payable",
+                  "function getCurrentPeriod() view returns (uint256)",
+                  "function getElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
+                  "function getEpochIndex() view returns (uint256)",
+                  "function getEpochSchedule() view returns (tuple(uint64 startDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 endDate) epoch)",
                   "function getGasLimit() view returns (uint256)",
+                  "function getNextElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
                   "function getRegisteredEmitters() view returns (bytes32[])",
                   "function getSupportedNetworks() view returns (uint16[])",
                   "function getWormholeCore() view returns (address)",
@@ -38211,14 +38228,14 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x6717ca512b3f4fc93a1fbb86d3724277f78acd83bbc9918b6dbbf4f69f512b17",
-                "deployTxnBlockNumber": "124699183",
-                "deployTimestamp": "1724997143",
+                "deployTxnHash": "0x1755fa48a0eddcd8224c7e149e8c5347de3496655f16f33298c035f62522999f",
+                "deployTxnBlockNumber": "124896063",
+                "deployTimestamp": "1725390903",
                 "sourceName": "contracts/modules/core/ElectionModuleSatellite.sol",
                 "contractName": "ElectionModuleSatellite",
                 "deployedOn": "contract.ElectionModuleSatellite",
-                "gasUsed": 2340434,
-                "gasCost": "1097279"
+                "gasUsed": 2535574,
+                "gasCost": "1433880"
               },
               "InitialModuleBundle": {
                 "address": "0x8a0221CabE12b3C8BA33ab13397dDC575DA1CcC1",
@@ -38254,13 +38271,13 @@
                 "gasCost": "0"
               },
               "SnapshotVotePowerModule": {
-                "address": "0x0dC99f7db29164c2A9E8171CD5f5bA90e98F45ad",
+                "address": "0x4323AA584b7B9937909425c7aF0B32d206b9EF66",
                 "abi": [
                   "error BallotAlreadyPrepared(address voter, uint256 electionId)",
                   "error InvalidSnapshotContract()",
                   "error InvalidWeightType()",
                   "error NoPower(uint256, address)",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OverflowUint256ToUint128()",
                   "error OverflowUint256ToUint64()",
                   "error SnapshotAlreadyTaken(uint128 snapshotId)",
@@ -38270,6 +38287,7 @@
                   "event SnapshotContractSet(address indexed snapshotContract, bool indexed enabled, uint8 weight)",
                   "function getPreparedBallot(address voter) view returns (uint256 power)",
                   "function getVotePowerSnapshotId(address snapshotContract, uint128 electionId) view returns (uint128)",
+                  "function getVotingPowerForUser(address snapshotContract, address voter, uint256 periodId) view returns (uint256)",
                   "function prepareBallotWithSnapshot(address snapshotContract, address voter) returns (uint256 votingPower)",
                   "function setScale(address snapshotContract, uint256 scale)",
                   "function setSnapshotContract(address snapshotContract, uint8 weight, bool enabled)",
@@ -38277,14 +38295,14 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xe61cbff28eddd073c7d1fa706b11302861c7123c3c709ef0589cedfeb3c591f7",
-                "deployTxnBlockNumber": "124753247",
-                "deployTimestamp": "1725105271",
+                "deployTxnHash": "0x2100948c6af9ac09ad99ccf2129670ca43f76fda37310ef7f22b2bc5c45fde1f",
+                "deployTxnBlockNumber": "124896064",
+                "deployTimestamp": "1725390905",
                 "sourceName": "contracts/modules/core/SnapshotVotePowerModule.sol",
                 "contractName": "SnapshotVotePowerModule",
                 "deployedOn": "contract.SnapshotVotePowerModule",
-                "gasUsed": 851559,
-                "gasCost": "1116376"
+                "gasUsed": 909455,
+                "gasCost": "1435047"
               },
               "InitialProxy": {
                 "address": "0x2082d5A6f6F17F5e421FD6508b867D794472A42a",
@@ -38323,7 +38341,7 @@
                 "gasCost": "4993940"
               },
               "CoreRouter": {
-                "address": "0x3bf6b8b4236d393d62cc209f3d934721b98517fe",
+                "address": "0x9fb3aad37533e0cdfe9978011fb579a91090eda1",
                 "abi": [
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error MissingAssociatedSystem(bytes32 id)",
@@ -38341,7 +38359,7 @@
                   "error MessageAlreadyProcessed()",
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OnlyRelayer()",
                   "error OverflowUint256ToUint16()",
                   "error OverflowUint256ToUint64()",
@@ -38363,7 +38381,12 @@
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function cast(address[] candidates, uint256[] amounts) payable",
+                  "function getCurrentPeriod() view returns (uint256)",
+                  "function getElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
+                  "function getEpochIndex() view returns (uint256)",
+                  "function getEpochSchedule() view returns (tuple(uint64 startDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 endDate) epoch)",
                   "function getGasLimit() view returns (uint256)",
+                  "function getNextElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
                   "function getRegisteredEmitters() view returns (bytes32[])",
                   "function getSupportedNetworks() view returns (uint16[])",
                   "function getWormholeCore() view returns (address)",
@@ -38388,6 +38411,7 @@
                   "event SnapshotContractSet(address indexed snapshotContract, bool indexed enabled, uint8 weight)",
                   "function getPreparedBallot(address voter) view returns (uint256 power)",
                   "function getVotePowerSnapshotId(address snapshotContract, uint128 electionId) view returns (uint128)",
+                  "function getVotingPowerForUser(address snapshotContract, address voter, uint256 periodId) view returns (uint256)",
                   "function prepareBallotWithSnapshot(address snapshotContract, address voter) returns (uint256 votingPower)",
                   "function setScale(address snapshotContract, uint256 scale)",
                   "function setSnapshotContract(address snapshotContract, uint8 weight, bool enabled)",
@@ -38411,13 +38435,13 @@
                   "function upgradeTo(address newImplementation)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0x20b94000460de3f9d7147342ff98c0dd6ff39efec49368e70f572eef0a30f514",
-                "deployTxnBlockNumber": "124753250",
-                "deployTimestamp": "1725105277",
+                "deployTxnHash": "0xfc3a8d93c1d06f7f2a192864c72e4a034cf673b0c048abe58757be3244997e35",
+                "deployTxnBlockNumber": "124896065",
+                "deployTimestamp": "1725390907",
                 "contractName": "CoreRouter",
                 "sourceName": "CoreRouter.sol",
-                "gasUsed": 448651,
-                "gasCost": "1116136"
+                "gasUsed": 516330,
+                "gasCost": "1434581"
               },
               "CouncilTokenRouter": {
                 "address": "0xb9cf0d7210be1a0e0537707a647de33d38661e6f",
@@ -38843,11 +38867,11 @@
       "artifacts": {
         "imports": {
           "governance_satellite_treasury": {
-            "url": "ipfs://QmSo3BXhb21iLW7MSekhBdNnETxUXFXp2HVti1ADpxDFWL",
+            "url": "ipfs://QmSXPUht2sWeuN7nAJxWTYFxaiyHJSGa6cQNg15Ui8S9y3",
             "tags": [
               "latest"
             ],
-            "target": "synthetix-governance-satellite:3.0.8@treasury",
+            "target": "synthetix-governance-satellite:3.0.9@treasury",
             "preset": "treasury",
             "contracts": {
               "AssociatedSystemsModule": {
@@ -38926,7 +38950,7 @@
                 "gasCost": "1097121"
               },
               "ElectionModuleSatellite": {
-                "address": "0x9A0A1C4f87b288ECB20da1bDA29A865D1d7fE88D",
+                "address": "0x6337b5d1650CC509bA9e1D5c71E06A01eE825265",
                 "abi": [
                   "error AlreadyACouncilMember()",
                   "error EmptyArray()",
@@ -38937,7 +38961,7 @@
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OnlyRelayer()",
                   "error OverflowUint256ToUint16()",
                   "error OverflowUint256ToUint64()",
@@ -38960,7 +38984,12 @@
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function cast(address[] candidates, uint256[] amounts) payable",
+                  "function getCurrentPeriod() view returns (uint256)",
+                  "function getElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
+                  "function getEpochIndex() view returns (uint256)",
+                  "function getEpochSchedule() view returns (tuple(uint64 startDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 endDate) epoch)",
                   "function getGasLimit() view returns (uint256)",
+                  "function getNextElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
                   "function getRegisteredEmitters() view returns (bytes32[])",
                   "function getSupportedNetworks() view returns (uint16[])",
                   "function getWormholeCore() view returns (address)",
@@ -38977,14 +39006,14 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x572be27ed3b04ebee21aaf5e93e5246e439e0cd96af76ea7897499a0303be2bb",
-                "deployTxnBlockNumber": "124699200",
-                "deployTimestamp": "1724997177",
+                "deployTxnHash": "0x62ad58ac120802161d0925f103770d581e7d5933fdfb17c98d64fb2b530a834b",
+                "deployTxnBlockNumber": "124896067",
+                "deployTimestamp": "1725390911",
                 "sourceName": "contracts/modules/core/ElectionModuleSatellite.sol",
                 "contractName": "ElectionModuleSatellite",
                 "deployedOn": "contract.ElectionModuleSatellite",
-                "gasUsed": 2340434,
-                "gasCost": "1097047"
+                "gasUsed": 2535574,
+                "gasCost": "1433571"
               },
               "InitialModuleBundle": {
                 "address": "0x8a0221CabE12b3C8BA33ab13397dDC575DA1CcC1",
@@ -39020,13 +39049,13 @@
                 "gasCost": "0"
               },
               "SnapshotVotePowerModule": {
-                "address": "0xe77af41E674EED8D862d12Ae921Cb7F4dE401540",
+                "address": "0x87AF5b5339E7451Dc31AEeeA5ef231a018ef5591",
                 "abi": [
                   "error BallotAlreadyPrepared(address voter, uint256 electionId)",
                   "error InvalidSnapshotContract()",
                   "error InvalidWeightType()",
                   "error NoPower(uint256, address)",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OverflowUint256ToUint128()",
                   "error OverflowUint256ToUint64()",
                   "error SnapshotAlreadyTaken(uint128 snapshotId)",
@@ -39036,6 +39065,7 @@
                   "event SnapshotContractSet(address indexed snapshotContract, bool indexed enabled, uint8 weight)",
                   "function getPreparedBallot(address voter) view returns (uint256 power)",
                   "function getVotePowerSnapshotId(address snapshotContract, uint128 electionId) view returns (uint128)",
+                  "function getVotingPowerForUser(address snapshotContract, address voter, uint256 periodId) view returns (uint256)",
                   "function prepareBallotWithSnapshot(address snapshotContract, address voter) returns (uint256 votingPower)",
                   "function setScale(address snapshotContract, uint256 scale)",
                   "function setSnapshotContract(address snapshotContract, uint8 weight, bool enabled)",
@@ -39043,14 +39073,14 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xfa34193f38f809df2e2165c58e7772f94363be49c71d598f06075bbf50f0aadb",
-                "deployTxnBlockNumber": "124753257",
-                "deployTimestamp": "1725105291",
+                "deployTxnHash": "0xfaa53eef3c5201aebbb179026bfeb6c104a27d464e9a34c04d1b25cc3fe87d8e",
+                "deployTxnBlockNumber": "124896068",
+                "deployTimestamp": "1725390913",
                 "sourceName": "contracts/modules/core/SnapshotVotePowerModule.sol",
                 "contractName": "SnapshotVotePowerModule",
                 "deployedOn": "contract.SnapshotVotePowerModule",
-                "gasUsed": 851559,
-                "gasCost": "1115968"
+                "gasUsed": 909455,
+                "gasCost": "1433634"
               },
               "InitialProxy": {
                 "address": "0xECfA1d4B17AaCD691173b6194C3ade361ef38367",
@@ -39089,7 +39119,7 @@
                 "gasCost": "4967293"
               },
               "CoreRouter": {
-                "address": "0x03e847c56f0cf6e30b3b8ccd2f00fe2eab01ad60",
+                "address": "0x912fc722932a22b536610a9952911bbf4b67ae57",
                 "abi": [
                   "error MismatchAssociatedSystemKind(bytes32 expected, bytes32 actual)",
                   "error MissingAssociatedSystem(bytes32 id)",
@@ -39107,7 +39137,7 @@
                   "error MessageAlreadyProcessed()",
                   "error NoVotingPower(address sender, uint256 currentEpoch)",
                   "error NotACouncilMember()",
-                  "error NotCallableInCurrentPeriod()",
+                  "error NotCallableInCurrentPeriod(uint8 currentPeriod)",
                   "error OnlyRelayer()",
                   "error OverflowUint256ToUint16()",
                   "error OverflowUint256ToUint64()",
@@ -39129,7 +39159,12 @@
                   "function _recvResolve(uint256 epochIndex, uint64 epochStartDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate, address[] councilMembers)",
                   "function _recvTweakEpochSchedule(uint256 epochIndex, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 epochEndDate)",
                   "function cast(address[] candidates, uint256[] amounts) payable",
+                  "function getCurrentPeriod() view returns (uint256)",
+                  "function getElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
+                  "function getEpochIndex() view returns (uint256)",
+                  "function getEpochSchedule() view returns (tuple(uint64 startDate, uint64 nominationPeriodStartDate, uint64 votingPeriodStartDate, uint64 endDate) epoch)",
                   "function getGasLimit() view returns (uint256)",
+                  "function getNextElectionSettings() view returns (tuple(uint8 epochSeatCount, uint8 minimumActiveMembers, uint64 epochDuration, uint64 nominationPeriodDuration, uint64 votingPeriodDuration, uint64 maxDateAdjustmentTolerance) settings)",
                   "function getRegisteredEmitters() view returns (bytes32[])",
                   "function getSupportedNetworks() view returns (uint16[])",
                   "function getWormholeCore() view returns (address)",
@@ -39154,6 +39189,7 @@
                   "event SnapshotContractSet(address indexed snapshotContract, bool indexed enabled, uint8 weight)",
                   "function getPreparedBallot(address voter) view returns (uint256 power)",
                   "function getVotePowerSnapshotId(address snapshotContract, uint128 electionId) view returns (uint128)",
+                  "function getVotingPowerForUser(address snapshotContract, address voter, uint256 periodId) view returns (uint256)",
                   "function prepareBallotWithSnapshot(address snapshotContract, address voter) returns (uint256 votingPower)",
                   "function setScale(address snapshotContract, uint256 scale)",
                   "function setSnapshotContract(address snapshotContract, uint8 weight, bool enabled)",
@@ -39177,13 +39213,13 @@
                   "function upgradeTo(address newImplementation)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0xa2257c2d64b918921e19443c49b373e2e7e28ca175b9b2588c4fbe4e4a62f8e5",
-                "deployTxnBlockNumber": "124753260",
-                "deployTimestamp": "1725105297",
+                "deployTxnHash": "0x6eb0e90b9a32baa809e0b71a08e0c282ba644d6f2ac9d159e9fdf0d4440693e1",
+                "deployTxnBlockNumber": "124896069",
+                "deployTimestamp": "1725390915",
                 "contractName": "CoreRouter",
                 "sourceName": "CoreRouter.sol",
-                "gasUsed": 448651,
-                "gasCost": "1115420"
+                "gasUsed": 516330,
+                "gasCost": "1434884"
               },
               "CouncilTokenRouter": {
                 "address": "0x23cd3326b669f3bca252ec2760f2c9ae7a084286",
@@ -40009,7 +40045,7 @@
   "options": {},
   "meta": {
     "gitUrl": "https///github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "a438f295b41a0e9bb0900d41478c5bccf0ef9d1f",
+    "commitHash": "4fb1eb46aba151ea73bba1c8942a827f56c2233e",
     "readme": "https///github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k"
