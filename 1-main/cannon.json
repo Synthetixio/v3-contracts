@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1725390614,
+  "timestamp": 1725547923,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -25,7 +25,7 @@
         "defaultValue": "snax"
       },
       "deployer": {
-        "defaultValue": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+        "defaultValue": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
       },
       "snx_aggregator_address": {
         "defaultValue": "0xDC3EA94CD0AC27d9A86C180091e7f78C683d3699"
@@ -371,7 +371,6 @@
         "target": [
           "system.CoreProxy"
         ],
-        "from": "<%= settings.deployer %>",
         "func": "createPool",
         "args": [
           "<%= settings.sc_pool_id %>",
@@ -439,6 +438,742 @@
         "args": [
           "<%= formatBytes32String('transferCrossChain') %>",
           true
+        ]
+      },
+      "authorizedPublishers_synthetix_bfp_market": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-bfp-market') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-bfp-market') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_lido_wsteth_to_eth_ratio_oracle": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('lido-wsteth-to-eth-ratio-oracle') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('lido-wsteth-to-eth-ratio-oracle') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_legacy_market": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-legacy-market') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-legacy-market') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_rewards_distributor": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-rewards-distributor') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-rewards-distributor') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_pyth_erc7412_wrapper": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('pyth-erc7412-wrapper') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('pyth-erc7412-wrapper') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_op_gas_price_oracle": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('op-gas-price-oracle') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('op-gas-price-oracle') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_buyback_snx": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('buyback-snx') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('buyback-snx') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_arbitrum_gas_price_oracle": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('arbitrum-gas-price-oracle') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('arbitrum-gas-price-oracle') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_governance_satellite": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-governance-satellite') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-governance-satellite') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_governance": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-governance') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-governance') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_trusted_multicall_forwarder": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('trusted-multicall-forwarder') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('trusted-multicall-forwarder') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_spot_market": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-spot-market') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-spot-market') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_perps_market": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-perps-market') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-perps-market') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_oracle_manager": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('oracle-manager') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('oracle-manager') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_omnibus": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-omnibus') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-omnibus') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_sandbox": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-sandbox') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-sandbox') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_rewards_manager": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-rewards-manager') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-rewards-manager') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_arbitrum_gas_oracle": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('arbitrum-gas-oracle') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('arbitrum-gas-oracle') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_op_gas_oracle": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('op-gas-oracle') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('op-gas-oracle') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_spot_market_oracle": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('spot-market-oracle') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('spot-market-oracle') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_transparent_upgradable_proxy": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('transparent-upgradable-proxy') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('transparent-upgradable-proxy') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_mintable_token": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('mintable-token') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('mintable-token') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_erc4626": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('erc4626') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('erc4626') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_erc_4626_to_assets_ratio_oracle": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('erc-4626-to-assets-ratio-oracle') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('erc-4626-to-assets-ratio-oracle') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_rewards_dist_ext": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-rewards-dist-ext') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-rewards-dist-ext') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_fake_susde_token": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('fake-susde-token') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('fake-susde-token') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_fake_usde_token": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('fake-usde-token') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('fake-usde-token') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_fake_wsteth_token": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('fake-wsteth-token') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('fake-wsteth-token') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_snapshot_rewards": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-snapshot-rewards') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-snapshot-rewards') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_chainlink": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('chainlink') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('chainlink') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
+        ]
+      },
+      "authorizedPublishers_synthetix_mock_tokens": {
+        "target": [
+          "cannonRegistry.Proxy"
+        ],
+        "fromCall": {
+          "func": "getPackageOwner",
+          "args": [
+            "<%= formatBytes32String('synthetix-mock-tokens') %>"
+          ]
+        },
+        "func": "setAdditionalPublishers",
+        "args": [
+          "<%= formatBytes32String('synthetix-mock-tokens') %>",
+          [
+            "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+            "<%= settings.deployer %>"
+          ],
+          [
+            "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C",
+            "<%= settings.deployer %>"
+          ]
         ]
       },
       "GovernanceProxy_setRegisteredEmitters_ambassador": {
@@ -673,6 +1408,17 @@
         ]
       }
     },
+    "import": {
+      "cannonRegistry": {
+        "source": "registry:2.15.1"
+      },
+      "v2x": {
+        "source": "synthetix:2.101.3"
+      },
+      "usde": {
+        "source": "usde-token"
+      }
+    },
     "clone": {
       "governance_satellite_ambassador": {
         "source": "<%= settings.governance_satellite_package %>",
@@ -721,14 +1467,6 @@
           "initial_voting_period_start_date": "<%= settings.governance_initial_voting_period_start_date %>",
           "initial_epoch_end_date": "<%= settings.governance_initial_epoch_end_date %>"
         }
-      }
-    },
-    "import": {
-      "v2x": {
-        "source": "synthetix:2.101.3"
-      },
-      "usde": {
-        "source": "usde-token"
       }
     },
     "name": "synthetix-omnibus",
@@ -3218,28 +3956,28 @@
         "txns": {
           "permitCreatePool": {
             "hash": "",
-            "blockNumber": "20339951",
-            "timestamp": "1721384417",
+            "blockNumber": "20682797",
+            "timestamp": "1725519906",
             "events": {
               "FeatureFlagAllowlistAdded": [
                 {
                   "name": "FeatureFlagAllowlistAdded",
                   "args": [
                     "0x637265617465506f6f6c00000000000000000000000000000000000000000000",
-                    "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+                    "0x1C8236B406911A376369e33D39189F1b4B39F27D"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.permitCreatePool",
             "gasUsed": 84485,
-            "gasCost": "1387925455",
+            "gasCost": "1021902809",
             "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
           }
         },
         "settings": {}
       },
-      "hash": "69940a587d968f6aa501883224a67db4",
+      "hash": "32d6b3e42e7107b5de5563111e54c244",
       "version": 7
     },
     "invoke.createScPool": {
@@ -3642,10 +4380,10 @@
     "setting.deployer": {
       "artifacts": {
         "settings": {
-          "deployer": "0xEde8a407913A874Dd7e3d5B731AFcA135D30375E"
+          "deployer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
         }
       },
-      "hash": "96408b630eba79d5dca7f9c1181b689e",
+      "hash": "75bc79cbede03fb7cc7018efe7f584ce",
       "version": 7
     },
     "setting.legacy_market_package": {
@@ -22114,6 +22852,1409 @@
         "settings": {}
       },
       "hash": "1617870cfbcdbaac2e08c45f24b664cd",
+      "version": 7
+    },
+    "import.cannonRegistry": {
+      "artifacts": {
+        "imports": {
+          "cannonRegistry": {
+            "url": "ipfs://QmQzQqEsXkkDni23Yw1FgRZXyahEvPsWMDe3Vq4wV3eutm",
+            "settings": {
+              "initialOwner": "0x3852C9fdc6a5C0A4A6230c1d2d954ccCB9b90465",
+              "l1ChainId": "1",
+              "optimismL1Sender": "0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1",
+              "optimismL2Receiver": "0x4200000000000000000000000000000000000007",
+              "salt": "official-registry"
+            },
+            "contracts": {
+              "Implementation": {
+                "address": "0x1005C6DD40c9cbd2Ac14d5F32B42e566bC261E7f",
+                "abi": [
+                  "constructor(address _optimismMessenger, address _optimismReceiver, uint256 _l1ChainId)",
+                  "error FeeRequired(uint256 amount)",
+                  "error ImplementationIsSterile(address implementation)",
+                  "error InvalidName(bytes32 name)",
+                  "error InvalidTags()",
+                  "error InvalidUrl(string url)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error PackageNotFound()",
+                  "error Unauthorized(address addr)",
+                  "error Unauthorized()",
+                  "error UpgradeSimulationFailed()",
+                  "error WithdrawFail(uint256 withdrawAmount)",
+                  "error WrongChain(uint256 expectedChainId)",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event PackageOwnerChanged(bytes32 indexed name, address owner)",
+                  "event PackageOwnerNominated(bytes32 indexed name, address currentOwner, address nominatedOwner)",
+                  "event PackagePublishWithFee(bytes32 indexed name, bytes32 indexed tag, bytes32 indexed variant, string deployUrl, string metaUrl, address owner, uint256 feePaid)",
+                  "event PackagePublishersChanged(bytes32 indexed name, address[] publisher)",
+                  "event PackageRegistered(bytes32 indexed name, address registrant)",
+                  "event PackageUnpublish(bytes32 indexed name, bytes32 indexed tag, bytes32 indexed variant, address owner)",
+                  "event PackageUnverify(bytes32 indexed name, address indexed verifier)",
+                  "event PackageVerify(bytes32 indexed name, address indexed verifier)",
+                  "event TagPublish(bytes32 indexed name, bytes32 indexed variant, bytes32 indexed tag, bytes32 versionOfTag)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function MAX_PACKAGE_PUBLISH_TAGS() view returns (uint256)",
+                  "function MIN_PACKAGE_NAME_LENGTH() view returns (uint256)",
+                  "function acceptOwnership()",
+                  "function getAdditionalPublishers(bytes32 _packageName) view returns (address[] additionalPublishers)",
+                  "function getImplementation() view returns (address)",
+                  "function getPackageMeta(bytes32 _packageName, bytes32 _packageVersionName, bytes32 _packageVariant) view returns (string)",
+                  "function getPackageNominatedOwner(bytes32 _packageName) view returns (address)",
+                  "function getPackageOwner(bytes32 _packageName) view returns (address)",
+                  "function getPackageUrl(bytes32 _packageName, bytes32 _packageVersionName, bytes32 _packageVariant) view returns (string)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatePackageOwner(bytes32 _packageName, address _newPackageOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function publish(bytes32 _packageName, bytes32 _variant, bytes32[] _packageTags, string _packageDeployUrl, string _packageMetaUrl) payable",
+                  "function publishFee() view returns (uint256)",
+                  "function registerFee() view returns (uint256)",
+                  "function renounceNomination()",
+                  "function setAdditionalPublishers(bytes32 _packageName, address[] _additionalPublishersEthereum, address[] _additionalPublishersOptimism)",
+                  "function setFees(uint256 _publishFee, uint256 _registerFee)",
+                  "function setPackageOwnership(bytes32 _packageName, address _owner) payable",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function unpublish(bytes32 _packageName, bytes32 _variant, bytes32[] _packageTags)",
+                  "function unused() view returns (uint256)",
+                  "function unused2() view returns (uint256)",
+                  "function unverifyPackage(bytes32 _packageName)",
+                  "function upgradeTo(address _newImplementation)",
+                  "function validatePackageName(bytes32 _name) pure returns (bool)",
+                  "function verifyPackage(bytes32 _packageName)",
+                  "function withdraw()"
+                ],
+                "constructorArgs": [
+                  "0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1",
+                  "0x4200000000000000000000000000000000000007",
+                  "1"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x0524c0303d4120f95d13d1e95cfb20b944a32e24830fc8356af48c3c5c8105ba",
+                "sourceName": "contracts/CannonRegistry.sol",
+                "contractName": "CannonRegistry",
+                "deployedOn": "contract.Implementation",
+                "gasUsed": 2172726,
+                "gasCost": "4726073795"
+              },
+              "InitialImpl": {
+                "address": "0x65027Bfbd1644a0188984a17501Fd2682ae7D70E",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address _newImplementation)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "",
+                "sourceName": "contracts/OwnedUpgradable.sol",
+                "contractName": "OwnedUpgradable",
+                "deployedOn": "contract.InitialImpl",
+                "gasUsed": 0,
+                "gasCost": "0"
+              },
+              "InitialProxy": {
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba",
+                "abi": [
+                  "error ImplementationIsSterile(address implementation)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error UpgradeSimulationFailed()",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function acceptOwnership()",
+                  "function getImplementation() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function renounceNomination()",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function upgradeTo(address _newImplementation)"
+                ],
+                "constructorArgs": [
+                  "0x65027Bfbd1644a0188984a17501Fd2682ae7D70E",
+                  "0x3852C9fdc6a5C0A4A6230c1d2d954ccCB9b90465"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "",
+                "sourceName": "contracts/Proxy.sol",
+                "contractName": "Proxy",
+                "deployedOn": "contract.InitialProxy",
+                "gasUsed": 0,
+                "gasCost": "0"
+              },
+              "Proxy": {
+                "address": "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba",
+                "abi": [
+                  "constructor(address _optimismMessenger, address _optimismReceiver, uint256 _l1ChainId)",
+                  "error FeeRequired(uint256 amount)",
+                  "error ImplementationIsSterile(address implementation)",
+                  "error InvalidName(bytes32 name)",
+                  "error InvalidTags()",
+                  "error InvalidUrl(string url)",
+                  "error NoChange()",
+                  "error NotAContract(address contr)",
+                  "error NotNominated(address addr)",
+                  "error PackageNotFound()",
+                  "error Unauthorized(address addr)",
+                  "error Unauthorized()",
+                  "error UpgradeSimulationFailed()",
+                  "error WithdrawFail(uint256 withdrawAmount)",
+                  "error WrongChain(uint256 expectedChainId)",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "event PackageOwnerChanged(bytes32 indexed name, address owner)",
+                  "event PackageOwnerNominated(bytes32 indexed name, address currentOwner, address nominatedOwner)",
+                  "event PackagePublishWithFee(bytes32 indexed name, bytes32 indexed tag, bytes32 indexed variant, string deployUrl, string metaUrl, address owner, uint256 feePaid)",
+                  "event PackagePublishersChanged(bytes32 indexed name, address[] publisher)",
+                  "event PackageRegistered(bytes32 indexed name, address registrant)",
+                  "event PackageUnpublish(bytes32 indexed name, bytes32 indexed tag, bytes32 indexed variant, address owner)",
+                  "event PackageUnverify(bytes32 indexed name, address indexed verifier)",
+                  "event PackageVerify(bytes32 indexed name, address indexed verifier)",
+                  "event TagPublish(bytes32 indexed name, bytes32 indexed variant, bytes32 indexed tag, bytes32 versionOfTag)",
+                  "event Upgraded(address indexed self, address implementation)",
+                  "function MAX_PACKAGE_PUBLISH_TAGS() view returns (uint256)",
+                  "function MIN_PACKAGE_NAME_LENGTH() view returns (uint256)",
+                  "function acceptOwnership()",
+                  "function getAdditionalPublishers(bytes32 _packageName) view returns (address[] additionalPublishers)",
+                  "function getImplementation() view returns (address)",
+                  "function getPackageMeta(bytes32 _packageName, bytes32 _packageVersionName, bytes32 _packageVariant) view returns (string)",
+                  "function getPackageNominatedOwner(bytes32 _packageName) view returns (address)",
+                  "function getPackageOwner(bytes32 _packageName) view returns (address)",
+                  "function getPackageUrl(bytes32 _packageName, bytes32 _packageVersionName, bytes32 _packageVariant) view returns (string)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatePackageOwner(bytes32 _packageName, address _newPackageOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function publish(bytes32 _packageName, bytes32 _variant, bytes32[] _packageTags, string _packageDeployUrl, string _packageMetaUrl) payable",
+                  "function publishFee() view returns (uint256)",
+                  "function registerFee() view returns (uint256)",
+                  "function renounceNomination()",
+                  "function setAdditionalPublishers(bytes32 _packageName, address[] _additionalPublishersEthereum, address[] _additionalPublishersOptimism)",
+                  "function setFees(uint256 _publishFee, uint256 _registerFee)",
+                  "function setPackageOwnership(bytes32 _packageName, address _owner) payable",
+                  "function simulateUpgradeTo(address newImplementation)",
+                  "function unpublish(bytes32 _packageName, bytes32 _variant, bytes32[] _packageTags)",
+                  "function unused() view returns (uint256)",
+                  "function unused2() view returns (uint256)",
+                  "function unverifyPackage(bytes32 _packageName)",
+                  "function upgradeTo(address _newImplementation)",
+                  "function validatePackageName(bytes32 _name) pure returns (bool)",
+                  "function verifyPackage(bytes32 _packageName)",
+                  "function withdraw()"
+                ],
+                "deployTxnHash": "",
+                "sourceName": "",
+                "contractName": "",
+                "deployedOn": "invoke.upgrade_proxy",
+                "gasUsed": 0,
+                "gasCost": "0",
+                "highlight": true
+              }
+            },
+            "txns": {
+              "upgrade_proxy": {
+                "hash": "",
+                "events": {
+                  "Upgraded": [
+                    {
+                      "name": "Upgraded",
+                      "args": [
+                        "0x8E5C7EFC9636A6A0408A46BB7F617094B81e5dba",
+                        "0x1005C6DD40c9cbd2Ac14d5F32B42e566bC261E7f"
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.upgrade_proxy",
+                "gasUsed": 50816,
+                "gasCost": "4820364380",
+                "signer": "0x493E75825b862c355a4263C9C1CB6F650539B328"
+              }
+            },
+            "extras": {
+              "initialOwner": "0x3852C9fdc6a5C0A4A6230c1d2d954ccCB9b90465",
+              "l1ChainId": "1",
+              "optimismL1Sender": "0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1",
+              "optimismL2Receiver": "0x4200000000000000000000000000000000000007",
+              "salt": "official-registry"
+            }
+          }
+        }
+      },
+      "hash": "9cf50166c147704f16d0c45514159cc5",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_arbitrum_gas_oracle": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_arbitrum_gas_oracle": {
+            "hash": "",
+            "blockNumber": "20682766",
+            "timestamp": "1725519796",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x617262697472756d2d6761732d6f7261636c6500000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_arbitrum_gas_oracle",
+            "gasUsed": 606632,
+            "gasCost": "2126608777",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "bee89a971345c69b565d18c22b3e3c37",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_arbitrum_gas_price_oracle": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_arbitrum_gas_price_oracle": {
+            "hash": "",
+            "blockNumber": "20682767",
+            "timestamp": "1725519801",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x617262697472756d2d6761732d70726963652d6f7261636c6500000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_arbitrum_gas_price_oracle",
+            "gasUsed": 668746,
+            "gasCost": "1991477988",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "9276e89e286704aa0a0b2cb6df2ec5f5",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_buyback_snx": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_buyback_snx": {
+            "hash": "",
+            "blockNumber": "20682768",
+            "timestamp": "1725519802",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6275796261636b2d736e78000000000000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_buyback_snx",
+            "gasUsed": 668578,
+            "gasCost": "1873068631",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "1f9c0a3d3ab37ab5114a79fab7cea842",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_chainlink": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_chainlink": {
+            "hash": "",
+            "blockNumber": "20682769",
+            "timestamp": "1725519803",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x636861696e6c696e6b0000000000000000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_chainlink",
+            "gasUsed": 702754,
+            "gasCost": "1768799340",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "eab4b22e25fb4b1bfebf67abb534073b",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_erc4626": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_erc4626": {
+            "hash": "",
+            "blockNumber": "20682770",
+            "timestamp": "1725519804",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6572633436323600000000000000000000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_erc4626",
+            "gasUsed": 702730,
+            "gasCost": "1677201730",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "5fd01dc8d5254f3c96fbccd38333d135",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_erc_4626_to_assets_ratio_oracle": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_erc_4626_to_assets_ratio_oracle": {
+            "hash": "",
+            "blockNumber": "20682771",
+            "timestamp": "1725519805",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6572632d343632362d746f2d6173736574732d726174696f2d6f7261636c6500",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_erc_4626_to_assets_ratio_oracle",
+            "gasUsed": 703018,
+            "gasCost": "1596517264",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "bb42dfd073211a5aaff72c275ec05782",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_fake_susde_token": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_fake_susde_token": {
+            "hash": "",
+            "blockNumber": "20682772",
+            "timestamp": "1725519806",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x66616b652d73757364652d746f6b656e00000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_fake_susde_token",
+            "gasUsed": 702838,
+            "gasCost": "1525447293",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "d28745626dbd60cbfe2cbc7be76f126e",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_fake_usde_token": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_fake_usde_token": {
+            "hash": "",
+            "blockNumber": "20682773",
+            "timestamp": "1725519807",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x66616b652d757364652d746f6b656e0000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_fake_usde_token",
+            "gasUsed": 702826,
+            "gasCost": "1462843918",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "b1dfcaf7dbbc12c7bd0dafa8e0dac0f6",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_fake_wsteth_token": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_fake_wsteth_token": {
+            "hash": "",
+            "blockNumber": "20682774",
+            "timestamp": "1725519813",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x66616b652d7773746574682d746f6b656e000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_fake_wsteth_token",
+            "gasUsed": 702850,
+            "gasCost": "1407699252",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "38d0ffc6ae6fd5c2e0f80f7c93eb391b",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_lido_wsteth_to_eth_ratio_oracle": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_lido_wsteth_to_eth_ratio_oracle": {
+            "hash": "",
+            "blockNumber": "20682775",
+            "timestamp": "1725519814",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6c69646f2d7773746574682d746f2d6574682d726174696f2d6f7261636c6500",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_lido_wsteth_to_eth_ratio_oracle",
+            "gasUsed": 668818,
+            "gasCost": "1359124774",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "08359d9dee55398f35bceab000a3f0e7",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_mintable_token": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_mintable_token": {
+            "hash": "",
+            "blockNumber": "20682776",
+            "timestamp": "1725519815",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6d696e7461626c652d746f6b656e000000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_mintable_token",
+            "gasUsed": 668614,
+            "gasCost": "1316235754",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "3671af1cf702fb603a921c10678e8e93",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_op_gas_oracle": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_op_gas_oracle": {
+            "hash": "",
+            "blockNumber": "20682777",
+            "timestamp": "1725519816",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6f702d6761732d6f7261636c6500000000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_op_gas_oracle",
+            "gasUsed": 668602,
+            "gasCost": "1278468282",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "50ed514e7990859e1e1859ddb70bb3c9",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_op_gas_price_oracle": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_op_gas_price_oracle": {
+            "hash": "",
+            "blockNumber": "20682778",
+            "timestamp": "1725519817",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6f702d6761732d70726963652d6f7261636c6500000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_op_gas_price_oracle",
+            "gasUsed": 668674,
+            "gasCost": "1245211284",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "93060a14493b688df7a098b0649e952f",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_oracle_manager": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_oracle_manager": {
+            "hash": "",
+            "blockNumber": "20682779",
+            "timestamp": "1725519818",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x6f7261636c652d6d616e61676572000000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_oracle_manager",
+            "gasUsed": 668614,
+            "gasCost": "1215926261",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "1c650ddc79bcd6a967c3f585823ea5e9",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_pyth_erc7412_wrapper": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_pyth_erc7412_wrapper": {
+            "hash": "",
+            "blockNumber": "20682780",
+            "timestamp": "1725519819",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x707974682d657263373431322d77726170706572000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_pyth_erc7412_wrapper",
+            "gasUsed": 668686,
+            "gasCost": "1190138573",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "255ba4207c7cc41fccaf7a56981b9a18",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_spot_market_oracle": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_spot_market_oracle": {
+            "hash": "",
+            "blockNumber": "20682781",
+            "timestamp": "1725519827",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73706f742d6d61726b65742d6f7261636c650000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_spot_market_oracle",
+            "gasUsed": 668662,
+            "gasCost": "1167430777",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "c5516139e44b5ca672bac3b0bfff2eb7",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix": {
+            "hash": "",
+            "blockNumber": "20682782",
+            "timestamp": "1725519828",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469780000000000000000000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix",
+            "gasUsed": 668554,
+            "gasCost": "1147434885",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "22a035700098a59e5470deccb32f50b5",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_bfp_market": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_bfp_market": {
+            "hash": "",
+            "blockNumber": "20682783",
+            "timestamp": "1725519830",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d6266702d6d61726b6574000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_bfp_market",
+            "gasUsed": 668686,
+            "gasCost": "1129826926",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "e7b876c1d7fb8347951cb09754086365",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_governance": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_governance": {
+            "hash": "",
+            "blockNumber": "20682784",
+            "timestamp": "1725519831",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d676f7665726e616e6365000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_governance",
+            "gasUsed": 668686,
+            "gasCost": "1114322006",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "4b5cfb5676644ed6d6ec7e7934875fc2",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_governance_satellite": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_governance_satellite": {
+            "hash": "",
+            "blockNumber": "20682785",
+            "timestamp": "1725519832",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d676f7665726e616e63652d736174656c6c6974650000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_governance_satellite",
+            "gasUsed": 668806,
+            "gasCost": "1100668802",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "bc5ee066b5e1ba88121f0b8b2dbe347f",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_legacy_market": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_legacy_market": {
+            "hash": "",
+            "blockNumber": "20682786",
+            "timestamp": "1725519833",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d6c65676163792d6d61726b6574000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_legacy_market",
+            "gasUsed": 668722,
+            "gasCost": "1088646268",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "92287fe48299775f816957ea6a0c5c8f",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_omnibus": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_omnibus": {
+            "hash": "",
+            "blockNumber": "20682787",
+            "timestamp": "1725519834",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d6f6d6e69627573000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_omnibus",
+            "gasUsed": 668650,
+            "gasCost": "1078059483",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "a812ee6a3b219000c51b02054ce94d7b",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_perps_market": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_perps_market": {
+            "hash": "",
+            "blockNumber": "20682788",
+            "timestamp": "1725519835",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d70657270732d6d61726b657400000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_perps_market",
+            "gasUsed": 668710,
+            "gasCost": "1068737002",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "a708f89a00e64b251e6849bd8f62814d",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_rewards_dist_ext": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_rewards_dist_ext": {
+            "hash": "",
+            "blockNumber": "20682789",
+            "timestamp": "1725519839",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d726577617264732d646973742d657874000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_rewards_dist_ext",
+            "gasUsed": 702958,
+            "gasCost": "1060527920",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "b72527b2c2f30fc7495bc2303effaa7f",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_rewards_distributor": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_rewards_distributor": {
+            "hash": "",
+            "blockNumber": "20682790",
+            "timestamp": "1725519840",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d726577617264732d6469737472696275746f72000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_rewards_distributor",
+            "gasUsed": 668794,
+            "gasCost": "1053316502",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "ccec23211e107b77cfd8151e70b5c7bf",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_rewards_manager": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_rewards_manager": {
+            "hash": "",
+            "blockNumber": "20682791",
+            "timestamp": "1725519841",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d726577617264732d6d616e6167657200000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_rewards_manager",
+            "gasUsed": 702946,
+            "gasCost": "1046949088",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "247512139f9c33fdcf22a00ba3cc86b5",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_sandbox": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_sandbox": {
+            "hash": "",
+            "blockNumber": "20682792",
+            "timestamp": "1725519842",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d73616e64626f78000000000000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_sandbox",
+            "gasUsed": 668650,
+            "gasCost": "1041355475",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "aa353054ed6154fd5dd2631e45422e8d",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_snapshot_rewards": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_snapshot_rewards": {
+            "hash": "",
+            "blockNumber": "20682793",
+            "timestamp": "1725519843",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d736e617073686f742d72657761726473000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_snapshot_rewards",
+            "gasUsed": 702958,
+            "gasCost": "1036416477",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "9bb6a6b2e21455222d637b0c3f1be9d9",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_spot_market": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_spot_market": {
+            "hash": "",
+            "blockNumber": "20682794",
+            "timestamp": "1725519844",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d73706f742d6d61726b65740000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_spot_market",
+            "gasUsed": 668698,
+            "gasCost": "1032077745",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "aad0a680339b868668e43d717804d465",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_transparent_upgradable_proxy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_transparent_upgradable_proxy": {
+            "hash": "",
+            "blockNumber": "20682795",
+            "timestamp": "1725519845",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x7472616e73706172656e742d75706772616461626c652d70726f787900000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_transparent_upgradable_proxy",
+            "gasUsed": 668782,
+            "gasCost": "1028246780",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "ee40c2b827467151b9ceab4d16c9bc35",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_trusted_multicall_forwarder": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_trusted_multicall_forwarder": {
+            "hash": "",
+            "blockNumber": "20682796",
+            "timestamp": "1725519847",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x747275737465642d6d756c746963616c6c2d666f727761726465720000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_trusted_multicall_forwarder",
+            "gasUsed": 668770,
+            "gasCost": "1024873357",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "4486a078d8fc5e79d7cfeb1cc1768c66",
+      "version": 7
+    },
+    "invoke.setSynthAsyncFixedFeeUsde": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSynthAsyncFixedFeeUsde": {
+            "hash": "",
+            "blockNumber": "20682798",
+            "timestamp": "1725519948",
+            "events": {
+              "AsyncFixedFeeSet": [
+                {
+                  "name": "AsyncFixedFeeSet",
+                  "args": [
+                    "2",
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSynthAsyncFixedFeeUsde",
+            "gasUsed": 36766,
+            "gasCost": "1019180379",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "61f1b43e9a4c7b2178736620e208e4a3",
+      "version": 7
+    },
+    "invoke.setSynthPriceUsde": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSynthPriceUsde": {
+            "hash": "",
+            "blockNumber": "20682799",
+            "timestamp": "1725519949",
+            "events": {
+              "SynthPriceDataUpdated": [
+                {
+                  "name": "SynthPriceDataUpdated",
+                  "args": [
+                    "2",
+                    "0xc36fbc07601eafcdc7f67c5d7ad39295b34f95704b133fceeaf273cf1f0115b3",
+                    "0xc36fbc07601eafcdc7f67c5d7ad39295b34f95704b133fceeaf273cf1f0115b3",
+                    "60"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSynthPriceUsde",
+            "gasUsed": 102810,
+            "gasCost": "1016788709",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "9f4103a34765fdecbb1fc7a981fc5cb3",
+      "version": 7
+    },
+    "invoke.setSynthSkewScaleUsde": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSynthSkewScaleUsde": {
+            "hash": "",
+            "blockNumber": "20682800",
+            "timestamp": "1725519949",
+            "events": {
+              "MarketSkewScaleSet": [
+                {
+                  "name": "MarketSkewScaleSet",
+                  "args": [
+                    "2",
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSynthSkewScaleUsde",
+            "gasUsed": 36710,
+            "gasCost": "1014704505",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "7c1015f3a53977132b8fdb07e4b06c05",
+      "version": 7
+    },
+    "invoke.authorizedPublishers_synthetix_mock_tokens": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "authorizedPublishers_synthetix_mock_tokens": {
+            "hash": "",
+            "blockNumber": "20685089",
+            "timestamp": "1725547809",
+            "events": {
+              "PackagePublishersChanged": [
+                {
+                  "name": "PackagePublishersChanged",
+                  "args": [
+                    "0x73796e7468657469782d6d6f636b2d746f6b656e730000000000000000000000",
+                    [
+                      "0xEb3107117FEAd7de89Cd14D463D340A2E6917769",
+                      "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.authorizedPublishers_synthetix_mock_tokens",
+            "gasUsed": 380964,
+            "gasCost": "3394516523",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "43cbf467e795291c200103925d24b723",
       "version": 7
     }
   },
