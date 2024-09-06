@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.17.0",
-  "timestamp": 1725544235,
+  "timestamp": 1725621996,
   "def": {
     "setting": {
       "snx_package": {
@@ -63,6 +63,21 @@
       "arb_min_delegation": {
         "defaultValue": "<%= parseEther('50') %>"
       },
+      "USDe_max_collateral_limit": {
+        "defaultValue": "<%= parseEther(String(50_000_000)) %>"
+      },
+      "USDe_issuance_ratio": {
+        "defaultValue": "<%= parseEther('2.00') %>"
+      },
+      "USDe_liquidation_ratio": {
+        "defaultValue": "<%= parseEther('1.05') %>"
+      },
+      "USDe_liquidation_reward": {
+        "defaultValue": "<%= parseEther('1') %>"
+      },
+      "USDe_min_delegation": {
+        "defaultValue": "<%= parseEther('100') %>"
+      },
       "weth_issuance_ratio": {
         "defaultValue": "<%= parseEther('3.00') %>"
       },
@@ -89,25 +104,6 @@
       },
       "sUSDe_min_delegation": {
         "defaultValue": "<%= parseEther('100') %>"
-      },
-      "USDe_max_collateral_limit": {
-        "defaultValue": "<%= parseEther(String(50_000_000)) %>"
-      },
-      "USDe_issuance_ratio": {
-        "defaultValue": "<%= parseEther('2.00') %>"
-      },
-      "USDe_liquidation_ratio": {
-        "defaultValue": "<%= parseEther('1.05') %>"
-      },
-      "USDe_liquidation_reward": {
-        "defaultValue": "<%= parseEther('1') %>"
-      },
-      "USDe_min_delegation": {
-        "defaultValue": "<%= parseEther('100') %>"
-      },
-      "btc_address": {
-        "defaultValue": "<%= imports.btc_mock_collateral.contracts.MintableToken.address %>",
-        "description": "Mock btc address"
       },
       "referrer_fee": {
         "defaultValue": "<%= parseEther('0.2') %>"
@@ -178,6 +174,14 @@
         "defaultValue": "<%= String(1 * 3600) %>",
         "description": "1 hour"
       },
+      "USDe_staleness_tolerance": {
+        "defaultValue": "<%= String(1 * 3600) %>",
+        "description": "1 hour"
+      },
+      "SOL_staleness_tolerance": {
+        "defaultValue": "<%= String(1 * 3600) %>",
+        "description": "1 hour"
+      },
       "usdc_address": {
         "defaultValue": "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
         "description": "https://developers.circle.com/stablecoins/docs/usdc-on-test-networks"
@@ -243,6 +247,14 @@
       "pyth_feed_id_USDe": {
         "defaultValue": "0x6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d",
         "description": "https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet"
+      },
+      "btc_address": {
+        "defaultValue": "<%= imports.btc_mock_collateral.contracts.MintableToken.address %>",
+        "description": "Mock BTC address"
+      },
+      "pyth_feed_id_btc": {
+        "defaultValue": "0xc9d8b075a5c69303365ae23633d4e085199bf5c520a3b90fed1322a0342ffc33",
+        "description": "https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet -- Note, this is the wBTC feed id not the pure BTC feed Id"
       },
       "SOL_address": {
         "defaultValue": "<%= imports.SOL_mock_collateral.contracts.MintableToken.address %>",
@@ -354,10 +366,6 @@
       },
       "pyth_feed_id_xlm": {
         "defaultValue": "0xb7a8eba68a997cd0210c2e1e4ee811ad2d174b3611c22d9ebf16f4cb7e9ba850",
-        "description": "https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet"
-      },
-      "pyth_feed_id_btc": {
-        "defaultValue": "0xc9d8b075a5c69303365ae23633d4e085199bf5c520a3b90fed1322a0342ffc33",
         "description": "https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet"
       },
       "usd_token_name": {
@@ -493,19 +501,6 @@
           "authorizedDistributor": "<%= imports.perpsFactory.contracts.PerpsMarketProxy.address %>"
         }
       },
-      "RewardsDistributor_sUSDe_liquidation_rewards": {
-        "source": "synthetix-rewards-dist-ext:3.6.0",
-        "target": "synthetix-rewards-dist-ext:3.6.0@perps-sUSDe",
-        "options": {
-          "salt": "<%= settings.salt %>",
-          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
-          "poolId": "<%= extras.spartan_council_pool_id %>",
-          "payoutToken": "<%= extras.synth_USDe_token_address %>",
-          "payoutTokenDecimals": "18",
-          "name": "Perps sUSDe Liquidation Rewards",
-          "authorizedDistributor": "<%= imports.perpsFactory.contracts.PerpsMarketProxy.address %>"
-        }
-      },
       "RewardsDistributor_sSOL_liquidation_rewards": {
         "source": "synthetix-rewards-dist-ext:3.6.0",
         "target": "synthetix-rewards-dist-ext:3.6.0@perps-sSOL",
@@ -519,14 +514,17 @@
           "authorizedDistributor": "<%= imports.perpsFactory.contracts.PerpsMarketProxy.address %>"
         }
       },
-      "btc_mock_collateral": {
-        "source": "mintable-token:1.8",
-        "target": "synthetix-mock-tokens:1.8@btc",
+      "RewardsDistributor_sUSDe_liquidation_rewards": {
+        "source": "synthetix-rewards-dist-ext:3.6.0",
+        "target": "synthetix-rewards-dist-ext:3.6.0@perps-sUSDe",
         "options": {
-          "name": "Fake BTC Coin",
-          "symbol": "fBTC",
-          "owner": "<%= settings.owner %>",
-          "decimals": "18"
+          "salt": "<%= settings.salt %>",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= extras.spartan_council_pool_id %>",
+          "payoutToken": "<%= extras.synth_USDe_token_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "Perps sUSDe Liquidation Rewards",
+          "authorizedDistributor": "<%= imports.perpsFactory.contracts.PerpsMarketProxy.address %>"
         }
       },
       "perps_gas_oracle_node": {
@@ -580,6 +578,16 @@
         "options": {
           "name": "Fake USDe Coin",
           "symbol": "fUSDe",
+          "owner": "<%= settings.owner %>",
+          "decimals": "18"
+        }
+      },
+      "btc_mock_collateral": {
+        "source": "mintable-token:1.8",
+        "target": "synthetix-mock-tokens:1.8@btc",
+        "options": {
+          "name": "Fake BTC Coin",
+          "symbol": "fBTC",
           "owner": "<%= settings.owner %>",
           "decimals": "18"
         }
@@ -900,74 +908,6 @@
           "<%= extras.spartan_council_pool_id %>"
         ]
       },
-      "OracleManagerProxy_registerNode_pyth_usdc": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_usdc, false]) %>",
-          []
-        ],
-        "extra": {
-          "usdc_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_usdc",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_usdc": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_usdc, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "usdc_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_usdc"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_usdc": {
-        "description": "Staleness Node",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.usdc_pyth_oracle_id %>",
-            "<%= extras.usdc_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "usdc_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
       "CoreProxy_configureCollateral_usdc": {
         "target": [
           "system.CoreProxy"
@@ -1007,74 +947,6 @@
             "issuanceRatioD18": 0
           }
         ]
-      },
-      "OracleManagerProxy_registerNode_pyth_dai": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_dai, false]) %>",
-          []
-        ],
-        "extra": {
-          "dai_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_dai",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_dai": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_dai, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "dai_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_dai"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_dai": {
-        "description": "Staleness Node",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.dai_pyth_oracle_id %>",
-            "<%= extras.dai_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "dai_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
       },
       "CoreProxy_configureCollateral_dai": {
         "target": [
@@ -1116,73 +988,6 @@
           }
         ]
       },
-      "OracleManagerProxy_registerNode_pyth_arb": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_arb, false]) %>",
-          []
-        ],
-        "extra": {
-          "arb_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_arb",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_arb": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_arb, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "arb_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_arb"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_arb": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.arb_pyth_oracle_id %>",
-            "<%= extras.arb_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "arb_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
       "CoreProxy_configureCollateral_arb": {
         "target": [
           "system.CoreProxy"
@@ -1223,61 +1028,45 @@
           }
         ]
       },
-      "OracleManagerProxy_registerNode_pyth_eth": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+      "CoreProxy_configureCollateral_USDe": {
         "target": [
-          "system.oracle_manager.Proxy"
+          "system.CoreProxy"
         ],
-        "func": "registerNode",
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
         "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_eth, false]) %>",
-          []
-        ],
-        "extra": {
-          "eth_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
+          {
+            "tokenAddress": "<%= settings.USDe_address %>",
+            "oracleNodeId": "<%= extras.USDe_oracle_id %>",
+            "issuanceRatioD18": "<%= settings.USDe_issuance_ratio %>",
+            "liquidationRatioD18": "<%= settings.USDe_liquidation_ratio %>",
+            "liquidationRewardD18": "<%= settings.USDe_liquidation_reward %>",
+            "minDelegationD18": "<%= settings.USDe_min_delegation %>",
+            "depositingEnabled": true
           }
-        }
+        ]
       },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_eth": {
-        "description": "Pyth Off-chain Lookup",
+      "CoreProxy_setPoolCollateralConfiguration_USDe": {
         "target": [
-          "system.oracle_manager.Proxy"
+          "system.CoreProxy"
         ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_eth, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "eth_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_staleness_eth": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.eth_pyth_oracle_id %>",
-            "<%= extras.eth_lookup_oracle_id %>"
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
           ]
-        ],
-        "extra": {
-          "eth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
+        },
+        "func": "setPoolCollateralConfiguration",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.USDe_address %>",
+          {
+            "collateralLimitD18": "<%= settings.USDe_max_collateral_limit %>",
+            "issuanceRatioD18": 0
           }
-        }
+        ]
       },
       "CoreProxy_configureCollateral_weth": {
         "target": [
@@ -1319,73 +1108,6 @@
           }
         ]
       },
-      "OracleManagerProxy_registerNode_pyth_sUSDe": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_sUSDe, false]) %>",
-          []
-        ],
-        "extra": {
-          "sUSDe_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_sUSDe",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_sUSDe": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_sUSDe, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "sUSDe_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_sUSDe"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_sUSDe": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.sUSDe_pyth_oracle_id %>",
-            "<%= extras.sUSDe_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "sUSDe_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
       "CoreProxy_configureCollateral_sUSDe": {
         "target": [
           "system.CoreProxy"
@@ -1426,74 +1148,7 @@
           }
         ]
       },
-      "OracleManagerProxy_registerNode_pyth_USDe": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_USDe, false]) %>",
-          []
-        ],
-        "extra": {
-          "USDe_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_USDe",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_USDe": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_USDe, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "USDe_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_USDe"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_USDe": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.USDe_pyth_oracle_id %>",
-            "<%= extras.USDe_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "USDe_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "CoreProxy_configureCollateral_USDe": {
+      "CoreProxy_configureCollateral_fBTC": {
         "target": [
           "system.CoreProxy"
         ],
@@ -1503,33 +1158,113 @@
         "func": "configureCollateral",
         "args": [
           {
-            "tokenAddress": "<%= settings.USDe_address %>",
-            "oracleNodeId": "<%= extras.USDe_oracle_id %>",
-            "issuanceRatioD18": "<%= settings.USDe_issuance_ratio %>",
-            "liquidationRatioD18": "<%= settings.USDe_liquidation_ratio %>",
-            "liquidationRewardD18": "<%= settings.USDe_liquidation_reward %>",
-            "minDelegationD18": "<%= settings.USDe_min_delegation %>",
-            "depositingEnabled": true
+            "tokenAddress": "<%= settings.btc_address %>",
+            "oracleNodeId": "<%= extras.btc_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('2') %>",
+            "liquidationRatioD18": "<%= parseEther('1.1') %>",
+            "liquidationRewardD18": "<%= parseEther('0.5') %>",
+            "minDelegationD18": "<%= parseEther('0.5') %>",
+            "depositingEnabled": false
           }
         ]
       },
-      "CoreProxy_setPoolCollateralConfiguration_USDe": {
+      "CoreProxy_configureCollateral_fSOL": {
         "target": [
           "system.CoreProxy"
         ],
         "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
+          "func": "owner"
         },
-        "func": "setPoolCollateralConfiguration",
+        "func": "configureCollateral",
         "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.USDe_address %>",
           {
-            "collateralLimitD18": "<%= settings.USDe_max_collateral_limit %>",
-            "issuanceRatioD18": 0
+            "tokenAddress": "<%= settings.SOL_address %>",
+            "oracleNodeId": "<%= extras.sol_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('2') %>",
+            "liquidationRatioD18": "<%= parseEther('1.1') %>",
+            "liquidationRewardD18": "<%= parseEther('0.5') %>",
+            "minDelegationD18": "<%= parseEther('0.5') %>",
+            "depositingEnabled": false
+          }
+        ]
+      },
+      "CoreProxy_configureCollateral_sBTC": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= extras.synth_btc_token_address %>",
+            "oracleNodeId": "<%= extras.btc_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('2') %>",
+            "liquidationRatioD18": "<%= parseEther('1.1') %>",
+            "liquidationRewardD18": "<%= parseEther('0.5') %>",
+            "minDelegationD18": "<%= parseEther('0.5') %>",
+            "depositingEnabled": false
+          }
+        ]
+      },
+      "CoreProxy_configureCollateral_sETH": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= extras.synth_eth_token_address %>",
+            "oracleNodeId": "<%= extras.eth_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('2') %>",
+            "liquidationRatioD18": "<%= parseEther('1.1') %>",
+            "liquidationRewardD18": "<%= parseEther('1') %>",
+            "minDelegationD18": "<%= parseEther('1') %>",
+            "depositingEnabled": false
+          }
+        ]
+      },
+      "CoreProxy_configureCollateral_SOL": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= extras.synth_SOL_token_address %>",
+            "oracleNodeId": "<%= extras.sol_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('2.00') %>",
+            "liquidationRatioD18": "<%= parseEther('1.05') %>",
+            "liquidationRewardD18": "<%= parseEther('1') %>",
+            "minDelegationD18": "<%= parseEther('100') %>",
+            "depositingEnabled": false
+          }
+        ]
+      },
+      "CoreProxy_configureCollateral_synth_USDe": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= extras.synth_USDe_token_address %>",
+            "oracleNodeId": "<%= extras.USDe_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('2.00') %>",
+            "liquidationRatioD18": "<%= parseEther('1.05') %>",
+            "liquidationRewardD18": "<%= parseEther('1') %>",
+            "minDelegationD18": "<%= parseEther('100') %>",
+            "depositingEnabled": false
           }
         ]
       },
@@ -1709,97 +1444,6 @@
           "<%= imports.RewardsDistributor_sETH_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
-      "PerpsMarketProxy_registerDistributor_sUSDe_liquidations": {
-        "target": [
-          "perpsFactory.PerpsMarketProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "registerDistributor",
-        "args": [
-          "<%= extras.synth_USDe_token_address %>",
-          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>",
-          "<%= extras.synth_USDe_market_id %>",
-          [
-            "<%= settings.arb_address %>",
-            "<%= settings.usdc_address %>",
-            "<%= settings.USDe_address %>",
-            "<%= settings.weth_address %>"
-          ]
-        ],
-        "depends": [
-          "invoke.PerpsMarketProxy_setCollateralConfiguration_sUSDe"
-        ]
-      },
-      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_ARB_lp": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.arb_address %>",
-          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
-        ]
-      },
-      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_USDC_lp": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.usdc_address %>",
-          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
-        ]
-      },
-      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_USDe_lp": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.USDe_address %>",
-          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
-        ]
-      },
-      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_WETH_lp": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "getPoolOwner",
-          "args": [
-            "<%= extras.spartan_council_pool_id %>"
-          ]
-        },
-        "func": "registerRewardsDistributor",
-        "args": [
-          "<%= extras.spartan_council_pool_id %>",
-          "<%= settings.weth_address %>",
-          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
-        ]
-      },
       "PerpsMarketProxy_registerDistributor_sSOL_liquidations": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -1891,401 +1535,96 @@
           "<%= imports.RewardsDistributor_sSOL_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
-      "registerPythBtcOracleNode": {
+      "PerpsMarketProxy_registerDistributor_sUSDe_liquidations": {
         "target": [
-          "system.oracle_manager.Proxy"
+          "perpsFactory.PerpsMarketProxy"
         ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_btc, false]) %>",
-          []
-        ],
-        "extra": {
-          "btc_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
+        "fromCall": {
+          "func": "owner"
         },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_btc",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "registerLookupBtcOracleNode": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
+        "func": "registerDistributor",
         "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_btc, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "btc_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_btc"
-        ]
-      },
-      "registerBtcOracleNode": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          "<%= extras.synth_USDe_token_address %>",
+          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>",
+          "<%= extras.synth_USDe_market_id %>",
           [
-            "<%= extras.btc_pyth_oracle_id %>",
-            "<%= extras.btc_lookup_oracle_id %>"
+            "<%= settings.arb_address %>",
+            "<%= settings.usdc_address %>",
+            "<%= settings.USDe_address %>",
+            "<%= settings.weth_address %>"
           ]
         ],
-        "extra": {
-          "btc_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "registerPythSolOracleNode": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_sol, false]) %>",
-          []
-        ],
-        "extra": {
-          "sol_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
         "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_sol",
-          "setting.pyth_price_verification_address"
+          "invoke.PerpsMarketProxy_setCollateralConfiguration_sUSDe"
         ]
       },
-      "registerLookupSolOracleNode": {
+      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_ARB_lp": {
         "target": [
-          "system.oracle_manager.Proxy"
+          "system.CoreProxy"
         ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_sol, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "sol_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_sol"
-        ]
-      },
-      "registerSolOracleNode": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.sol_pyth_oracle_id %>",
-            "<%= extras.sol_lookup_oracle_id %>"
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
           ]
-        ],
-        "extra": {
-          "sol_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "registerPythWifOracleNode": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_wif, false]) %>",
-          []
-        ],
-        "extra": {
-          "wif_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
         },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_wif",
-          "setting.pyth_price_verification_address"
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.arb_address %>",
+          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
-      "registerLookupWifOracleNode": {
+      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_USDC_lp": {
         "target": [
-          "system.oracle_manager.Proxy"
+          "system.CoreProxy"
         ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_wif, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "wif_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_wif"
-        ]
-      },
-      "registerWifOracleNode": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.wif_pyth_oracle_id %>",
-            "<%= extras.wif_lookup_oracle_id %>"
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
           ]
-        ],
-        "extra": {
-          "wif_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_link": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_link, false]) %>",
-          []
-        ],
-        "extra": {
-          "link_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
         },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_link",
-          "setting.pyth_price_verification_address"
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.usdc_address %>",
+          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_link": {
-        "description": "Pyth Off-chain Lookup",
+      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_USDe_lp": {
         "target": [
-          "system.oracle_manager.Proxy"
+          "system.CoreProxy"
         ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_link, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "link_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_link"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_link": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.link_pyth_oracle_id %>",
-            "<%= extras.link_lookup_oracle_id %>"
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
           ]
-        ],
-        "extra": {
-          "link_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_doge": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_doge, false]) %>",
-          []
-        ],
-        "extra": {
-          "doge_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
         },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_doge",
-          "setting.pyth_price_verification_address"
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.USDe_address %>",
+          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_doge": {
-        "description": "Pyth Off-chain Lookup",
+      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_WETH_lp": {
         "target": [
-          "system.oracle_manager.Proxy"
+          "system.CoreProxy"
         ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_doge, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "doge_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_doge"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_doge": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.doge_pyth_oracle_id %>",
-            "<%= extras.doge_lookup_oracle_id %>"
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
           ]
-        ],
-        "extra": {
-          "doge_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_gmx": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_gmx, false]) %>",
-          []
-        ],
-        "extra": {
-          "gmx_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
         },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_gmx",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_gmx": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
+        "func": "registerRewardsDistributor",
         "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_gmx, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "gmx_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_gmx"
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.weth_address %>",
+          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
-      },
-      "OracleManagerProxy_registerNode_staleness_gmx": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.gmx_pyth_oracle_id %>",
-            "<%= extras.gmx_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "gmx_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
       },
       "OracleManagerProxy_registerNode_pyth_aave": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
@@ -2349,1011 +1688,6 @@
         ],
         "extra": {
           "aave_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_near": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_near, false]) %>",
-          []
-        ],
-        "extra": {
-          "near_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_near",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_near": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_near, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "near_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_near"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_near": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.near_pyth_oracle_id %>",
-            "<%= extras.near_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "near_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_uni": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_uni, false]) %>",
-          []
-        ],
-        "extra": {
-          "uni_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_uni",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_uni": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_uni, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "uni_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_uni"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_uni": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.uni_pyth_oracle_id %>",
-            "<%= extras.uni_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "uni_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_xrp": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_xrp, false]) %>",
-          []
-        ],
-        "extra": {
-          "xrp_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_xrp",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_xrp": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_xrp, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "xrp_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_xrp"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_xrp": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.xrp_pyth_oracle_id %>",
-            "<%= extras.xrp_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "xrp_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_ltc": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_ltc, false]) %>",
-          []
-        ],
-        "extra": {
-          "ltc_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_ltc",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_ltc": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_ltc, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "ltc_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_ltc"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_ltc": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.ltc_pyth_oracle_id %>",
-            "<%= extras.ltc_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "ltc_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_ordi": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_ordi, false]) %>",
-          []
-        ],
-        "extra": {
-          "ordi_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_ordi",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_ordi": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_ordi, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "ordi_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_ordi"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_ordi": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.ordi_pyth_oracle_id %>",
-            "<%= extras.ordi_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "ordi_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_stx": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_stx, false]) %>",
-          []
-        ],
-        "extra": {
-          "stx_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_stx",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_stx": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_stx, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "stx_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_stx"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_stx": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.stx_pyth_oracle_id %>",
-            "<%= extras.stx_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "stx_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_shib": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_shib, false]) %>",
-          []
-        ],
-        "extra": {
-          "shib_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_shib",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_shib": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_shib, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "shib_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_shib"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_shib": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.shib_pyth_oracle_id %>",
-            "<%= extras.shib_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "shib_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_bnb": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_bnb, false]) %>",
-          []
-        ],
-        "extra": {
-          "bnb_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_bnb",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_bnb": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_bnb, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "bnb_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_bnb"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_bnb": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.bnb_pyth_oracle_id %>",
-            "<%= extras.bnb_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "bnb_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_avax": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_avax, false]) %>",
-          []
-        ],
-        "extra": {
-          "avax_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_avax",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_avax": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_avax, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "avax_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_avax"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_avax": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.avax_pyth_oracle_id %>",
-            "<%= extras.avax_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "avax_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_pepe": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_pepe, false]) %>",
-          []
-        ],
-        "extra": {
-          "pepe_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_pepe",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_pepe": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_pepe, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "pepe_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_pepe"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_pepe": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.pepe_pyth_oracle_id %>",
-            "<%= extras.pepe_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "pepe_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_op": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_op, false]) %>",
-          []
-        ],
-        "extra": {
-          "op_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_op",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_op": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_op, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "op_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_op"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_op": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.op_pyth_oracle_id %>",
-            "<%= extras.op_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "op_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_rune": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_rune, false]) %>",
-          []
-        ],
-        "extra": {
-          "rune_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_rune",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_rune": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_rune, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "rune_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_rune"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_rune": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.rune_pyth_oracle_id %>",
-            "<%= extras.rune_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "rune_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_pyth": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_pyth, false]) %>",
-          []
-        ],
-        "extra": {
-          "pyth_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_pyth",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_pyth": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_pyth, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "pyth_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_pyth"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_pyth": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.pyth_pyth_oracle_id %>",
-            "<%= extras.pyth_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_crv": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_crv, false]) %>",
-          []
-        ],
-        "extra": {
-          "crv_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_crv",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_crv": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_crv, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "crv_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_crv"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_crv": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.crv_pyth_oracle_id %>",
-            "<%= extras.crv_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "crv_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        }
-      },
-      "OracleManagerProxy_registerNode_pyth_tia": {
-        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_tia, false]) %>",
-          []
-        ],
-        "extra": {
-          "tia_pyth_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_tia",
-          "setting.pyth_price_verification_address"
-        ]
-      },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_tia": {
-        "description": "Pyth Off-chain Lookup",
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_tia, settings.big_cap_default_staleness_tolerance]) %>",
-          []
-        ],
-        "extra": {
-          "tia_lookup_oracle_id": {
-            "event": "NodeRegistered",
-            "arg": 0
-          }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_tia"
-        ]
-      },
-      "OracleManagerProxy_registerNode_staleness_tia": {
-        "target": [
-          "system.oracle_manager.Proxy"
-        ],
-        "func": "registerNode",
-        "args": [
-          7,
-          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
-          [
-            "<%= extras.tia_pyth_oracle_id %>",
-            "<%= extras.tia_lookup_oracle_id %>"
-          ]
-        ],
-        "extra": {
-          "tia_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -3426,6 +1760,140 @@
           }
         }
       },
+      "OracleManagerProxy_registerNode_pyth_arb": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_arb, false]) %>",
+          []
+        ],
+        "extra": {
+          "arb_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_arb",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_arb": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_arb, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "arb_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_arb"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_arb": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.arb_pyth_oracle_id %>",
+            "<%= extras.arb_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "arb_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_avax": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_avax, false]) %>",
+          []
+        ],
+        "extra": {
+          "avax_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_avax",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_avax": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_avax, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "avax_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_avax"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_avax": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.avax_pyth_oracle_id %>",
+            "<%= extras.avax_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "avax_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
       "OracleManagerProxy_registerNode_pyth_bch": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
         "target": [
@@ -3488,6 +1956,340 @@
         ],
         "extra": {
           "bch_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_bnb": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_bnb, false]) %>",
+          []
+        ],
+        "extra": {
+          "bnb_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_bnb",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_bnb": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_bnb, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "bnb_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_bnb"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_bnb": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.bnb_pyth_oracle_id %>",
+            "<%= extras.bnb_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "bnb_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "registerPythBtcOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_btc, false]) %>",
+          []
+        ],
+        "extra": {
+          "btc_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_btc",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "registerLookupBtcOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_btc, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "btc_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_btc"
+        ]
+      },
+      "registerBtcOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.btc_pyth_oracle_id %>",
+            "<%= extras.btc_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "btc_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_crv": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_crv, false]) %>",
+          []
+        ],
+        "extra": {
+          "crv_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_crv",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_crv": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_crv, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "crv_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_crv"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_crv": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.crv_pyth_oracle_id %>",
+            "<%= extras.crv_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "crv_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_dai": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_dai, false]) %>",
+          []
+        ],
+        "extra": {
+          "dai_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_dai",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_dai": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_dai, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "dai_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_dai"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_dai": {
+        "description": "Staleness Node",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.dai_pyth_oracle_id %>",
+            "<%= extras.dai_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "dai_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_doge": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_doge, false]) %>",
+          []
+        ],
+        "extra": {
+          "doge_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_doge",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_doge": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_doge, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "doge_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_doge"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_doge": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.doge_pyth_oracle_id %>",
+            "<%= extras.doge_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "doge_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -3560,7 +2362,7 @@
           }
         }
       },
-      "OracleManagerProxy_registerNode_pyth_pol": {
+      "OracleManagerProxy_registerNode_pyth_eth": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
         "target": [
           "system.oracle_manager.Proxy"
@@ -3568,22 +2370,17 @@
         "func": "registerNode",
         "args": [
           5,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_pol, false]) %>",
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_eth, false]) %>",
           []
         ],
         "extra": {
-          "pol_pyth_oracle_id": {
+          "eth_pyth_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.system",
-          "setting.pyth_feed_id_pol",
-          "setting.pyth_price_verification_address"
-        ]
+        }
       },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_pol": {
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_eth": {
         "description": "Pyth Off-chain Lookup",
         "target": [
           "system.oracle_manager.Proxy"
@@ -3591,23 +2388,17 @@
         "func": "registerNode",
         "args": [
           9,
-          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_pol, settings.big_cap_default_staleness_tolerance]) %>",
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_eth, settings.big_cap_default_staleness_tolerance]) %>",
           []
         ],
         "extra": {
-          "pol_lookup_oracle_id": {
+          "eth_lookup_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
-        },
-        "depends": [
-          "provision.pyth_erc7412_wrapper",
-          "provision.system",
-          "setting.big_cap_default_staleness_tolerance",
-          "setting.pyth_feed_id_pol"
-        ]
+        }
       },
-      "OracleManagerProxy_registerNode_staleness_pol": {
+      "OracleManagerProxy_registerNode_staleness_eth": {
         "target": [
           "system.oracle_manager.Proxy"
         ],
@@ -3616,12 +2407,213 @@
           7,
           "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
           [
-            "<%= extras.pol_pyth_oracle_id %>",
-            "<%= extras.pol_lookup_oracle_id %>"
+            "<%= extras.eth_pyth_oracle_id %>",
+            "<%= extras.eth_lookup_oracle_id %>"
           ]
         ],
         "extra": {
-          "pol_oracle_id": {
+          "eth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_gmx": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_gmx, false]) %>",
+          []
+        ],
+        "extra": {
+          "gmx_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_gmx",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_gmx": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_gmx, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "gmx_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_gmx"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_gmx": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.gmx_pyth_oracle_id %>",
+            "<%= extras.gmx_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "gmx_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_link": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_link, false]) %>",
+          []
+        ],
+        "extra": {
+          "link_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_link",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_link": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_link, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "link_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_link"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_link": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.link_pyth_oracle_id %>",
+            "<%= extras.link_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "link_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_ltc": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_ltc, false]) %>",
+          []
+        ],
+        "extra": {
+          "ltc_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_ltc",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_ltc": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_ltc, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "ltc_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_ltc"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_ltc": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.ltc_pyth_oracle_id %>",
+            "<%= extras.ltc_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "ltc_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -3694,6 +2686,1075 @@
           }
         }
       },
+      "OracleManagerProxy_registerNode_pyth_near": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_near, false]) %>",
+          []
+        ],
+        "extra": {
+          "near_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_near",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_near": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_near, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "near_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_near"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_near": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.near_pyth_oracle_id %>",
+            "<%= extras.near_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "near_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_op": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_op, false]) %>",
+          []
+        ],
+        "extra": {
+          "op_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_op",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_op": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_op, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "op_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_op"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_op": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.op_pyth_oracle_id %>",
+            "<%= extras.op_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "op_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_ordi": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_ordi, false]) %>",
+          []
+        ],
+        "extra": {
+          "ordi_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_ordi",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_ordi": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_ordi, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "ordi_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_ordi"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_ordi": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.ordi_pyth_oracle_id %>",
+            "<%= extras.ordi_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "ordi_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_pepe": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_pepe, false]) %>",
+          []
+        ],
+        "extra": {
+          "pepe_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_pepe",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_pepe": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_pepe, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "pepe_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_pepe"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_pepe": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.pepe_pyth_oracle_id %>",
+            "<%= extras.pepe_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "pepe_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_pol": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_pol, false]) %>",
+          []
+        ],
+        "extra": {
+          "pol_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_pol",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_pol": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_pol, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "pol_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_pol"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_pol": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.pol_pyth_oracle_id %>",
+            "<%= extras.pol_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "pol_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_pyth": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_pyth, false]) %>",
+          []
+        ],
+        "extra": {
+          "pyth_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_pyth",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_pyth": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_pyth, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "pyth_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_pyth"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_pyth": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.pyth_pyth_oracle_id %>",
+            "<%= extras.pyth_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_rune": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_rune, false]) %>",
+          []
+        ],
+        "extra": {
+          "rune_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_rune",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_rune": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_rune, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "rune_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_rune"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_rune": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.rune_pyth_oracle_id %>",
+            "<%= extras.rune_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "rune_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_sUSDe": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_sUSDe, false]) %>",
+          []
+        ],
+        "extra": {
+          "sUSDe_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_sUSDe",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_sUSDe": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_sUSDe, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "sUSDe_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_sUSDe"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_sUSDe": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.sUSDe_pyth_oracle_id %>",
+            "<%= extras.sUSDe_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "sUSDe_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_shib": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_shib, false]) %>",
+          []
+        ],
+        "extra": {
+          "shib_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_shib",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_shib": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_shib, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "shib_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_shib"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_shib": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.shib_pyth_oracle_id %>",
+            "<%= extras.shib_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "shib_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "registerPythSolOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_sol, false]) %>",
+          []
+        ],
+        "extra": {
+          "sol_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_sol",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "registerLookupSolOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_sol, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "sol_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_sol"
+        ]
+      },
+      "registerSolOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.sol_pyth_oracle_id %>",
+            "<%= extras.sol_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "sol_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_stx": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_stx, false]) %>",
+          []
+        ],
+        "extra": {
+          "stx_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_stx",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_stx": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_stx, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "stx_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_stx"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_stx": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.stx_pyth_oracle_id %>",
+            "<%= extras.stx_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "stx_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_tia": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_tia, false]) %>",
+          []
+        ],
+        "extra": {
+          "tia_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_tia",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_tia": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_tia, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "tia_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_tia"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_tia": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.tia_pyth_oracle_id %>",
+            "<%= extras.tia_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "tia_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_uni": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_uni, false]) %>",
+          []
+        ],
+        "extra": {
+          "uni_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_uni",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_uni": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_uni, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "uni_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_uni"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_uni": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.uni_pyth_oracle_id %>",
+            "<%= extras.uni_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "uni_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_usdc": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_usdc, false]) %>",
+          []
+        ],
+        "extra": {
+          "usdc_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_usdc",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_usdc": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_usdc, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "usdc_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_usdc"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_usdc": {
+        "description": "Staleness Node",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.usdc_pyth_oracle_id %>",
+            "<%= extras.usdc_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "usdc_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_USDe": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_USDe, false]) %>",
+          []
+        ],
+        "extra": {
+          "USDe_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_USDe",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_USDe": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_USDe, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "USDe_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_USDe"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_USDe": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.USDe_pyth_oracle_id %>",
+            "<%= extras.USDe_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "USDe_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "registerPythWifOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_wif, false]) %>",
+          []
+        ],
+        "extra": {
+          "wif_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_wif",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "registerLookupWifOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_wif, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "wif_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_wif"
+        ]
+      },
+      "registerWifOracleNode": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.wif_pyth_oracle_id %>",
+            "<%= extras.wif_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "wif_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
       "OracleManagerProxy_registerNode_pyth_xlm": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
         "target": [
@@ -3756,6 +3817,73 @@
         ],
         "extra": {
           "xlm_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_xrp": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_xrp, false]) %>",
+          []
+        ],
+        "extra": {
+          "xrp_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.system",
+          "setting.pyth_feed_id_xrp",
+          "setting.pyth_price_verification_address"
+        ]
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_xrp": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_xrp, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "xrp_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        },
+        "depends": [
+          "provision.pyth_erc7412_wrapper",
+          "provision.system",
+          "setting.big_cap_default_staleness_tolerance",
+          "setting.pyth_feed_id_xrp"
+        ]
+      },
+      "OracleManagerProxy_registerNode_staleness_xrp": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.xrp_pyth_oracle_id %>",
+            "<%= extras.xrp_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "xrp_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -3898,7 +4026,7 @@
           }
         ]
       },
-      "SpotMarketProxy_createSynth_eth": {
+      "SpotMarketProxy_createSynth_sol": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
@@ -3907,40 +4035,40 @@
         },
         "func": "createSynth",
         "args": [
-          "Synthetic Ether",
-          "sETH",
+          "Synthetic SOL",
+          "sSOL",
           "<%= settings.owner %>"
         ],
         "extra": {
-          "synth_eth_market_id": {
+          "synth_SOL_market_id": {
             "event": "SynthRegistered",
             "arg": 0
           },
-          "synth_eth_token_address": {
+          "synth_SOL_token_address": {
             "event": "SynthRegistered",
             "arg": 1
           }
         }
       },
-      "SpotMarketProxy_updatePriceData_eth": {
+      "SpotMarketProxy_updatePriceData_sol": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_eth_market_id %>"
+            "<%= extras.synth_SOL_market_id %>"
           ]
         },
         "func": "updatePriceData",
         "args": [
-          "<%= extras.synth_eth_market_id %>",
-          "<%= extras.eth_oracle_id %>",
-          "<%= extras.eth_oracle_id %>",
-          "<%= settings.big_cap_strict_staleness_tolerance %>"
+          "<%= extras.synth_SOL_market_id %>",
+          "<%= extras.sol_oracle_id %>",
+          "<%= extras.sol_oracle_id %>",
+          "<%= settings.SOL_staleness_tolerance %>"
         ]
       },
-      "CoreProxy_configureMaximumMarketCollateral_eth": {
+      "CoreProxy_configureMaximumMarketCollateral_sol": {
         "target": [
           "system.CoreProxy"
         ],
@@ -3950,57 +4078,57 @@
         },
         "func": "configureMaximumMarketCollateral",
         "args": [
-          "<%= extras.synth_eth_market_id %>",
-          "<%= settings.weth_address %>",
-          "<%= settings.synth_eth_max_collateral_amount %>"
+          "<%= extras.synth_SOL_market_id %>",
+          "<%= settings.SOL_address %>",
+          "<%= settings.synth_SOL_max_collateral_amount %>"
         ]
       },
-      "SpotMarketProxy_setMarketSkewScale_eth": {
+      "SpotMarketProxy_setMarketSkewScale_sol": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_eth_market_id %>"
+            "<%= extras.synth_SOL_market_id %>"
           ]
         },
         "func": "setMarketSkewScale",
         "args": [
-          "<%= extras.synth_eth_market_id %>",
-          "<%= settings.synth_eth_skew_scale %>"
+          "<%= extras.synth_SOL_market_id %>",
+          "<%= settings.synth_SOL_skew_scale %>"
         ]
       },
-      "SpotMarketProxy_setWrapper_eth": {
+      "SpotMarketProxy_setWrapper_sol": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_eth_market_id %>"
+            "<%= extras.synth_SOL_market_id %>"
           ]
         },
         "func": "setWrapper",
         "args": [
-          "<%= extras.synth_eth_market_id %>",
-          "<%= settings.weth_address %>",
-          "<%= settings.synth_eth_max_collateral_amount %>"
+          "<%= extras.synth_SOL_market_id %>",
+          "<%= settings.SOL_address %>",
+          "<%= settings.synth_SOL_max_collateral_amount %>"
         ]
       },
-      "SpotMarketProxy_addSettlementStrategy_eth": {
+      "SpotMarketProxy_addSettlementStrategy_sol": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_eth_market_id %>"
+            "<%= extras.synth_SOL_market_id %>"
           ]
         },
         "func": "addSettlementStrategy",
         "args": [
-          "<%= extras.synth_eth_market_id %>",
+          "<%= extras.synth_SOL_market_id %>",
           {
             "strategyType": "1",
             "settlementDelay": "0",
@@ -4016,32 +4144,32 @@
           }
         ],
         "extra": {
-          "synth_eth_settlement_strategy_id": {
+          "synth_SOL_settlement_strategy_id": {
             "event": "SettlementStrategyAdded",
             "arg": 1
           }
         }
       },
-      "SpotMarketProxy_setSettlementStrategy_sETH": {
+      "SpotMarketProxy_setSettlementStrategy_sol": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_eth_market_id %>"
+            "<%= extras.synth_SOL_market_id %>"
           ]
         },
         "func": "setSettlementStrategy",
         "args": [
-          "<%= extras.synth_eth_market_id %>",
-          "<%= extras.synth_eth_settlement_strategy_id %>",
+          "<%= extras.synth_SOL_market_id %>",
+          "<%= extras.synth_SOL_settlement_strategy_id %>",
           {
             "strategyType": "1",
             "settlementDelay": "<%= settings.big_cap_settlement_delay %>",
             "settlementWindowDuration": "<%= settings.big_cap_settlement_window_duration %>",
             "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
-            "feedId": "<%= settings.pyth_feed_id_eth %>",
+            "feedId": "<%= settings.pyth_feed_id_sol %>",
             "url": "<%= settings.pyth_feed_url %>",
             "settlementReward": "<%= settings.settlement_reward %>",
             "minimumUsdExchangeAmount": "<%= settings.settlement_minimum_usd_exchange_amount %>",
@@ -4051,227 +4179,20 @@
           }
         ]
       },
-      "CoreProxy_configureCollateral_sETH": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "configureCollateral",
-        "args": [
-          {
-            "tokenAddress": "<%= extras.synth_eth_token_address %>",
-            "oracleNodeId": "<%= extras.eth_oracle_id %>",
-            "issuanceRatioD18": "<%= parseEther('2') %>",
-            "liquidationRatioD18": "<%= parseEther('1.1') %>",
-            "liquidationRewardD18": "<%= parseEther('1') %>",
-            "minDelegationD18": "<%= parseEther('1') %>",
-            "depositingEnabled": false
-          }
-        ]
-      },
-      "CoreProxy_configureMaximumMarketCollateral_sETH": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner",
-          "args": []
-        },
-        "func": "configureMaximumMarketCollateral",
-        "args": [
-          "<%= imports.perpsFactory.extras.superMarketId %>",
-          "<%= extras.synth_eth_token_address %>",
-          "<%= settings.synth_eth_max_collateral_amount %>"
-        ]
-      },
-      "SpotMarketProxy_createSynth_btc": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "createSynth",
-        "args": [
-          "Synthetic Bitcoin",
-          "sBTC",
-          "<%= settings.owner %>"
-        ],
-        "extra": {
-          "synth_btc_market_id": {
-            "event": "SynthRegistered",
-            "arg": 0
-          },
-          "synth_btc_token_address": {
-            "event": "SynthRegistered",
-            "arg": 1
-          }
-        }
-      },
-      "SpotMarketProxy_updatePriceData_btc": {
+      "SpotMarketProxy_setAtomicFixedFee_sSOL": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_btc_market_id %>"
+            "<%= extras.synth_SOL_market_id %>"
           ]
         },
-        "func": "updatePriceData",
+        "func": "setAtomicFixedFee",
         "args": [
-          "<%= extras.synth_btc_market_id %>",
-          "<%= extras.btc_oracle_id %>",
-          "<%= extras.btc_oracle_id %>",
-          "<%= settings.big_cap_strict_staleness_tolerance %>"
-        ]
-      },
-      "CoreProxy_configureMaximumMarketCollateral_btc": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner",
-          "args": []
-        },
-        "func": "configureMaximumMarketCollateral",
-        "args": [
-          "<%= extras.synth_btc_market_id %>",
-          "<%= settings.btc_address %>",
-          "<%= settings.synth_btc_max_collateral_amount %>"
-        ]
-      },
-      "SpotMarketProxy_setMarketSkewScale_btc": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "getMarketOwner",
-          "args": [
-            "<%= extras.synth_btc_market_id %>"
-          ]
-        },
-        "func": "setMarketSkewScale",
-        "args": [
-          "<%= extras.synth_btc_market_id %>",
-          "<%= settings.synth_btc_skew_scale %>"
-        ]
-      },
-      "SpotMarketProxy_setWrapper_btc": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "getMarketOwner",
-          "args": [
-            "<%= extras.synth_btc_market_id %>"
-          ]
-        },
-        "func": "setWrapper",
-        "args": [
-          "<%= extras.synth_btc_market_id %>",
-          "<%= settings.btc_address %>",
-          "<%= settings.synth_btc_max_collateral_amount %>"
-        ]
-      },
-      "SpotMarketProxy_addSettlementStrategy_btc": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "getMarketOwner",
-          "args": [
-            "<%= extras.synth_btc_market_id %>"
-          ]
-        },
-        "func": "addSettlementStrategy",
-        "args": [
-          "<%= extras.synth_btc_market_id %>",
-          {
-            "strategyType": "1",
-            "settlementDelay": "0",
-            "settlementWindowDuration": "1",
-            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
-            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "url": "",
-            "settlementReward": 0,
-            "minimumUsdExchangeAmount": "0",
-            "maxRoundingLoss": "1",
-            "priceDeviationTolerance": "0",
-            "disabled": false
-          }
-        ],
-        "extra": {
-          "synth_btc_settlement_strategy_id": {
-            "event": "SettlementStrategyAdded",
-            "arg": 1
-          }
-        }
-      },
-      "SpotMarketProxy_setSettlementStrategy_btc": {
-        "target": [
-          "spotFactory.SpotMarketProxy"
-        ],
-        "fromCall": {
-          "func": "getMarketOwner",
-          "args": [
-            "<%= extras.synth_btc_market_id %>"
-          ]
-        },
-        "func": "setSettlementStrategy",
-        "args": [
-          "<%= extras.synth_btc_market_id %>",
-          "<%= extras.synth_btc_settlement_strategy_id %>",
-          {
-            "strategyType": "1",
-            "settlementDelay": "<%= settings.big_cap_settlement_delay %>",
-            "settlementWindowDuration": "<%= settings.big_cap_settlement_window_duration %>",
-            "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
-            "feedId": "<%= settings.pyth_feed_id_btc %>",
-            "url": "<%= settings.pyth_feed_url %>",
-            "settlementReward": "<%= settings.settlement_reward %>",
-            "minimumUsdExchangeAmount": "<%= settings.settlement_minimum_usd_exchange_amount %>",
-            "maxRoundingLoss": "<%= settings.settlement_max_rounding_loss %>",
-            "priceDeviationTolerance": "<%= settings.price_deviation_tolerance %>",
-            "disabled": true
-          }
-        ]
-      },
-      "CoreProxy_configureCollateral_sBTC": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "configureCollateral",
-        "args": [
-          {
-            "tokenAddress": "<%= extras.synth_btc_token_address %>",
-            "oracleNodeId": "<%= extras.btc_oracle_id %>",
-            "issuanceRatioD18": "<%= parseEther('2') %>",
-            "liquidationRatioD18": "<%= parseEther('1.1') %>",
-            "liquidationRewardD18": "<%= parseEther('0.5') %>",
-            "minDelegationD18": "<%= parseEther('0.5') %>",
-            "depositingEnabled": false
-          }
-        ]
-      },
-      "CoreProxy_configureMaximumMarketCollateral_sBTC": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner",
-          "args": []
-        },
-        "func": "configureMaximumMarketCollateral",
-        "args": [
-          "<%= imports.perpsFactory.extras.superMarketId %>",
-          "<%= extras.synth_btc_token_address %>",
-          "<%= settings.synth_btc_max_collateral_amount %>"
+          "<%= extras.synth_SOL_market_id %>",
+          "<%= parseEther(String(0.02)) %>"
         ]
       },
       "SpotMarketProxy_createSynth_usdc": {
@@ -4555,16 +4476,16 @@
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_usde_market_id %>"
+            "<%= extras.synth_USDe_market_id %>"
           ]
         },
         "func": "setAtomicFixedFee",
         "args": [
-          "<%= extras.synth_usde_market_id %>",
+          "<%= extras.synth_USDe_market_id %>",
           "<%= parseEther(String(0.02)) %>"
         ]
       },
-      "SpotMarketProxy_createSynth_sol": {
+      "SpotMarketProxy_createSynth_btc": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
@@ -4573,40 +4494,40 @@
         },
         "func": "createSynth",
         "args": [
-          "Synthetic SOL",
-          "sSOL",
+          "Synthetic Bitcoin",
+          "sBTC",
           "<%= settings.owner %>"
         ],
         "extra": {
-          "synth_SOL_market_id": {
+          "synth_btc_market_id": {
             "event": "SynthRegistered",
             "arg": 0
           },
-          "synth_SOL_token_address": {
+          "synth_btc_token_address": {
             "event": "SynthRegistered",
             "arg": 1
           }
         }
       },
-      "SpotMarketProxy_updatePriceData_sol": {
+      "SpotMarketProxy_updatePriceData_btc": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_SOL_market_id %>"
+            "<%= extras.synth_btc_market_id %>"
           ]
         },
         "func": "updatePriceData",
         "args": [
-          "<%= extras.synth_SOL_market_id %>",
-          "<%= extras.sol_oracle_id %>",
-          "<%= extras.sol_oracle_id %>",
-          "<%= settings.sol_staleness_tolerance %>"
+          "<%= extras.synth_btc_market_id %>",
+          "<%= extras.btc_oracle_id %>",
+          "<%= extras.btc_oracle_id %>",
+          "<%= settings.big_cap_strict_staleness_tolerance %>"
         ]
       },
-      "CoreProxy_configureMaximumMarketCollateral_sol": {
+      "CoreProxy_configureMaximumMarketCollateral_btc": {
         "target": [
           "system.CoreProxy"
         ],
@@ -4616,41 +4537,57 @@
         },
         "func": "configureMaximumMarketCollateral",
         "args": [
-          "<%= extras.synth_SOL_market_id %>",
-          "<%= settings.SOL_address %>",
-          "<%= settings.synth_SOL_max_collateral_amount %>"
+          "<%= extras.synth_btc_market_id %>",
+          "<%= settings.btc_address %>",
+          "<%= settings.synth_btc_max_collateral_amount %>"
         ]
       },
-      "SpotMarketProxy_setWrapper_sol": {
+      "SpotMarketProxy_setMarketSkewScale_btc": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_SOL_market_id %>"
+            "<%= extras.synth_btc_market_id %>"
+          ]
+        },
+        "func": "setMarketSkewScale",
+        "args": [
+          "<%= extras.synth_btc_market_id %>",
+          "<%= settings.synth_btc_skew_scale %>"
+        ]
+      },
+      "SpotMarketProxy_setWrapper_btc": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_btc_market_id %>"
           ]
         },
         "func": "setWrapper",
         "args": [
-          "<%= extras.synth_SOL_market_id %>",
-          "<%= settings.SOL_address %>",
-          "<%= settings.synth_SOL_max_collateral_amount %>"
+          "<%= extras.synth_btc_market_id %>",
+          "<%= settings.btc_address %>",
+          "<%= settings.synth_btc_max_collateral_amount %>"
         ]
       },
-      "SpotMarketProxy_addSettlementStrategy_sol": {
+      "SpotMarketProxy_addSettlementStrategy_btc": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_SOL_market_id %>"
+            "<%= extras.synth_btc_market_id %>"
           ]
         },
         "func": "addSettlementStrategy",
         "args": [
-          "<%= extras.synth_SOL_market_id %>",
+          "<%= extras.synth_btc_market_id %>",
           {
             "strategyType": "1",
             "settlementDelay": "0",
@@ -4666,32 +4603,32 @@
           }
         ],
         "extra": {
-          "synth_SOL_settlement_strategy_id": {
+          "synth_btc_settlement_strategy_id": {
             "event": "SettlementStrategyAdded",
             "arg": 1
           }
         }
       },
-      "SpotMarketProxy_setSettlementStrategy_sol": {
+      "SpotMarketProxy_setSettlementStrategy_btc": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_SOL_market_id %>"
+            "<%= extras.synth_btc_market_id %>"
           ]
         },
         "func": "setSettlementStrategy",
         "args": [
-          "<%= extras.synth_SOL_market_id %>",
-          "<%= extras.synth_SOL_settlement_strategy_id %>",
+          "<%= extras.synth_btc_market_id %>",
+          "<%= extras.synth_btc_settlement_strategy_id %>",
           {
             "strategyType": "1",
             "settlementDelay": "<%= settings.big_cap_settlement_delay %>",
             "settlementWindowDuration": "<%= settings.big_cap_settlement_window_duration %>",
             "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
-            "feedId": "<%= settings.pyth_feed_id_sol %>",
+            "feedId": "<%= settings.pyth_feed_id_btc %>",
             "url": "<%= settings.pyth_feed_url %>",
             "settlementReward": "<%= settings.settlement_reward %>",
             "minimumUsdExchangeAmount": "<%= settings.settlement_minimum_usd_exchange_amount %>",
@@ -4701,19 +4638,188 @@
           }
         ]
       },
-      "SpotMarketProxy_setAtomicFixedFee_sSOL": {
+      "SpotMarketProxy_setAtomicFixedFee_btc": {
         "target": [
           "spotFactory.SpotMarketProxy"
         ],
         "fromCall": {
           "func": "getMarketOwner",
           "args": [
-            "<%= extras.synth_sol_market_id %>"
+            "<%= extras.synth_btc_market_id %>"
           ]
         },
         "func": "setAtomicFixedFee",
         "args": [
-          "<%= extras.synth_sol_market_id %>",
+          "<%= extras.synth_btc_market_id %>",
+          "<%= parseEther(String(0.02)) %>"
+        ]
+      },
+      "SpotMarketProxy_createSynth_eth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "createSynth",
+        "args": [
+          "Synthetic Ether",
+          "sETH",
+          "<%= settings.owner %>"
+        ],
+        "extra": {
+          "synth_eth_market_id": {
+            "event": "SynthRegistered",
+            "arg": 0
+          },
+          "synth_eth_token_address": {
+            "event": "SynthRegistered",
+            "arg": 1
+          }
+        }
+      },
+      "SpotMarketProxy_updatePriceData_eth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_eth_market_id %>"
+          ]
+        },
+        "func": "updatePriceData",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
+          "<%= extras.eth_oracle_id %>",
+          "<%= extras.eth_oracle_id %>",
+          "<%= settings.big_cap_strict_staleness_tolerance %>"
+        ]
+      },
+      "CoreProxy_configureMaximumMarketCollateral_eth": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
+          "<%= settings.weth_address %>",
+          "<%= settings.synth_eth_max_collateral_amount %>"
+        ]
+      },
+      "SpotMarketProxy_setMarketSkewScale_eth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_eth_market_id %>"
+          ]
+        },
+        "func": "setMarketSkewScale",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
+          "<%= settings.synth_eth_skew_scale %>"
+        ]
+      },
+      "SpotMarketProxy_setWrapper_eth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_eth_market_id %>"
+          ]
+        },
+        "func": "setWrapper",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
+          "<%= settings.weth_address %>",
+          "<%= settings.synth_eth_max_collateral_amount %>"
+        ]
+      },
+      "SpotMarketProxy_addSettlementStrategy_eth": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_eth_market_id %>"
+          ]
+        },
+        "func": "addSettlementStrategy",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
+          {
+            "strategyType": "1",
+            "settlementDelay": "0",
+            "settlementWindowDuration": "1",
+            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "url": "",
+            "settlementReward": 0,
+            "minimumUsdExchangeAmount": "0",
+            "maxRoundingLoss": "1",
+            "priceDeviationTolerance": "0",
+            "disabled": false
+          }
+        ],
+        "extra": {
+          "synth_eth_settlement_strategy_id": {
+            "event": "SettlementStrategyAdded",
+            "arg": 1
+          }
+        }
+      },
+      "SpotMarketProxy_setSettlementStrategy_sETH": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_eth_market_id %>"
+          ]
+        },
+        "func": "setSettlementStrategy",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
+          "<%= extras.synth_eth_settlement_strategy_id %>",
+          {
+            "strategyType": "1",
+            "settlementDelay": "<%= settings.big_cap_settlement_delay %>",
+            "settlementWindowDuration": "<%= settings.big_cap_settlement_window_duration %>",
+            "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
+            "feedId": "<%= settings.pyth_feed_id_eth %>",
+            "url": "<%= settings.pyth_feed_url %>",
+            "settlementReward": "<%= settings.settlement_reward %>",
+            "minimumUsdExchangeAmount": "<%= settings.settlement_minimum_usd_exchange_amount %>",
+            "maxRoundingLoss": "<%= settings.settlement_max_rounding_loss %>",
+            "priceDeviationTolerance": "<%= settings.price_deviation_tolerance %>",
+            "disabled": true
+          }
+        ]
+      },
+      "SpotMarketProxy_setAtomicFixedFee_sETH": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_eth_market_id %>"
+          ]
+        },
+        "func": "setAtomicFixedFee",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
           "<%= parseEther(String(0.02)) %>"
         ]
       },
@@ -10272,6 +10378,21 @@
           "<%= settings.eth_discount_scalar %>"
         ]
       },
+      "CoreProxy_configureMaximumMarketCollateral_Perps_sETH": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= imports.perpsFactory.extras.superMarketId %>",
+          "<%= extras.synth_eth_token_address %>",
+          "<%= settings.synth_eth_max_collateral_amount %>"
+        ]
+      },
       "PerpsMarketProxy_setCollateralConfiguration_btc": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -10286,6 +10407,21 @@
           "<%= settings.btc_upper_limit_discount %>",
           "<%= settings.btc_lower_limit_discount %>",
           "<%= settings.btc_discount_scalar %>"
+        ]
+      },
+      "CoreProxy_configureMaximumMarketCollateral_Perps_sBTC": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= imports.perpsFactory.extras.superMarketId %>",
+          "<%= extras.synth_btc_token_address %>",
+          "<%= settings.synth_btc_max_collateral_amount %>"
         ]
       },
       "PerpsMarketProxy_setCollateralConfiguration_sUSDe": {
@@ -10304,6 +10440,21 @@
           "<%= settings.sUSDe_discount_scalar %>"
         ]
       },
+      "CoreProxy_configureMaximumMarketCollateral_Perps_sUSDe": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= imports.perpsFactory.extras.superMarketId %>",
+          "<%= extras.synth_USDe_token_address %>",
+          "<%= settings.synth_USDe_max_collateral_amount %>"
+        ]
+      },
       "PerpsMarketProxy_setCollateralConfiguration_sSOL": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -10318,6 +10469,21 @@
           "<%= settings.sSOL_upper_limit_discount %>",
           "<%= settings.sSOL_lower_limit_discount %>",
           "<%= settings.sSOL_discount_scalar %>"
+        ]
+      },
+      "CoreProxy_configureMaximumMarketCollateral_Perps_sSOL": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner",
+          "args": []
+        },
+        "func": "configureMaximumMarketCollateral",
+        "args": [
+          "<%= imports.perpsFactory.extras.superMarketId %>",
+          "<%= extras.synth_SOL_token_address %>",
+          "<%= settings.synth_SOL_max_collateral_amount %>"
         ]
       },
       "CoreProxy_setMinLiquidityRatio": {
@@ -10363,21 +10529,21 @@
       }
     },
     "var": {
-      "eth_spot_settings": {
-        "synth_eth_max_collateral_amount": "<%= parseEther(String(1_000)) %>",
-        "synth_eth_skew_scale": "<%= parseEther(String(350_000)) %>"
-      },
-      "btc_spot_settings": {
-        "synth_btc_max_collateral_amount": "<%= parseEther(String(75)) %>",
-        "synth_btc_skew_scale": "<%= parseEther(String(3_500)) %>"
+      "SOL_spot_settings": {
+        "synth_SOL_max_collateral_amount": "<%= parseEther(String(7_500)) %>",
+        "synth_SOL_skew_scale": "<%= parseEther(String(1_406_250)) %>"
       },
       "USDe_spot_settings": {
         "synth_USDe_max_collateral_amount": "<%= parseEther(String(5_000_000)) %>",
         "synth_USDe_skew_scale": "<%= parseEther(String(0)) %>"
       },
-      "SOL_spot_settings": {
-        "synth_SOL_max_collateral_amount": "<%= parseEther(String(7_500)) %>",
-        "synth_SOL_skew_scale": "<%= parseEther(String(1_406_250)) %>"
+      "btc_spot_settings": {
+        "synth_btc_max_collateral_amount": "<%= parseEther(String(75)) %>",
+        "synth_btc_skew_scale": "<%= parseEther(String(3_500)) %>"
+      },
+      "eth_spot_settings": {
+        "synth_eth_max_collateral_amount": "<%= parseEther(String(1_000)) %>",
+        "synth_eth_skew_scale": "<%= parseEther(String(350_000)) %>"
       },
       "perps_keeper_settings": {
         "perps_keeper_l1_cost_settle_gas_units": "<%= String(30_000) %>",
@@ -10997,7 +11163,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "24",
+    "version": "25",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -27536,7 +27702,7 @@
           "pyth_feed_id_btc": "0xc9d8b075a5c69303365ae23633d4e085199bf5c520a3b90fed1322a0342ffc33"
         }
       },
-      "hash": "36b02c3defd706ff3ca0dcd0c95035da",
+      "hash": "6ab5ce6bfd58b5c85b10a0ba481be662",
       "version": 7
     },
     "setting.pyth_feed_id_sol": {
@@ -28011,7 +28177,7 @@
           "btc_address": "0xd45eACF062F6C7c780EF7953c23E112041f0bd1B"
         }
       },
-      "hash": "5135510fad2d19ee7466db17d6c12182",
+      "hash": "4f171d90626fecf7d7b4a5ecdfc74535",
       "version": 7
     },
     "invoke.SpotMarketProxy_createSynth_btc": {
@@ -36123,9 +36289,9 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_updatePriceData_USDe": {
-            "hash": "0xd6e36add663b9c98bbf9525909901e5bd1b2f42da6c2b593d0a5c93ebcd81e4c",
-            "blockNumber": "77507243",
-            "timestamp": "1725543519",
+            "hash": "0x63300d53dd59e278ad40a773c4ccb2fbd8e26db3e5dc92840879198b6a0ecfbb",
+            "blockNumber": "77818443",
+            "timestamp": "1725621981",
             "events": {
               "SynthPriceDataUpdated": [
                 {
@@ -36134,20 +36300,20 @@
                     "7",
                     "0x6cf98623fab05c98f4fcdba250ba350e6a16453be00148e17fbe4f164315111e",
                     "0x6cf98623fab05c98f4fcdba250ba350e6a16453be00148e17fbe4f164315111e",
-                    "0"
+                    "3600"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_updatePriceData_USDe",
-            "gasUsed": 1206402,
+            "gasUsed": 135147,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "06979c8278b65f2064fdd50f715b43ea",
+      "hash": "6cb258899384ac8e4fe06cfabf4e38d8",
       "version": 7
     },
     "invoke.SpotMarketProxy_updatePriceData_sol": {
@@ -36155,9 +36321,9 @@
         "contracts": {},
         "txns": {
           "SpotMarketProxy_updatePriceData_sol": {
-            "hash": "0x61d7fa58550bb4c52775479962acc39d8238e0c1d2f9a4513fa1246072a5aa24",
-            "blockNumber": "77507254",
-            "timestamp": "1725543521",
+            "hash": "0x6f3486a55ef977f186637494fe270ac76f3cfdd6be2de71d2ee4cbdb5427ebd9",
+            "blockNumber": "77818453",
+            "timestamp": "1725621984",
             "events": {
               "SynthPriceDataUpdated": [
                 {
@@ -36166,20 +36332,20 @@
                     "8",
                     "0x2619627cc0998264a20643f6f13dc38a69bd198f11c668e6162d329aa99c5c4a",
                     "0x2619627cc0998264a20643f6f13dc38a69bd198f11c668e6162d329aa99c5c4a",
-                    "0"
+                    "3600"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.SpotMarketProxy_updatePriceData_sol",
-            "gasUsed": 1206402,
+            "gasUsed": 135147,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "cdae6469b72dbdf1caa4e07902817ddf",
+      "hash": "952f2b10a6d8e25f0deda15b8bd931a3",
       "version": 7
     },
     "invoke.addPerpsAaveSettlementStrategy": {
@@ -46173,13 +46339,461 @@
       },
       "hash": "c6f382ffdd27b22e85fe02435abd96a6",
       "version": 7
+    },
+    "setting.SOL_staleness_tolerance": {
+      "artifacts": {
+        "settings": {
+          "SOL_staleness_tolerance": "3600"
+        }
+      },
+      "hash": "4e448eb07415cbfff6dd319eccc4992d",
+      "version": 7
+    },
+    "setting.USDe_staleness_tolerance": {
+      "artifacts": {
+        "settings": {
+          "USDe_staleness_tolerance": "3600"
+        }
+      },
+      "hash": "4e448eb07415cbfff6dd319eccc4992d",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_SOL": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_SOL": {
+            "hash": "0x5477507729dab9b2943424dfced7051e9671d507647b95cf96ca4f2b5bd177cf",
+            "blockNumber": "77818326",
+            "timestamp": "1725621952",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0xDE0a47cf02bd6c4cf5Dc30A059656c26A10D01B8",
+                    {
+                      "depositingEnabled": false,
+                      "issuanceRatioD18": "2000000000000000000",
+                      "liquidationRatioD18": "1050000000000000000",
+                      "liquidationRewardD18": "1000000000000000000",
+                      "oracleNodeId": "0x2619627cc0998264a20643f6f13dc38a69bd198f11c668e6162d329aa99c5c4a",
+                      "tokenAddress": "0xDE0a47cf02bd6c4cf5Dc30A059656c26A10D01B8",
+                      "minDelegationD18": "100000000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_SOL",
+            "gasUsed": 343554,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "2d044711c83f84f7d512a715c58feed2",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_fBTC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_fBTC": {
+            "hash": "0x01c0a82338ef1ae1fffddac27a172cc37c6a1fad4ae466d18bb541915c09fe1b",
+            "blockNumber": "77818334",
+            "timestamp": "1725621954",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0xd45eACF062F6C7c780EF7953c23E112041f0bd1B",
+                    {
+                      "depositingEnabled": false,
+                      "issuanceRatioD18": "2000000000000000000",
+                      "liquidationRatioD18": "1100000000000000000",
+                      "liquidationRewardD18": "500000000000000000",
+                      "oracleNodeId": "0x29c719a083a8a5253018b06f270d7f7d4e556d9b8a002386c9d7c2f57d68dc9d",
+                      "tokenAddress": "0xd45eACF062F6C7c780EF7953c23E112041f0bd1B",
+                      "minDelegationD18": "500000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_fBTC",
+            "gasUsed": 174823,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "e16b387959e175cc0a4e0001dafd7d1f",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_fSOL": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_fSOL": {
+            "hash": "0x1cbecea51f38b03e41a27ab20ec024b7ab18efad2074794508ed66c4d88650f2",
+            "blockNumber": "77818344",
+            "timestamp": "1725621956",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0x3a17252D35d30961798Ed7a59b36e27A9B6Cf243",
+                    {
+                      "depositingEnabled": false,
+                      "issuanceRatioD18": "2000000000000000000",
+                      "liquidationRatioD18": "1100000000000000000",
+                      "liquidationRewardD18": "500000000000000000",
+                      "oracleNodeId": "0x2619627cc0998264a20643f6f13dc38a69bd198f11c668e6162d329aa99c5c4a",
+                      "tokenAddress": "0x3a17252D35d30961798Ed7a59b36e27A9B6Cf243",
+                      "minDelegationD18": "500000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_fSOL",
+            "gasUsed": 342057,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "fa90593553e13e6c30875a5931951609",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_synth_USDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_synth_USDe": {
+            "hash": "0x004e9c0933736a7a780f5e927a0018978fd5ebb4668802748ba91ecd2d443940",
+            "blockNumber": "77818354",
+            "timestamp": "1725621959",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0xD58A253022fE19693abC61e041C88F32b51C7Cbf",
+                    {
+                      "depositingEnabled": false,
+                      "issuanceRatioD18": "2000000000000000000",
+                      "liquidationRatioD18": "1050000000000000000",
+                      "liquidationRewardD18": "1000000000000000000",
+                      "oracleNodeId": "0x6cf98623fab05c98f4fcdba250ba350e6a16453be00148e17fbe4f164315111e",
+                      "tokenAddress": "0xD58A253022fE19693abC61e041C88F32b51C7Cbf",
+                      "minDelegationD18": "100000000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_synth_USDe",
+            "gasUsed": 343183,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "3f8d39b9f0a75d1f5d3606850c1de0fd",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sBTC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureMaximumMarketCollateral_Perps_sBTC": {
+            "hash": "0x4d0c8110f10f3a76b0364f0b77f49a63c04930087fe5db628bef5a05487b9a84",
+            "blockNumber": "77818362",
+            "timestamp": "1725621961",
+            "events": {
+              "MaximumMarketCollateralConfigured": [
+                {
+                  "name": "MaximumMarketCollateralConfigured",
+                  "args": [
+                    "6",
+                    "0x726cFb7f07231D8dBfE993c3A8b09D933CaeE78b",
+                    "75000000000000000000",
+                    "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sBTC",
+            "gasUsed": 118196,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "2be0ee86df7a8b2d287528418c497cb1",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sETH": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureMaximumMarketCollateral_Perps_sETH": {
+            "hash": "0xac1b83acaaf5700159a68bbc45e4a82df29a7f1bb69e55cfb64a69895c5834da",
+            "blockNumber": "77818371",
+            "timestamp": "1725621963",
+            "events": {
+              "MaximumMarketCollateralConfigured": [
+                {
+                  "name": "MaximumMarketCollateralConfigured",
+                  "args": [
+                    "6",
+                    "0x711d4F22CC39223a7273E45537c9d371E66A8a40",
+                    "1000000000000000000000",
+                    "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sETH",
+            "gasUsed": 118196,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "289aa217154cc84f3ce599a12db7678f",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sSOL": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureMaximumMarketCollateral_Perps_sSOL": {
+            "hash": "0x3c9eddda7914c14343773afca5f1a83be50b04c70960e07ef62b7b92389ae5a6",
+            "blockNumber": "77818380",
+            "timestamp": "1725621965",
+            "events": {
+              "MaximumMarketCollateralConfigured": [
+                {
+                  "name": "MaximumMarketCollateralConfigured",
+                  "args": [
+                    "6",
+                    "0xDE0a47cf02bd6c4cf5Dc30A059656c26A10D01B8",
+                    "7500000000000000000000",
+                    "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sSOL",
+            "gasUsed": 138108,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "d86ba021376ab607e61f5d08fea8c102",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sUSDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureMaximumMarketCollateral_Perps_sUSDe": {
+            "hash": "0x1eb7b56df63adee7c3b15a638bf37147fd675583af4319a26123d4d980a1ade4",
+            "blockNumber": "77818388",
+            "timestamp": "1725621968",
+            "events": {
+              "MaximumMarketCollateralConfigured": [
+                {
+                  "name": "MaximumMarketCollateralConfigured",
+                  "args": [
+                    "6",
+                    "0xD58A253022fE19693abC61e041C88F32b51C7Cbf",
+                    "5000000000000000000000000",
+                    "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureMaximumMarketCollateral_Perps_sUSDe",
+            "gasUsed": 138096,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "6aa3dd0f2e77b2261f5239ee1c6d262f",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setAtomicFixedFee_btc": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setAtomicFixedFee_btc": {
+            "hash": "0x79df4c55bab8f27a1c382182dd470101bcbef4c54e5e79cd2c8be8f2eef29bc0",
+            "blockNumber": "77818399",
+            "timestamp": "1725621970",
+            "events": {
+              "AtomicFixedFeeSet": [
+                {
+                  "name": "AtomicFixedFeeSet",
+                  "args": [
+                    "4",
+                    "20000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setAtomicFixedFee_btc",
+            "gasUsed": 124964,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "6b792de3033b46c6ccb24d696010b4b0",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setAtomicFixedFee_sETH": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setAtomicFixedFee_sETH": {
+            "hash": "0x74525d96ba3e135294783840471d24d971cff42cc008b5695849d6c5bac290fa",
+            "blockNumber": "77818408",
+            "timestamp": "1725621972",
+            "events": {
+              "AtomicFixedFeeSet": [
+                {
+                  "name": "AtomicFixedFeeSet",
+                  "args": [
+                    "5",
+                    "20000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setAtomicFixedFee_sETH",
+            "gasUsed": 124964,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "9d84e0a8843fba4ba8bf23135fd30d53",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setAtomicFixedFee_sSOL": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setAtomicFixedFee_sSOL": {
+            "hash": "0x531ccb70b8bf6111ff1bc24484b7ffe091364c1778c78bb6812b1be14b57c481",
+            "blockNumber": "77818417",
+            "timestamp": "1725621975",
+            "events": {
+              "AtomicFixedFeeSet": [
+                {
+                  "name": "AtomicFixedFeeSet",
+                  "args": [
+                    "8",
+                    "20000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setAtomicFixedFee_sSOL",
+            "gasUsed": 124964,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "e194907ee4978e8ba9394ef167c4e823",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setAtomicFixedFee_sUSDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setAtomicFixedFee_sUSDe": {
+            "hash": "0x0341a87474ac00708e16b668d8aa4c1d8b76e0fe57eba05d4e78a9eda0a3a704",
+            "blockNumber": "77818425",
+            "timestamp": "1725621977",
+            "events": {
+              "AtomicFixedFeeSet": [
+                {
+                  "name": "AtomicFixedFeeSet",
+                  "args": [
+                    "7",
+                    "20000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setAtomicFixedFee_sUSDe",
+            "gasUsed": 124964,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "a2cd9e07dabc4a4416edb887cf51b23e",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setMarketSkewScale_sol": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setMarketSkewScale_sol": {
+            "hash": "0xa7566591ff0a6f3681642c9fcdf00b9de5a03ea056eb243461256be70600e728",
+            "blockNumber": "77818435",
+            "timestamp": "1725621979",
+            "events": {
+              "MarketSkewScaleSet": [
+                {
+                  "name": "MarketSkewScaleSet",
+                  "args": [
+                    "8",
+                    "1406250000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setMarketSkewScale_sol",
+            "gasUsed": 125011,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "14523ab55ebe792783c77205cf160da3",
+      "version": 7
     }
   },
   "options": {},
-  "status": "partial",
+  "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "9792eda90736a3a8610061b709da35e093cfd3dc",
+    "commitHash": "1b9e32e6fffda794dfa11dc10511325a71c2c9e9",
     "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
