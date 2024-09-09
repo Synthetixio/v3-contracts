@@ -217,6 +217,16 @@
   },
   {
     "type": "error",
+    "name": "InvalidTransactionTypeIndex",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "txnType"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "MismatchAssociatedSystemKind",
     "inputs": [
       {
@@ -606,6 +616,33 @@
       {
         "type": "address",
         "name": "implAddress"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "indexPrice",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint128",
+        "name": "transactionType"
+      },
+      {
+        "type": "uint8",
+        "name": "priceTolerance"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "price"
       }
     ]
   },
