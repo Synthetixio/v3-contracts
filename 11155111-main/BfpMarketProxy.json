@@ -1,0 +1,3704 @@
+[
+  {
+    "type": "error",
+    "name": "FeatureUnavailable",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "which"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidAccountId",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidPermission",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "permission"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OnlyAccountTokenProxy",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "origin"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PermissionDenied",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "bytes32",
+        "name": "permission"
+      },
+      {
+        "type": "address",
+        "name": "target"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PermissionNotGranted",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "bytes32",
+        "name": "permission"
+      },
+      {
+        "type": "address",
+        "name": "user"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PositionOutOfBounds",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ValueAlreadyInSet",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ValueNotInSet",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ZeroAddress",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "AccountCreated",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "owner",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "PermissionGranted",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "bytes32",
+        "name": "permission",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "user",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "sender"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "PermissionRevoked",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "bytes32",
+        "name": "permission",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "user",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "sender"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "createAccount",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "createAccount",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "requestedAccountId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getAccountLastInteraction",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getAccountOwner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getAccountPermissions",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "accountPerms",
+        "components": [
+          {
+            "type": "address",
+            "name": "user"
+          },
+          {
+            "type": "bytes32[]",
+            "name": "permissions"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getAccountTokenAddress",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "grantPermission",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "bytes32",
+        "name": "permission"
+      },
+      {
+        "type": "address",
+        "name": "user"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "hasPermission",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "bytes32",
+        "name": "permission"
+      },
+      {
+        "type": "address",
+        "name": "user"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "isAuthorized",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "bytes32",
+        "name": "permission"
+      },
+      {
+        "type": "address",
+        "name": "user"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "notifyAccountTransfer",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "to"
+      },
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "renouncePermission",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "bytes32",
+        "name": "permission"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "revokePermission",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "bytes32",
+        "name": "permission"
+      },
+      {
+        "type": "address",
+        "name": "user"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "MismatchAssociatedSystemKind",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "expected"
+      },
+      {
+        "type": "bytes32",
+        "name": "actual"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MissingAssociatedSystem",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "id"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "Unauthorized",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "addr"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "AssociatedSystemSet",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "kind",
+        "indexed": true
+      },
+      {
+        "type": "bytes32",
+        "name": "id",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "proxy"
+      },
+      {
+        "type": "address",
+        "name": "impl"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getAssociatedSystem",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "id"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address",
+        "name": "addr"
+      },
+      {
+        "type": "bytes32",
+        "name": "kind"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "initOrUpgradeNft",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "id"
+      },
+      {
+        "type": "string",
+        "name": "name"
+      },
+      {
+        "type": "string",
+        "name": "symbol"
+      },
+      {
+        "type": "string",
+        "name": "uri"
+      },
+      {
+        "type": "address",
+        "name": "impl"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "initOrUpgradeToken",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "id"
+      },
+      {
+        "type": "string",
+        "name": "name"
+      },
+      {
+        "type": "string",
+        "name": "symbol"
+      },
+      {
+        "type": "uint8",
+        "name": "decimals"
+      },
+      {
+        "type": "address",
+        "name": "impl"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "registerUnmanagedSystem",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "id"
+      },
+      {
+        "type": "address",
+        "name": "endpoint"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ImplementationIsSterile",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "implementation"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NoChange",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NotAContract",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "contr"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NotNominated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "addr"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "UpgradeSimulationFailed",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OwnerChanged",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "oldOwner"
+      },
+      {
+        "type": "address",
+        "name": "newOwner"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OwnerNominated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newOwner"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "Upgraded",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "self",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "implementation"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "acceptOwnership",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getImplementation",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "nominateNewOwner",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newNominatedOwner"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "nominatedOwner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "renounceNomination",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "simulateUpgradeTo",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newImplementation"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "upgradeTo",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "newImplementation"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "FeatureFlagAllowAllSet",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature",
+        "indexed": true
+      },
+      {
+        "type": "bool",
+        "name": "allowAll"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "FeatureFlagAllowlistAdded",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "account"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "FeatureFlagAllowlistRemoved",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "account"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "FeatureFlagDeniersReset",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature",
+        "indexed": true
+      },
+      {
+        "type": "address[]",
+        "name": "deniers"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "FeatureFlagDenyAllSet",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature",
+        "indexed": true
+      },
+      {
+        "type": "bool",
+        "name": "denyAll"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "PerpMarketSuspended",
+    "inputs": [
+      {
+        "type": "bool",
+        "name": "suspended"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "addToFeatureFlagAllowlist",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      },
+      {
+        "type": "address",
+        "name": "account"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "enableAllFeatures",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getDeniers",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address[]"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getFeatureFlagAllowAll",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getFeatureFlagAllowlist",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address[]"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getFeatureFlagDenyAll",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "isFeatureAllowed",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      },
+      {
+        "type": "address",
+        "name": "account"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "removeFromFeatureFlagAllowlist",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      },
+      {
+        "type": "address",
+        "name": "account"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setDeniers",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      },
+      {
+        "type": "address[]",
+        "name": "deniers"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setFeatureFlagAllowAll",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      },
+      {
+        "type": "bool",
+        "name": "allowAll"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setFeatureFlagDenyAll",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "feature"
+      },
+      {
+        "type": "bool",
+        "name": "denyAll"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "suspendAllFeatures",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": []
+  },
+  {
+    "type": "constructor",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "_synthetix"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidCoreAddress",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "synthetixCore"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MarketNotFound",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OverflowInt256ToInt128",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowInt256ToUint256",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint128ToInt128",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint256ToInt256",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint256ToUint128",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint256ToUint64",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "FundingRecomputed",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "int128",
+        "name": "skew"
+      },
+      {
+        "type": "int128",
+        "name": "fundingRate"
+      },
+      {
+        "type": "int128",
+        "name": "fundingVelocity"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarketCreated",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "id",
+        "indexed": true
+      },
+      {
+        "type": "bytes32",
+        "name": "name"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarketSizeUpdated",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "size"
+      },
+      {
+        "type": "int128",
+        "name": "skew"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OrderCanceled",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "keeperFee"
+      },
+      {
+        "type": "uint64",
+        "name": "commitmentTime"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "UtilizationRecomputed",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "int128",
+        "name": "skew"
+      },
+      {
+        "type": "uint128",
+        "name": "utilizationRate"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "createMarket",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "data",
+        "components": [
+          {
+            "type": "bytes32",
+            "name": "name"
+          },
+          {
+            "type": "uint32",
+            "name": "minDelegateTime"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint128"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getActiveMarketIds",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "uint128[]"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMarketDigest",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "tuple[]",
+            "name": "depositedCollaterals",
+            "components": [
+              {
+                "type": "address",
+                "name": "collateralAddress"
+              },
+              {
+                "type": "uint256",
+                "name": "available"
+              }
+            ]
+          },
+          {
+            "type": "bytes32",
+            "name": "name"
+          },
+          {
+            "type": "int128",
+            "name": "skew"
+          },
+          {
+            "type": "uint128",
+            "name": "size"
+          },
+          {
+            "type": "uint256",
+            "name": "oraclePrice"
+          },
+          {
+            "type": "int128",
+            "name": "fundingVelocity"
+          },
+          {
+            "type": "int128",
+            "name": "fundingRate"
+          },
+          {
+            "type": "uint128",
+            "name": "utilizationRate"
+          },
+          {
+            "type": "uint128",
+            "name": "remainingLiquidatableSizeCapacity"
+          },
+          {
+            "type": "uint128",
+            "name": "lastLiquidationTime"
+          },
+          {
+            "type": "uint128",
+            "name": "totalTraderDebtUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "totalCollateralValueUsd"
+          },
+          {
+            "type": "int128",
+            "name": "debtCorrection"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getUtilizationDigest",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "uint128",
+            "name": "lastComputedUtilizationRate"
+          },
+          {
+            "type": "uint64",
+            "name": "lastComputedTimestamp"
+          },
+          {
+            "type": "uint128",
+            "name": "currentUtilizationRate"
+          },
+          {
+            "type": "uint256",
+            "name": "utilization"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "minimumCredit",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "name",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "recomputeFunding",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "recomputeUtilization",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "reportedDebt",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "setEthOracleNodeId",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "ethOracleNodeId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setPyth",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "pyth"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setRewardDistributorImplementation",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "implementation"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "supportsInterface",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes4",
+        "name": "interfaceId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidParameter",
+    "inputs": [
+      {
+        "type": "string",
+        "name": "parameter"
+      },
+      {
+        "type": "string",
+        "name": "reason"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "GlobalMarketConfigured",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "from",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarketConfigured",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "from",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMarketConfiguration",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "address",
+            "name": "pyth"
+          },
+          {
+            "type": "bytes32",
+            "name": "ethOracleNodeId"
+          },
+          {
+            "type": "address",
+            "name": "rewardDistributorImplementation"
+          },
+          {
+            "type": "uint64",
+            "name": "pythPublishTimeMin"
+          },
+          {
+            "type": "uint64",
+            "name": "pythPublishTimeMax"
+          },
+          {
+            "type": "uint64",
+            "name": "minOrderAge"
+          },
+          {
+            "type": "uint64",
+            "name": "maxOrderAge"
+          },
+          {
+            "type": "uint256",
+            "name": "minKeeperFeeUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "maxKeeperFeeUsd"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperProfitMarginUsd"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperProfitMarginPercent"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperSettlementGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperCancellationGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperLiquidationGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperFlagGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperLiquidateMarginGasUnits"
+          },
+          {
+            "type": "address",
+            "name": "keeperLiquidationEndorsed"
+          },
+          {
+            "type": "uint128",
+            "name": "collateralDiscountScalar"
+          },
+          {
+            "type": "uint128",
+            "name": "minCollateralDiscount"
+          },
+          {
+            "type": "uint128",
+            "name": "maxCollateralDiscount"
+          },
+          {
+            "type": "uint128",
+            "name": "utilizationBreakpointPercent"
+          },
+          {
+            "type": "uint128",
+            "name": "lowUtilizationSlopePercent"
+          },
+          {
+            "type": "uint128",
+            "name": "highUtilizationSlopePercent"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMarketConfigurationById",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "bytes32",
+            "name": "oracleNodeId"
+          },
+          {
+            "type": "bytes32",
+            "name": "pythPriceFeedId"
+          },
+          {
+            "type": "uint128",
+            "name": "makerFee"
+          },
+          {
+            "type": "uint128",
+            "name": "takerFee"
+          },
+          {
+            "type": "uint128",
+            "name": "maxMarketSize"
+          },
+          {
+            "type": "uint128",
+            "name": "maxFundingVelocity"
+          },
+          {
+            "type": "uint128",
+            "name": "skewScale"
+          },
+          {
+            "type": "uint128",
+            "name": "fundingVelocityClamp"
+          },
+          {
+            "type": "uint128",
+            "name": "minCreditPercent"
+          },
+          {
+            "type": "uint256",
+            "name": "minMarginUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "minMarginRatio"
+          },
+          {
+            "type": "uint256",
+            "name": "incrementalMarginScalar"
+          },
+          {
+            "type": "uint256",
+            "name": "maintenanceMarginScalar"
+          },
+          {
+            "type": "uint256",
+            "name": "maxInitialMarginRatio"
+          },
+          {
+            "type": "uint256",
+            "name": "liquidationRewardPercent"
+          },
+          {
+            "type": "uint128",
+            "name": "liquidationLimitScalar"
+          },
+          {
+            "type": "uint128",
+            "name": "liquidationWindowDuration"
+          },
+          {
+            "type": "uint128",
+            "name": "liquidationMaxPd"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "setMarketConfiguration",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "data",
+        "components": [
+          {
+            "type": "uint64",
+            "name": "pythPublishTimeMin"
+          },
+          {
+            "type": "uint64",
+            "name": "pythPublishTimeMax"
+          },
+          {
+            "type": "uint64",
+            "name": "minOrderAge"
+          },
+          {
+            "type": "uint64",
+            "name": "maxOrderAge"
+          },
+          {
+            "type": "uint256",
+            "name": "minKeeperFeeUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "maxKeeperFeeUsd"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperProfitMarginPercent"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperProfitMarginUsd"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperSettlementGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperCancellationGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperLiquidationGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperFlagGasUnits"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperLiquidateMarginGasUnits"
+          },
+          {
+            "type": "address",
+            "name": "keeperLiquidationEndorsed"
+          },
+          {
+            "type": "uint128",
+            "name": "collateralDiscountScalar"
+          },
+          {
+            "type": "uint128",
+            "name": "minCollateralDiscount"
+          },
+          {
+            "type": "uint128",
+            "name": "maxCollateralDiscount"
+          },
+          {
+            "type": "uint128",
+            "name": "utilizationBreakpointPercent"
+          },
+          {
+            "type": "uint128",
+            "name": "lowUtilizationSlopePercent"
+          },
+          {
+            "type": "uint128",
+            "name": "highUtilizationSlopePercent"
+          }
+        ]
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setMarketConfigurationById",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "data",
+        "components": [
+          {
+            "type": "uint128",
+            "name": "marketId"
+          },
+          {
+            "type": "bytes32",
+            "name": "oracleNodeId"
+          },
+          {
+            "type": "bytes32",
+            "name": "pythPriceFeedId"
+          },
+          {
+            "type": "uint128",
+            "name": "makerFee"
+          },
+          {
+            "type": "uint128",
+            "name": "takerFee"
+          },
+          {
+            "type": "uint128",
+            "name": "maxMarketSize"
+          },
+          {
+            "type": "uint128",
+            "name": "maxFundingVelocity"
+          },
+          {
+            "type": "uint128",
+            "name": "skewScale"
+          },
+          {
+            "type": "uint128",
+            "name": "fundingVelocityClamp"
+          },
+          {
+            "type": "uint128",
+            "name": "minCreditPercent"
+          },
+          {
+            "type": "uint256",
+            "name": "minMarginUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "minMarginRatio"
+          },
+          {
+            "type": "uint256",
+            "name": "incrementalMarginScalar"
+          },
+          {
+            "type": "uint256",
+            "name": "maintenanceMarginScalar"
+          },
+          {
+            "type": "uint256",
+            "name": "maxInitialMarginRatio"
+          },
+          {
+            "type": "uint256",
+            "name": "liquidationRewardPercent"
+          },
+          {
+            "type": "uint128",
+            "name": "liquidationLimitScalar"
+          },
+          {
+            "type": "uint128",
+            "name": "liquidationWindowDuration"
+          },
+          {
+            "type": "uint128",
+            "name": "liquidationMaxPd"
+          }
+        ]
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setMinDelegationTime",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint32",
+        "name": "minDelegationTime"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "AccountNotFound",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "AccountSplitProportionTooLarge",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "AccountSplitProportionTooSmall",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CanLiquidatePosition",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CollateralFound",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "DuplicateEntries",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InsufficientMargin",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidHook",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "hook"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidPositionSide",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OrderFound",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowInt128ToUint128",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PositionFlagged",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PositionFound",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PositionNotFound",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Unauthorized",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "caller"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ZeroProportion",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "AccountSplit",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "fromId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "toId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "AccountsMerged",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "fromId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "toId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getAccountDigest",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "tuple[]",
+            "name": "depositedCollaterals",
+            "components": [
+              {
+                "type": "address",
+                "name": "collateralAddress"
+              },
+              {
+                "type": "uint256",
+                "name": "available"
+              },
+              {
+                "type": "uint256",
+                "name": "oraclePrice"
+              }
+            ]
+          },
+          {
+            "type": "uint256",
+            "name": "collateralUsd"
+          },
+          {
+            "type": "uint128",
+            "name": "debtUsd"
+          },
+          {
+            "type": "tuple",
+            "name": "position",
+            "components": [
+              {
+                "type": "uint128",
+                "name": "accountId"
+              },
+              {
+                "type": "uint128",
+                "name": "marketId"
+              },
+              {
+                "type": "uint256",
+                "name": "remainingMarginUsd"
+              },
+              {
+                "type": "uint256",
+                "name": "healthFactor"
+              },
+              {
+                "type": "uint256",
+                "name": "notionalValueUsd"
+              },
+              {
+                "type": "int256",
+                "name": "pnl"
+              },
+              {
+                "type": "int128",
+                "name": "accruedFunding"
+              },
+              {
+                "type": "uint128",
+                "name": "accruedUtilization"
+              },
+              {
+                "type": "uint256",
+                "name": "entryPythPrice"
+              },
+              {
+                "type": "uint256",
+                "name": "entryPrice"
+              },
+              {
+                "type": "uint256",
+                "name": "oraclePrice"
+              },
+              {
+                "type": "int128",
+                "name": "size"
+              },
+              {
+                "type": "uint256",
+                "name": "im"
+              },
+              {
+                "type": "uint256",
+                "name": "mm"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getPositionDigest",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "uint128",
+            "name": "accountId"
+          },
+          {
+            "type": "uint128",
+            "name": "marketId"
+          },
+          {
+            "type": "uint256",
+            "name": "remainingMarginUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "healthFactor"
+          },
+          {
+            "type": "uint256",
+            "name": "notionalValueUsd"
+          },
+          {
+            "type": "int256",
+            "name": "pnl"
+          },
+          {
+            "type": "int128",
+            "name": "accruedFunding"
+          },
+          {
+            "type": "uint128",
+            "name": "accruedUtilization"
+          },
+          {
+            "type": "uint256",
+            "name": "entryPythPrice"
+          },
+          {
+            "type": "uint256",
+            "name": "entryPrice"
+          },
+          {
+            "type": "uint256",
+            "name": "oraclePrice"
+          },
+          {
+            "type": "int128",
+            "name": "size"
+          },
+          {
+            "type": "uint256",
+            "name": "im"
+          },
+          {
+            "type": "uint256",
+            "name": "mm"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "mergeAccounts",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "fromId"
+      },
+      {
+        "type": "uint128",
+        "name": "toId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "splitAccount",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "fromId"
+      },
+      {
+        "type": "uint128",
+        "name": "toId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint128",
+        "name": "proportion"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ArrayLengthMismatch",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "DebtFound",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientCollateral",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      },
+      {
+        "type": "uint256",
+        "name": "available"
+      },
+      {
+        "type": "uint256",
+        "name": "value"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidRewardDistributor",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "distributor"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MaxCollateralExceeded",
+    "inputs": [
+      {
+        "type": "uint256",
+        "name": "value"
+      },
+      {
+        "type": "uint256",
+        "name": "max"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "MissingRequiredCollateral",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "NilCollateral",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NoDebt",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "UnsupportedCollateral",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ZeroAmount",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "DebtPaid",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "oldDebt"
+      },
+      {
+        "type": "uint128",
+        "name": "newDebt"
+      },
+      {
+        "type": "uint128",
+        "name": "paidFromUsdCollateral"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarginCollateralConfigured",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "from",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "collaterals"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarginDeposit",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "from",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "to",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "value"
+      },
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarginWithdraw",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "from",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "to",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "value"
+      },
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getDiscountedCollateralPrice",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      },
+      {
+        "type": "uint256",
+        "name": "amount"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMarginCollateralConfiguration",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "components": [
+          {
+            "type": "address",
+            "name": "collateralAddress"
+          },
+          {
+            "type": "bytes32",
+            "name": "oracleNodeId"
+          },
+          {
+            "type": "uint128",
+            "name": "maxAllowable"
+          },
+          {
+            "type": "uint128",
+            "name": "skewScale"
+          },
+          {
+            "type": "address",
+            "name": "rewardDistributor"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMarginDigest",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "uint256",
+            "name": "discountedMarginUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "marginUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "discountedCollateralUsd"
+          },
+          {
+            "type": "uint256",
+            "name": "collateralUsd"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMarginLiquidationOnlyReward",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getNetAssetValue",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint256",
+        "name": "oraclePrice"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getWithdrawableMargin",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "modifyCollateral",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      },
+      {
+        "type": "int256",
+        "name": "amountDelta"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "payDebt",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint128",
+        "name": "amount"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setCollateralMaxAllowable",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "collateralAddress"
+      },
+      {
+        "type": "uint128",
+        "name": "maxAllowable"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setMarginCollateralConfiguration",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address[]",
+        "name": "collateralAddresses"
+      },
+      {
+        "type": "bytes32[]",
+        "name": "oracleNodeIds"
+      },
+      {
+        "type": "uint128[]",
+        "name": "maxAllowables"
+      },
+      {
+        "type": "uint128[]",
+        "name": "skewScales"
+      },
+      {
+        "type": "address[]",
+        "name": "rewardDistributors"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "withdrawAllCollateral",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "DuplicateHook",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "hook"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientLiquidity",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidPrice",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MaxHooksExceeded",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "MaxMarketSizeExceeded",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "NilOrder",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OrderNotFound",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OrderNotReady",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OrderNotStale",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OrderStale",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PriceToleranceExceeded",
+    "inputs": [
+      {
+        "type": "int128",
+        "name": "sizeDelta"
+      },
+      {
+        "type": "uint256",
+        "name": "price"
+      },
+      {
+        "type": "uint256",
+        "name": "limitPrice"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "PriceToleranceNotExceeded",
+    "inputs": [
+      {
+        "type": "int128",
+        "name": "sizeDelta"
+      },
+      {
+        "type": "uint256",
+        "name": "price"
+      },
+      {
+        "type": "uint256",
+        "name": "limitPrice"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OrderCommitted",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint64",
+        "name": "commitmentTime"
+      },
+      {
+        "type": "int128",
+        "name": "sizeDelta"
+      },
+      {
+        "type": "uint256",
+        "name": "estimatedOrderFee"
+      },
+      {
+        "type": "uint256",
+        "name": "estimatedKeeperFee"
+      },
+      {
+        "type": "bytes32",
+        "name": "trackingCode"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OrderSettled",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint64",
+        "name": "settlementTime"
+      },
+      {
+        "type": "int128",
+        "name": "sizeDelta"
+      },
+      {
+        "type": "uint256",
+        "name": "orderFee"
+      },
+      {
+        "type": "uint256",
+        "name": "keeperFee"
+      },
+      {
+        "type": "int128",
+        "name": "accruedFunding"
+      },
+      {
+        "type": "uint128",
+        "name": "accruedUtilization"
+      },
+      {
+        "type": "int256",
+        "name": "pnl"
+      },
+      {
+        "type": "uint256",
+        "name": "fillPrice"
+      },
+      {
+        "type": "uint128",
+        "name": "accountDebt"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "OrderSettlementHookExecuted",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "hook"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "cancelOrder",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "bytes",
+        "name": "priceUpdateData"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "cancelStaleOrder",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "commitOrder",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "int128",
+        "name": "sizeDelta"
+      },
+      {
+        "type": "uint256",
+        "name": "limitPrice"
+      },
+      {
+        "type": "uint128",
+        "name": "keeperFeeBufferUsd"
+      },
+      {
+        "type": "address[]",
+        "name": "hooks"
+      },
+      {
+        "type": "bytes32",
+        "name": "trackingCode"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getFillPrice",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "int128",
+        "name": "size"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getOraclePrice",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getOrderDigest",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "int128",
+            "name": "sizeDelta"
+          },
+          {
+            "type": "uint64",
+            "name": "commitmentTime"
+          },
+          {
+            "type": "uint256",
+            "name": "limitPrice"
+          },
+          {
+            "type": "uint128",
+            "name": "keeperFeeBufferUsd"
+          },
+          {
+            "type": "address[]",
+            "name": "hooks"
+          },
+          {
+            "type": "bool",
+            "name": "isStale"
+          },
+          {
+            "type": "bool",
+            "name": "isReady"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getOrderFees",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "int128",
+        "name": "sizeDelta"
+      },
+      {
+        "type": "uint128",
+        "name": "keeperFeeBufferUsd"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "orderFee"
+      },
+      {
+        "type": "uint256",
+        "name": "keeperFee"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "settleOrder",
+    "constant": false,
+    "stateMutability": "payable",
+    "payable": true,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "bytes",
+        "name": "priceUpdateData"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "CannotLiquidateMargin",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "CannotLiquidatePosition",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "LiquidationZeroCapacity",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "PositionNotFlagged",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "MarginLiquidated",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "keeperReward"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "PositionFlaggedLiquidation",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "address",
+        "name": "flagger"
+      },
+      {
+        "type": "uint256",
+        "name": "flagKeeperReward"
+      },
+      {
+        "type": "uint256",
+        "name": "flaggedPrice"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "PositionLiquidated",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId",
+        "indexed": true
+      },
+      {
+        "type": "uint128",
+        "name": "marketId",
+        "indexed": true
+      },
+      {
+        "type": "int128",
+        "name": "sizeBeforeLiquidation"
+      },
+      {
+        "type": "int128",
+        "name": "remainingSize"
+      },
+      {
+        "type": "address",
+        "name": "keeper"
+      },
+      {
+        "type": "address",
+        "name": "flagger"
+      },
+      {
+        "type": "uint256",
+        "name": "liqKeeperFee"
+      },
+      {
+        "type": "uint256",
+        "name": "liquidationPrice"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "flagPosition",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getHealthFactor",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getLiquidationFees",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "flagKeeperReward"
+      },
+      {
+        "type": "uint256",
+        "name": "liqKeeperFee"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getLiquidationMarginUsd",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "int128",
+        "name": "sizeDelta"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256",
+        "name": "im"
+      },
+      {
+        "type": "uint256",
+        "name": "mm"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getRemainingLiquidatableSizeCapacity",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint128",
+        "name": "maxLiquidatableCapacity"
+      },
+      {
+        "type": "uint128",
+        "name": "remainingCapacity"
+      },
+      {
+        "type": "uint128",
+        "name": "lastLiquidationTimestamp"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "isMarginLiquidatable",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "isPositionLiquidatable",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "liquidateMarginOnly",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "liquidatePosition",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "accountId"
+      },
+      {
+        "type": "uint128",
+        "name": "marketId"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "error",
+    "name": "ZeroLength",
+    "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "RewardDistributorCreated",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "distributor",
+        "indexed": true
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "createRewardDistributor",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "data",
+        "components": [
+          {
+            "type": "uint128",
+            "name": "poolId"
+          },
+          {
+            "type": "address[]",
+            "name": "collateralTypes"
+          },
+          {
+            "type": "string",
+            "name": "name"
+          },
+          {
+            "type": "address",
+            "name": "token"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "SettlementHookConfigured",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "from",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "hooks"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getSettlementHookConfiguration",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple",
+        "components": [
+          {
+            "type": "address[]",
+            "name": "whitelistedHookAddresses"
+          },
+          {
+            "type": "uint32",
+            "name": "maxHooksPerOrder"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "isSettlementHookWhitelisted",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "hook"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "setSettlementHookConfiguration",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "tuple",
+        "name": "data",
+        "components": [
+          {
+            "type": "address[]",
+            "name": "whitelistedHookAddresses"
+          },
+          {
+            "type": "uint32",
+            "name": "maxHooksPerOrder"
+          }
+        ]
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "SplitAccountConfigured",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "from",
+        "indexed": true
+      },
+      {
+        "type": "uint256",
+        "name": "hooks"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getEndorsedSplitAccounts",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address[]",
+        "name": "addresses"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "isEndorsedForSplitAccount",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "addr"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "setEndorsedSplitAccounts",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address[]",
+        "name": "addresses"
+      }
+    ],
+    "outputs": []
+  }
+]
