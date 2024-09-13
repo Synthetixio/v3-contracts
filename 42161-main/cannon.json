@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1726177347,
+  "timestamp": 1726238253,
   "def": {
     "setting": {
       "snx_package": {
@@ -137,18 +137,6 @@
       },
       "price_deviation_tolerance": {
         "defaultValue": "<%= parseEther('1') %>"
-      },
-      "max_collateral_limit_arb": {
-        "defaultValue": "<%= parseEther(String(10_000_000)) %>"
-      },
-      "max_collateral_limit_weth": {
-        "defaultValue": "<%= parseEther(String(5_400)) %>"
-      },
-      "max_collateral_limit_usdc": {
-        "defaultValue": "<%= parseEther(String(10_000_000)) %>"
-      },
-      "synth_usdc_max_market_collateral": {
-        "defaultValue": "<%= parseEther(String(10_000_000)) %>"
       },
       "usd_token_name": {
         "defaultValue": "<%= formatBytes32String('USDToken') %>"
@@ -774,6 +762,46 @@
           }
         ]
       },
+      "CoreProxy_configureCollateral_weeth": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= settings.weeth_address %>",
+            "oracleNodeId": "<%= extras.weeth_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('3.50') %>",
+            "liquidationRatioD18": "<%= parseEther('1.50') %>",
+            "liquidationRewardD18": "<%= parseEther('0.005') %>",
+            "minDelegationD18": "<%= parseEther('0.01') %>",
+            "depositingEnabled": true
+          }
+        ]
+      },
+      "CoreProxy_setPoolCollateralConfiguration_weeth": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "setPoolCollateralConfiguration",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.weeth_address %>",
+          {
+            "collateralLimitD18": "<%= settings.max_collateral_limit_weeth %>",
+            "issuanceRatioD18": 0
+          }
+        ]
+      },
       "CoreProxy_configureCollateral_weth": {
         "target": [
           "system.CoreProxy"
@@ -814,7 +842,7 @@
           }
         ]
       },
-      "CoreProxy_configureCollateral_stBTC": {
+      "CoreProxy_configureCollateral_wsteth": {
         "target": [
           "system.CoreProxy"
         ],
@@ -824,13 +852,33 @@
         "func": "configureCollateral",
         "args": [
           {
-            "tokenAddress": "<%= extras.synth_btc_token_address %>",
-            "oracleNodeId": "<%= extras.btc_oracle_id %>",
-            "issuanceRatioD18": "<%= parseEther('2') %>",
-            "liquidationRatioD18": "<%= parseEther('1.1') %>",
-            "liquidationRewardD18": "<%= parseEther('0.5') %>",
-            "minDelegationD18": "<%= parseEther('0.5') %>",
-            "depositingEnabled": false
+            "tokenAddress": "<%= settings.wsteth_address %>",
+            "oracleNodeId": "<%= extras.wsteth_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('3.50') %>",
+            "liquidationRatioD18": "<%= parseEther('1.35') %>",
+            "liquidationRewardD18": "<%= parseEther('0.005') %>",
+            "minDelegationD18": "<%= parseEther('0.01') %>",
+            "depositingEnabled": true
+          }
+        ]
+      },
+      "CoreProxy_setPoolCollateralConfiguration_wsteth": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "setPoolCollateralConfiguration",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.wsteth_address %>",
+          {
+            "collateralLimitD18": "<%= settings.max_collateral_limit_wsteth %>",
+            "issuanceRatioD18": 0
           }
         ]
       },
@@ -870,6 +918,26 @@
             "liquidationRatioD18": "<%= parseEther('1.05') %>",
             "liquidationRewardD18": "<%= parseEther('1') %>",
             "minDelegationD18": "<%= parseEther('100') %>",
+            "depositingEnabled": false
+          }
+        ]
+      },
+      "CoreProxy_configureCollateral_stBTC": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "configureCollateral",
+        "args": [
+          {
+            "tokenAddress": "<%= extras.synth_btc_token_address %>",
+            "oracleNodeId": "<%= extras.btc_oracle_id %>",
+            "issuanceRatioD18": "<%= parseEther('2') %>",
+            "liquidationRatioD18": "<%= parseEther('1.1') %>",
+            "liquidationRewardD18": "<%= parseEther('0.5') %>",
+            "minDelegationD18": "<%= parseEther('0.5') %>",
             "depositingEnabled": false
           }
         ]
@@ -978,7 +1046,9 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
-            "<%= settings.weth_address %>"
+            "<%= settings.weth_address %>",
+            "<%= settings.weeth_address %>",
+            "<%= settings.wsteth_address %>"
           ]
         ]
       },
@@ -1066,7 +1136,9 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
-            "<%= settings.weth_address %>"
+            "<%= settings.weth_address %>",
+            "<%= settings.weeth_address %>",
+            "<%= settings.wsteth_address %>"
           ]
         ]
       },
@@ -1154,7 +1226,9 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
-            "<%= settings.weth_address %>"
+            "<%= settings.weth_address %>",
+            "<%= settings.weeth_address %>",
+            "<%= settings.wsteth_address %>"
           ]
         ]
       },
@@ -1242,7 +1316,9 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
-            "<%= settings.weth_address %>"
+            "<%= settings.weth_address %>",
+            "<%= settings.weeth_address %>",
+            "<%= settings.wsteth_address %>"
           ]
         ]
       },
@@ -2939,6 +3015,62 @@
           }
         }
       },
+      "OracleManagerProxy_registerNode_pyth_weeth": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_weeth, false]) %>",
+          []
+        ],
+        "extra": {
+          "weeth_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_weeth": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_weeth, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "weeth_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_staleness_weeth": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.weeth_pyth_oracle_id %>",
+            "<%= extras.weeth_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "weeth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
       "OracleManagerProxy_registerNode_pyth_WIF": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error",
         "target": [
@@ -2990,6 +3122,62 @@
         ],
         "extra": {
           "wif_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_wsteth": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_wsteth, false]) %>",
+          []
+        ],
+        "extra": {
+          "wsteth_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_wsteth": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_wsteth, settings.big_cap_default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "wsteth_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_staleness_wsteth": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.big_cap_default_staleness_tolerance]) %>",
+          [
+            "<%= extras.wsteth_pyth_oracle_id %>",
+            "<%= extras.wsteth_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "wsteth_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -10211,13 +10399,23 @@
         "synth_usde_lower_limit_discount": "<%= parseEther('0.0050') %>",
         "synth_usde_discount_scalar": "<%= parseEther('1') %>"
       },
+      "collateral_limits": {
+        "max_collateral_limit_arb": "<%= parseEther(String(10_000_000)) %>",
+        "max_collateral_limit_usdc": "<%= parseEther(String(10_000_000)) %>",
+        "max_collateral_limit_weeth": "<%= parseEther(String(289)) %>",
+        "max_collateral_limit_weth": "<%= parseEther(String(5_400)) %>",
+        "max_collateral_limit_wsteth": "<%= parseEther(String(2_564)) %>",
+        "synth_usdc_max_market_collateral": "<%= parseEther(String(10_000_000)) %>"
+      },
       "token_addresses": {
         "arb_address": "0x912CE59144191C1204E64559FE8253a0e49E6548",
         "sol_address": "0xb74Da9FE2F96B9E0a5f4A3cf0b92dd2bEC617124",
         "tbtc_address": "0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40",
         "usdc_address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
         "usde_address": "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34",
-        "weth_address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+        "weeth_address": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+        "weth_address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+        "wsteth_address": "0x5979D7b546E38E414F7E9822514be443A4800529"
       },
       "pyth_feeds": {
         "description": "https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet",
@@ -10250,13 +10448,15 @@
         "pyth_feed_id_uni": "0x78d185a741d07edb3412b09008b7c5cfb9bbbd7d568bf00ba737b456ba171501",
         "pyth_feed_id_usdc": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
         "pyth_feed_id_usde": "0x6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d",
+        "pyth_feed_id_weeth": "0x9ee4e7c60b940440a261eb54b6d8149c23b580ed7da3139f7f08f4ea29dad395",
         "pyth_feed_id_wif": "0x4ca4beeca86f0d164160323817a4e42b10010a724c2217c6ee41b54cd4cc61fc",
+        "pyth_feed_id_wsteth": "0x6df640f3b8963d8f8358f791f352b8364513f6ab1cca5ed3f1f7b5448980e784",
         "pyth_feed_id_xlm": "0xb7a8eba68a997cd0210c2e1e4ee811ad2d174b3611c22d9ebf16f4cb7e9ba850",
         "pyth_feed_id_xrp": "0xec5d399846a9209f3fe5881d70aae9268c94339ff9817e8d18ff19fa05eea1c8"
       }
     },
     "name": "synthetix-omnibus",
-    "version": "24",
+    "version": "25",
     "description": "Includes the full synthetix system with configurations applied",
     "preset": "main"
   },
@@ -28487,8 +28687,8 @@
         "txns": {
           "PerpsMarketProxy_registerDistributor_sBTC_liquidations": {
             "hash": "",
-            "blockNumber": "247541871",
-            "timestamp": "1724835588",
+            "blockNumber": "253116316",
+            "timestamp": "1726238237",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -28500,14 +28700,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_sBTC_liquidations",
-            "gasUsed": 203115,
-            "gasCost": "1003026712",
+            "gasUsed": 112605,
+            "gasCost": "1003030607",
             "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
           }
         },
         "settings": {}
       },
-      "hash": "4c15edce7d1d842116bbf77c264c6f52",
+      "hash": "25c2367c62dbb75effad3aaa6b291aec",
       "version": 7
     },
     "invoke.PerpsMarketProxy_registerDistributor_sETH_liquidations": {
@@ -28516,8 +28716,8 @@
         "txns": {
           "PerpsMarketProxy_registerDistributor_sETH_liquidations": {
             "hash": "",
-            "blockNumber": "247541872",
-            "timestamp": "1724835590",
+            "blockNumber": "253116317",
+            "timestamp": "1726238249",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -28529,14 +28729,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_sETH_liquidations",
-            "gasUsed": 203115,
-            "gasCost": "1002653497",
+            "gasUsed": 112605,
+            "gasCost": "1002654625",
             "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
           }
         },
         "settings": {}
       },
-      "hash": "5648357a8ff4c6e296cc667462797a7c",
+      "hash": "adc1254346c7fe778bc2cefb76760304",
       "version": 7
     },
     "invoke.SpotMarketProxy_addSettlementStrategy_btc": {
@@ -29150,12 +29350,14 @@
           "pyth_feed_id_uni": "0x78d185a741d07edb3412b09008b7c5cfb9bbbd7d568bf00ba737b456ba171501",
           "pyth_feed_id_usdc": "0xeaa020c61cc479712813461ce153894a96a6c00b21ed0cfc2798d1f9a9e9c94a",
           "pyth_feed_id_usde": "0x6ec879b1e9963de5ee97e9c8710b742d6228252a5e2ca12d4ae81d7fe5ee8c5d",
+          "pyth_feed_id_weeth": "0x9ee4e7c60b940440a261eb54b6d8149c23b580ed7da3139f7f08f4ea29dad395",
           "pyth_feed_id_wif": "0x4ca4beeca86f0d164160323817a4e42b10010a724c2217c6ee41b54cd4cc61fc",
+          "pyth_feed_id_wsteth": "0x6df640f3b8963d8f8358f791f352b8364513f6ab1cca5ed3f1f7b5448980e784",
           "pyth_feed_id_xlm": "0xb7a8eba68a997cd0210c2e1e4ee811ad2d174b3611c22d9ebf16f4cb7e9ba850",
           "pyth_feed_id_xrp": "0xec5d399846a9209f3fe5881d70aae9268c94339ff9817e8d18ff19fa05eea1c8"
         }
       },
-      "hash": "859a6adcb224288eab34f2d4690b5ca9",
+      "hash": "1699d1dac6a6704d73d3294c3ef19e33",
       "version": 7
     },
     "var.sol_spot_settings": {
@@ -29176,10 +29378,12 @@
           "tbtc_address": "0x6c84a8f1c29108F47a79964b5Fe888D4f4D0dE40",
           "usdc_address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
           "usde_address": "0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34",
-          "weth_address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+          "weeth_address": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+          "weth_address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          "wsteth_address": "0x5979D7b546E38E414F7E9822514be443A4800529"
         }
       },
-      "hash": "521f85df9e499cd61fa7f68a8620ffda",
+      "hash": "914a98e35fa6587895e51fe86251f088",
       "version": 7
     },
     "invoke.OracleManagerProxy_registerNode_pyth_aave": {
@@ -37593,8 +37797,8 @@
         "txns": {
           "PerpsMarketProxy_registerDistributor_swsol_liquidations": {
             "hash": "",
-            "blockNumber": "252819036",
-            "timestamp": "1726163617",
+            "blockNumber": "253116314",
+            "timestamp": "1726238200",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -37606,14 +37810,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_swsol_liquidations",
-            "gasUsed": 203115,
-            "gasCost": "1000000008",
+            "gasUsed": 112605,
+            "gasCost": "1003949866",
             "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
           }
         },
         "settings": {}
       },
-      "hash": "c14207fe37758abbc99425e545f4fb19",
+      "hash": "1b12aa6656620c8ab4b6e20329b52d0f",
       "version": 7
     },
     "invoke.PerpsMarketProxy_registerDistributor_synth_usde_liquidations": {
@@ -37622,8 +37826,8 @@
         "txns": {
           "PerpsMarketProxy_registerDistributor_synth_usde_liquidations": {
             "hash": "",
-            "blockNumber": "252819037",
-            "timestamp": "1726163620",
+            "blockNumber": "253116315",
+            "timestamp": "1726238211",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -37635,14 +37839,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_synth_usde_liquidations",
-            "gasUsed": 203103,
-            "gasCost": "1000000008",
+            "gasUsed": 112593,
+            "gasCost": "1003459840",
             "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
           }
         },
         "settings": {}
       },
-      "hash": "1e5c3e98127791c2a125191cbfe34056",
+      "hash": "c692a1fb04874ef7d22125eb08a8b925",
       "version": 7
     },
     "invoke.setPerpsCrvSettlementStrategy": {
@@ -42974,13 +43178,381 @@
       },
       "hash": "e1c74ba761020af3b53aaf16ddd834ae",
       "version": 7
+    },
+    "var.collateral_limits": {
+      "artifacts": {
+        "settings": {
+          "max_collateral_limit_arb": "10000000000000000000000000",
+          "max_collateral_limit_usdc": "10000000000000000000000000",
+          "max_collateral_limit_weeth": "289000000000000000000",
+          "max_collateral_limit_weth": "5400000000000000000000",
+          "max_collateral_limit_wsteth": "2564000000000000000000",
+          "synth_usdc_max_market_collateral": "10000000000000000000000000"
+        }
+      },
+      "hash": "19b6798b45caaf88c317599700dc5202",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_weeth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_weeth": {
+            "hash": "0x6fdf494172c11247d121b5c89798125009b304d6df522ef31dbf323462852779",
+            "blockNumber": "253114213",
+            "timestamp": "1726237521",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xb9dda28d2855470ed3f96b0dfcabb8241e5c6aafe5c9debdeee9ae8956738a6a",
+                    9,
+                    "0x0000000000000000000000007b118596be900f3c0feb2f23758d9798965b72a39ee4e7c60b940440a261eb54b6d8149c23b580ed7da3139f7f08f4ea29dad3950000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_weeth",
+            "gasUsed": 187643,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "weeth_lookup_oracle_id": "0xb9dda28d2855470ed3f96b0dfcabb8241e5c6aafe5c9debdeee9ae8956738a6a"
+        }
+      },
+      "hash": "d2452b1b5de67d3aac2583b0e7c5fd0b",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_wsteth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_wsteth": {
+            "hash": "0x45b6aacae2a6fe8e516072ab6815e4f28db3e3ad6b77c6f957452bb950aaee35",
+            "blockNumber": "253114225",
+            "timestamp": "1726237524",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x9319e1ab17225e4b0823825867551dc444af85cc435b27ab06c40dff17e2112a",
+                    9,
+                    "0x0000000000000000000000007b118596be900f3c0feb2f23758d9798965b72a36df640f3b8963d8f8358f791f352b8364513f6ab1cca5ed3f1f7b5448980e7840000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_wsteth",
+            "gasUsed": 187532,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "wsteth_lookup_oracle_id": "0x9319e1ab17225e4b0823825867551dc444af85cc435b27ab06c40dff17e2112a"
+        }
+      },
+      "hash": "9f04d0de9c8694a24214f842d9eb54d9",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_weeth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_weeth": {
+            "hash": "0xf91da63dd29837f83ae519115eb28beda5d94f1af1c38a54124fd3788536d4c6",
+            "blockNumber": "253114237",
+            "timestamp": "1726237527",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x6ab30e2305bb031706795ef9b6c5e6552ca8c1e661313d7e0beba9d6c23cdc0e",
+                    5,
+                    "0x000000000000000000000000ff1a0f4744e8582df1ae09d5611b887b6a12925c9ee4e7c60b940440a261eb54b6d8149c23b580ed7da3139f7f08f4ea29dad3950000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_weeth",
+            "gasUsed": 178446,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "weeth_pyth_oracle_id": "0x6ab30e2305bb031706795ef9b6c5e6552ca8c1e661313d7e0beba9d6c23cdc0e"
+        }
+      },
+      "hash": "bbf83e3622a629d6c1f784fb243ada38",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_wsteth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_wsteth": {
+            "hash": "0xa0982217fed2a97735a43148048833d695331203fcceb81a5d79e97e2ae68017",
+            "blockNumber": "253114249",
+            "timestamp": "1726237530",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xec6684f51e553b7b3ecdeb1d249c8330d8466e3f99ff878c085a1f9cba1bc6c2",
+                    5,
+                    "0x000000000000000000000000ff1a0f4744e8582df1ae09d5611b887b6a12925c6df640f3b8963d8f8358f791f352b8364513f6ab1cca5ed3f1f7b5448980e7840000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_wsteth",
+            "gasUsed": 177673,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "wsteth_pyth_oracle_id": "0xec6684f51e553b7b3ecdeb1d249c8330d8466e3f99ff878c085a1f9cba1bc6c2"
+        }
+      },
+      "hash": "f1f33c53c51c64544a1813791057d301",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_weeth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_weeth": {
+            "hash": "0x319932ec2eabacde1f97dd91bdc48f79b6a957fc64c863febbd0a064a1cc156b",
+            "blockNumber": "253114273",
+            "timestamp": "1726237536",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x15b5ac0247742f767a6bdecdd3798c8b2de0248e4ef63baa38c298ffa5bfa6ff",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0x6ab30e2305bb031706795ef9b6c5e6552ca8c1e661313d7e0beba9d6c23cdc0e",
+                      "0xb9dda28d2855470ed3f96b0dfcabb8241e5c6aafe5c9debdeee9ae8956738a6a"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_weeth",
+            "gasUsed": 254173,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "weeth_oracle_id": "0x15b5ac0247742f767a6bdecdd3798c8b2de0248e4ef63baa38c298ffa5bfa6ff"
+        }
+      },
+      "hash": "35c73076c143076a2814710d4e52281b",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_wsteth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_wsteth": {
+            "hash": "0x5b66ef4f55370bdb950bb07aa2b563c294d382fcbe6c647799d1de912d426900",
+            "blockNumber": "253114285",
+            "timestamp": "1726237539",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xe7eda5fe90ae9d23b048dc1a2af77158910b65c7aaed23a3209aec4c79d79334",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0xec6684f51e553b7b3ecdeb1d249c8330d8466e3f99ff878c085a1f9cba1bc6c2",
+                      "0x9319e1ab17225e4b0823825867551dc444af85cc435b27ab06c40dff17e2112a"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_wsteth",
+            "gasUsed": 255386,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "wsteth_oracle_id": "0xe7eda5fe90ae9d23b048dc1a2af77158910b65c7aaed23a3209aec4c79d79334"
+        }
+      },
+      "hash": "440f9ba6653589cb8455c8bd636ea06b",
+      "version": 7
+    },
+    "invoke.CoreProxy_setPoolCollateralConfiguration_weeth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_setPoolCollateralConfiguration_weeth": {
+            "hash": "",
+            "blockNumber": "253116310",
+            "timestamp": "1726238107",
+            "events": {
+              "PoolCollateralConfigurationUpdated": [
+                {
+                  "name": "PoolCollateralConfigurationUpdated",
+                  "args": [
+                    "1",
+                    "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+                    {
+                      "collateralLimitD18": "289000000000000000000",
+                      "issuanceRatioD18": "0"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_setPoolCollateralConfiguration_weeth",
+            "gasUsed": 62442,
+            "gasCost": "1006699219",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "3df1a57029fb193f770bfea1802974e2",
+      "version": 7
+    },
+    "invoke.CoreProxy_setPoolCollateralConfiguration_wsteth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_setPoolCollateralConfiguration_wsteth": {
+            "hash": "",
+            "blockNumber": "253116311",
+            "timestamp": "1726238110",
+            "events": {
+              "PoolCollateralConfigurationUpdated": [
+                {
+                  "name": "PoolCollateralConfigurationUpdated",
+                  "args": [
+                    "1",
+                    "0x5979D7b546E38E414F7E9822514be443A4800529",
+                    {
+                      "collateralLimitD18": "2564000000000000000000",
+                      "issuanceRatioD18": "0"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_setPoolCollateralConfiguration_wsteth",
+            "gasUsed": 62442,
+            "gasCost": "1005865303",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "71a70b77d14eb2fbe67cabd69da24ac5",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_weeth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_weeth": {
+            "hash": "",
+            "blockNumber": "253116312",
+            "timestamp": "1726238151",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+                    {
+                      "depositingEnabled": true,
+                      "issuanceRatioD18": "3500000000000000000",
+                      "liquidationRatioD18": "1500000000000000000",
+                      "liquidationRewardD18": "5000000000000000",
+                      "oracleNodeId": "0x15b5ac0247742f767a6bdecdd3798c8b2de0248e4ef63baa38c298ffa5bfa6ff",
+                      "tokenAddress": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+                      "minDelegationD18": "10000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_weeth",
+            "gasUsed": 243185,
+            "gasCost": "1005135193",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "aae78c0ea830ef484ef5b1bc418f85c5",
+      "version": 7
+    },
+    "invoke.CoreProxy_configureCollateral_wsteth": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_configureCollateral_wsteth": {
+            "hash": "",
+            "blockNumber": "253116313",
+            "timestamp": "1726238160",
+            "events": {
+              "CollateralConfigured": [
+                {
+                  "name": "CollateralConfigured",
+                  "args": [
+                    "0x5979D7b546E38E414F7E9822514be443A4800529",
+                    {
+                      "depositingEnabled": true,
+                      "issuanceRatioD18": "3500000000000000000",
+                      "liquidationRatioD18": "1350000000000000000",
+                      "liquidationRewardD18": "5000000000000000",
+                      "oracleNodeId": "0xe7eda5fe90ae9d23b048dc1a2af77158910b65c7aaed23a3209aec4c79d79334",
+                      "tokenAddress": "0x5979D7b546E38E414F7E9822514be443A4800529",
+                      "minDelegationD18": "10000000000000000"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_configureCollateral_wsteth",
+            "gasUsed": 243185,
+            "gasCost": "1004503701",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "d4705a0ef5cc4d3ef739e7d6364094e4",
+      "version": 7
     }
   },
   "options": {},
   "meta": {
-    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "edfd2197b9bb5a1557a11ba730d26d6ee3b4a1d0",
-    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
+    "gitUrl": "https://nk/Synthetixio/synthetix-deployments",
+    "commitHash": "66c57908741c0bf799dc3d48d8ec779091c0b992",
+    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k"
 }
