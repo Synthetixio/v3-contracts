@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.17.2",
-  "timestamp": 1726815868,
+  "generator": "cannon cli 2.17.4",
+  "timestamp": 1727704665,
   "def": {
     "setting": {
       "snx_package": {
@@ -28,7 +28,7 @@
         "defaultValue": "Multi Collateral Perps"
       },
       "usdc_issuance_ratio": {
-        "defaultValue": "<%= parseEther('2.00') %>"
+        "defaultValue": "<%= parseEther('10') %>"
       },
       "usdc_liquidation_ratio": {
         "defaultValue": "<%= parseEther('1.05') %>"
@@ -52,7 +52,7 @@
         "defaultValue": "<%= parseEther('100') %>"
       },
       "arb_issuance_ratio": {
-        "defaultValue": "<%= parseEther('3.50') %>"
+        "defaultValue": "<%= parseEther('10') %>"
       },
       "arb_liquidation_ratio": {
         "defaultValue": "<%= parseEther('1.50') %>"
@@ -67,7 +67,7 @@
         "defaultValue": "<%= parseEther(String(50_000_000)) %>"
       },
       "USDe_issuance_ratio": {
-        "defaultValue": "<%= parseEther('2.00') %>"
+        "defaultValue": "<%= parseEther('10') %>"
       },
       "USDe_liquidation_ratio": {
         "defaultValue": "<%= parseEther('1.05') %>"
@@ -79,7 +79,7 @@
         "defaultValue": "<%= parseEther('100') %>"
       },
       "weth_issuance_ratio": {
-        "defaultValue": "<%= parseEther('3.00') %>"
+        "defaultValue": "<%= parseEther('10') %>"
       },
       "weth_liquidation_ratio": {
         "defaultValue": "<%= parseEther('1.25') %>"
@@ -89,21 +89,6 @@
       },
       "weth_min_delegation": {
         "defaultValue": "<%= parseEther('0.01') %>"
-      },
-      "sUSDe_max_collateral_limit": {
-        "defaultValue": "<%= parseEther(String(0)) %>"
-      },
-      "sUSDe_issuance_ratio": {
-        "defaultValue": "<%= parseEther('2.00') %>"
-      },
-      "sUSDe_liquidation_ratio": {
-        "defaultValue": "<%= parseEther('1.05') %>"
-      },
-      "sUSDe_liquidation_reward": {
-        "defaultValue": "<%= parseEther('1') %>"
-      },
-      "sUSDe_min_delegation": {
-        "defaultValue": "<%= parseEther('100') %>"
       },
       "referrer_fee": {
         "defaultValue": "<%= parseEther('0.2') %>"
@@ -951,11 +936,11 @@
           {
             "tokenAddress": "<%= settings.susde_address %>",
             "oracleNodeId": "<%= extras.sUSDe_oracle_id %>",
-            "issuanceRatioD18": "<%= settings.sUSDe_issuance_ratio %>",
-            "liquidationRatioD18": "<%= settings.sUSDe_liquidation_ratio %>",
-            "liquidationRewardD18": "<%= settings.sUSDe_liquidation_reward %>",
-            "minDelegationD18": "<%= settings.sUSDe_min_delegation %>",
-            "depositingEnabled": false
+            "issuanceRatioD18": "<%= settings.susde_issuance_ratio %>",
+            "liquidationRatioD18": "<%= settings.susde_liquidation_ratio %>",
+            "liquidationRewardD18": "<%= settings.susde_liquidation_reward %>",
+            "minDelegationD18": "<%= settings.susde_min_delegation %>",
+            "depositingEnabled": true
           }
         ]
       },
@@ -974,7 +959,7 @@
           "<%= extras.spartan_council_pool_id %>",
           "<%= settings.susde_address %>",
           {
-            "collateralLimitD18": "<%= settings.sUSDe_max_collateral_limit %>",
+            "collateralLimitD18": "<%= settings.susde_max_collateral_limit %>",
             "issuanceRatioD18": 0
           }
         ]
@@ -1031,7 +1016,7 @@
           {
             "tokenAddress": "<%= settings.wsteth_address %>",
             "oracleNodeId": "<%= extras.wsteth_oracle_id %>",
-            "issuanceRatioD18": "<%= parseEther('3.50') %>",
+            "issuanceRatioD18": "<%= parseEther('10') %>",
             "liquidationRatioD18": "<%= parseEther('1.35') %>",
             "liquidationRewardD18": "<%= parseEther('0.005') %>",
             "minDelegationD18": "<%= parseEther('0.01') %>",
@@ -1071,7 +1056,7 @@
           {
             "tokenAddress": "<%= settings.weeth_address %>",
             "oracleNodeId": "<%= extras.weeth_oracle_id %>",
-            "issuanceRatioD18": "<%= parseEther('3.50') %>",
+            "issuanceRatioD18": "<%= parseEther('10') %>",
             "liquidationRatioD18": "<%= parseEther('1.50') %>",
             "liquidationRewardD18": "<%= parseEther('0.005') %>",
             "minDelegationD18": "<%= parseEther('0.01') %>",
@@ -1195,6 +1180,7 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
+            "<%= settings.susde_address %>",
             "<%= settings.weth_address %>",
             "<%= settings.weeth_address %>",
             "<%= settings.wsteth_address %>"
@@ -1303,6 +1289,23 @@
           "<%= imports.RewardsDistributor_sBTC_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
+      "CoreProxy_registerRewardsDistributor_sBTC_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.susde_address %>",
+          "<%= imports.RewardsDistributor_sBTC_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
+        ]
+      },
       "PerpsMarketProxy_registerDistributor_sETH_liquidations": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -1319,6 +1322,7 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
+            "<%= settings.susde_address %>",
             "<%= settings.weth_address %>",
             "<%= settings.weeth_address %>",
             "<%= settings.wsteth_address %>"
@@ -1427,6 +1431,23 @@
           "<%= imports.RewardsDistributor_sETH_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
+      "CoreProxy_registerRewardsDistributor_sETH_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.susde_address %>",
+          "<%= imports.RewardsDistributor_sETH_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
+        ]
+      },
       "PerpsMarketProxy_registerDistributor_sSOL_liquidations": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -1443,6 +1464,7 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
+            "<%= settings.susde_address %>",
             "<%= settings.weth_address %>",
             "<%= settings.weeth_address %>",
             "<%= settings.wsteth_address %>"
@@ -1554,6 +1576,23 @@
           "<%= imports.RewardsDistributor_sSOL_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
+      "CoreProxy_registerRewardsDistributor_sSOL_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.susde_address %>",
+          "<%= imports.RewardsDistributor_sSOL_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
+        ]
+      },
       "PerpsMarketProxy_registerDistributor_sUSDe_liquidations": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -1570,6 +1609,7 @@
             "<%= settings.arb_address %>",
             "<%= settings.usdc_address %>",
             "<%= settings.usde_address %>",
+            "<%= settings.susde_address %>",
             "<%= settings.weth_address %>",
             "<%= settings.weeth_address %>",
             "<%= settings.wsteth_address %>"
@@ -1678,6 +1718,23 @@
         "args": [
           "<%= extras.spartan_council_pool_id %>",
           "<%= settings.weeth_address %>",
+          "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
+        ]
+      },
+      "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= extras.spartan_council_pool_id %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= extras.spartan_council_pool_id %>",
+          "<%= settings.susde_address %>",
           "<%= imports.RewardsDistributor_sUSDe_liquidation_rewards.contracts.RewardsDistributorExternal.address %>"
         ]
       },
@@ -10328,6 +10385,13 @@
       }
     },
     "var": {
+      "susde_collateral_config": {
+        "susde_max_collateral_limit": "<%= parseEther(String(10_000_000)) %>",
+        "susde_issuance_ratio": "<%= parseEther('10.00') %>",
+        "susde_liquidation_ratio": "<%= parseEther('1.05') %>",
+        "susde_liquidation_reward": "<%= parseEther('1') %>",
+        "susde_min_delegation": "<%= parseEther('100') %>"
+      },
       "SOL_spot_settings": {
         "synth_SOL_max_collateral_amount": "<%= parseEther(String(7_500)) %>",
         "synth_SOL_skew_scale": "<%= parseEther(String(1_406_250)) %>"
@@ -10346,11 +10410,11 @@
       },
       "perps_keeper_settings": {
         "perps_keeper_l1_cost_settle_gas_units": "<%= String(30_000) %>",
-        "perps_keeper_l2_cost_settle_gas_units": "<%= String(1_500_000) %>",
+        "perps_keeper_l2_cost_settle_gas_units": "<%= String(4_000_000) %>",
         "perps_keeper_l1_cost_flag_gas_units": "<%= String(5_500) %>",
-        "perps_keeper_l2_cost_flag_gas_units": "<%= String(850_000) %>",
-        "perps_keeper_l1_cost_liquidate_gas_units": "<%= String(30_000) %>",
-        "perps_keeper_l2_cost_liquidate_gas_units": "<%= String(1_300_000) %>"
+        "perps_keeper_l2_cost_flag_gas_units": "<%= String(3_600_000) %>",
+        "perps_keeper_l1_cost_liquidate_gas_units": "<%= String(34_000) %>",
+        "perps_keeper_l2_cost_liquidate_gas_units": "<%= String(2_500_000) %>"
       },
       "perps_global_settings": {
         "perps_liquidation_min_keeper_reward_usd": "<%= parseEther('1') %>",
@@ -10523,7 +10587,7 @@
         "aave_perps_maker_fee_ratio": "<%= parseEther('0') %>",
         "aave_perps_taker_fee_ratio": "<%= parseEther('0.0010') %>",
         "aave_perps_max_market_size": "<%= parseEther(String(50_000)) %>",
-        "aave_perps_max_market_value": "<%= parseEther(String(6_000_000)) %>",
+        "aave_perps_max_market_value": "<%= parseEther(String(3_000_000)) %>",
         "aave_perps_initial_margin_ratio": "<%= parseEther('4.1') %>",
         "aave_perps_maintenance_margin_scalar": "<%= parseEther('0.375') %>",
         "aave_perps_minimum_initial_margin_ratio": "<%= parseEther('0.05') %>",
@@ -10580,7 +10644,7 @@
         "xrp_perps_maker_fee_ratio": "<%= parseEther('0') %>",
         "xrp_perps_taker_fee_ratio": "<%= parseEther('0.0010') %>",
         "xrp_perps_max_market_size": "<%= parseEther(String(5_000_000)) %>",
-        "xrp_perps_max_market_value": "<%= parseEther(String(3_000_000)) %>",
+        "xrp_perps_max_market_value": "<%= parseEther(String(1_000_000)) %>",
         "xrp_perps_initial_margin_ratio": "<%= parseEther('1.2') %>",
         "xrp_perps_maintenance_margin_scalar": "<%= parseEther('0.32') %>",
         "xrp_perps_minimum_initial_margin_ratio": "<%= parseEther('0.05') %>",
@@ -11373,10 +11437,10 @@
     "setting.usdc_issuance_ratio": {
       "artifacts": {
         "settings": {
-          "usdc_issuance_ratio": "2000000000000000000"
+          "usdc_issuance_ratio": "10000000000000000000"
         }
       },
-      "hash": "09553939422a81e0204384bf690274c4",
+      "hash": "a2f32c5aee3e6b3d3f034554cca7a559",
       "version": 7
     },
     "setting.usdc_liquidation_ratio": {
@@ -24786,9 +24850,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_usdc": {
-            "hash": "0x7c0db019ab55bc92efb95b113468603d63e898c105517b325b78679219b8cb6c",
-            "blockNumber": "76425962",
-            "timestamp": "1725264826",
+            "hash": "0xdc995f7a2b0f8b1e65efc0ed1e96694b608447f1c49327f71fde8cbd8c46776f",
+            "blockNumber": "85178958",
+            "timestamp": "1727704591",
             "events": {
               "CollateralConfigured": [
                 {
@@ -24797,7 +24861,7 @@
                     "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
                     {
                       "depositingEnabled": true,
-                      "issuanceRatioD18": "2000000000000000000",
+                      "issuanceRatioD18": "10000000000000000000",
                       "liquidationRatioD18": "1050000000000000000",
                       "liquidationRewardD18": "1000000000000000000",
                       "oracleNodeId": "0x999c46d1e0e994822e8b02def68984d9c9e124d58ee2b68f604c6a5144b0db14",
@@ -24809,14 +24873,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_usdc",
-            "gasUsed": 3352226,
+            "gasUsed": 209216,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "d9ae3817849115d28c0ec774797406c8",
+      "hash": "cb16bc29df669d27e950a41f1add01c6",
       "version": 7
     },
     "invoke.CoreProxy_configureMaximumMarketCollateral_dai": {
@@ -25353,10 +25417,10 @@
     "setting.arb_issuance_ratio": {
       "artifacts": {
         "settings": {
-          "arb_issuance_ratio": "3500000000000000000"
+          "arb_issuance_ratio": "10000000000000000000"
         }
       },
-      "hash": "87d62975a7ec083766091b33165f4161",
+      "hash": "a2f32c5aee3e6b3d3f034554cca7a559",
       "version": 7
     },
     "setting.arb_liquidation_ratio": {
@@ -25389,10 +25453,10 @@
     "setting.weth_issuance_ratio": {
       "artifacts": {
         "settings": {
-          "weth_issuance_ratio": "3000000000000000000"
+          "weth_issuance_ratio": "10000000000000000000"
         }
       },
-      "hash": "f564eb7a12d7143eb45d4ae362f2f600",
+      "hash": "a2f32c5aee3e6b3d3f034554cca7a559",
       "version": 7
     },
     "setting.weth_liquidation_ratio": {
@@ -25625,9 +25689,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_arb": {
-            "hash": "0x8ae0dcb1b6c0cf0117de3d688e45f18387bfdf836195fcd0a6e3316047d61c6c",
-            "blockNumber": "76425950",
-            "timestamp": "1725264822",
+            "hash": "0xafa270e2938cc4a48f26cbf0d38a1fd349f23ef1bc7a0ef2dbe69d758182e4d8",
+            "blockNumber": "85178933",
+            "timestamp": "1727704584",
             "events": {
               "CollateralConfigured": [
                 {
@@ -25636,7 +25700,7 @@
                     "0x7b356eEdABc1035834cd1f714658627fcb4820E3",
                     {
                       "depositingEnabled": true,
-                      "issuanceRatioD18": "3500000000000000000",
+                      "issuanceRatioD18": "10000000000000000000",
                       "liquidationRatioD18": "1500000000000000000",
                       "liquidationRewardD18": "500000000000000000",
                       "oracleNodeId": "0x3f2dcd001d07de15ef2712bc750f5ca8374a953d50c4e208fc871270f960eddb",
@@ -25648,14 +25712,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_arb",
-            "gasUsed": 3282359,
+            "gasUsed": 214302,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "369886f8d03ac5188bf9211b1f334909",
+      "hash": "efde2d68f23e2dfd1027f03cbede05e1",
       "version": 7
     },
     "invoke.CoreProxy_configureCollateral_weth": {
@@ -25663,9 +25727,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_weth": {
-            "hash": "0xc764c660a0a4debed93796db4093b658bc74d80b5476458cb91ab538e2b98cfe",
-            "blockNumber": "76425976",
-            "timestamp": "1725264829",
+            "hash": "0x72c1a6be5ed0d880a7b42a6906c3264f4c4421d75f8bdb4631964e79d51a4f59",
+            "blockNumber": "85178980",
+            "timestamp": "1727704598",
             "events": {
               "CollateralConfigured": [
                 {
@@ -25674,7 +25738,7 @@
                     "0x980B62Da83eFf3D4576C647993b0c1D7faf17c73",
                     {
                       "depositingEnabled": true,
-                      "issuanceRatioD18": "3000000000000000000",
+                      "issuanceRatioD18": "10000000000000000000",
                       "liquidationRatioD18": "1250000000000000000",
                       "liquidationRewardD18": "5000000000000000",
                       "oracleNodeId": "0x93249440fb2535a0425e3134c597f4570fbae358ce9a039bff9957ccb1a74f37",
@@ -25686,14 +25750,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_weth",
-            "gasUsed": 3242430,
+            "gasUsed": 207338,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "9bd89e3101e35f102e2deaa7a1fa130d",
+      "hash": "7f66e84a2fe4b7759c7fff87cdc4c1bc",
       "version": 7
     },
     "setting.max_collateral_limit_arb": {
@@ -26218,10 +26282,10 @@
     "setting.USDe_issuance_ratio": {
       "artifacts": {
         "settings": {
-          "USDe_issuance_ratio": "2000000000000000000"
+          "USDe_issuance_ratio": "10000000000000000000"
         }
       },
-      "hash": "09553939422a81e0204384bf690274c4",
+      "hash": "a2f32c5aee3e6b3d3f034554cca7a559",
       "version": 7
     },
     "setting.USDe_liquidation_ratio": {
@@ -26747,7 +26811,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_USDe": {
-            "hash": "0xf6f34b5632a645ac26565497277fcbc15714a83dbe6dddd634e50967eeb47e8d",
+            "hash": "0xab230349d540c6a81d1363ff44fbbac38192109915b800a8ef28a989fa47a267",
+            "blockNumber": "85178925",
+            "timestamp": "1727704581",
             "events": {
               "CollateralConfigured": [
                 {
@@ -26756,7 +26822,7 @@
                     "0xCf45784084Ca3fd91C215a87265014c3DC67182D",
                     {
                       "depositingEnabled": true,
-                      "issuanceRatioD18": "2000000000000000000",
+                      "issuanceRatioD18": "10000000000000000000",
                       "liquidationRatioD18": "1050000000000000000",
                       "liquidationRewardD18": "1000000000000000000",
                       "oracleNodeId": "0x6cf98623fab05c98f4fcdba250ba350e6a16453be00148e17fbe4f164315111e",
@@ -26768,14 +26834,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_USDe",
-            "gasUsed": 243209,
+            "gasUsed": 212924,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "4e15cc47dba419529af8b2db7401c036",
+      "hash": "5248fe63272cc170769d8b833c76ee88",
       "version": 7
     },
     "invoke.CoreProxy_configureCollateral_sUSDe": {
@@ -26783,7 +26849,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_sUSDe": {
-            "hash": "0xa56a6aa452f88953ea53a06a0892a38660395ae09b4011c4de087e6fa27b9cf8",
+            "hash": "0xf322925ce8892269941a34ece2f2e3338a0486929666422cba9f012203468ea3",
+            "blockNumber": "85178949",
+            "timestamp": "1727704588",
             "events": {
               "CollateralConfigured": [
                 {
@@ -26791,8 +26859,8 @@
                   "args": [
                     "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
                     {
-                      "depositingEnabled": false,
-                      "issuanceRatioD18": "2000000000000000000",
+                      "depositingEnabled": true,
+                      "issuanceRatioD18": "10000000000000000000",
                       "liquidationRatioD18": "1050000000000000000",
                       "liquidationRewardD18": "1000000000000000000",
                       "oracleNodeId": "0x075491f920177d441f4f31049f525749a1467428d01ac26337b0e1b9af8cfe70",
@@ -26804,14 +26872,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_sUSDe",
-            "gasUsed": 54244,
+            "gasUsed": 229579,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "5e8ca573f597278a1d8bd63727113000",
+      "hash": "ff9243ee1f8e7c05892dc09324d76947",
       "version": 7
     },
     "invoke.CoreProxy_setPoolCollateralConfiguration_USDe": {
@@ -26851,7 +26919,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_setPoolCollateralConfiguration_sUSDe": {
-            "hash": "0x82d8a4ff8d89b24d710e5c740a61db9bbf2f0ef55057ea68f2daaee3f835612e",
+            "hash": "0xb89c6717e78637582ae2d19c451d885855589f115ddab4ed99005794272b0afc",
+            "blockNumber": "85179003",
+            "timestamp": "1727704605",
             "events": {
               "PoolCollateralConfigurationUpdated": [
                 {
@@ -26860,7 +26930,7 @@
                     "1",
                     "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
                     {
-                      "collateralLimitD18": "0",
+                      "collateralLimitD18": "10000000000000000000000000",
                       "issuanceRatioD18": "0"
                     }
                   ]
@@ -26868,14 +26938,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_setPoolCollateralConfiguration_sUSDe",
-            "gasUsed": 40458,
+            "gasUsed": 177391,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "106967287ecab7bec6647ad638882e82",
+      "hash": "652a0103841f4e5b1cd2d7d07249cfa0",
       "version": 7
     },
     "provision.RewardsDistributor_SpartanCouncilPool_ARB_rewards_for_USDe_lp": {
@@ -31270,14 +31340,14 @@
       "artifacts": {
         "settings": {
           "perps_keeper_l1_cost_settle_gas_units": "30000",
-          "perps_keeper_l2_cost_settle_gas_units": "1500000",
+          "perps_keeper_l2_cost_settle_gas_units": "4000000",
           "perps_keeper_l1_cost_flag_gas_units": "5500",
-          "perps_keeper_l2_cost_flag_gas_units": "850000",
-          "perps_keeper_l1_cost_liquidate_gas_units": "30000",
-          "perps_keeper_l2_cost_liquidate_gas_units": "1300000"
+          "perps_keeper_l2_cost_flag_gas_units": "3600000",
+          "perps_keeper_l1_cost_liquidate_gas_units": "34000",
+          "perps_keeper_l2_cost_liquidate_gas_units": "2500000"
         }
       },
-      "hash": "f23aa7c6a3a3e1de5cf4b88eb876f209",
+      "hash": "4a39e7478567e1cf85e39745576e996b",
       "version": 7
     },
     "provision.perps_gas_oracle_node": {
@@ -31336,33 +31406,33 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostEthOracleNode": {
-            "hash": "0x0f43d870cbd40a5066b62727e11819d0468c890f5b276b822f0da30d61755b1d",
-            "blockNumber": "74306034",
-            "timestamp": "1724663146",
+            "hash": "0xebc0d43987551ba1122f0fb5b81471ff60101081ee8d93fdb0d82d5232fbb673",
+            "blockNumber": "85178901",
+            "timestamp": "1727704573",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0xe036a40a9750e8799ddf252ada96ce07ed559e4f7aff236fd642cc72c26a43c2",
+                    "0xa3598b898f372b0dfc25795466885a603b6c0f49c94c269558fad69cec431142",
                     2,
-                    "0x0000000000000000000000001fbbafb9232247d37af889210c75bbf29303b8330000000000000000000000000000000000000000000000000000000000007530000000000000000000000000000000000000000000000000000000000016e360000000000000000000000000000000000000000000000000000000000000157c00000000000000000000000000000000000000000000000000000000000cf8500000000000000000000000000000000000000000000000000000000000007530000000000000000000000000000000000000000000000000000000000013d620",
+                    "0x0000000000000000000000001fbbafb9232247d37af889210c75bbf29303b833000000000000000000000000000000000000000000000000000000000000753000000000000000000000000000000000000000000000000000000000003d0900000000000000000000000000000000000000000000000000000000000000157c000000000000000000000000000000000000000000000000000000000036ee8000000000000000000000000000000000000000000000000000000000000084d000000000000000000000000000000000000000000000000000000000002625a0",
                     []
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.registerPerps_KeeperCostEthOracleNode",
-            "gasUsed": 3008778,
+            "gasUsed": 389759,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {
-          "perps_keeper_cost_eth_oracle_id": "0xe036a40a9750e8799ddf252ada96ce07ed559e4f7aff236fd642cc72c26a43c2"
+          "perps_keeper_cost_eth_oracle_id": "0xa3598b898f372b0dfc25795466885a603b6c0f49c94c269558fad69cec431142"
         }
       },
-      "hash": "4aef9fd7c91ffc1753a9524c4f5761b2",
+      "hash": "14a1a41eafcb5a7c07f600f0578cf55b",
       "version": 7
     },
     "invoke.registerPerps_KeeperCostUsdOracleNode": {
@@ -31370,19 +31440,19 @@
         "contracts": {},
         "txns": {
           "registerPerps_KeeperCostUsdOracleNode": {
-            "hash": "0x173bed10672c4570bd16da880b86c9aee0926dbd30a2567ab99fcddf6804c9ec",
-            "blockNumber": "74306272",
-            "timestamp": "1724663214",
+            "hash": "0x73e29df0fa21a2e478ea0af2c15bbdff678b1a1a787c19f1369ca708fa8f03ac",
+            "blockNumber": "85179016",
+            "timestamp": "1727704610",
             "events": {
               "NodeRegistered": [
                 {
                   "name": "NodeRegistered",
                   "args": [
-                    "0x45e9ff0c811c1ba5f2a8534816ca4086d92aa08f5cac59024e549ef0800d2fa2",
+                    "0xf75967787cf2448eb388bd0f73e9cd0f47178f181c9e58ba26ba14c84441117d",
                     1,
                     "0x0000000000000000000000000000000000000000000000000000000000000007",
                     [
-                      "0xe036a40a9750e8799ddf252ada96ce07ed559e4f7aff236fd642cc72c26a43c2",
+                      "0xa3598b898f372b0dfc25795466885a603b6c0f49c94c269558fad69cec431142",
                       "0x93249440fb2535a0425e3134c597f4570fbae358ce9a039bff9957ccb1a74f37"
                     ]
                   ]
@@ -31390,16 +31460,16 @@
               ]
             },
             "deployedOn": "invoke.registerPerps_KeeperCostUsdOracleNode",
-            "gasUsed": 3445124,
+            "gasUsed": 418467,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {
-          "perps_keeper_cost_usd_oracle_id": "0x45e9ff0c811c1ba5f2a8534816ca4086d92aa08f5cac59024e549ef0800d2fa2"
+          "perps_keeper_cost_usd_oracle_id": "0xf75967787cf2448eb388bd0f73e9cd0f47178f181c9e58ba26ba14c84441117d"
         }
       },
-      "hash": "058358f79cec9d594fe16f2a70be2800",
+      "hash": "d0e3842a034cffd1cf71b39921bc45be",
       "version": 7
     },
     "invoke.setPerpsMarketKeeperCostNodeId": {
@@ -31407,28 +31477,28 @@
         "contracts": {},
         "txns": {
           "setPerpsMarketKeeperCostNodeId": {
-            "hash": "0xcbae902350f31dc985f70d207594cca14bfb69eeacf866dc646c664ca2f02903",
-            "blockNumber": "74306401",
-            "timestamp": "1724663253",
+            "hash": "0x916036ca8b1d373a588b51d66860680c09e189ac5afff263b0dd4302fdaf9d53",
+            "blockNumber": "85179170",
+            "timestamp": "1727704663",
             "events": {
               "KeeperCostNodeIdUpdated": [
                 {
                   "name": "KeeperCostNodeIdUpdated",
                   "args": [
-                    "0x45e9ff0c811c1ba5f2a8534816ca4086d92aa08f5cac59024e549ef0800d2fa2"
+                    "0xf75967787cf2448eb388bd0f73e9cd0f47178f181c9e58ba26ba14c84441117d"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsMarketKeeperCostNodeId",
-            "gasUsed": 1522739,
+            "gasUsed": 109041,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "49a51c5bf2cdb11e3e4dcdc36cd0600f",
+      "hash": "119593094d02c8a26162eca90562cb9d",
       "version": 7
     },
     "provision.RewardsDistributor_SpartanCouncilPool_ARB": {
@@ -32018,9 +32088,9 @@
         "contracts": {},
         "txns": {
           "PerpsMarketProxy_registerDistributor_sBTC_liquidations": {
-            "hash": "0x74513c2c1d86902dd7cd77d83a3e1b42b2ae56a7e860e024f46d6ae28393b178",
-            "blockNumber": "80201696",
-            "timestamp": "1726233275",
+            "hash": "0x762870afcb4261202efb4a336babb723ce0dde7e0d6e50e30a5313be32c37a04",
+            "blockNumber": "85179122",
+            "timestamp": "1727704649",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -32032,14 +32102,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_sBTC_liquidations",
-            "gasUsed": 117235,
+            "gasUsed": 310902,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "bcefbc00b27689da18304df613a35891",
+      "hash": "7909af4c10893ddfd079f815fd229f1b",
       "version": 7
     },
     "invoke.PerpsMarketProxy_registerDistributor_sETH_liquidations": {
@@ -32047,9 +32117,9 @@
         "contracts": {},
         "txns": {
           "PerpsMarketProxy_registerDistributor_sETH_liquidations": {
-            "hash": "0x9407f33319846caa29250c6426cad586d8debf2d7d33f7a314fe8b7e367ef4aa",
-            "blockNumber": "80201709",
-            "timestamp": "1726233278",
+            "hash": "0x3dfe95e453bf2b530f3af23fa30fe08a8692daa79c1b1c19589e4cafe1c1ceb0",
+            "blockNumber": "85179133",
+            "timestamp": "1727704652",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -32061,14 +32131,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_sETH_liquidations",
-            "gasUsed": 117171,
+            "gasUsed": 311829,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "5f11359319781284490c49e952a9da0d",
+      "hash": "4327e982923213f60c2a6925292fceab",
       "version": 7
     },
     "invoke.SpotMarketProxy_setSettlementStrategy_btc": {
@@ -32423,7 +32493,7 @@
           "aave_perps_maker_fee_ratio": "0",
           "aave_perps_taker_fee_ratio": "1000000000000000",
           "aave_perps_max_market_size": "50000000000000000000000",
-          "aave_perps_max_market_value": "6000000000000000000000000",
+          "aave_perps_max_market_value": "3000000000000000000000000",
           "aave_perps_initial_margin_ratio": "4100000000000000000",
           "aave_perps_maintenance_margin_scalar": "375000000000000000",
           "aave_perps_minimum_initial_margin_ratio": "50000000000000000",
@@ -32436,7 +32506,7 @@
           "aave_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
         }
       },
-      "hash": "b6d7501a0ad16ead43a982075ac3740b",
+      "hash": "2fcb97ca67264bebb42a395c605b91f5",
       "version": 7
     },
     "var.perps_ada_market_settings": {
@@ -33070,7 +33140,7 @@
           "xrp_perps_maker_fee_ratio": "0",
           "xrp_perps_taker_fee_ratio": "1000000000000000",
           "xrp_perps_max_market_size": "5000000000000000000000000",
-          "xrp_perps_max_market_value": "3000000000000000000000000",
+          "xrp_perps_max_market_value": "1000000000000000000000000",
           "xrp_perps_initial_margin_ratio": "1200000000000000000",
           "xrp_perps_maintenance_margin_scalar": "320000000000000000",
           "xrp_perps_minimum_initial_margin_ratio": "50000000000000000",
@@ -33083,7 +33153,7 @@
           "xrp_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
         }
       },
-      "hash": "9dbdd07e1deb6176459c6d447336fd18",
+      "hash": "996d13f4270adcb86c762541d5dd6c0f",
       "version": 7
     },
     "provision.SOL_mock_collateral": {
@@ -38264,29 +38334,29 @@
         "contracts": {},
         "txns": {
           "setPerpsAaveMaxMarketValue": {
-            "hash": "0x5157f6043537c295d45e33090c33d13aa78db9df8eebe6318da6f01d60aced1d",
-            "blockNumber": "77507825",
-            "timestamp": "1725543658",
+            "hash": "0xb4cb398a098e8aa384a3daa5b64238fd1d175f23e6d3e0a9a30acefc657a347f",
+            "blockNumber": "85179026",
+            "timestamp": "1727704613",
             "events": {
               "MaxMarketValueSet": [
                 {
                   "name": "MaxMarketValueSet",
                   "args": [
                     "900",
-                    "6000000000000000000000000"
+                    "3000000000000000000000000"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsAaveMaxMarketValue",
-            "gasUsed": 936840,
+            "gasUsed": 124878,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "94b64ce6e9f6f78635016e554238311d",
+      "hash": "fd337c708545dc159b0c8b271b8d5fdf",
       "version": 7
     },
     "invoke.setPerpsAaveOrderFees": {
@@ -44545,29 +44615,29 @@
         "contracts": {},
         "txns": {
           "setPerpsXrpMaxMarketValue": {
-            "hash": "0x7d76e0bcdc82bb343e1f07d9bdf042b072507edd22c60c9c88b71f4513519bd8",
-            "blockNumber": "77509736",
-            "timestamp": "1725544131",
+            "hash": "0x1dafa98285d861d673c7e65e5c002fb93b5b0ee42730a270e86b084afef8016d",
+            "blockNumber": "85179045",
+            "timestamp": "1727704624",
             "events": {
               "MaxMarketValueSet": [
                 {
                   "name": "MaxMarketValueSet",
                   "args": [
                     "1200",
-                    "3000000000000000000000000"
+                    "1000000000000000000000000"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPerpsXrpMaxMarketValue",
-            "gasUsed": 3839223,
+            "gasUsed": 124866,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "c3411d091eb04e9bdaa3be5a91e15392",
+      "hash": "975f90722d4bec9f5dd5117b3e0ab1db",
       "version": 7
     },
     "invoke.setPerpsXrpOrderFees": {
@@ -45016,9 +45086,9 @@
         "contracts": {},
         "txns": {
           "PerpsMarketProxy_registerDistributor_sSOL_liquidations": {
-            "hash": "0xae3519282285314c5d2a6eacc157c702915aeac6ed0d8c29b298258c6bae936c",
-            "blockNumber": "80201722",
-            "timestamp": "1726233281",
+            "hash": "0x0dc12ce7acd4fecfd7b364440697a835cbc667b04b9dca05b2b093953888c5d9",
+            "blockNumber": "85179144",
+            "timestamp": "1727704656",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -45030,14 +45100,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_sSOL_liquidations",
-            "gasUsed": 117171,
+            "gasUsed": 309048,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "69499f2fd484363a556efef839ffba9a",
+      "hash": "9d2496c549040f6db9cd1566ce3454e8",
       "version": 7
     },
     "invoke.PerpsMarketProxy_registerDistributor_sUSDe_liquidations": {
@@ -45045,9 +45115,9 @@
         "contracts": {},
         "txns": {
           "PerpsMarketProxy_registerDistributor_sUSDe_liquidations": {
-            "hash": "0x348622d8718d05f0773aae7b9f0a3d401fba01397c3e31e9afb01675fab45812",
-            "blockNumber": "80201735",
-            "timestamp": "1726233285",
+            "hash": "0x7210a57db23e3676fb10348194f90199da00e3754c5e3117f2493bf8b1808f86",
+            "blockNumber": "85179157",
+            "timestamp": "1727704659",
             "events": {
               "RewardDistributorRegistered": [
                 {
@@ -45059,14 +45129,14 @@
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_registerDistributor_sUSDe_liquidations",
-            "gasUsed": 117225,
+            "gasUsed": 315536,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "e8c83de6cfd3c63937fc85417fe452fb",
+      "hash": "8ae30497cd35e4d7f334d2a4d52370be",
       "version": 7
     },
     "invoke.SpotMarketProxy_setSettlementStrategy_USDe": {
@@ -47087,9 +47157,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_weeth": {
-            "hash": "0xd0cf6ca990ac2b9f8b0383cff150e715cbeee40fc20b6390f56c7b2a4069d01b",
-            "blockNumber": "80201505",
-            "timestamp": "1726233235",
+            "hash": "0x6c3268160c16e5a3c232d97cd9c0fa5e8af4e0f2a0c010ba7468da3d64ee4c4e",
+            "blockNumber": "85178970",
+            "timestamp": "1727704595",
             "events": {
               "CollateralConfigured": [
                 {
@@ -47098,7 +47168,7 @@
                     "0x54664815B709252dDC99dB3CB91e2d584717DbfC",
                     {
                       "depositingEnabled": true,
-                      "issuanceRatioD18": "3500000000000000000",
+                      "issuanceRatioD18": "10000000000000000000",
                       "liquidationRatioD18": "1500000000000000000",
                       "liquidationRewardD18": "5000000000000000",
                       "oracleNodeId": "0xb384c174cdac0bdab2807bf52de8914f86bbb91c792d07f8cb8d506d9b1f4e64",
@@ -47110,14 +47180,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_weeth",
-            "gasUsed": 245620,
+            "gasUsed": 211046,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "221a23694dea09ea175ade3cbc91869c",
+      "hash": "7d189be78a1ae962589e6943a440e414",
       "version": 7
     },
     "invoke.CoreProxy_configureCollateral_wsteth": {
@@ -47125,9 +47195,9 @@
         "contracts": {},
         "txns": {
           "CoreProxy_configureCollateral_wsteth": {
-            "hash": "0x61b3c7e2cd79521b91af2c772eb6d00672f310af561ba8943507c1ab93fbbc44",
-            "blockNumber": "80201518",
-            "timestamp": "1726233238",
+            "hash": "0x557e3fc388fc5651fca1e210666be3e9f617ce33420dfca548003af4c6038a30",
+            "blockNumber": "85178993",
+            "timestamp": "1727704601",
             "events": {
               "CollateralConfigured": [
                 {
@@ -47136,7 +47206,7 @@
                     "0x4159018C381e5AEB9A95AB27c26726fBc4671f08",
                     {
                       "depositingEnabled": true,
-                      "issuanceRatioD18": "3500000000000000000",
+                      "issuanceRatioD18": "10000000000000000000",
                       "liquidationRatioD18": "1350000000000000000",
                       "liquidationRewardD18": "5000000000000000",
                       "oracleNodeId": "0x20bfad953bab87ea584191345557af569231e384c776f06a99cc0282964f3a29",
@@ -47148,14 +47218,14 @@
               ]
             },
             "deployedOn": "invoke.CoreProxy_configureCollateral_wsteth",
-            "gasUsed": 245583,
+            "gasUsed": 209192,
             "gasCost": "100000000",
             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
           }
         },
         "settings": {}
       },
-      "hash": "53d564dd995c807a78c32f098e4ef83b",
+      "hash": "7484041e2c4f90083950eb1c97639cd4",
       "version": 7
     },
     "invoke.CoreProxy_setPoolCollateralConfiguration_weeth": {
@@ -47795,14 +47865,151 @@
       },
       "hash": null,
       "version": 7
+    },
+    "var.susde_collateral_config": {
+      "artifacts": {
+        "settings": {
+          "susde_max_collateral_limit": "10000000000000000000000000",
+          "susde_issuance_ratio": "10000000000000000000",
+          "susde_liquidation_ratio": "1050000000000000000",
+          "susde_liquidation_reward": "1000000000000000000",
+          "susde_min_delegation": "100000000000000000000"
+        }
+      },
+      "hash": "f19e9a5915d2d980dfe4eb7e5ade2758",
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_sBTC_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_sBTC_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+            "hash": "0xa8ca9ce2691985fc97772965a49cdc4086476dfa5f2da6b1aa90a69bf89ca4b0",
+            "blockNumber": "85179079",
+            "timestamp": "1727704634",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
+                    "0xb1dCa5430db838C1D43e349AAe8b04Bc54a1416d"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_sBTC_liquidation_rewards_for_SpartanCouncilPool_susde_lp",
+            "gasUsed": 212099,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "e1fddb32515a64d5578eb4f263250adb",
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_sETH_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_sETH_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+            "hash": "0xe8fffa505e7b7459c12f830ce8aa1bb3b73f2847da8cec86b57adbeb77fe430c",
+            "blockNumber": "85179087",
+            "timestamp": "1727704638",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
+                    "0xeCbCb88bff2f5f24173793cf86DF08f852eD4f2A"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_sETH_liquidation_rewards_for_SpartanCouncilPool_susde_lp",
+            "gasUsed": 212099,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "5841136a71c520f1164ab2c4c16e5046",
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_sSOL_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_sSOL_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+            "hash": "0xf9c36ceb86eb683cbb68308a0553290a4e882abb3115ce811f52091c78e67af6",
+            "blockNumber": "85179098",
+            "timestamp": "1727704641",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
+                    "0x208b65b1520F1B7356f3f752C637d56CeE268815"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_sSOL_liquidation_rewards_for_SpartanCouncilPool_susde_lp",
+            "gasUsed": 212099,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "11fe2239f95520c4e59061d5c2dde65a",
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_susde_lp": {
+            "hash": "0xa4909e245cb76e857d83c8cb4c525bc121e129b1f4db1569780cd53d33b8980b",
+            "blockNumber": "85179111",
+            "timestamp": "1727704645",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x7FcAD85b378D9a13733dD5c715ef318F45cd7699",
+                    "0x9aC0A92aFdEc87BC08B0D31B3f200A5FE5D13A8f"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_sUSDe_liquidation_rewards_for_SpartanCouncilPool_susde_lp",
+            "gasUsed": 212099,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "c0091e38000300b7bb1ad18b6813cdb6",
+      "version": 7
     }
   },
   "options": {},
   "status": "complete",
   "meta": {
-    "gitUrl": "https///github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "fea5c29a18492084c9d5ff0f091f2be79c20ccd3",
-    "readme": "https///github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
+    "gitUrl": "https://nk/Synthetixio/synthetix-deployments",
+    "commitHash": "acb7b64d99f883ba088fc3816b67970b6465a988",
+    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 421614
