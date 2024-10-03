@@ -192,13 +192,18 @@
   },
   {
     "type": "error",
-    "name": "Errors",
+    "name": "DeviationToleranceExceeded",
     "inputs": [
       {
-        "type": "bytes[]",
-        "name": "revertReasons"
+        "type": "int256",
+        "name": "deviation"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidInputPrice",
+    "inputs": []
   },
   {
     "type": "error",
@@ -221,6 +226,20 @@
             "name": "parents"
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidParameter",
+    "inputs": [
+      {
+        "type": "string",
+        "name": "parameter"
+      },
+      {
+        "type": "string",
+        "name": "reason"
       }
     ]
   },
@@ -282,6 +301,44 @@
     "type": "error",
     "name": "OverflowUint56ToInt56",
     "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "StalenessToleranceExceeded",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "parentId"
+      },
+      {
+        "type": "int256",
+        "name": "price"
+      },
+      {
+        "type": "uint256",
+        "name": "staleTimestamp"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "UnprocessableNode",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "nodeId"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "UnsupportedOperation",
+    "inputs": [
+      {
+        "type": "uint8",
+        "name": "operation"
+      }
+    ]
   },
   {
     "type": "event",
@@ -382,51 +439,6 @@
       {
         "type": "tuple",
         "name": "node",
-        "components": [
-          {
-            "type": "int256",
-            "name": "price"
-          },
-          {
-            "type": "uint256",
-            "name": "timestamp"
-          },
-          {
-            "type": "uint256",
-            "name": "__slotAvailableForFutureUse1"
-          },
-          {
-            "type": "uint256",
-            "name": "__slotAvailableForFutureUse2"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "type": "function",
-    "name": "processManyWithRuntime",
-    "constant": true,
-    "stateMutability": "view",
-    "payable": false,
-    "inputs": [
-      {
-        "type": "bytes32[]",
-        "name": "nodeIds"
-      },
-      {
-        "type": "bytes32[]",
-        "name": "runtimeKeys"
-      },
-      {
-        "type": "bytes32[]",
-        "name": "runtimeValues"
-      }
-    ],
-    "outputs": [
-      {
-        "type": "tuple[]",
-        "name": "nodes",
         "components": [
           {
             "type": "int256",
