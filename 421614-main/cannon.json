@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.17.4",
-  "timestamp": 1727704665,
+  "timestamp": 1728025758,
   "def": {
     "setting": {
       "snx_package": {
@@ -3887,6 +3887,22 @@
           }
         ]
       },
+      "SpotMarketProxy_setCollateralLeverage_dai": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_dai_market_id %>"
+          ]
+        },
+        "func": "setCollateralLeverage",
+        "args": [
+          "<%= extras.synth_dai_market_id %>",
+          "<%= parseEther('10') %>"
+        ]
+      },
       "SpotMarketProxy_createSynth_sol": {
         "target": [
           "spotFactory.SpotMarketProxy"
@@ -4056,6 +4072,22 @@
           "<%= parseEther(String(0.02)) %>"
         ]
       },
+      "SpotMarketProxy_setCollateralLeverage_sSOL": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_SOL_market_id %>"
+          ]
+        },
+        "func": "setCollateralLeverage",
+        "args": [
+          "<%= extras.synth_SOL_market_id %>",
+          "<%= parseEther('10') %>"
+        ]
+      },
       "SpotMarketProxy_createSynth_usdc": {
         "target": [
           "spotFactory.SpotMarketProxy"
@@ -4191,6 +4223,22 @@
             "priceDeviationTolerance": "<%= settings.price_deviation_tolerance %>",
             "disabled": false
           }
+        ]
+      },
+      "SpotMarketProxy_setCollateralLeverage_usdc": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_usdc_market_id %>"
+          ]
+        },
+        "func": "setCollateralLeverage",
+        "args": [
+          "<%= extras.synth_usdc_market_id %>",
+          "<%= parseEther('10') %>"
         ]
       },
       "SpotMarketProxy_createSynth_USDe": {
@@ -4344,6 +4392,22 @@
         "args": [
           "<%= extras.synth_USDe_market_id %>",
           "<%= parseEther(String(0.02)) %>"
+        ]
+      },
+      "SpotMarketProxy_setCollateralLeverage_sUSDe": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_USDe_market_id %>"
+          ]
+        },
+        "func": "setCollateralLeverage",
+        "args": [
+          "<%= extras.synth_USDe_market_id %>",
+          "<%= parseEther('10') %>"
         ]
       },
       "SpotMarketProxy_createSynth_btc": {
@@ -4515,6 +4579,22 @@
           "<%= parseEther(String(0.02)) %>"
         ]
       },
+      "SpotMarketProxy_setCollateralLeverage_btc": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_btc_market_id %>"
+          ]
+        },
+        "func": "setCollateralLeverage",
+        "args": [
+          "<%= extras.synth_btc_market_id %>",
+          "<%= parseEther('10') %>"
+        ]
+      },
       "SpotMarketProxy_createSynth_eth": {
         "target": [
           "spotFactory.SpotMarketProxy"
@@ -4682,6 +4762,22 @@
         "args": [
           "<%= extras.synth_eth_market_id %>",
           "<%= parseEther(String(0.02)) %>"
+        ]
+      },
+      "SpotMarketProxy_setCollateralLeverage_sETH": {
+        "target": [
+          "spotFactory.SpotMarketProxy"
+        ],
+        "fromCall": {
+          "func": "getMarketOwner",
+          "args": [
+            "<%= extras.synth_eth_market_id %>"
+          ]
+        },
+        "func": "setCollateralLeverage",
+        "args": [
+          "<%= extras.synth_eth_market_id %>",
+          "<%= parseEther('10') %>"
         ]
       },
       "registerPerps_KeeperCostEthOracleNode": {
@@ -11087,7 +11183,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "29",
+    "version": "30",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -48002,14 +48098,194 @@
       },
       "hash": "c0091e38000300b7bb1ad18b6813cdb6",
       "version": 7
+    },
+    "invoke.SpotMarketProxy_setCollateralLeverage_btc": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setCollateralLeverage_btc": {
+            "hash": "0xe92b40bcbc8d58e17ce9fbcbe2d64cec7d3224d55aa133edd975d22f130c9707",
+            "blockNumber": "85972661",
+            "timestamp": "1728025735",
+            "events": {
+              "CollateralLeverageSet": [
+                {
+                  "name": "CollateralLeverageSet",
+                  "args": [
+                    "4",
+                    "10000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setCollateralLeverage_btc",
+            "gasUsed": 212254,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "f644c3984d53ff4fc9aaf6928b91eedc",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setCollateralLeverage_dai": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setCollateralLeverage_dai": {
+            "hash": "0xf3304304147f928dc8b6ca857275f0bf1a6b6bbaa92e611cc1530a26b5733e89",
+            "blockNumber": "85972665",
+            "timestamp": "1728025737",
+            "events": {
+              "CollateralLeverageSet": [
+                {
+                  "name": "CollateralLeverageSet",
+                  "args": [
+                    "1",
+                    "10000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setCollateralLeverage_dai",
+            "gasUsed": 212254,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "5353862f5aed03fda120496c06a8cfa5",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setCollateralLeverage_sETH": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setCollateralLeverage_sETH": {
+            "hash": "0xc4e8b3323e9ca8fe68fe11bd59a5145a6c9a6b03b1fc69bdb66690003b9a8b78",
+            "blockNumber": "85972671",
+            "timestamp": "1728025739",
+            "events": {
+              "CollateralLeverageSet": [
+                {
+                  "name": "CollateralLeverageSet",
+                  "args": [
+                    "5",
+                    "10000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setCollateralLeverage_sETH",
+            "gasUsed": 212254,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "e1903521436e85b22bd666ef72c4232d",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setCollateralLeverage_sSOL": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setCollateralLeverage_sSOL": {
+            "hash": "0xcdbce15d781bbc1b0437d7ce507878c64af2eb219010191a542aee1493b018c8",
+            "blockNumber": "85972677",
+            "timestamp": "1728025742",
+            "events": {
+              "CollateralLeverageSet": [
+                {
+                  "name": "CollateralLeverageSet",
+                  "args": [
+                    "8",
+                    "10000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setCollateralLeverage_sSOL",
+            "gasUsed": 212254,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "6e98a7531c402a239f36fd13dbbdd8e5",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setCollateralLeverage_sUSDe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setCollateralLeverage_sUSDe": {
+            "hash": "0x096242f986fd2e37e4f1e86f1b147b24e6b208770b8637f68f4d693bd195019a",
+            "blockNumber": "85972682",
+            "timestamp": "1728025744",
+            "events": {
+              "CollateralLeverageSet": [
+                {
+                  "name": "CollateralLeverageSet",
+                  "args": [
+                    "7",
+                    "10000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setCollateralLeverage_sUSDe",
+            "gasUsed": 212254,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "c5b7b2f11c0f940dc1cc700a273c0731",
+      "version": 7
+    },
+    "invoke.SpotMarketProxy_setCollateralLeverage_usdc": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "SpotMarketProxy_setCollateralLeverage_usdc": {
+            "hash": "0x7bdc1818cf79594c0d13db0786391e83609ce9e1455b9c5e1b30f1f8b0c6a4f1",
+            "blockNumber": "85972687",
+            "timestamp": "1728025746",
+            "events": {
+              "CollateralLeverageSet": [
+                {
+                  "name": "CollateralLeverageSet",
+                  "args": [
+                    "2",
+                    "10000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.SpotMarketProxy_setCollateralLeverage_usdc",
+            "gasUsed": 316535,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "80618b24737cca65eb62522088317361",
+      "version": 7
     }
   },
   "options": {},
   "status": "complete",
   "meta": {
-    "gitUrl": "https://nk/Synthetixio/synthetix-deployments",
-    "commitHash": "acb7b64d99f883ba088fc3816b67970b6465a988",
-    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/main/README.md"
+    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
+    "commitHash": "42813acd1e64ff4ce4929c78dfff14a0fcb684b1",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 421614
