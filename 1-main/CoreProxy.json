@@ -1362,16 +1362,6 @@
     "name": "CollateralLockExpired",
     "inputs": [
       {
-        "type": "uint128",
-        "name": "accountId",
-        "indexed": true
-      },
-      {
-        "type": "address",
-        "name": "collateralType",
-        "indexed": true
-      },
-      {
         "type": "uint256",
         "name": "tokenAmount"
       },
@@ -1460,6 +1450,10 @@
       {
         "type": "uint256",
         "name": "cleared"
+      },
+      {
+        "type": "uint256",
+        "name": "remainingLockAmountD18"
       }
     ]
   },
@@ -2062,6 +2056,21 @@
   {
     "type": "error",
     "name": "OverflowInt128ToUint128",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint256ToUint32",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint32ToInt32",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OverflowUint64ToInt64",
     "inputs": []
   },
   {
@@ -3859,21 +3868,6 @@
   },
   {
     "type": "error",
-    "name": "OverflowUint256ToUint32",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "OverflowUint32ToInt32",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "OverflowUint64ToInt64",
-    "inputs": []
-  },
-  {
-    "type": "error",
     "name": "RewardUnavailable",
     "inputs": [
       {
@@ -4467,6 +4461,20 @@
       {
         "type": "uint256",
         "name": "minDelegation"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InsufficientVaultCollateralRatio",
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "poolId"
+      },
+      {
+        "type": "address",
+        "name": "collateralType"
       }
     ]
   },
