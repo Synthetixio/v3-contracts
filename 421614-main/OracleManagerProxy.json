@@ -192,6 +192,21 @@
   },
   {
     "type": "error",
+    "name": "EmptyRevertReason",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "Errors",
+    "inputs": [
+      {
+        "type": "bytes[]",
+        "name": "errors"
+      }
+    ]
+  },
+  {
+    "type": "error",
     "name": "Errors",
     "inputs": [
       {
@@ -221,6 +236,20 @@
             "name": "parents"
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidParameter",
+    "inputs": [
+      {
+        "type": "string",
+        "name": "parameter"
+      },
+      {
+        "type": "string",
+        "name": "reason"
       }
     ]
   },
@@ -382,6 +411,51 @@
       {
         "type": "tuple",
         "name": "node",
+        "components": [
+          {
+            "type": "int256",
+            "name": "price"
+          },
+          {
+            "type": "uint256",
+            "name": "timestamp"
+          },
+          {
+            "type": "uint256",
+            "name": "__slotAvailableForFutureUse1"
+          },
+          {
+            "type": "uint256",
+            "name": "__slotAvailableForFutureUse2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "processManyWithManyRuntime",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32[]",
+        "name": "nodeIds"
+      },
+      {
+        "type": "bytes32[][]",
+        "name": "runtimeKeys"
+      },
+      {
+        "type": "bytes32[][]",
+        "name": "runtimeValues"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "name": "nodes",
         "components": [
           {
             "type": "int256",
