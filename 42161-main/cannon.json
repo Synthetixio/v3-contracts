@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1729800063,
+  "timestamp": 1729906659,
   "def": {
     "setting": {
       "snx_package": {
@@ -2534,7 +2534,7 @@
           }
         }
       },
-      "OracleManagerProxy_registerNode_pyth_BTC": {
+      "OracleManagerProxy_registerNode_pyth_real_BTC": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error",
         "target": [
           "system.oracle_manager.Proxy"
@@ -2546,13 +2546,13 @@
           []
         ],
         "extra": {
-          "btc_pyth_oracle_id": {
+          "real_btc_pyth_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
         }
       },
-      "OracleManagerProxy_registerNode_pyth_offchain_lookup_BTC": {
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_real_BTC": {
         "description": "Pyth Off-chain Lookup",
         "target": [
           "system.oracle_manager.Proxy"
@@ -2564,13 +2564,13 @@
           []
         ],
         "extra": {
-          "btc_lookup_oracle_id": {
+          "real_btc_lookup_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
         }
       },
-      "OracleManagerProxy_registerNode_staleness_BTC": {
+      "OracleManagerProxy_registerNode_staleness_real_BTC": {
         "target": [
           "system.oracle_manager.Proxy"
         ],
@@ -2579,12 +2579,12 @@
           7,
           "<%= defaultAbiCoder.encode(['uint256'], [settings.default_staleness_tolerance]) %>",
           [
-            "<%= extras.btc_pyth_oracle_id %>",
-            "<%= extras.btc_lookup_oracle_id %>"
+            "<%= extras.real_btc_pyth_oracle_id %>",
+            "<%= extras.real_btc_lookup_oracle_id %>"
           ]
         ],
         "extra": {
-          "btc_oracle_id": {
+          "real_btc_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -5614,6 +5614,62 @@
           }
         }
       },
+      "OracleManagerProxy_registerNode_pyth_BTC": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_tbtc, false]) %>",
+          []
+        ],
+        "extra": {
+          "btc_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_BTC": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_tbtc, settings.default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "btc_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_staleness_BTC": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.default_staleness_tolerance]) %>",
+          [
+            "<%= extras.btc_pyth_oracle_id %>",
+            "<%= extras.btc_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "btc_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
       "OracleManagerProxy_registerNode_pyth_tia": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
         "target": [
@@ -6985,7 +7041,7 @@
             "settlementDelay": "<%= settings.settlement_delay %>",
             "settlementWindowDuration": "<%= settings.settlement_window_duration %>",
             "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
-            "feedId": "<%= settings.pyth_feed_id_btc %>",
+            "feedId": "<%= settings.pyth_feed_id_tbtc %>",
             "url": "<%= settings.pyth_feed_url %>",
             "settlementReward": "<%= settings.settlement_reward %>",
             "minimumUsdExchangeAmount": "<%= settings.settlement_minimum_usd_exchange_amount %>",
@@ -10369,7 +10425,7 @@
         "func": "updatePriceData",
         "args": [
           "<%= settings.btc_perps_market_id %>",
-          "<%= extras.btc_oracle_id %>",
+          "<%= extras.real_btc_oracle_id %>",
           "<%= settings.strict_staleness_tolerance %>"
         ]
       },
@@ -23781,7 +23837,7 @@
         "pyth_feed_id_bnb": "0x2f95862b045670cd22bee3114c39763a4a08beeb663b145d283c31d7d1101c4f",
         "pyth_feed_id_bome": "0x30e4780570973e438fdb3f1b7ad22618b2fc7333b65c7853a7ca144c39052f7a",
         "pyth_feed_id_bonk": "0x72b021217ca3fe68922a19aaf990109cb9d84e9ad004b4d2025ad6f529314419",
-        "pyth_feed_id_btc": "0x56a3121958b01f99fdc4e1fd01e81050602c7ace3a571918bb55c6a96657cca9",
+        "pyth_feed_id_btc": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
         "pyth_feed_id_comp": "0x4a8e42861cabc5ecb50996f92e7cfa2bce3fd0a2423b0c44c9b423fb2bd25478",
         "pyth_feed_id_crv": "0xa19d04ac696c7a6616d291c7e5d1377cc8be437c327b75adb5dc1bad745fcae8",
         "pyth_feed_id_doge": "0xdcef50dd0a4cd2dcc17e45df1676dcb336a11a61c69df7a0299b0150c672d25c",
@@ -23836,6 +23892,7 @@
         "pyth_feed_id_susde": "0xca3ba9a619a4b3755c10ac7d5e760275aa95e9823d38a84fedd416856cdba37c",
         "pyth_feed_id_sushi": "0x26e4f737fde0263a9eea10ae63ac36dcedab2aaf629261a994e1eeb6ee0afe53",
         "pyth_feed_id_tao": "0x410f41de235f2db824e562ea7ab2d3d3d4ff048316c61d629c0b93f58584e1af",
+        "pyth_feed_id_tbtc": "0x56a3121958b01f99fdc4e1fd01e81050602c7ace3a571918bb55c6a96657cca9",
         "pyth_feed_id_tia": "0x09f7c1d7dfbb7df2b8fe3d3d87ee94a2259d212da4f30c1f0540d066dfa44723",
         "pyth_feed_id_ton": "0x8963217838ab4cf5cadc172203c1f0b763fbaa45f346d8ee50ba994bbcac3026",
         "pyth_feed_id_trx": "0x67aed5a24fdad045475e7195c98a98aea119c763f272d4523f5bac93a4f33c2b",
@@ -23854,7 +23911,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "35",
+    "version": "36",
     "description": "Includes the full synthetix system with configurations applied",
     "preset": "main"
   },
@@ -40790,29 +40847,29 @@
         "txns": {
           "PerpsMarketProxy_updatePriceData_BTC": {
             "hash": "",
-            "blockNumber": "247518012",
-            "timestamp": "1724829622",
+            "blockNumber": "267692888",
+            "timestamp": "1729906520",
             "events": {
               "MarketPriceDataUpdated": [
                 {
                   "name": "MarketPriceDataUpdated",
                   "args": [
                     "200",
-                    "0x6fc93f98de3093780907b3cee7173de12fcd3fcd5f1143774379db6ecca706a8",
+                    "0xb6bd697b82532f304389144594f84cc87f8d96bc73b7ac87f641f7517fedc684",
                     "60"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.PerpsMarketProxy_updatePriceData_BTC",
-            "gasUsed": 79548,
-            "gasCost": "1000013572",
+            "gasUsed": 42559,
+            "gasCost": "1006699219",
             "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
           }
         },
         "settings": {}
       },
-      "hash": "be253c09645121104c2285c01447d4e1",
+      "hash": "fc1533e9673dacb7525c993430d2f658",
       "version": 7
     },
     "invoke.PerpsMarketProxy_updatePriceData_ETH": {
@@ -41360,8 +41417,8 @@
         "txns": {
           "PerpsMarketProxy_setSettlementStrategy_BTC": {
             "hash": "",
-            "blockNumber": "248287809",
-            "timestamp": "1725023024",
+            "blockNumber": "267692889",
+            "timestamp": "1729906626",
             "events": {
               "SettlementStrategySet": [
                 {
@@ -41374,7 +41431,7 @@
                       "settlementDelay": "2",
                       "settlementWindowDuration": "60",
                       "priceVerificationContract": "0x7b118596be900f3c0feB2f23758d9798965B72a3",
-                      "feedId": "0x56a3121958b01f99fdc4e1fd01e81050602c7ace3a571918bb55c6a96657cca9",
+                      "feedId": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
                       "settlementReward": "1000000000000000000",
                       "disabled": false,
                       "commitmentPriceDelay": "2"
@@ -41385,13 +41442,13 @@
             },
             "deployedOn": "invoke.PerpsMarketProxy_setSettlementStrategy_BTC",
             "gasUsed": 62618,
-            "gasCost": "1002308367",
+            "gasCost": "1005864193",
             "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
           }
         },
         "settings": {}
       },
-      "hash": "9771f3e3574af599b7b3b72619bedb71",
+      "hash": "4d428b77eb2f354b1a95cd2facfc968b",
       "version": 7
     },
     "invoke.PerpsMarketProxy_setSettlementStrategy_ETH": {
@@ -42737,7 +42794,7 @@
           "pyth_feed_id_bnb": "0x2f95862b045670cd22bee3114c39763a4a08beeb663b145d283c31d7d1101c4f",
           "pyth_feed_id_bome": "0x30e4780570973e438fdb3f1b7ad22618b2fc7333b65c7853a7ca144c39052f7a",
           "pyth_feed_id_bonk": "0x72b021217ca3fe68922a19aaf990109cb9d84e9ad004b4d2025ad6f529314419",
-          "pyth_feed_id_btc": "0x56a3121958b01f99fdc4e1fd01e81050602c7ace3a571918bb55c6a96657cca9",
+          "pyth_feed_id_btc": "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
           "pyth_feed_id_comp": "0x4a8e42861cabc5ecb50996f92e7cfa2bce3fd0a2423b0c44c9b423fb2bd25478",
           "pyth_feed_id_crv": "0xa19d04ac696c7a6616d291c7e5d1377cc8be437c327b75adb5dc1bad745fcae8",
           "pyth_feed_id_doge": "0xdcef50dd0a4cd2dcc17e45df1676dcb336a11a61c69df7a0299b0150c672d25c",
@@ -42792,6 +42849,7 @@
           "pyth_feed_id_susde": "0xca3ba9a619a4b3755c10ac7d5e760275aa95e9823d38a84fedd416856cdba37c",
           "pyth_feed_id_sushi": "0x26e4f737fde0263a9eea10ae63ac36dcedab2aaf629261a994e1eeb6ee0afe53",
           "pyth_feed_id_tao": "0x410f41de235f2db824e562ea7ab2d3d3d4ff048316c61d629c0b93f58584e1af",
+          "pyth_feed_id_tbtc": "0x56a3121958b01f99fdc4e1fd01e81050602c7ace3a571918bb55c6a96657cca9",
           "pyth_feed_id_tia": "0x09f7c1d7dfbb7df2b8fe3d3d87ee94a2259d212da4f30c1f0540d066dfa44723",
           "pyth_feed_id_ton": "0x8963217838ab4cf5cadc172203c1f0b763fbaa45f346d8ee50ba994bbcac3026",
           "pyth_feed_id_trx": "0x67aed5a24fdad045475e7195c98a98aea119c763f272d4523f5bac93a4f33c2b",
@@ -42809,7 +42867,7 @@
           "pyth_feed_id_zro": "0x3bd860bea28bf982fa06bcf358118064bb114086cc03993bd76197eaab0b8018"
         }
       },
-      "hash": "29fafa9586737577995b87c11b90d13f",
+      "hash": "29163e3c11336920feab6a3a7800784c",
       "version": 7
     },
     "var.sol_spot_settings": {
@@ -82890,13 +82948,118 @@
       },
       "hash": "8b140402e5c039b15fdc267580c31940",
       "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_real_BTC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_real_BTC": {
+            "hash": "0x02ed2fd780bf78c78733470156b26bc262dcb371bebe13466b12b88f5941d34f",
+            "blockNumber": "267681917",
+            "timestamp": "1729903595",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xdb3ecbe13f0bbe7236914c24a2344b41881f80c0572806238997e0c52a00e50a",
+                    9,
+                    "0x0000000000000000000000007b118596be900f3c0feb2f23758d9798965b72a3e62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b430000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_real_BTC",
+            "gasUsed": 138730,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "real_btc_lookup_oracle_id": "0xdb3ecbe13f0bbe7236914c24a2344b41881f80c0572806238997e0c52a00e50a"
+        }
+      },
+      "hash": "3de5a545450155517252c6928c7d50c0",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_real_BTC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_real_BTC": {
+            "hash": "0xc256f5ebce266cb829db2fa531086fccab604a98871ceed7d08cc516e2a087e2",
+            "blockNumber": "267681935",
+            "timestamp": "1729903598",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xe95d49f15d92133256ba6805b8090b783fbcaa02a1c0fa55b6f89bd3975c5987",
+                    5,
+                    "0x000000000000000000000000ff1a0f4744e8582df1ae09d5611b887b6a12925ce62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b430000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_real_BTC",
+            "gasUsed": 133661,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "real_btc_pyth_oracle_id": "0xe95d49f15d92133256ba6805b8090b783fbcaa02a1c0fa55b6f89bd3975c5987"
+        }
+      },
+      "hash": "a8f1bae7ca7afdf00c60a0009d5716f7",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_real_BTC": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_real_BTC": {
+            "hash": "0x37d9f2274734fff92602ebdb02a9dd845457bd876d8af85249c576551a777d3e",
+            "blockNumber": "267681961",
+            "timestamp": "1729903605",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xb6bd697b82532f304389144594f84cc87f8d96bc73b7ac87f641f7517fedc684",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0xe95d49f15d92133256ba6805b8090b783fbcaa02a1c0fa55b6f89bd3975c5987",
+                      "0xdb3ecbe13f0bbe7236914c24a2344b41881f80c0572806238997e0c52a00e50a"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_real_BTC",
+            "gasUsed": 136298,
+            "gasCost": "10000000",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "real_btc_oracle_id": "0xb6bd697b82532f304389144594f84cc87f8d96bc73b7ac87f641f7517fedc684"
+        }
+      },
+      "hash": "d466b16e760d6bfb702cd354ef9601a7",
+      "version": 7
     }
   },
   "options": {},
   "meta": {
-    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "22827dd48626577fee17d2236b3a2c62359a8aa1",
-    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/22827dd48626577fee17d2236b3a2c62359a8aa1/README.md"
+    "gitUrl": "https://nk/Synthetixio/synthetix-deployments",
+    "commitHash": "91f1ec8ecc6895ae7441276dc5a505e6311d2393",
+    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/91f1ec8ecc6895ae7441276dc5a505e6311d2393/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 42161
