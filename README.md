@@ -2,6 +2,15 @@
 ABI and Adresses for Synthetix v3 contract deployments
 
 
+#### Install the package:
+```bash
+npm install @synthetixio/v3-contracts
+```
+or
+```bash
+yarn add @synthetixio/v3-contracts
+```
+
 ## Usage
 
 Get ethers-v5 Contract instance for `CoreProxy` deployed to the `Mainnet`:
