@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1730375802,
+  "timestamp": 1730715195,
   "def": {
     "setting": {
       "snx_package": {
@@ -3598,6 +3598,62 @@
           }
         }
       },
+      "OracleManagerProxy_registerNode_pyth_goat": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_goat, false]) %>",
+          []
+        ],
+        "extra": {
+          "goat_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_goat": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_goat, settings.default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "goat_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_staleness_goat": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.default_staleness_tolerance]) %>",
+          [
+            "<%= extras.goat_pyth_oracle_id %>",
+            "<%= extras.goat_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "goat_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
       "OracleManagerProxy_registerNode_pyth_grt": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
         "target": [
@@ -4326,6 +4382,62 @@
           }
         }
       },
+      "OracleManagerProxy_registerNode_pyth_moodeng": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_moodeng, false]) %>",
+          []
+        ],
+        "extra": {
+          "moodeng_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_moodeng": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_moodeng, settings.default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "moodeng_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_staleness_moodeng": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.default_staleness_tolerance]) %>",
+          [
+            "<%= extras.moodeng_pyth_oracle_id %>",
+            "<%= extras.moodeng_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "moodeng_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
       "OracleManagerProxy_registerNode_pyth_near": {
         "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
         "target": [
@@ -4993,6 +5105,62 @@
         ],
         "extra": {
           "rune_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_safe": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_safe, false]) %>",
+          []
+        ],
+        "extra": {
+          "safe_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_safe": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_safe, settings.default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "safe_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_staleness_safe": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.default_staleness_tolerance]) %>",
+          [
+            "<%= extras.safe_pyth_oracle_id %>",
+            "<%= extras.safe_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "safe_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -13803,6 +13971,185 @@
           "<%= settings.gmx_perps_locked_oi_ratio %>"
         ]
       },
+      "createGoatPerpsMarket": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "createMarket",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "Goatseus Maximus",
+          "GOAT"
+        ]
+      },
+      "setPerpsPriceGoat": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "updatePriceData",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= extras.goat_oracle_id %>",
+          "<%= settings.strict_staleness_tolerance %>"
+        ]
+      },
+      "addPerpsGoatSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "addSettlementStrategy",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "0",
+            "settlementWindowDuration": "1",
+            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "settlementReward": "0",
+            "disabled": false,
+            "commitmentPriceDelay": "0"
+          }
+        ],
+        "extra": {
+          "goat_pyth_settlement_strategy": {
+            "event": "SettlementStrategyAdded",
+            "arg": 2
+          }
+        }
+      },
+      "setPerpsGoatSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setSettlementStrategy",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= extras.goat_pyth_settlement_strategy %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "<%= settings.settlement_delay %>",
+            "settlementWindowDuration": "<%= settings.settlement_window_duration %>",
+            "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
+            "feedId": "<%= settings.pyth_feed_id_goat %>",
+            "settlementReward": "<%= settings.settlement_reward %>",
+            "disabled": false,
+            "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
+          }
+        ]
+      },
+      "setPerpsGoatFundingParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setFundingParameters",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= settings.goat_perps_market_skew_scale %>",
+          "<%= settings.goat_perps_market_max_funding_velocity %>"
+        ]
+      },
+      "setPerpsGoatOrderFees": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setOrderFees",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= settings.goat_perps_maker_fee_ratio %>",
+          "<%= settings.goat_perps_taker_fee_ratio %>"
+        ]
+      },
+      "setPerpsGoatMaxMarketSize": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketSize",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= settings.goat_perps_max_market_size %>"
+        ]
+      },
+      "setPerpsGoatMaxMarketValue": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketValue",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= settings.goat_perps_max_market_value %>"
+        ]
+      },
+      "setPerpsGoatMaxLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxLiquidationParameters",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= settings.goat_perps_max_liquidation_limit_accumulation_multiplier %>",
+          "<%= settings.goat_perps_max_seconds_in_liquidation_window %>",
+          "<%= settings.goat_perps_max_liquidation_pd %>",
+          "<%= settings.goat_perps_endorsed_liquidator %>"
+        ]
+      },
+      "setPerpsGoatLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLiquidationParameters",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= settings.goat_perps_initial_margin_ratio %>",
+          "<%= settings.goat_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.goat_perps_maintenance_margin_scalar %>",
+          "<%= settings.goat_perps_flag_reward_ratio_d18 %>",
+          "<%= settings.goat_perps_minimum_position_margin %>"
+        ]
+      },
+      "setPerpsGoatLockedOiRatio": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLockedOiRatio",
+        "args": [
+          "<%= settings.goat_perps_market_id %>",
+          "<%= settings.goat_perps_locked_oi_ratio %>"
+        ]
+      },
       "createGrtPerpsMarket": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -16130,6 +16477,185 @@
           "<%= settings.mkr_perps_locked_oi_ratio %>"
         ]
       },
+      "createMoodengPerpsMarket": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "createMarket",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "Moo Deng",
+          "MOODENG"
+        ]
+      },
+      "setPerpsPriceMoodeng": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "updatePriceData",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= extras.moodeng_oracle_id %>",
+          "<%= settings.strict_staleness_tolerance %>"
+        ]
+      },
+      "addPerpsMoodengSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "addSettlementStrategy",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "0",
+            "settlementWindowDuration": "1",
+            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "settlementReward": "0",
+            "disabled": false,
+            "commitmentPriceDelay": "0"
+          }
+        ],
+        "extra": {
+          "moodeng_pyth_settlement_strategy": {
+            "event": "SettlementStrategyAdded",
+            "arg": 2
+          }
+        }
+      },
+      "setPerpsMoodengSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setSettlementStrategy",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= extras.moodeng_pyth_settlement_strategy %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "<%= settings.settlement_delay %>",
+            "settlementWindowDuration": "<%= settings.settlement_window_duration %>",
+            "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
+            "feedId": "<%= settings.pyth_feed_id_moodeng %>",
+            "settlementReward": "<%= settings.settlement_reward %>",
+            "disabled": false,
+            "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
+          }
+        ]
+      },
+      "setPerpsMoodengFundingParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setFundingParameters",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= settings.moodeng_perps_market_skew_scale %>",
+          "<%= settings.moodeng_perps_market_max_funding_velocity %>"
+        ]
+      },
+      "setPerpsMoodengOrderFees": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setOrderFees",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= settings.moodeng_perps_maker_fee_ratio %>",
+          "<%= settings.moodeng_perps_taker_fee_ratio %>"
+        ]
+      },
+      "setPerpsMoodengMaxMarketSize": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketSize",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= settings.moodeng_perps_max_market_size %>"
+        ]
+      },
+      "setPerpsMoodengMaxMarketValue": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketValue",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= settings.moodeng_perps_max_market_value %>"
+        ]
+      },
+      "setPerpsMoodengMaxLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxLiquidationParameters",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= settings.moodeng_perps_max_liquidation_limit_accumulation_multiplier %>",
+          "<%= settings.moodeng_perps_max_seconds_in_liquidation_window %>",
+          "<%= settings.moodeng_perps_max_liquidation_pd %>",
+          "<%= settings.moodeng_perps_endorsed_liquidator %>"
+        ]
+      },
+      "setPerpsMoodengLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLiquidationParameters",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= settings.moodeng_perps_initial_margin_ratio %>",
+          "<%= settings.moodeng_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.moodeng_perps_maintenance_margin_scalar %>",
+          "<%= settings.moodeng_perps_flag_reward_ratio_d18 %>",
+          "<%= settings.moodeng_perps_minimum_position_margin %>"
+        ]
+      },
+      "setPerpsMoodengLockedOiRatio": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLockedOiRatio",
+        "args": [
+          "<%= settings.moodeng_perps_market_id %>",
+          "<%= settings.moodeng_perps_locked_oi_ratio %>"
+        ]
+      },
       "createNearPerpsMarket": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -18276,6 +18802,185 @@
         "args": [
           "<%= settings.rune_perps_market_id %>",
           "<%= settings.rune_perps_locked_oi_ratio %>"
+        ]
+      },
+      "createSafePerpsMarket": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "createMarket",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "Safe",
+          "SAFE"
+        ]
+      },
+      "setPerpsPriceSafe": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "updatePriceData",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= extras.safe_oracle_id %>",
+          "<%= settings.strict_staleness_tolerance %>"
+        ]
+      },
+      "addPerpsSafeSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "addSettlementStrategy",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "0",
+            "settlementWindowDuration": "1",
+            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "settlementReward": "0",
+            "disabled": false,
+            "commitmentPriceDelay": "0"
+          }
+        ],
+        "extra": {
+          "safe_pyth_settlement_strategy": {
+            "event": "SettlementStrategyAdded",
+            "arg": 2
+          }
+        }
+      },
+      "setPerpsSafeSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setSettlementStrategy",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= extras.safe_pyth_settlement_strategy %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "<%= settings.settlement_delay %>",
+            "settlementWindowDuration": "<%= settings.settlement_window_duration %>",
+            "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
+            "feedId": "<%= settings.pyth_feed_id_safe %>",
+            "settlementReward": "<%= settings.settlement_reward %>",
+            "disabled": false,
+            "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
+          }
+        ]
+      },
+      "setPerpsSafeFundingParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setFundingParameters",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= settings.safe_perps_market_skew_scale %>",
+          "<%= settings.safe_perps_market_max_funding_velocity %>"
+        ]
+      },
+      "setPerpsSafeOrderFees": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setOrderFees",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= settings.safe_perps_maker_fee_ratio %>",
+          "<%= settings.safe_perps_taker_fee_ratio %>"
+        ]
+      },
+      "setPerpsSafeMaxMarketSize": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketSize",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= settings.safe_perps_max_market_size %>"
+        ]
+      },
+      "setPerpsSafeMaxMarketValue": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketValue",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= settings.safe_perps_max_market_value %>"
+        ]
+      },
+      "setPerpsSafeMaxLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxLiquidationParameters",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= settings.safe_perps_max_liquidation_limit_accumulation_multiplier %>",
+          "<%= settings.safe_perps_max_seconds_in_liquidation_window %>",
+          "<%= settings.safe_perps_max_liquidation_pd %>",
+          "<%= settings.safe_perps_endorsed_liquidator %>"
+        ]
+      },
+      "setPerpsSafeLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLiquidationParameters",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= settings.safe_perps_initial_margin_ratio %>",
+          "<%= settings.safe_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.safe_perps_maintenance_margin_scalar %>",
+          "<%= settings.safe_perps_flag_reward_ratio_d18 %>",
+          "<%= settings.safe_perps_minimum_position_margin %>"
+        ]
+      },
+      "setPerpsSafeLockedOiRatio": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLockedOiRatio",
+        "args": [
+          "<%= settings.safe_perps_market_id %>",
+          "<%= settings.safe_perps_locked_oi_ratio %>"
         ]
       },
       "createSatsPerpsMarket": {
@@ -22900,6 +23605,25 @@
         "gmx_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "gmx_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
       },
+      "perps_goat_market_settings": {
+        "goat_perps_market_id": "8600",
+        "goat_perps_market_skew_scale": "<%= parseEther(String(20_000_000)) %>",
+        "goat_perps_market_max_funding_velocity": "<%= parseEther('9') %>",
+        "goat_perps_maker_fee_ratio": "<%= parseEther('0.000000') %>",
+        "goat_perps_taker_fee_ratio": "<%= parseEther('0.000500') %>",
+        "goat_perps_max_market_size": "<%= parseEther(String(10_000_000)) %>",
+        "goat_perps_max_market_value": "<%= parseEther(String(3_000_000)) %>",
+        "goat_perps_initial_margin_ratio": "<%= parseEther('2.459') %>",
+        "goat_perps_maintenance_margin_scalar": "<%= parseEther('0.317') %>",
+        "goat_perps_minimum_initial_margin_ratio": "<%= parseEther('0.05') %>",
+        "goat_perps_flag_reward_ratio_d18": "<%= parseEther('0.0003') %>",
+        "goat_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
+        "goat_perps_max_seconds_in_liquidation_window": "30",
+        "goat_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "goat_perps_locked_oi_ratio": "<%= parseEther('0.5') %>",
+        "goat_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
+        "goat_perps_endorsed_liquidator": "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+      },
       "perps_grt_market_settings": {
         "grt_perps_market_id": "5300",
         "grt_perps_market_skew_scale": "<%= parseEther(String(112_500_000)) %>",
@@ -23147,6 +23871,25 @@
         "mkr_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "mkr_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
       },
+      "perps_moodeng_market_settings": {
+        "moodeng_perps_market_id": "8700",
+        "moodeng_perps_market_skew_scale": "<%= parseEther(String(50_000_000)) %>",
+        "moodeng_perps_market_max_funding_velocity": "<%= parseEther('9') %>",
+        "moodeng_perps_maker_fee_ratio": "<%= parseEther('0.000000') %>",
+        "moodeng_perps_taker_fee_ratio": "<%= parseEther('0.000500') %>",
+        "moodeng_perps_max_market_size": "<%= parseEther(String(34_000_000)) %>",
+        "moodeng_perps_max_market_value": "<%= parseEther(String(3_000_000)) %>",
+        "moodeng_perps_initial_margin_ratio": "<%= parseEther('1.588') %>",
+        "moodeng_perps_maintenance_margin_scalar": "<%= parseEther('0.317') %>",
+        "moodeng_perps_minimum_initial_margin_ratio": "<%= parseEther('0.05') %>",
+        "moodeng_perps_flag_reward_ratio_d18": "<%= parseEther('0.0003') %>",
+        "moodeng_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
+        "moodeng_perps_max_seconds_in_liquidation_window": "30",
+        "moodeng_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "moodeng_perps_locked_oi_ratio": "<%= parseEther('0.5') %>",
+        "moodeng_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
+        "moodeng_perps_endorsed_liquidator": "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+      },
       "perps_near_market_settings": {
         "near_perps_market_id": "1000",
         "near_perps_market_skew_scale": "<%= parseEther(String(8_000_000)) %>",
@@ -23374,6 +24117,25 @@
         "rune_perps_locked_oi_ratio": "<%= parseEther('0.50') %>",
         "rune_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "rune_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
+      },
+      "perps_safe_market_settings": {
+        "safe_perps_market_id": "8500",
+        "safe_perps_market_skew_scale": "<%= parseEther(String(3_000_000)) %>",
+        "safe_perps_market_max_funding_velocity": "<%= parseEther('9') %>",
+        "safe_perps_maker_fee_ratio": "<%= parseEther('0.000000') %>",
+        "safe_perps_taker_fee_ratio": "<%= parseEther('0.000500') %>",
+        "safe_perps_max_market_size": "<%= parseEther(String(500_000)) %>",
+        "safe_perps_max_market_value": "<%= parseEther(String(500_000)) %>",
+        "safe_perps_initial_margin_ratio": "<%= parseEther('1.211') %>",
+        "safe_perps_maintenance_margin_scalar": "<%= parseEther('0.317') %>",
+        "safe_perps_minimum_initial_margin_ratio": "<%= parseEther('0.05') %>",
+        "safe_perps_flag_reward_ratio_d18": "<%= parseEther('0.0003') %>",
+        "safe_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
+        "safe_perps_max_seconds_in_liquidation_window": "30",
+        "safe_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "safe_perps_locked_oi_ratio": "<%= parseEther('0.5') %>",
+        "safe_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
+        "safe_perps_endorsed_liquidator": "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
       },
       "perps_sats_market_settings": {
         "sats_perps_market_id": "8000",
@@ -23856,6 +24618,7 @@
         "pyth_feed_id_fxs": "0x735f591e4fed988cd38df74d8fcedecf2fe8d9111664e0fd500db9aa78b316b1",
         "pyth_feed_id_gala": "0x0781209c28fda797616212b7f94d77af3a01f3e94a5d421760aef020cf2bcb51",
         "pyth_feed_id_gmx": "0xb962539d0fcb272a494d65ea56f94851c2bcf8823935da05bd628916e2e9edbf",
+        "pyth_feed_id_goat": "0xf7731dc812590214d3eb4343bfb13d1b4cfa9b1d4e020644b5d5d8e07d60c66c",
         "pyth_feed_id_grt": "0x4d1f8dae0d96236fb98e8f47471a366ec3b1732b47041781934ca3a9bb2f35e7",
         "pyth_feed_id_icp": "0xc9907d786c5821547777780a1e4f89484f3417cb14dd244f2b0a34ea7a554d67",
         "pyth_feed_id_imx": "0x941320a8989414874de5aa2fc340a75d5ed91fdff1613dd55f83844d52ea63a2",
@@ -23869,6 +24632,7 @@
         "pyth_feed_id_meme": "0xcd2cee36951a571e035db0dfad138e6ecdb06b517cc3373cd7db5d3609b7927c",
         "pyth_feed_id_mew": "0x514aed52ca5294177f20187ae883cec4a018619772ddce41efcc36a6448f5d5d",
         "pyth_feed_id_mkr": "0x9375299e31c0deb9c6bc378e6329aab44cb48ec655552a70d4b9050346a30378",
+        "pyth_feed_id_moodeng": "0xffff73128917a90950cd0473fd2551d7cd274fd5a6cc45641881bbcc6ee73417",
         "pyth_feed_id_near": "0xc415de8d2eba7db216527dff4b60e8f3a5311c740dadb233e13e12547e226750",
         "pyth_feed_id_not": "0x75ec6f04d4bded6afdc1440689be4402dd1e23d2ff2c21e081871eb2739ceb36",
         "pyth_feed_id_op": "0x385f64d993f7b77d8182ed5003d97c60aa3361f3cecfe711544d2d59165e9bdf",
@@ -23881,6 +24645,7 @@
         "pyth_feed_id_pyth": "0x0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff",
         "pyth_feed_id_render": "0x3d4a2bd9535be6ce8059d75eadeba507b043257321aa544717c56fa19b49e35d",
         "pyth_feed_id_rune": "0x5fcf71143bb70d41af4fa9aa1287e2efd3c5911cee59f909f915c9f61baacb1e",
+        "pyth_feed_id_safe": "0x7b3576858506a94fad3a9cc55e32934f0c3931150fe3a3c7b83558dbae5b8e38",
         "pyth_feed_id_sats": "0x40440d18fb5ad809e2825ce7dfc035cfa57135c13062a04addafe0c7f54425e0",
         "pyth_feed_id_sei": "0x53614f1cb0c031d4af66c04cb9c756234adad0e1cee85303795091499a4084eb",
         "pyth_feed_id_shib": "0xf0d57deca57b3da2fe63a493f4c25925fdfd8edf834b20f93e1f84dbd1504d4a",
@@ -24401,7 +25166,7 @@
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://Qmed7MZspcVYPjmEM5k8B31qZfERuL2AyBESJGn2rZPcTD",
+            "url": "ipfs://QmNf7yExWDWuvFQ8ztHbJj63GiF3i8w8uESjGj7QfZgxwj",
             "tags": [
               "latest"
             ],
@@ -24439,7 +25204,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x6cfba47859066e4fb685507bfd61f9fd6c2e052d8c67012ae697b4a9c27930e0",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500432",
                 "deployTimestamp": "1724825134",
                 "sourceName": "contracts/modules/core/AccountModule.sol",
@@ -24491,7 +25256,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xe2e439ed42771c95f396e522f5e5e15269a80fdecfe591d13b01b1a90f4c67e6",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500440",
                 "deployTimestamp": "1724825136",
                 "sourceName": "contracts/modules/account/AccountTokenModule.sol",
@@ -24520,7 +25285,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xd70d80f4a049f1a520660c40c86e51b418ebfad409160c8a74e4818265c5ac5c",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500447",
                 "deployTimestamp": "1724825138",
                 "sourceName": "contracts/modules/core/AssociateDebtModule.sol",
@@ -24543,7 +25308,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x4201c072e254cf63338ee5e86bf3a7ec65c9e10642d0a8e5c0448029cb03854e",
+                "deployTxnHash": "",
                 "sourceName": "contracts/modules/associated-systems/AssociatedSystemsModule.sol",
                 "contractName": "AssociatedSystemsModule",
                 "deployedOn": "contract.AssociatedSystemsModule",
@@ -24561,7 +25326,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xa49b280fe4e2f1531affb04742f24cbdc34c4e0c944f4577d42ab0c2f015771a",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500456",
                 "deployTimestamp": "1724825140",
                 "sourceName": "contracts/modules/core/CcipReceiverModule.sol",
@@ -24586,7 +25351,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x90b790d13937934431db76507e53625711e5085bdfd64a13a99cf5781972f746",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500464",
                 "deployTimestamp": "1724825142",
                 "sourceName": "contracts/modules/core/CollateralConfigurationModule.sol",
@@ -24628,7 +25393,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xd9cf72843267c579e21cf86c96137f7a7b06c5479dd1e14d046ac2ee31cb736c",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500472",
                 "deployTimestamp": "1724825144",
                 "sourceName": "contracts/modules/core/CollateralModule.sol",
@@ -24648,7 +25413,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xc8dc9db0190c23bc06ec721a13f668997e5cb604ae272a27e14e19b6caa1f433",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500479",
                 "deployTimestamp": "1724825146",
                 "sourceName": "contracts/modules/core/CrossChainUSDModule.sol",
@@ -24681,7 +25446,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x2923512652879d3bc186146a4f1090389799ffdbd7fde5ec2ead7ca6929e545d",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500487",
                 "deployTimestamp": "1724825148",
                 "sourceName": "contracts/modules/core/FeatureFlagModule.sol",
@@ -24716,7 +25481,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xd07162f84e2e10e472914d57b0f52e7ea99051114430b89768904fc3204284e4",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500495",
                 "deployTimestamp": "1724825150",
                 "sourceName": "contracts/modules/core/IssueUSDModule.sol",
@@ -24753,7 +25518,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x9e0c8d145e282c93077857286d8a5c4633602d20978c1175f386219f3f9a91ef",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500504",
                 "deployTimestamp": "1724825152",
                 "sourceName": "contracts/modules/core/LiquidationModule.sol",
@@ -24786,7 +25551,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x38975c1742cce54431a86941a228a188512eeb548b05c3ab43d8dcce63db5f97",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500511",
                 "deployTimestamp": "1724825154",
                 "sourceName": "contracts/modules/core/MarketCollateralModule.sol",
@@ -24839,7 +25604,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xb7547ad6b082453728d8df9eea23d5510a16801609133612195a9f58b4a06b79",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500519",
                 "deployTimestamp": "1724825156",
                 "sourceName": "contracts/modules/core/MarketManagerModule.sol",
@@ -24866,7 +25631,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x324a33698326feca6777219573c4abaac4f12dce811235f7e77702cf63cd71f9",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500528",
                 "deployTimestamp": "1724825158",
                 "sourceName": "contracts/modules/core/PoolConfigurationModule.sol",
@@ -24926,7 +25691,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x9b37bd7d8934da9cd7d175ba26709eaa6775c9c00be5e650ad757e7d37ca0854",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500536",
                 "deployTimestamp": "1724825160",
                 "sourceName": "contracts/modules/core/PoolModule.sol",
@@ -24971,7 +25736,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xe772cdf33390964ef6d407391f7080cfb938215beb437333f37fa46084519812",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500544",
                 "deployTimestamp": "1724825162",
                 "sourceName": "contracts/modules/core/RewardsManagerModule.sol",
@@ -25011,7 +25776,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x62552eaa35b757275b9ffdb71bd716ada220db46f966e4983603b38dac19fc9d",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500552",
                 "deployTimestamp": "1724825164",
                 "sourceName": "contracts/modules/usd/USDTokenModule.sol",
@@ -25041,7 +25806,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x2d93427ec68d314b1e1e501248a4b1efb31a80e0dd4d1a099c54593843408387",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500560",
                 "deployTimestamp": "1724825166",
                 "sourceName": "contracts/modules/core/UtilsModule.sol",
@@ -25092,7 +25857,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x8eb70cb2ae8f135a6c403a3350a074e89fbc14752d58fc36df30b2a5b9112ca7",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500567",
                 "deployTimestamp": "1724825168",
                 "sourceName": "contracts/modules/core/VaultModule.sol",
@@ -25159,7 +25924,7 @@
                   "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xc324e1f8bef7205ca6abc154708db8167ce8794ee56363306571b7ba83f2eb37",
+                "deployTxnHash": "",
                 "sourceName": "contracts/Proxy.sol",
                 "contractName": "Proxy",
                 "deployedOn": "contract.InitialCoreProxy",
@@ -25224,7 +25989,7 @@
                   "function transferFrom(address from, address to, uint256 tokenId)"
                 ],
                 "deployedOn": "router.AccountRouter",
-                "deployTxnHash": "0x296734813753761d93ddbe5a0f2b6e3867bc168d4b344ad01e157d8521551d5f",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500600",
                 "deployTimestamp": "1724825176",
                 "contractName": "AccountRouter",
@@ -25485,7 +26250,7 @@
                   "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
                 ],
                 "deployedOn": "router.CoreRouter",
-                "deployTxnHash": "0x30fe3ea40129890de35846ca72a18f38ea5c4ffec03b1ed7fcbddef13212b057",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500609",
                 "deployTimestamp": "1724825178",
                 "contractName": "CoreRouter",
@@ -25547,7 +26312,7 @@
                   "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                 ],
                 "deployedOn": "router.USDRouter",
-                "deployTxnHash": "0x3d143d580669928e02976671cd3798458e378751561bb5880c39dc95dec88828",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500617",
                 "deployTimestamp": "1724825180",
                 "contractName": "USDRouter",
@@ -26046,7 +26811,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x86bc41a1442c128901ccc1f8c53a6a3c777e84d26f0c577e676711d02165f9bd",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "264758193",
                     "deployTimestamp": "1729169132",
                     "sourceName": "contracts/modules/NodeModule.sol",
@@ -26079,7 +26844,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x08dd8033d9f1a717c85d57048d5b3113af17843a5569240801a25708cd6be41b",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/modules/CoreModule.sol",
                     "contractName": "CoreModule",
                     "deployedOn": "contract.CoreModule",
@@ -26113,7 +26878,7 @@
                       "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                     ],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xe415b650bf87b208212b944ac1325a0991dd65ff63a413fae45662faa57a74c2",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/Proxy.sol",
                     "contractName": "Proxy",
                     "deployedOn": "contract.InitialProxy",
@@ -26164,7 +26929,7 @@
                       "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                     ],
                     "deployedOn": "router.OracleRouter",
-                    "deployTxnHash": "0x0be725fe3903cec2e31a03abc0c0e7c5c23ef48672023579fb40a8f8ffdf2c65",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "264758203",
                     "deployTimestamp": "1729169134",
                     "contractName": "OracleRouter",
@@ -26718,7 +27483,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://QmSXFL5xyoTzhbLX1VWZTUAx5jKSPLWmWLG9Zes7R2SPvN",
+            "url": "ipfs://QmdhdDfg3B3HwDLJrHEBVJzPUmAW7iZhXjjNJaqJ17PFf9",
             "tags": [
               "latest"
             ],
@@ -26740,7 +27505,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x1d203597c90964bb4a300662a2a9a5206269ada06ea7aa8c22c261dac7c1a905",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500705",
                 "deployTimestamp": "1724825201",
                 "sourceName": "contracts/modules/AsyncOrderConfigurationModule.sol",
@@ -26769,7 +27534,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x019514c815267518d3943c4ce3b82d068b1c258b754c6434b52a1d2d9519d45f",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500722",
                 "deployTimestamp": "1724825206",
                 "sourceName": "contracts/modules/AsyncOrderModule.sol",
@@ -26796,7 +27561,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xc0bf67ed083f10e1c2773ae6cc949e3919cc7fd986be764bbd8c76b8b9264c8c",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500729",
                 "deployTimestamp": "1724825207",
                 "sourceName": "contracts/modules/AsyncOrderSettlementModule.sol",
@@ -26831,7 +27596,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x0fcf76bbfcbc6b3a0cacbe7265935f20e655fc53e9f888a96ce6d37749a976c1",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500737",
                 "deployTimestamp": "1724825210",
                 "sourceName": "contracts/modules/AtomicOrderModule.sol",
@@ -26864,7 +27629,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x573e1abcf1a875dd8e103ce731e9f80d094b8688f1d60d3f4789c406868469c4",
+                "deployTxnHash": "",
                 "sourceName": "contracts/modules/CoreModule.sol",
                 "contractName": "CoreModule",
                 "deployedOn": "contract.CoreModule",
@@ -26895,7 +27660,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x3537c0598dea305f3cde10d985b634da7cc3a32ee899619552b4f849081c0558",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500746",
                 "deployTimestamp": "1724825212",
                 "sourceName": "contracts/modules/FeatureFlagModule.sol",
@@ -26939,7 +27704,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xfff386caf2c70f023184cfa5ddb955312fc5f1c2e029fa95fe9bad0591bcefe1",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500754",
                 "deployTimestamp": "1724825214",
                 "sourceName": "contracts/modules/MarketConfigurationModule.sol",
@@ -26999,7 +27764,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x1fe2fe0a2ee518170afdf6cac625adf10bc339dd72aada0cede4457bfcaf8b76",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500762",
                 "deployTimestamp": "1724825216",
                 "sourceName": "contracts/modules/SpotMarketFactoryModule.sol",
@@ -27042,7 +27807,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x6d7d93f4aa3710863b83102b054dc424b3d30ab937d0e8feb7cdfb55a8097e03",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500774",
                 "deployTimestamp": "1724825219",
                 "sourceName": "contracts/modules/token/SynthTokenModule.sol",
@@ -27072,7 +27837,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x19439e822f9c8b2d6581c5bf83b8a6302db6036d361170c1a96a7ded4c37dd3b",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500782",
                 "deployTimestamp": "1724825221",
                 "sourceName": "contracts/modules/WrapperModule.sol",
@@ -27108,7 +27873,7 @@
                   "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x73744ce00ffb8fcbeb7a908d6ebb44f38b9bf81abe3de12e835a9c5c6c1516b5",
+                "deployTxnHash": "",
                 "sourceName": "contracts/Proxy.sol",
                 "contractName": "Proxy",
                 "deployedOn": "contract.InitialSpotMarketProxy",
@@ -27281,7 +28046,7 @@
                   "function setFeatureFlagDenyAll(bytes32 feature, bool denyAll)"
                 ],
                 "deployedOn": "router.SpotMarketRouter",
-                "deployTxnHash": "0xd7c9214607e8af6f35a8ae778f124af9f6c5276e59131ccf30651b3fc2ca5748",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500789",
                 "deployTimestamp": "1724825223",
                 "contractName": "SpotMarketRouter",
@@ -27339,7 +28104,7 @@
                   "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                 ],
                 "deployedOn": "router.SynthRouter",
-                "deployTxnHash": "0xf7920b8b2e912320533abbfafe9c63b64d7ec3ab9d65308c68df63e779e9ccc8",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247500803",
                 "deployTimestamp": "1724825227",
                 "contractName": "SynthRouter",
@@ -27531,7 +28296,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://Qmed7MZspcVYPjmEM5k8B31qZfERuL2AyBESJGn2rZPcTD",
+                "url": "ipfs://QmNf7yExWDWuvFQ8ztHbJj63GiF3i8w8uESjGj7QfZgxwj",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x7fA9d723329AfDbfAE19B832adB8351CD3cAf1f0",
@@ -27564,7 +28329,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x6cfba47859066e4fb685507bfd61f9fd6c2e052d8c67012ae697b4a9c27930e0",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500432",
                     "deployTimestamp": "1724825134",
                     "sourceName": "contracts/modules/core/AccountModule.sol",
@@ -27616,7 +28381,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xe2e439ed42771c95f396e522f5e5e15269a80fdecfe591d13b01b1a90f4c67e6",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500440",
                     "deployTimestamp": "1724825136",
                     "sourceName": "contracts/modules/account/AccountTokenModule.sol",
@@ -27645,7 +28410,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xd70d80f4a049f1a520660c40c86e51b418ebfad409160c8a74e4818265c5ac5c",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500447",
                     "deployTimestamp": "1724825138",
                     "sourceName": "contracts/modules/core/AssociateDebtModule.sol",
@@ -27668,7 +28433,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x4201c072e254cf63338ee5e86bf3a7ec65c9e10642d0a8e5c0448029cb03854e",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/modules/associated-systems/AssociatedSystemsModule.sol",
                     "contractName": "AssociatedSystemsModule",
                     "deployedOn": "contract.AssociatedSystemsModule",
@@ -27686,7 +28451,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xa49b280fe4e2f1531affb04742f24cbdc34c4e0c944f4577d42ab0c2f015771a",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500456",
                     "deployTimestamp": "1724825140",
                     "sourceName": "contracts/modules/core/CcipReceiverModule.sol",
@@ -27711,7 +28476,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x90b790d13937934431db76507e53625711e5085bdfd64a13a99cf5781972f746",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500464",
                     "deployTimestamp": "1724825142",
                     "sourceName": "contracts/modules/core/CollateralConfigurationModule.sol",
@@ -27753,7 +28518,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xd9cf72843267c579e21cf86c96137f7a7b06c5479dd1e14d046ac2ee31cb736c",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500472",
                     "deployTimestamp": "1724825144",
                     "sourceName": "contracts/modules/core/CollateralModule.sol",
@@ -27773,7 +28538,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xc8dc9db0190c23bc06ec721a13f668997e5cb604ae272a27e14e19b6caa1f433",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500479",
                     "deployTimestamp": "1724825146",
                     "sourceName": "contracts/modules/core/CrossChainUSDModule.sol",
@@ -27806,7 +28571,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x2923512652879d3bc186146a4f1090389799ffdbd7fde5ec2ead7ca6929e545d",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500487",
                     "deployTimestamp": "1724825148",
                     "sourceName": "contracts/modules/core/FeatureFlagModule.sol",
@@ -27841,7 +28606,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xd07162f84e2e10e472914d57b0f52e7ea99051114430b89768904fc3204284e4",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500495",
                     "deployTimestamp": "1724825150",
                     "sourceName": "contracts/modules/core/IssueUSDModule.sol",
@@ -27878,7 +28643,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x9e0c8d145e282c93077857286d8a5c4633602d20978c1175f386219f3f9a91ef",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500504",
                     "deployTimestamp": "1724825152",
                     "sourceName": "contracts/modules/core/LiquidationModule.sol",
@@ -27911,7 +28676,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x38975c1742cce54431a86941a228a188512eeb548b05c3ab43d8dcce63db5f97",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500511",
                     "deployTimestamp": "1724825154",
                     "sourceName": "contracts/modules/core/MarketCollateralModule.sol",
@@ -27964,7 +28729,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xb7547ad6b082453728d8df9eea23d5510a16801609133612195a9f58b4a06b79",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500519",
                     "deployTimestamp": "1724825156",
                     "sourceName": "contracts/modules/core/MarketManagerModule.sol",
@@ -27991,7 +28756,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x324a33698326feca6777219573c4abaac4f12dce811235f7e77702cf63cd71f9",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500528",
                     "deployTimestamp": "1724825158",
                     "sourceName": "contracts/modules/core/PoolConfigurationModule.sol",
@@ -28051,7 +28816,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x9b37bd7d8934da9cd7d175ba26709eaa6775c9c00be5e650ad757e7d37ca0854",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500536",
                     "deployTimestamp": "1724825160",
                     "sourceName": "contracts/modules/core/PoolModule.sol",
@@ -28096,7 +28861,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xe772cdf33390964ef6d407391f7080cfb938215beb437333f37fa46084519812",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500544",
                     "deployTimestamp": "1724825162",
                     "sourceName": "contracts/modules/core/RewardsManagerModule.sol",
@@ -28136,7 +28901,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x62552eaa35b757275b9ffdb71bd716ada220db46f966e4983603b38dac19fc9d",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500552",
                     "deployTimestamp": "1724825164",
                     "sourceName": "contracts/modules/usd/USDTokenModule.sol",
@@ -28166,7 +28931,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x2d93427ec68d314b1e1e501248a4b1efb31a80e0dd4d1a099c54593843408387",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500560",
                     "deployTimestamp": "1724825166",
                     "sourceName": "contracts/modules/core/UtilsModule.sol",
@@ -28217,7 +28982,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x8eb70cb2ae8f135a6c403a3350a074e89fbc14752d58fc36df30b2a5b9112ca7",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500567",
                     "deployTimestamp": "1724825168",
                     "sourceName": "contracts/modules/core/VaultModule.sol",
@@ -28284,7 +29049,7 @@
                       "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                     ],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xc324e1f8bef7205ca6abc154708db8167ce8794ee56363306571b7ba83f2eb37",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/Proxy.sol",
                     "contractName": "Proxy",
                     "deployedOn": "contract.InitialCoreProxy",
@@ -28349,7 +29114,7 @@
                       "function transferFrom(address from, address to, uint256 tokenId)"
                     ],
                     "deployedOn": "router.AccountRouter",
-                    "deployTxnHash": "0x296734813753761d93ddbe5a0f2b6e3867bc168d4b344ad01e157d8521551d5f",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500600",
                     "deployTimestamp": "1724825176",
                     "contractName": "AccountRouter",
@@ -28610,7 +29375,7 @@
                       "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
                     ],
                     "deployedOn": "router.CoreRouter",
-                    "deployTxnHash": "0x30fe3ea40129890de35846ca72a18f38ea5c4ffec03b1ed7fcbddef13212b057",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500609",
                     "deployTimestamp": "1724825178",
                     "contractName": "CoreRouter",
@@ -28672,7 +29437,7 @@
                       "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                     ],
                     "deployedOn": "router.USDRouter",
-                    "deployTxnHash": "0x3d143d580669928e02976671cd3798458e378751561bb5880c39dc95dec88828",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500617",
                     "deployTimestamp": "1724825180",
                     "contractName": "USDRouter",
@@ -29171,7 +29936,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x86bc41a1442c128901ccc1f8c53a6a3c777e84d26f0c577e676711d02165f9bd",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "264758193",
                         "deployTimestamp": "1729169132",
                         "sourceName": "contracts/modules/NodeModule.sol",
@@ -29204,7 +29969,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x08dd8033d9f1a717c85d57048d5b3113af17843a5569240801a25708cd6be41b",
+                        "deployTxnHash": "",
                         "sourceName": "contracts/modules/CoreModule.sol",
                         "contractName": "CoreModule",
                         "deployedOn": "contract.CoreModule",
@@ -29238,7 +30003,7 @@
                           "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                         ],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xe415b650bf87b208212b944ac1325a0991dd65ff63a413fae45662faa57a74c2",
+                        "deployTxnHash": "",
                         "sourceName": "contracts/Proxy.sol",
                         "contractName": "Proxy",
                         "deployedOn": "contract.InitialProxy",
@@ -29289,7 +30054,7 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployedOn": "router.OracleRouter",
-                        "deployTxnHash": "0x0be725fe3903cec2e31a03abc0c0e7c5c23ef48672023579fb40a8f8ffdf2c65",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "264758203",
                         "deployTimestamp": "1729169134",
                         "contractName": "OracleRouter",
@@ -29947,7 +30712,7 @@
       "artifacts": {
         "imports": {
           "perpsFactory": {
-            "url": "ipfs://QmeNLm9oXu78QPKPbqy4EGj62jK16m3bBDwAaYkmpfXstB",
+            "url": "ipfs://QmfVNhFz2epuHF8XfaYbf8Ds832xfsAXkuBQXPWzKSgeAY",
             "tags": [
               "latest"
             ],
@@ -29977,7 +30742,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x2842d1de25cdcc7a9845f5015690bdf136e444a5e8f960b421ad0ce266d3f745",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007004",
                 "deployTimestamp": "1728980318",
                 "sourceName": "contracts/modules/AsyncOrderCancelModule.sol",
@@ -30022,7 +30787,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xa515996218800265b9f2090f7ceb2447658c84d3fe613c0c53b739fd0c896520",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007011",
                 "deployTimestamp": "1728980320",
                 "sourceName": "contracts/modules/AsyncOrderModule.sol",
@@ -30068,7 +30833,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x187da4736193149f49507e597e30974b40a22ec772238c3cdbd7994a1b57fcee",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007019",
                 "deployTimestamp": "1728980322",
                 "sourceName": "contracts/modules/AsyncOrderSettlementPythModule.sol",
@@ -30102,7 +30867,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xf62b9ad8754e9c7aeb074bd04976352f605536cbc196dca1e9ab64f581d64e25",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007028",
                 "deployTimestamp": "1728980324",
                 "sourceName": "contracts/modules/CollateralConfigurationModule.sol",
@@ -30135,7 +30900,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xf61629a5c17ce148c32ee7dae0433f9e9aa0d3ec3384f1b25d3792d6563218d1",
+                "deployTxnHash": "",
                 "sourceName": "contracts/modules/CoreModule.sol",
                 "contractName": "CoreModule",
                 "deployedOn": "contract.CoreModule",
@@ -30166,7 +30931,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xc441535029915fbe160bb9fe82ee1f695abd0cf0b2748974771094dd25d03631",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "254918390",
                 "deployTimestamp": "1726693088",
                 "sourceName": "contracts/modules/FeatureFlagModule.sol",
@@ -30215,7 +30980,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x3e85f9f554a35be4899e1fffd8221680c74cf45fef8ea9416e369a79faf3af84",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007036",
                 "deployTimestamp": "1728980326",
                 "sourceName": "contracts/modules/GlobalPerpsMarketModule.sol",
@@ -30259,7 +31024,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x26911ae6955d7a90e580a5f8faa944a0c1ae4fe346fe88ac27321a1bed0cdbac",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007045",
                 "deployTimestamp": "1728980329",
                 "sourceName": "contracts/modules/LiquidationModule.sol",
@@ -30307,7 +31072,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x7afe191f4ffa334d863900b65068ba3722a13f513e41c0870cebc7862561dd17",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007055",
                 "deployTimestamp": "1728980331",
                 "sourceName": "contracts/modules/MarketConfigurationModule.sol",
@@ -30362,7 +31127,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x851497092b0da4d5218efc6bf62cfaae52720c2db084d1f99d5d69fb5b40e8e2",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007064",
                 "deployTimestamp": "1728980334",
                 "sourceName": "contracts/modules/PerpsAccountModule.sol",
@@ -30399,7 +31164,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x27969a7da91c88eacd4fe88fe398f7088a40377561f4e94b741dff1175ab7ef3",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007073",
                 "deployTimestamp": "1728980336",
                 "sourceName": "contracts/modules/PerpsMarketFactoryModule.sol",
@@ -30425,7 +31190,7 @@
                 ],
                 "constructorArgs": [],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x72a21d0767373cf10d70c9d8c24c7ee0300a0569dc1fe7ed801e101815f9ce26",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007080",
                 "deployTimestamp": "1728980338",
                 "sourceName": "contracts/modules/PerpsMarketModule.sol",
@@ -30461,7 +31226,7 @@
                   "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x562bcced1adbbb4c229aa9455752efb95b3e932d3ea1c329929276b5520fd9a3",
+                "deployTxnHash": "",
                 "sourceName": "contracts/Proxy.sol",
                 "contractName": "Proxy",
                 "deployedOn": "contract.InitialProxy",
@@ -30712,7 +31477,7 @@
                   "function updateReferrerShare(address referrer, uint256 shareRatioD18)"
                 ],
                 "deployedOn": "router.PerpsMarketRouter",
-                "deployTxnHash": "0x1d9bd6b014bc14d2205ad701eb647319f17acfd5f43319df2080245ff8bae3bc",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "264007089",
                 "deployTimestamp": "1728980340",
                 "contractName": "PerpsMarketRouter",
@@ -31053,7 +31818,7 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmSXFL5xyoTzhbLX1VWZTUAx5jKSPLWmWLG9Zes7R2SPvN",
+                "url": "ipfs://QmdhdDfg3B3HwDLJrHEBVJzPUmAW7iZhXjjNJaqJ17PFf9",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
                     "address": "0xb77Fb35da540BCA790d9abDa686e57C47AbE8820",
@@ -31070,7 +31835,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x1d203597c90964bb4a300662a2a9a5206269ada06ea7aa8c22c261dac7c1a905",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500705",
                     "deployTimestamp": "1724825201",
                     "sourceName": "contracts/modules/AsyncOrderConfigurationModule.sol",
@@ -31099,7 +31864,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x019514c815267518d3943c4ce3b82d068b1c258b754c6434b52a1d2d9519d45f",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500722",
                     "deployTimestamp": "1724825206",
                     "sourceName": "contracts/modules/AsyncOrderModule.sol",
@@ -31126,7 +31891,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xc0bf67ed083f10e1c2773ae6cc949e3919cc7fd986be764bbd8c76b8b9264c8c",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500729",
                     "deployTimestamp": "1724825207",
                     "sourceName": "contracts/modules/AsyncOrderSettlementModule.sol",
@@ -31161,7 +31926,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x0fcf76bbfcbc6b3a0cacbe7265935f20e655fc53e9f888a96ce6d37749a976c1",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500737",
                     "deployTimestamp": "1724825210",
                     "sourceName": "contracts/modules/AtomicOrderModule.sol",
@@ -31194,7 +31959,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x573e1abcf1a875dd8e103ce731e9f80d094b8688f1d60d3f4789c406868469c4",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/modules/CoreModule.sol",
                     "contractName": "CoreModule",
                     "deployedOn": "contract.CoreModule",
@@ -31225,7 +31990,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x3537c0598dea305f3cde10d985b634da7cc3a32ee899619552b4f849081c0558",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500746",
                     "deployTimestamp": "1724825212",
                     "sourceName": "contracts/modules/FeatureFlagModule.sol",
@@ -31269,7 +32034,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xfff386caf2c70f023184cfa5ddb955312fc5f1c2e029fa95fe9bad0591bcefe1",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500754",
                     "deployTimestamp": "1724825214",
                     "sourceName": "contracts/modules/MarketConfigurationModule.sol",
@@ -31329,7 +32094,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x1fe2fe0a2ee518170afdf6cac625adf10bc339dd72aada0cede4457bfcaf8b76",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500762",
                     "deployTimestamp": "1724825216",
                     "sourceName": "contracts/modules/SpotMarketFactoryModule.sol",
@@ -31372,7 +32137,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x6d7d93f4aa3710863b83102b054dc424b3d30ab937d0e8feb7cdfb55a8097e03",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500774",
                     "deployTimestamp": "1724825219",
                     "sourceName": "contracts/modules/token/SynthTokenModule.sol",
@@ -31402,7 +32167,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x19439e822f9c8b2d6581c5bf83b8a6302db6036d361170c1a96a7ded4c37dd3b",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500782",
                     "deployTimestamp": "1724825221",
                     "sourceName": "contracts/modules/WrapperModule.sol",
@@ -31438,7 +32203,7 @@
                       "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                     ],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x73744ce00ffb8fcbeb7a908d6ebb44f38b9bf81abe3de12e835a9c5c6c1516b5",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/Proxy.sol",
                     "contractName": "Proxy",
                     "deployedOn": "contract.InitialSpotMarketProxy",
@@ -31611,7 +32376,7 @@
                       "function setFeatureFlagDenyAll(bytes32 feature, bool denyAll)"
                     ],
                     "deployedOn": "router.SpotMarketRouter",
-                    "deployTxnHash": "0xd7c9214607e8af6f35a8ae778f124af9f6c5276e59131ccf30651b3fc2ca5748",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500789",
                     "deployTimestamp": "1724825223",
                     "contractName": "SpotMarketRouter",
@@ -31669,7 +32434,7 @@
                       "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                     ],
                     "deployedOn": "router.SynthRouter",
-                    "deployTxnHash": "0xf7920b8b2e912320533abbfafe9c63b64d7ec3ab9d65308c68df63e779e9ccc8",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500803",
                     "deployTimestamp": "1724825227",
                     "contractName": "SynthRouter",
@@ -31861,7 +32626,7 @@
                 },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://Qmed7MZspcVYPjmEM5k8B31qZfERuL2AyBESJGn2rZPcTD",
+                    "url": "ipfs://QmNf7yExWDWuvFQ8ztHbJj63GiF3i8w8uESjGj7QfZgxwj",
                     "contracts": {
                       "AccountModule": {
                         "address": "0x7fA9d723329AfDbfAE19B832adB8351CD3cAf1f0",
@@ -31894,7 +32659,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x6cfba47859066e4fb685507bfd61f9fd6c2e052d8c67012ae697b4a9c27930e0",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500432",
                         "deployTimestamp": "1724825134",
                         "sourceName": "contracts/modules/core/AccountModule.sol",
@@ -31946,7 +32711,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xe2e439ed42771c95f396e522f5e5e15269a80fdecfe591d13b01b1a90f4c67e6",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500440",
                         "deployTimestamp": "1724825136",
                         "sourceName": "contracts/modules/account/AccountTokenModule.sol",
@@ -31975,7 +32740,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xd70d80f4a049f1a520660c40c86e51b418ebfad409160c8a74e4818265c5ac5c",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500447",
                         "deployTimestamp": "1724825138",
                         "sourceName": "contracts/modules/core/AssociateDebtModule.sol",
@@ -31998,7 +32763,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x4201c072e254cf63338ee5e86bf3a7ec65c9e10642d0a8e5c0448029cb03854e",
+                        "deployTxnHash": "",
                         "sourceName": "contracts/modules/associated-systems/AssociatedSystemsModule.sol",
                         "contractName": "AssociatedSystemsModule",
                         "deployedOn": "contract.AssociatedSystemsModule",
@@ -32016,7 +32781,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xa49b280fe4e2f1531affb04742f24cbdc34c4e0c944f4577d42ab0c2f015771a",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500456",
                         "deployTimestamp": "1724825140",
                         "sourceName": "contracts/modules/core/CcipReceiverModule.sol",
@@ -32041,7 +32806,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x90b790d13937934431db76507e53625711e5085bdfd64a13a99cf5781972f746",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500464",
                         "deployTimestamp": "1724825142",
                         "sourceName": "contracts/modules/core/CollateralConfigurationModule.sol",
@@ -32083,7 +32848,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xd9cf72843267c579e21cf86c96137f7a7b06c5479dd1e14d046ac2ee31cb736c",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500472",
                         "deployTimestamp": "1724825144",
                         "sourceName": "contracts/modules/core/CollateralModule.sol",
@@ -32103,7 +32868,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xc8dc9db0190c23bc06ec721a13f668997e5cb604ae272a27e14e19b6caa1f433",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500479",
                         "deployTimestamp": "1724825146",
                         "sourceName": "contracts/modules/core/CrossChainUSDModule.sol",
@@ -32136,7 +32901,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x2923512652879d3bc186146a4f1090389799ffdbd7fde5ec2ead7ca6929e545d",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500487",
                         "deployTimestamp": "1724825148",
                         "sourceName": "contracts/modules/core/FeatureFlagModule.sol",
@@ -32171,7 +32936,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xd07162f84e2e10e472914d57b0f52e7ea99051114430b89768904fc3204284e4",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500495",
                         "deployTimestamp": "1724825150",
                         "sourceName": "contracts/modules/core/IssueUSDModule.sol",
@@ -32208,7 +32973,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x9e0c8d145e282c93077857286d8a5c4633602d20978c1175f386219f3f9a91ef",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500504",
                         "deployTimestamp": "1724825152",
                         "sourceName": "contracts/modules/core/LiquidationModule.sol",
@@ -32241,7 +33006,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x38975c1742cce54431a86941a228a188512eeb548b05c3ab43d8dcce63db5f97",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500511",
                         "deployTimestamp": "1724825154",
                         "sourceName": "contracts/modules/core/MarketCollateralModule.sol",
@@ -32294,7 +33059,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xb7547ad6b082453728d8df9eea23d5510a16801609133612195a9f58b4a06b79",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500519",
                         "deployTimestamp": "1724825156",
                         "sourceName": "contracts/modules/core/MarketManagerModule.sol",
@@ -32321,7 +33086,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x324a33698326feca6777219573c4abaac4f12dce811235f7e77702cf63cd71f9",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500528",
                         "deployTimestamp": "1724825158",
                         "sourceName": "contracts/modules/core/PoolConfigurationModule.sol",
@@ -32381,7 +33146,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x9b37bd7d8934da9cd7d175ba26709eaa6775c9c00be5e650ad757e7d37ca0854",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500536",
                         "deployTimestamp": "1724825160",
                         "sourceName": "contracts/modules/core/PoolModule.sol",
@@ -32426,7 +33191,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xe772cdf33390964ef6d407391f7080cfb938215beb437333f37fa46084519812",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500544",
                         "deployTimestamp": "1724825162",
                         "sourceName": "contracts/modules/core/RewardsManagerModule.sol",
@@ -32466,7 +33231,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x62552eaa35b757275b9ffdb71bd716ada220db46f966e4983603b38dac19fc9d",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500552",
                         "deployTimestamp": "1724825164",
                         "sourceName": "contracts/modules/usd/USDTokenModule.sol",
@@ -32496,7 +33261,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x2d93427ec68d314b1e1e501248a4b1efb31a80e0dd4d1a099c54593843408387",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500560",
                         "deployTimestamp": "1724825166",
                         "sourceName": "contracts/modules/core/UtilsModule.sol",
@@ -32547,7 +33312,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x8eb70cb2ae8f135a6c403a3350a074e89fbc14752d58fc36df30b2a5b9112ca7",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500567",
                         "deployTimestamp": "1724825168",
                         "sourceName": "contracts/modules/core/VaultModule.sol",
@@ -32614,7 +33379,7 @@
                           "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                         ],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xc324e1f8bef7205ca6abc154708db8167ce8794ee56363306571b7ba83f2eb37",
+                        "deployTxnHash": "",
                         "sourceName": "contracts/Proxy.sol",
                         "contractName": "Proxy",
                         "deployedOn": "contract.InitialCoreProxy",
@@ -32679,7 +33444,7 @@
                           "function transferFrom(address from, address to, uint256 tokenId)"
                         ],
                         "deployedOn": "router.AccountRouter",
-                        "deployTxnHash": "0x296734813753761d93ddbe5a0f2b6e3867bc168d4b344ad01e157d8521551d5f",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500600",
                         "deployTimestamp": "1724825176",
                         "contractName": "AccountRouter",
@@ -32940,7 +33705,7 @@
                           "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
                         ],
                         "deployedOn": "router.CoreRouter",
-                        "deployTxnHash": "0x30fe3ea40129890de35846ca72a18f38ea5c4ffec03b1ed7fcbddef13212b057",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500609",
                         "deployTimestamp": "1724825178",
                         "contractName": "CoreRouter",
@@ -33002,7 +33767,7 @@
                           "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                         ],
                         "deployedOn": "router.USDRouter",
-                        "deployTxnHash": "0x3d143d580669928e02976671cd3798458e378751561bb5880c39dc95dec88828",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "247500617",
                         "deployTimestamp": "1724825180",
                         "contractName": "USDRouter",
@@ -33501,7 +34266,7 @@
                             ],
                             "constructorArgs": [],
                             "linkedLibraries": {},
-                            "deployTxnHash": "0x86bc41a1442c128901ccc1f8c53a6a3c777e84d26f0c577e676711d02165f9bd",
+                            "deployTxnHash": "",
                             "deployTxnBlockNumber": "264758193",
                             "deployTimestamp": "1729169132",
                             "sourceName": "contracts/modules/NodeModule.sol",
@@ -33534,7 +34299,7 @@
                             ],
                             "constructorArgs": [],
                             "linkedLibraries": {},
-                            "deployTxnHash": "0x08dd8033d9f1a717c85d57048d5b3113af17843a5569240801a25708cd6be41b",
+                            "deployTxnHash": "",
                             "sourceName": "contracts/modules/CoreModule.sol",
                             "contractName": "CoreModule",
                             "deployedOn": "contract.CoreModule",
@@ -33568,7 +34333,7 @@
                               "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                             ],
                             "linkedLibraries": {},
-                            "deployTxnHash": "0xe415b650bf87b208212b944ac1325a0991dd65ff63a413fae45662faa57a74c2",
+                            "deployTxnHash": "",
                             "sourceName": "contracts/Proxy.sol",
                             "contractName": "Proxy",
                             "deployedOn": "contract.InitialProxy",
@@ -33619,7 +34384,7 @@
                               "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                             ],
                             "deployedOn": "router.OracleRouter",
-                            "deployTxnHash": "0x0be725fe3903cec2e31a03abc0c0e7c5c23ef48672023579fb40a8f8ffdf2c65",
+                            "deployTxnHash": "",
                             "deployTxnBlockNumber": "264758203",
                             "deployTimestamp": "1729169134",
                             "contractName": "OracleRouter",
@@ -34269,7 +35034,7 @@
                 }
               },
               "synthetix": {
-                "url": "ipfs://Qmed7MZspcVYPjmEM5k8B31qZfERuL2AyBESJGn2rZPcTD",
+                "url": "ipfs://QmNf7yExWDWuvFQ8ztHbJj63GiF3i8w8uESjGj7QfZgxwj",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x7fA9d723329AfDbfAE19B832adB8351CD3cAf1f0",
@@ -34302,7 +35067,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x6cfba47859066e4fb685507bfd61f9fd6c2e052d8c67012ae697b4a9c27930e0",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500432",
                     "deployTimestamp": "1724825134",
                     "sourceName": "contracts/modules/core/AccountModule.sol",
@@ -34354,7 +35119,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xe2e439ed42771c95f396e522f5e5e15269a80fdecfe591d13b01b1a90f4c67e6",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500440",
                     "deployTimestamp": "1724825136",
                     "sourceName": "contracts/modules/account/AccountTokenModule.sol",
@@ -34383,7 +35148,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xd70d80f4a049f1a520660c40c86e51b418ebfad409160c8a74e4818265c5ac5c",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500447",
                     "deployTimestamp": "1724825138",
                     "sourceName": "contracts/modules/core/AssociateDebtModule.sol",
@@ -34406,7 +35171,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x4201c072e254cf63338ee5e86bf3a7ec65c9e10642d0a8e5c0448029cb03854e",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/modules/associated-systems/AssociatedSystemsModule.sol",
                     "contractName": "AssociatedSystemsModule",
                     "deployedOn": "contract.AssociatedSystemsModule",
@@ -34424,7 +35189,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xa49b280fe4e2f1531affb04742f24cbdc34c4e0c944f4577d42ab0c2f015771a",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500456",
                     "deployTimestamp": "1724825140",
                     "sourceName": "contracts/modules/core/CcipReceiverModule.sol",
@@ -34449,7 +35214,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x90b790d13937934431db76507e53625711e5085bdfd64a13a99cf5781972f746",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500464",
                     "deployTimestamp": "1724825142",
                     "sourceName": "contracts/modules/core/CollateralConfigurationModule.sol",
@@ -34491,7 +35256,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xd9cf72843267c579e21cf86c96137f7a7b06c5479dd1e14d046ac2ee31cb736c",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500472",
                     "deployTimestamp": "1724825144",
                     "sourceName": "contracts/modules/core/CollateralModule.sol",
@@ -34511,7 +35276,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xc8dc9db0190c23bc06ec721a13f668997e5cb604ae272a27e14e19b6caa1f433",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500479",
                     "deployTimestamp": "1724825146",
                     "sourceName": "contracts/modules/core/CrossChainUSDModule.sol",
@@ -34544,7 +35309,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x2923512652879d3bc186146a4f1090389799ffdbd7fde5ec2ead7ca6929e545d",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500487",
                     "deployTimestamp": "1724825148",
                     "sourceName": "contracts/modules/core/FeatureFlagModule.sol",
@@ -34579,7 +35344,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xd07162f84e2e10e472914d57b0f52e7ea99051114430b89768904fc3204284e4",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500495",
                     "deployTimestamp": "1724825150",
                     "sourceName": "contracts/modules/core/IssueUSDModule.sol",
@@ -34616,7 +35381,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x9e0c8d145e282c93077857286d8a5c4633602d20978c1175f386219f3f9a91ef",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500504",
                     "deployTimestamp": "1724825152",
                     "sourceName": "contracts/modules/core/LiquidationModule.sol",
@@ -34649,7 +35414,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x38975c1742cce54431a86941a228a188512eeb548b05c3ab43d8dcce63db5f97",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500511",
                     "deployTimestamp": "1724825154",
                     "sourceName": "contracts/modules/core/MarketCollateralModule.sol",
@@ -34702,7 +35467,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xb7547ad6b082453728d8df9eea23d5510a16801609133612195a9f58b4a06b79",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500519",
                     "deployTimestamp": "1724825156",
                     "sourceName": "contracts/modules/core/MarketManagerModule.sol",
@@ -34729,7 +35494,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x324a33698326feca6777219573c4abaac4f12dce811235f7e77702cf63cd71f9",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500528",
                     "deployTimestamp": "1724825158",
                     "sourceName": "contracts/modules/core/PoolConfigurationModule.sol",
@@ -34789,7 +35554,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x9b37bd7d8934da9cd7d175ba26709eaa6775c9c00be5e650ad757e7d37ca0854",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500536",
                     "deployTimestamp": "1724825160",
                     "sourceName": "contracts/modules/core/PoolModule.sol",
@@ -34834,7 +35599,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xe772cdf33390964ef6d407391f7080cfb938215beb437333f37fa46084519812",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500544",
                     "deployTimestamp": "1724825162",
                     "sourceName": "contracts/modules/core/RewardsManagerModule.sol",
@@ -34874,7 +35639,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x62552eaa35b757275b9ffdb71bd716ada220db46f966e4983603b38dac19fc9d",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500552",
                     "deployTimestamp": "1724825164",
                     "sourceName": "contracts/modules/usd/USDTokenModule.sol",
@@ -34904,7 +35669,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x2d93427ec68d314b1e1e501248a4b1efb31a80e0dd4d1a099c54593843408387",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500560",
                     "deployTimestamp": "1724825166",
                     "sourceName": "contracts/modules/core/UtilsModule.sol",
@@ -34955,7 +35720,7 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x8eb70cb2ae8f135a6c403a3350a074e89fbc14752d58fc36df30b2a5b9112ca7",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500567",
                     "deployTimestamp": "1724825168",
                     "sourceName": "contracts/modules/core/VaultModule.sol",
@@ -35022,7 +35787,7 @@
                       "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                     ],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xc324e1f8bef7205ca6abc154708db8167ce8794ee56363306571b7ba83f2eb37",
+                    "deployTxnHash": "",
                     "sourceName": "contracts/Proxy.sol",
                     "contractName": "Proxy",
                     "deployedOn": "contract.InitialCoreProxy",
@@ -35087,7 +35852,7 @@
                       "function transferFrom(address from, address to, uint256 tokenId)"
                     ],
                     "deployedOn": "router.AccountRouter",
-                    "deployTxnHash": "0x296734813753761d93ddbe5a0f2b6e3867bc168d4b344ad01e157d8521551d5f",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500600",
                     "deployTimestamp": "1724825176",
                     "contractName": "AccountRouter",
@@ -35348,7 +36113,7 @@
                       "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
                     ],
                     "deployedOn": "router.CoreRouter",
-                    "deployTxnHash": "0x30fe3ea40129890de35846ca72a18f38ea5c4ffec03b1ed7fcbddef13212b057",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500609",
                     "deployTimestamp": "1724825178",
                     "contractName": "CoreRouter",
@@ -35410,7 +36175,7 @@
                       "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                     ],
                     "deployedOn": "router.USDRouter",
-                    "deployTxnHash": "0x3d143d580669928e02976671cd3798458e378751561bb5880c39dc95dec88828",
+                    "deployTxnHash": "",
                     "deployTxnBlockNumber": "247500617",
                     "deployTimestamp": "1724825180",
                     "contractName": "USDRouter",
@@ -35909,7 +36674,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x86bc41a1442c128901ccc1f8c53a6a3c777e84d26f0c577e676711d02165f9bd",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "264758193",
                         "deployTimestamp": "1729169132",
                         "sourceName": "contracts/modules/NodeModule.sol",
@@ -35942,7 +36707,7 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x08dd8033d9f1a717c85d57048d5b3113af17843a5569240801a25708cd6be41b",
+                        "deployTxnHash": "",
                         "sourceName": "contracts/modules/CoreModule.sol",
                         "contractName": "CoreModule",
                         "deployedOn": "contract.CoreModule",
@@ -35976,7 +36741,7 @@
                           "0x6E1613B5c68B4Cf2A58400D8019a97849A678139"
                         ],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xe415b650bf87b208212b944ac1325a0991dd65ff63a413fae45662faa57a74c2",
+                        "deployTxnHash": "",
                         "sourceName": "contracts/Proxy.sol",
                         "contractName": "Proxy",
                         "deployedOn": "contract.InitialProxy",
@@ -36027,7 +36792,7 @@
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployedOn": "router.OracleRouter",
-                        "deployTxnHash": "0x0be725fe3903cec2e31a03abc0c0e7c5c23ef48672023579fb40a8f8ffdf2c65",
+                        "deployTxnHash": "",
                         "deployTxnBlockNumber": "264758203",
                         "deployTimestamp": "1729169134",
                         "contractName": "OracleRouter",
@@ -38219,7 +38984,7 @@
                   "Spartan Council Pool ARB Rewards for ARB LP"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xd73935ac920cb2554535b71f141c5462065649532c6d7a6e6d68508dde3b1fec",
+                "deployTxnHash": "",
                 "sourceName": "src/RewardsDistributor.sol",
                 "contractName": "RewardsDistributor",
                 "deployedOn": "contract.RewardsDistributor",
@@ -38296,7 +39061,7 @@
                   "Spartan Council Pool ARB Rewards for USDC LP"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x46a1926409029440722981dd79e359804339d25c00b590fc0d0f93037610f754",
+                "deployTxnHash": "",
                 "sourceName": "src/RewardsDistributor.sol",
                 "contractName": "RewardsDistributor",
                 "deployedOn": "contract.RewardsDistributor",
@@ -38373,7 +39138,7 @@
                   "Spartan Council Pool ARB Rewards for WETH LP"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xf061dc09977453f9e7b6e2520793e4851633ef2d358b338bd112f952e2275e7e",
+                "deployTxnHash": "",
                 "sourceName": "src/RewardsDistributor.sol",
                 "contractName": "RewardsDistributor",
                 "deployedOn": "contract.RewardsDistributor",
@@ -38739,7 +39504,7 @@
                   "Spartan Council Pool ARB Rewards for USDe LP"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x5d7e4cfc94c80840da1adc76b482383df2a8a3fbcf9823f8385ee6b7d0a2142f",
+                "deployTxnHash": "",
                 "sourceName": "src/RewardsDistributor.sol",
                 "contractName": "RewardsDistributor",
                 "deployedOn": "contract.RewardsDistributor",
@@ -41656,7 +42421,7 @@
                   "0xd762960c31210Cf1bDf75b06A5192d395EEDC659"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x3438f79d27c9330e66ec2cb8e7156a715ba288ff5d8adcd74439eb09cd9b38cb",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247534308",
                 "deployTimestamp": "1724833639",
                 "sourceName": "src/RewardsDistributorExternal.sol",
@@ -41737,7 +42502,7 @@
                   "0xd762960c31210Cf1bDf75b06A5192d395EEDC659"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x8f406e0497e85d8a87215659ee141df2c5e5c81fe894ba8165870ad96c4bf223",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "247534315",
                 "deployTimestamp": "1724833641",
                 "sourceName": "src/RewardsDistributorExternal.sol",
@@ -42813,6 +43578,7 @@
           "pyth_feed_id_fxs": "0x735f591e4fed988cd38df74d8fcedecf2fe8d9111664e0fd500db9aa78b316b1",
           "pyth_feed_id_gala": "0x0781209c28fda797616212b7f94d77af3a01f3e94a5d421760aef020cf2bcb51",
           "pyth_feed_id_gmx": "0xb962539d0fcb272a494d65ea56f94851c2bcf8823935da05bd628916e2e9edbf",
+          "pyth_feed_id_goat": "0xf7731dc812590214d3eb4343bfb13d1b4cfa9b1d4e020644b5d5d8e07d60c66c",
           "pyth_feed_id_grt": "0x4d1f8dae0d96236fb98e8f47471a366ec3b1732b47041781934ca3a9bb2f35e7",
           "pyth_feed_id_icp": "0xc9907d786c5821547777780a1e4f89484f3417cb14dd244f2b0a34ea7a554d67",
           "pyth_feed_id_imx": "0x941320a8989414874de5aa2fc340a75d5ed91fdff1613dd55f83844d52ea63a2",
@@ -42826,6 +43592,7 @@
           "pyth_feed_id_meme": "0xcd2cee36951a571e035db0dfad138e6ecdb06b517cc3373cd7db5d3609b7927c",
           "pyth_feed_id_mew": "0x514aed52ca5294177f20187ae883cec4a018619772ddce41efcc36a6448f5d5d",
           "pyth_feed_id_mkr": "0x9375299e31c0deb9c6bc378e6329aab44cb48ec655552a70d4b9050346a30378",
+          "pyth_feed_id_moodeng": "0xffff73128917a90950cd0473fd2551d7cd274fd5a6cc45641881bbcc6ee73417",
           "pyth_feed_id_near": "0xc415de8d2eba7db216527dff4b60e8f3a5311c740dadb233e13e12547e226750",
           "pyth_feed_id_not": "0x75ec6f04d4bded6afdc1440689be4402dd1e23d2ff2c21e081871eb2739ceb36",
           "pyth_feed_id_op": "0x385f64d993f7b77d8182ed5003d97c60aa3361f3cecfe711544d2d59165e9bdf",
@@ -42838,6 +43605,7 @@
           "pyth_feed_id_pyth": "0x0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff",
           "pyth_feed_id_render": "0x3d4a2bd9535be6ce8059d75eadeba507b043257321aa544717c56fa19b49e35d",
           "pyth_feed_id_rune": "0x5fcf71143bb70d41af4fa9aa1287e2efd3c5911cee59f909f915c9f61baacb1e",
+          "pyth_feed_id_safe": "0x7b3576858506a94fad3a9cc55e32934f0c3931150fe3a3c7b83558dbae5b8e38",
           "pyth_feed_id_sats": "0x40440d18fb5ad809e2825ce7dfc035cfa57135c13062a04addafe0c7f54425e0",
           "pyth_feed_id_sei": "0x53614f1cb0c031d4af66c04cb9c756234adad0e1cee85303795091499a4084eb",
           "pyth_feed_id_shib": "0xf0d57deca57b3da2fe63a493f4c25925fdfd8edf834b20f93e1f84dbd1504d4a",
@@ -42867,7 +43635,7 @@
           "pyth_feed_id_zro": "0x3bd860bea28bf982fa06bcf358118064bb114086cc03993bd76197eaab0b8018"
         }
       },
-      "hash": "29163e3c11336920feab6a3a7800784c",
+      "hash": "67852883a56f560d497514dfd287d9d4",
       "version": 7
     },
     "var.sol_spot_settings": {
@@ -46092,7 +46860,7 @@
                   "0xd762960c31210Cf1bDf75b06A5192d395EEDC659"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x08c4a6a26e9410e12272a4f4c2ee4c86f100b9a1212829c66a597415315649d4",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "252818626",
                 "deployTimestamp": "1726163195",
                 "sourceName": "src/RewardsDistributorExternal.sol",
@@ -46173,7 +46941,7 @@
                   "0xd762960c31210Cf1bDf75b06A5192d395EEDC659"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x4331262b9f57e35cb7b182df2dea6f8b6b48c8e25fa703e9194da9abc20382db",
+                "deployTxnHash": "",
                 "deployTxnBlockNumber": "252818634",
                 "deployTimestamp": "1726163197",
                 "sourceName": "src/RewardsDistributorExternal.sol",
@@ -83052,6 +83820,1485 @@
         }
       },
       "hash": "d466b16e760d6bfb702cd354ef9601a7",
+      "version": 7
+    },
+    "var.perps_goat_market_settings": {
+      "artifacts": {
+        "settings": {
+          "goat_perps_market_id": "8600",
+          "goat_perps_market_skew_scale": "20000000000000000000000000",
+          "goat_perps_market_max_funding_velocity": "9000000000000000000",
+          "goat_perps_maker_fee_ratio": "0",
+          "goat_perps_taker_fee_ratio": "500000000000000",
+          "goat_perps_max_market_size": "10000000000000000000000000",
+          "goat_perps_max_market_value": "3000000000000000000000000",
+          "goat_perps_initial_margin_ratio": "2459000000000000000",
+          "goat_perps_maintenance_margin_scalar": "317000000000000000",
+          "goat_perps_minimum_initial_margin_ratio": "50000000000000000",
+          "goat_perps_flag_reward_ratio_d18": "300000000000000",
+          "goat_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
+          "goat_perps_max_seconds_in_liquidation_window": "30",
+          "goat_perps_minimum_position_margin": "50000000000000000000",
+          "goat_perps_locked_oi_ratio": "500000000000000000",
+          "goat_perps_max_liquidation_pd": "500000000000000",
+          "goat_perps_endorsed_liquidator": "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+        }
+      },
+      "hash": "00cd2c5f5d9e9f27d38f98bccc2dd546",
+      "version": 7
+    },
+    "var.perps_moodeng_market_settings": {
+      "artifacts": {
+        "settings": {
+          "moodeng_perps_market_id": "8700",
+          "moodeng_perps_market_skew_scale": "50000000000000000000000000",
+          "moodeng_perps_market_max_funding_velocity": "9000000000000000000",
+          "moodeng_perps_maker_fee_ratio": "0",
+          "moodeng_perps_taker_fee_ratio": "500000000000000",
+          "moodeng_perps_max_market_size": "34000000000000000000000000",
+          "moodeng_perps_max_market_value": "3000000000000000000000000",
+          "moodeng_perps_initial_margin_ratio": "1588000000000000000",
+          "moodeng_perps_maintenance_margin_scalar": "317000000000000000",
+          "moodeng_perps_minimum_initial_margin_ratio": "50000000000000000",
+          "moodeng_perps_flag_reward_ratio_d18": "300000000000000",
+          "moodeng_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
+          "moodeng_perps_max_seconds_in_liquidation_window": "30",
+          "moodeng_perps_minimum_position_margin": "50000000000000000000",
+          "moodeng_perps_locked_oi_ratio": "500000000000000000",
+          "moodeng_perps_max_liquidation_pd": "500000000000000",
+          "moodeng_perps_endorsed_liquidator": "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+        }
+      },
+      "hash": "eae6a4a8a9c76f016a345c2a1a4b437a",
+      "version": 7
+    },
+    "var.perps_safe_market_settings": {
+      "artifacts": {
+        "settings": {
+          "safe_perps_market_id": "8500",
+          "safe_perps_market_skew_scale": "3000000000000000000000000",
+          "safe_perps_market_max_funding_velocity": "9000000000000000000",
+          "safe_perps_maker_fee_ratio": "0",
+          "safe_perps_taker_fee_ratio": "500000000000000",
+          "safe_perps_max_market_size": "500000000000000000000000",
+          "safe_perps_max_market_value": "500000000000000000000000",
+          "safe_perps_initial_margin_ratio": "1211000000000000000",
+          "safe_perps_maintenance_margin_scalar": "317000000000000000",
+          "safe_perps_minimum_initial_margin_ratio": "50000000000000000",
+          "safe_perps_flag_reward_ratio_d18": "300000000000000",
+          "safe_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
+          "safe_perps_max_seconds_in_liquidation_window": "30",
+          "safe_perps_minimum_position_margin": "50000000000000000000",
+          "safe_perps_locked_oi_ratio": "500000000000000000",
+          "safe_perps_max_liquidation_pd": "500000000000000",
+          "safe_perps_endorsed_liquidator": "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+        }
+      },
+      "hash": "61a3a8439f5ff09c9d566ce38dbe41e0",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_goat": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_goat": {
+            "hash": "0x0b0b14fa20e74095e7251ece896f3d7291d8afbcbe417511f8d186f4b29d5b0b",
+            "blockNumber": "270910978",
+            "timestamp": "1730715094",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x8f9ec9ec48d24a4dffb37df25d948599777d9ad4dae2cad4fb320a7493991292",
+                    5,
+                    "0x000000000000000000000000ff1a0f4744e8582df1ae09d5611b887b6a12925cf7731dc812590214d3eb4343bfb13d1b4cfa9b1d4e020644b5d5d8e07d60c66c0000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_goat",
+            "gasUsed": 146222,
+            "gasCost": "1005861817",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "goat_pyth_oracle_id": "0x8f9ec9ec48d24a4dffb37df25d948599777d9ad4dae2cad4fb320a7493991292"
+        }
+      },
+      "hash": "bfb0dd0192989258622322fb1ea12d2a",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_moodeng": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_moodeng": {
+            "hash": "0xf235c713c49e5eb063f7554abdbc919ec88e5aa66b3c702d335c3c033709bf66",
+            "blockNumber": "270910979",
+            "timestamp": "1730715096",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xcf7f22da79d5d37547e3f1374a3f32e0ee95cd8645b06f86cfcd981f4dba710e",
+                    5,
+                    "0x000000000000000000000000ff1a0f4744e8582df1ae09d5611b887b6a12925cffff73128917a90950cd0473fd2551d7cd274fd5a6cc45641881bbcc6ee734170000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_moodeng",
+            "gasUsed": 146222,
+            "gasCost": "1005136233",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "moodeng_pyth_oracle_id": "0xcf7f22da79d5d37547e3f1374a3f32e0ee95cd8645b06f86cfcd981f4dba710e"
+        }
+      },
+      "hash": "d8931d2e6dccbf4103269082494f087e",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_goat": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_goat": {
+            "hash": "0x97e3af72378bf6bafc62926f6fbe81eccb71ec8b6340b1addf09659d2ec0dbea",
+            "blockNumber": "270910980",
+            "timestamp": "1730715098",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xf6efd8ef2345087f3c087552f16100ddfd2bd3230bad9d2a99da180bfd5bc370",
+                    9,
+                    "0x0000000000000000000000007b118596be900f3c0feb2f23758d9798965b72a3f7731dc812590214d3eb4343bfb13d1b4cfa9b1d4e020644b5d5d8e07d60c66c0000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_goat",
+            "gasUsed": 154843,
+            "gasCost": "1004500463",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "goat_lookup_oracle_id": "0xf6efd8ef2345087f3c087552f16100ddfd2bd3230bad9d2a99da180bfd5bc370"
+        }
+      },
+      "hash": "fc64d650e3192e304177d1f251c1f3e5",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_moodeng": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_moodeng": {
+            "hash": "0xfacdc6129476607319ada53043bf9371035d5c75abdd0ac1eee6aa9fe15eabf3",
+            "blockNumber": "270910981",
+            "timestamp": "1730715100",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xf96e3e84815cc3401bc47e80eaa375ce636214a6aeaf830c0873d345efad84cc",
+                    9,
+                    "0x0000000000000000000000007b118596be900f3c0feb2f23758d9798965b72a3ffff73128917a90950cd0473fd2551d7cd274fd5a6cc45641881bbcc6ee734170000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_moodeng",
+            "gasUsed": 154843,
+            "gasCost": "1003943713",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "moodeng_lookup_oracle_id": "0xf96e3e84815cc3401bc47e80eaa375ce636214a6aeaf830c0873d345efad84cc"
+        }
+      },
+      "hash": "3accccf469746c2b90cb84cb94910d99",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_safe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_safe": {
+            "hash": "0xda6631266ed06c88a2adc351ff67de8b2f74fee522ed1cc3d86b6d791788af05",
+            "blockNumber": "270910982",
+            "timestamp": "1730715102",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x975b44fdcfd089f1c99a9b97ca6f94e531cb94d2ee8ef280dca1635f4745022a",
+                    9,
+                    "0x0000000000000000000000007b118596be900f3c0feb2f23758d9798965b72a37b3576858506a94fad3a9cc55e32934f0c3931150fe3a3c7b83558dbae5b8e380000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_safe",
+            "gasUsed": 154843,
+            "gasCost": "1003455838",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "safe_lookup_oracle_id": "0x975b44fdcfd089f1c99a9b97ca6f94e531cb94d2ee8ef280dca1635f4745022a"
+        }
+      },
+      "hash": "6f2a755f95517024438e8242f71f1d32",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_safe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_safe": {
+            "hash": "0x62fac8dbfea2dc582574e67cf77d2d95943dc287c9cab3e326e42d0d0fc0129a",
+            "blockNumber": "270910983",
+            "timestamp": "1730715104",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x3d3adb0cf386163e0f9a5a77ee071a1191691d9cfb28d4f7a0abab72ed21ab51",
+                    5,
+                    "0x000000000000000000000000ff1a0f4744e8582df1ae09d5611b887b6a12925c7b3576858506a94fad3a9cc55e32934f0c3931150fe3a3c7b83558dbae5b8e380000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_safe",
+            "gasUsed": 146222,
+            "gasCost": "1003028318",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "safe_pyth_oracle_id": "0x3d3adb0cf386163e0f9a5a77ee071a1191691d9cfb28d4f7a0abab72ed21ab51"
+        }
+      },
+      "hash": "33c87a5a7743f2c8779cb8440bea23d4",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_goat": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_goat": {
+            "hash": "0xfe5634950affe41a5865df492d024d8d583421c3f1de5c7a629e7839386d6296",
+            "blockNumber": "270910984",
+            "timestamp": "1730715110",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x5e8951f7c1b573d9a8f813b0c2d12d4ef0139acbfa4260f58c84cbc52b99ab63",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0x8f9ec9ec48d24a4dffb37df25d948599777d9ad4dae2cad4fb320a7493991292",
+                      "0xf6efd8ef2345087f3c087552f16100ddfd2bd3230bad9d2a99da180bfd5bc370"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_goat",
+            "gasUsed": 220723,
+            "gasCost": "1002653469",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "goat_oracle_id": "0x5e8951f7c1b573d9a8f813b0c2d12d4ef0139acbfa4260f58c84cbc52b99ab63"
+        }
+      },
+      "hash": "beeae0684192c4714abb5a19a562737b",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_moodeng": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_moodeng": {
+            "hash": "0xd87cbf0b750e003d63d1e72f028f6d760e818fcfc35caad40caf6bafc3e39df2",
+            "blockNumber": "270910985",
+            "timestamp": "1730715113",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x04a60f53c0840ad7e27a9174a1917287f9ad10995357508865e0247b98d23f98",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0xcf7f22da79d5d37547e3f1374a3f32e0ee95cd8645b06f86cfcd981f4dba710e",
+                      "0xf96e3e84815cc3401bc47e80eaa375ce636214a6aeaf830c0873d345efad84cc"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_moodeng",
+            "gasUsed": 220735,
+            "gasCost": "1002326667",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "moodeng_oracle_id": "0x04a60f53c0840ad7e27a9174a1917287f9ad10995357508865e0247b98d23f98"
+        }
+      },
+      "hash": "b54d693b8ac83ecd3d48b76e2dbf98d3",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_safe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_safe": {
+            "hash": "0x69fe8ddbe0cd52e4038e893e8924072f4d2d11229fa98773861444c3e79e3ef2",
+            "blockNumber": "270910986",
+            "timestamp": "1730715115",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xd9e48fb36f02d1b0a5e000eab9c478ddd26cabce027975b3ed1fecd3671ba1c2",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0x3d3adb0cf386163e0f9a5a77ee071a1191691d9cfb28d4f7a0abab72ed21ab51",
+                      "0x975b44fdcfd089f1c99a9b97ca6f94e531cb94d2ee8ef280dca1635f4745022a"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_safe",
+            "gasUsed": 220735,
+            "gasCost": "1002040114",
+            "signer": "0x1C8236B406911A376369e33D39189F1b4B39F27D"
+          }
+        },
+        "settings": {
+          "safe_oracle_id": "0xd9e48fb36f02d1b0a5e000eab9c478ddd26cabce027975b3ed1fecd3671ba1c2"
+        }
+      },
+      "hash": "e0700813677519e71141dbbfdd224caf",
+      "version": 7
+    },
+    "invoke.addPerpsGoatSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "addPerpsGoatSettlementStrategy": {
+            "hash": "0x7bc80584ca20304fc25065047abd847c893de78eafe84de773a23f1b45842f21",
+            "blockNumber": "270910987",
+            "timestamp": "1730715136",
+            "events": {
+              "SettlementStrategyAdded": [
+                {
+                  "name": "SettlementStrategyAdded",
+                  "args": [
+                    "8600",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "1",
+                      "settlementWindowDuration": "1",
+                      "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+                      "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                      "settlementReward": "0",
+                      "disabled": false,
+                      "commitmentPriceDelay": "0"
+                    },
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.addPerpsGoatSettlementStrategy",
+            "gasUsed": 118430,
+            "gasCost": "1001788853",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {
+          "goat_pyth_settlement_strategy": "0"
+        }
+      },
+      "hash": "d841a35d8b88eee0011a9c7c7365ea8d",
+      "version": 7
+    },
+    "invoke.addPerpsMoodengSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "addPerpsMoodengSettlementStrategy": {
+            "hash": "0xa6a4b7721dff46bf282c16e612b50e22c7cdacb4652aac7b21f3b92eb02ed0b7",
+            "blockNumber": "270910988",
+            "timestamp": "1730715139",
+            "events": {
+              "SettlementStrategyAdded": [
+                {
+                  "name": "SettlementStrategyAdded",
+                  "args": [
+                    "8700",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "1",
+                      "settlementWindowDuration": "1",
+                      "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+                      "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                      "settlementReward": "0",
+                      "disabled": false,
+                      "commitmentPriceDelay": "0"
+                    },
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.addPerpsMoodengSettlementStrategy",
+            "gasUsed": 118430,
+            "gasCost": "1001567012",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {
+          "moodeng_pyth_settlement_strategy": "0"
+        }
+      },
+      "hash": "a73bc9ab8a8c0a348c41a5bb07422d63",
+      "version": 7
+    },
+    "invoke.addPerpsSafeSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "addPerpsSafeSettlementStrategy": {
+            "hash": "0xc895d3413a47f375988afca821f1c23d85bb3aedf624159173bc33f234589b49",
+            "blockNumber": "270910989",
+            "timestamp": "1730715142",
+            "events": {
+              "SettlementStrategyAdded": [
+                {
+                  "name": "SettlementStrategyAdded",
+                  "args": [
+                    "8500",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "1",
+                      "settlementWindowDuration": "1",
+                      "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+                      "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                      "settlementReward": "0",
+                      "disabled": false,
+                      "commitmentPriceDelay": "0"
+                    },
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.addPerpsSafeSettlementStrategy",
+            "gasUsed": 118430,
+            "gasCost": "1001372683",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {
+          "safe_pyth_settlement_strategy": "0"
+        }
+      },
+      "hash": "88c95e0614c68e713dbe3ebb1710ce95",
+      "version": 7
+    },
+    "invoke.createGoatPerpsMarket": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "createGoatPerpsMarket": {
+            "hash": "0x16b8f3c9a12d464a4a009627c7b9a311957f86877e04dc169caef1be79011796",
+            "blockNumber": "270910990",
+            "timestamp": "1730715147",
+            "events": {
+              "MarketCreated": [
+                {
+                  "name": "MarketCreated",
+                  "args": [
+                    "8600",
+                    "Goatseus Maximus",
+                    "GOAT"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.createGoatPerpsMarket",
+            "gasUsed": 166035,
+            "gasCost": "1001202453",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "555885bbd7525892f4e592f91e398bb1",
+      "version": 7
+    },
+    "invoke.createMoodengPerpsMarket": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "createMoodengPerpsMarket": {
+            "hash": "0x8cfd190cc5740ac0ae8c370b50ab9584afb59d3afd91eb48738137497632af0d",
+            "blockNumber": "270910991",
+            "timestamp": "1730715149",
+            "events": {
+              "MarketCreated": [
+                {
+                  "name": "MarketCreated",
+                  "args": [
+                    "8700",
+                    "Moo Deng",
+                    "MOODENG"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.createMoodengPerpsMarket",
+            "gasUsed": 165975,
+            "gasCost": "1001053811",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "4cd6a76ace34b7916764b167e8029826",
+      "version": 7
+    },
+    "invoke.createSafePerpsMarket": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "createSafePerpsMarket": {
+            "hash": "0x24166a6d5a08ddf0d20ce2291b47601299be6941ebedcbf15e1081348547919d",
+            "blockNumber": "270910992",
+            "timestamp": "1730715152",
+            "events": {
+              "MarketCreated": [
+                {
+                  "name": "MarketCreated",
+                  "args": [
+                    "8500",
+                    "Safe",
+                    "SAFE"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.createSafePerpsMarket",
+            "gasUsed": 165891,
+            "gasCost": "1000923543",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "550dcf907a695d8f8f72aa15a7d9f7f0",
+      "version": 7
+    },
+    "invoke.setPerpsGoatFundingParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatFundingParameters": {
+            "hash": "0xc73a7f09d5a948bcf839f1f373e1c69bc38905f64b67908ca15d579d602269bf",
+            "blockNumber": "270910993",
+            "timestamp": "1730715158",
+            "events": {
+              "FundingParametersSet": [
+                {
+                  "name": "FundingParametersSet",
+                  "args": [
+                    "8600",
+                    "20000000000000000000000000",
+                    "9000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatFundingParameters",
+            "gasUsed": 79248,
+            "gasCost": "1000809377",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "b79d2c9ca2a17cc2970194530b5f5945",
+      "version": 7
+    },
+    "invoke.setPerpsGoatLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatLiquidationParameters": {
+            "hash": "0x559b6ed55ec62afcbedcdd1664c675a2863d5d327e2d308f3362ef10f1622bb5",
+            "blockNumber": "270910994",
+            "timestamp": "1730715160",
+            "events": {
+              "LiquidationParametersSet": [
+                {
+                  "name": "LiquidationParametersSet",
+                  "args": [
+                    "8600",
+                    "2459000000000000000",
+                    "317000000000000000",
+                    "50000000000000000",
+                    "300000000000000",
+                    "50000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatLiquidationParameters",
+            "gasUsed": 147179,
+            "gasCost": "1000708740",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "7ce87b3a05fc3db3785f79f2f29a4cc5",
+      "version": 7
+    },
+    "invoke.setPerpsGoatLockedOiRatio": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatLockedOiRatio": {
+            "hash": "0x8a93560338887d3c1f8c963a07141754c799dc185aa9233800134a42a8c0845b",
+            "blockNumber": "270910995",
+            "timestamp": "1730715160",
+            "events": {
+              "LockedOiRatioSet": [
+                {
+                  "name": "LockedOiRatioSet",
+                  "args": [
+                    "8600",
+                    "500000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatLockedOiRatio",
+            "gasUsed": 56556,
+            "gasCost": "1000621017",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "64107f91784df60f0d55f6db93415986",
+      "version": 7
+    },
+    "invoke.setPerpsGoatMaxLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatMaxLiquidationParameters": {
+            "hash": "0x081e9e60e4af52b539bb9aeb4024b0c71188bf5aa963948028c991b0d619d2b5",
+            "blockNumber": "270910996",
+            "timestamp": "1730715162",
+            "events": {
+              "MaxLiquidationParametersSet": [
+                {
+                  "name": "MaxLiquidationParametersSet",
+                  "args": [
+                    "8600",
+                    "1500000000000000000",
+                    "30",
+                    "500000000000000",
+                    "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatMaxLiquidationParameters",
+            "gasUsed": 124748,
+            "gasCost": "1000543683",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "e3be1c4402692d78910b49b16f82ec44",
+      "version": 7
+    },
+    "invoke.setPerpsGoatMaxMarketSize": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatMaxMarketSize": {
+            "hash": "0xac833b0299b806550227daf76132074a184afdd6458586da16d19a689f0ff5a2",
+            "blockNumber": "270910997",
+            "timestamp": "1730715162",
+            "events": {
+              "MaxMarketSizeSet": [
+                {
+                  "name": "MaxMarketSizeSet",
+                  "args": [
+                    "8600",
+                    "10000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatMaxMarketSize",
+            "gasUsed": 56613,
+            "gasCost": "1000476288",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "c5c8317d08c3317a4decb57ee9d18105",
+      "version": 7
+    },
+    "invoke.setPerpsGoatMaxMarketValue": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatMaxMarketValue": {
+            "hash": "0x4b227ae92656c7b793f26660395a996b53d90a4e5c54914601974c0b78c49f4a",
+            "blockNumber": "270910998",
+            "timestamp": "1730715162",
+            "events": {
+              "MaxMarketValueSet": [
+                {
+                  "name": "MaxMarketValueSet",
+                  "args": [
+                    "8600",
+                    "3000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatMaxMarketValue",
+            "gasUsed": 56702,
+            "gasCost": "1000416977",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "44c718849af056b10a9d00fdcd6ad565",
+      "version": 7
+    },
+    "invoke.setPerpsGoatOrderFees": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatOrderFees": {
+            "hash": "0x702e18b0fd5b0dd7d4dca41e4fdb9e3e46e650e6abd5b0759342cdd706e2b6b5",
+            "blockNumber": "270910999",
+            "timestamp": "1730715163",
+            "events": {
+              "OrderFeesSet": [
+                {
+                  "name": "OrderFeesSet",
+                  "args": [
+                    "8600",
+                    "0",
+                    "500000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatOrderFees",
+            "gasUsed": 59266,
+            "gasCost": "1000365052",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "760c37bd93e9759eab4d3d6c5cb21031",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengFundingParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengFundingParameters": {
+            "hash": "0x519b6457b5f96431d68b8460ccbe0b0db277917761d2096e93af525ccbd2d714",
+            "blockNumber": "270911000",
+            "timestamp": "1730715166",
+            "events": {
+              "FundingParametersSet": [
+                {
+                  "name": "FundingParametersSet",
+                  "args": [
+                    "8700",
+                    "50000000000000000000000000",
+                    "9000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengFundingParameters",
+            "gasUsed": 79248,
+            "gasCost": "1000319601",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "f3b22c5ff132e76f2208c2d38fe5c0f5",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengLiquidationParameters": {
+            "hash": "0x3b14477ea29cd3e51ebfd64f87afe7fac8068c6d7c676905ceefefca815a37bd",
+            "blockNumber": "270911001",
+            "timestamp": "1730715168",
+            "events": {
+              "LiquidationParametersSet": [
+                {
+                  "name": "LiquidationParametersSet",
+                  "args": [
+                    "8700",
+                    "1588000000000000000",
+                    "317000000000000000",
+                    "50000000000000000",
+                    "300000000000000",
+                    "50000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengLiquidationParameters",
+            "gasUsed": 147167,
+            "gasCost": "1000279862",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "6998ffd404d4c61cbf6914784af4d0ce",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengLockedOiRatio": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengLockedOiRatio": {
+            "hash": "0x7ce432d0a374bc1f87fedd5aa80aaa7603569b9d2b601db284ceef7647d5b72e",
+            "blockNumber": "270911002",
+            "timestamp": "1730715168",
+            "events": {
+              "LockedOiRatioSet": [
+                {
+                  "name": "LockedOiRatioSet",
+                  "args": [
+                    "8700",
+                    "500000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengLockedOiRatio",
+            "gasUsed": 56556,
+            "gasCost": "1000245223",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "b68e6f591428b2a90bf939f01960638c",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengMaxLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengMaxLiquidationParameters": {
+            "hash": "0x392d090400e27a6efb847f50e8c81b0df435d7350426c7de63bdfb8dfdd6ac7d",
+            "blockNumber": "270911003",
+            "timestamp": "1730715169",
+            "events": {
+              "MaxLiquidationParametersSet": [
+                {
+                  "name": "MaxLiquidationParametersSet",
+                  "args": [
+                    "8700",
+                    "1500000000000000000",
+                    "30",
+                    "500000000000000",
+                    "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengMaxLiquidationParameters",
+            "gasUsed": 124748,
+            "gasCost": "1000214686",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "7ebe6940c2b8a7a325f26d26db10073b",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengMaxMarketSize": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengMaxMarketSize": {
+            "hash": "0x48cfb81096d964c4815de9124a7be7862fdfd396f9b9d211d1edada29db13a5a",
+            "blockNumber": "270911004",
+            "timestamp": "1730715170",
+            "events": {
+              "MaxMarketSizeSet": [
+                {
+                  "name": "MaxMarketSizeSet",
+                  "args": [
+                    "8700",
+                    "34000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengMaxMarketSize",
+            "gasUsed": 56613,
+            "gasCost": "1000188074",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "61c0ebca79c2009718bbc1f725c659e2",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengMaxMarketValue": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengMaxMarketValue": {
+            "hash": "0x1e088df7c680999815278dd2203ba7b7688f3403e5eeda7a12efdc2e36c5848c",
+            "blockNumber": "270911005",
+            "timestamp": "1730715170",
+            "events": {
+              "MaxMarketValueSet": [
+                {
+                  "name": "MaxMarketValueSet",
+                  "args": [
+                    "8700",
+                    "3000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengMaxMarketValue",
+            "gasUsed": 56702,
+            "gasCost": "1000164654",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "46bf5a4682062e49d48a666f804bb4c0",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengOrderFees": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengOrderFees": {
+            "hash": "0x4f2756f972fdbea198a7973d8f7d6dda40f5840c4151e0d954a83f8f32d834b4",
+            "blockNumber": "270911006",
+            "timestamp": "1730715171",
+            "events": {
+              "OrderFeesSet": [
+                {
+                  "name": "OrderFeesSet",
+                  "args": [
+                    "8700",
+                    "0",
+                    "500000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengOrderFees",
+            "gasUsed": 59266,
+            "gasCost": "1000144151",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "bd5fe6ebcdec13ddab58e678b60a133c",
+      "version": 7
+    },
+    "invoke.setPerpsPriceGoat": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPriceGoat": {
+            "hash": "0xb0d1529b5d157c0af83476b4bdfed7dbc479cf631e1d874aa404b8364d739775",
+            "blockNumber": "270911007",
+            "timestamp": "1730715174",
+            "events": {
+              "MarketPriceDataUpdated": [
+                {
+                  "name": "MarketPriceDataUpdated",
+                  "args": [
+                    "8600",
+                    "0x5e8951f7c1b573d9a8f813b0c2d12d4ef0139acbfa4260f58c84cbc52b99ab63",
+                    "60"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPriceGoat",
+            "gasUsed": 79571,
+            "gasCost": "1000126204",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "3ae5713a8a9ca64385ce302835b0258d",
+      "version": 7
+    },
+    "invoke.setPerpsPriceMoodeng": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPriceMoodeng": {
+            "hash": "0xd7e8cb3f1292fa2cdb5f73a84e5745121a3cde1e1ef5b3e8d914771d26aa6afd",
+            "blockNumber": "270911008",
+            "timestamp": "1730715175",
+            "events": {
+              "MarketPriceDataUpdated": [
+                {
+                  "name": "MarketPriceDataUpdated",
+                  "args": [
+                    "8700",
+                    "0x04a60f53c0840ad7e27a9174a1917287f9ad10995357508865e0247b98d23f98",
+                    "60"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPriceMoodeng",
+            "gasUsed": 79571,
+            "gasCost": "1000110513",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "c7746a4490daeb778a8344a31b15ba6c",
+      "version": 7
+    },
+    "invoke.setPerpsPriceSafe": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPriceSafe": {
+            "hash": "0xbea258500fa56ee5a152b1905a47affcb73a85776f1d16967984cd138e36c75e",
+            "blockNumber": "270911009",
+            "timestamp": "1730715176",
+            "events": {
+              "MarketPriceDataUpdated": [
+                {
+                  "name": "MarketPriceDataUpdated",
+                  "args": [
+                    "8500",
+                    "0xd9e48fb36f02d1b0a5e000eab9c478ddd26cabce027975b3ed1fecd3671ba1c2",
+                    "60"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPriceSafe",
+            "gasUsed": 79559,
+            "gasCost": "1000096773",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "d9c7f552f31a93e9e210eac3be7d19d3",
+      "version": 7
+    },
+    "invoke.setPerpsSafeFundingParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeFundingParameters": {
+            "hash": "0xc452cc8071042b999ba5b7e9091372a605efe3b7c9d7fd7cca1b2f606dcb70bc",
+            "blockNumber": "270911010",
+            "timestamp": "1730715178",
+            "events": {
+              "FundingParametersSet": [
+                {
+                  "name": "FundingParametersSet",
+                  "args": [
+                    "8500",
+                    "3000000000000000000000000",
+                    "9000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeFundingParameters",
+            "gasUsed": 79248,
+            "gasCost": "1000084741",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "3cb2a2845d5c956e65366a3e7bf80c0c",
+      "version": 7
+    },
+    "invoke.setPerpsSafeLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeLiquidationParameters": {
+            "hash": "0xb5fdbd83e30863c5803648589200dca7387c250be0c1c5b9d6ef4d33dfdaedf6",
+            "blockNumber": "270911011",
+            "timestamp": "1730715180",
+            "events": {
+              "LiquidationParametersSet": [
+                {
+                  "name": "LiquidationParametersSet",
+                  "args": [
+                    "8500",
+                    "1211000000000000000",
+                    "317000000000000000",
+                    "50000000000000000",
+                    "300000000000000",
+                    "50000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeLiquidationParameters",
+            "gasUsed": 147179,
+            "gasCost": "1000074205",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "f18867bbb6432f877c0550dcef81a2e3",
+      "version": 7
+    },
+    "invoke.setPerpsSafeLockedOiRatio": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeLockedOiRatio": {
+            "hash": "0x209ff77812bb76d09b74a1b7fe714394cb845f7aac388be50e117ad93f84c079",
+            "blockNumber": "270911012",
+            "timestamp": "1730715180",
+            "events": {
+              "LockedOiRatioSet": [
+                {
+                  "name": "LockedOiRatioSet",
+                  "args": [
+                    "8500",
+                    "500000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeLockedOiRatio",
+            "gasUsed": 56556,
+            "gasCost": "1000065021",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "fa1bfeda04e1f55258b6fc1f6829e59d",
+      "version": 7
+    },
+    "invoke.setPerpsSafeMaxLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeMaxLiquidationParameters": {
+            "hash": "0x899a894f8c46033ba2a5009f4248b506f48f2465d989781eac38310ffc04f406",
+            "blockNumber": "270911013",
+            "timestamp": "1730715182",
+            "events": {
+              "MaxLiquidationParametersSet": [
+                {
+                  "name": "MaxLiquidationParametersSet",
+                  "args": [
+                    "8500",
+                    "1500000000000000000",
+                    "30",
+                    "500000000000000",
+                    "0x11233749514Ab8d00C0A5873DF7428b3db70030f"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeMaxLiquidationParameters",
+            "gasUsed": 124748,
+            "gasCost": "1000056925",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "cb4d076157c3ae97a0cd41a9cb187c1d",
+      "version": 7
+    },
+    "invoke.setPerpsSafeMaxMarketSize": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeMaxMarketSize": {
+            "hash": "0x47b26f5a898a053c37bc7cbe12b8c934a004a976f664a36077989b5d371e7456",
+            "blockNumber": "270911014",
+            "timestamp": "1730715182",
+            "events": {
+              "MaxMarketSizeSet": [
+                {
+                  "name": "MaxMarketSizeSet",
+                  "args": [
+                    "8500",
+                    "500000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeMaxMarketSize",
+            "gasUsed": 56613,
+            "gasCost": "1000049869",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "16f0eacf4e5e7be37e044dd2f05670d0",
+      "version": 7
+    },
+    "invoke.setPerpsSafeMaxMarketValue": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeMaxMarketValue": {
+            "hash": "0xf4f26e1dfce580751f11d7eed123aa8e71abda80711549c446951369332a1055",
+            "blockNumber": "270911015",
+            "timestamp": "1730715183",
+            "events": {
+              "MaxMarketValueSet": [
+                {
+                  "name": "MaxMarketValueSet",
+                  "args": [
+                    "8500",
+                    "500000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeMaxMarketValue",
+            "gasUsed": 56702,
+            "gasCost": "1000043659",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "13223569ac1bc60665a21ed64765cda1",
+      "version": 7
+    },
+    "invoke.setPerpsSafeOrderFees": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeOrderFees": {
+            "hash": "0xa935162c3be206e748b21cf70893c01d78a4dbd74ec5a9a5ebf603c05180231d",
+            "blockNumber": "270911016",
+            "timestamp": "1730715183",
+            "events": {
+              "OrderFeesSet": [
+                {
+                  "name": "OrderFeesSet",
+                  "args": [
+                    "8500",
+                    "0",
+                    "500000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeOrderFees",
+            "gasUsed": 59266,
+            "gasCost": "1000038223",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "5e72912471795cfa096d120355c7f15d",
+      "version": 7
+    },
+    "invoke.setPerpsGoatSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsGoatSettlementStrategy": {
+            "hash": "0x12ab9b1da1e9ff249e144cc183af496581a63ff88acfa756dc2a1e8b53884c08",
+            "blockNumber": "270911017",
+            "timestamp": "1730715190",
+            "events": {
+              "SettlementStrategySet": [
+                {
+                  "name": "SettlementStrategySet",
+                  "args": [
+                    "8600",
+                    "0",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "2",
+                      "settlementWindowDuration": "60",
+                      "priceVerificationContract": "0x7b118596be900f3c0feB2f23758d9798965B72a3",
+                      "feedId": "0xf7731dc812590214d3eb4343bfb13d1b4cfa9b1d4e020644b5d5d8e07d60c66c",
+                      "settlementReward": "1000000000000000000",
+                      "disabled": false,
+                      "commitmentPriceDelay": "2"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsGoatSettlementStrategy",
+            "gasUsed": 145030,
+            "gasCost": "1000033465",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "1fd61fb96ca99560301c16b66e998959",
+      "version": 7
+    },
+    "invoke.setPerpsMoodengSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsMoodengSettlementStrategy": {
+            "hash": "0x6b4f27b05b8ddb753c7a6916558c06937014e29e508939cd1113931a9248b3c4",
+            "blockNumber": "270911018",
+            "timestamp": "1730715191",
+            "events": {
+              "SettlementStrategySet": [
+                {
+                  "name": "SettlementStrategySet",
+                  "args": [
+                    "8700",
+                    "0",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "2",
+                      "settlementWindowDuration": "60",
+                      "priceVerificationContract": "0x7b118596be900f3c0feB2f23758d9798965B72a3",
+                      "feedId": "0xffff73128917a90950cd0473fd2551d7cd274fd5a6cc45641881bbcc6ee73417",
+                      "settlementReward": "1000000000000000000",
+                      "disabled": false,
+                      "commitmentPriceDelay": "2"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsMoodengSettlementStrategy",
+            "gasUsed": 145030,
+            "gasCost": "1000029323",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "1f35f54baed5b73a3acf5f6cc281a43e",
+      "version": 7
+    },
+    "invoke.setPerpsSafeSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsSafeSettlementStrategy": {
+            "hash": "0x0bda0623e87456fbc35073e2aef2cdf7449a3d3e10a11478caf9169fb92a457d",
+            "blockNumber": "270911019",
+            "timestamp": "1730715192",
+            "events": {
+              "SettlementStrategySet": [
+                {
+                  "name": "SettlementStrategySet",
+                  "args": [
+                    "8500",
+                    "0",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "2",
+                      "settlementWindowDuration": "60",
+                      "priceVerificationContract": "0x7b118596be900f3c0feB2f23758d9798965B72a3",
+                      "feedId": "0x7b3576858506a94fad3a9cc55e32934f0c3931150fe3a3c7b83558dbae5b8e38",
+                      "settlementReward": "1000000000000000000",
+                      "disabled": false,
+                      "commitmentPriceDelay": "2"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsSafeSettlementStrategy",
+            "gasUsed": 145030,
+            "gasCost": "1000025694",
+            "signer": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "2abf072989f757358665af69c19604dc",
       "version": 7
     }
   },
