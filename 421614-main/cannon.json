@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.18.4",
-  "timestamp": 1730706028,
+  "generator": "cannon cli 2.19.4",
+  "timestamp": 1731500969,
   "def": {
     "setting": {
       "snx_package": {
@@ -4924,6 +4924,62 @@
         ],
         "extra": {
           "pepe_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_pnut": {
+        "description": "Latest Pyth Price. This registers a staleness node that looks to Pyth for a fresh enough price, or otherwise reverts with an ERC-7412 compatible error ",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          5,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'bool'], [settings.pyth_price_verification_address, settings.pyth_feed_id_pnut, false]) %>",
+          []
+        ],
+        "extra": {
+          "pnut_pyth_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_pyth_offchain_lookup_pnut": {
+        "description": "Pyth Off-chain Lookup",
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          9,
+          "<%= defaultAbiCoder.encode(['address', 'bytes32', 'uint256'], [imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address, settings.pyth_feed_id_pnut, settings.default_staleness_tolerance]) %>",
+          []
+        ],
+        "extra": {
+          "pnut_lookup_oracle_id": {
+            "event": "NodeRegistered",
+            "arg": 0
+          }
+        }
+      },
+      "OracleManagerProxy_registerNode_staleness_pnut": {
+        "target": [
+          "system.oracle_manager.Proxy"
+        ],
+        "func": "registerNode",
+        "args": [
+          7,
+          "<%= defaultAbiCoder.encode(['uint256'], [settings.default_staleness_tolerance]) %>",
+          [
+            "<%= extras.pnut_pyth_oracle_id %>",
+            "<%= extras.pnut_lookup_oracle_id %>"
+          ]
+        ],
+        "extra": {
+          "pnut_oracle_id": {
             "event": "NodeRegistered",
             "arg": 0
           }
@@ -18152,6 +18208,185 @@
           "<%= settings.pepe_perps_locked_oi_ratio %>"
         ]
       },
+      "createPnutPerpsMarket": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "createMarket",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "Peanut the Squirrel",
+          "PNUT"
+        ]
+      },
+      "setPerpsPricePnut": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "updatePriceData",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= extras.pnut_oracle_id %>",
+          "<%= settings.strict_staleness_tolerance %>"
+        ]
+      },
+      "addPerpsPnutSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "addSettlementStrategy",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "0",
+            "settlementWindowDuration": "1",
+            "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+            "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "settlementReward": "0",
+            "disabled": false,
+            "commitmentPriceDelay": "0"
+          }
+        ],
+        "extra": {
+          "pnut_pyth_settlement_strategy": {
+            "event": "SettlementStrategyAdded",
+            "arg": 2
+          }
+        }
+      },
+      "setPerpsPnutSettlementStrategy": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setSettlementStrategy",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= extras.pnut_pyth_settlement_strategy %>",
+          {
+            "strategyType": "0",
+            "settlementDelay": "<%= settings.settlement_delay %>",
+            "settlementWindowDuration": "<%= settings.settlement_window_duration %>",
+            "priceVerificationContract": "<%= imports.pyth_erc7412_wrapper.contracts.PythERC7412Wrapper.address %>",
+            "feedId": "<%= settings.pyth_feed_id_pnut %>",
+            "settlementReward": "<%= settings.settlement_reward %>",
+            "disabled": false,
+            "commitmentPriceDelay": "<%= settings.commitment_price_delay %>"
+          }
+        ]
+      },
+      "setPerpsPnutFundingParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setFundingParameters",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= settings.pnut_perps_market_skew_scale %>",
+          "<%= settings.pnut_perps_market_max_funding_velocity %>"
+        ]
+      },
+      "setPerpsPnutOrderFees": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setOrderFees",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= settings.pnut_perps_maker_fee_ratio %>",
+          "<%= settings.pnut_perps_taker_fee_ratio %>"
+        ]
+      },
+      "setPerpsPnutMaxMarketSize": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketSize",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= settings.pnut_perps_max_market_size %>"
+        ]
+      },
+      "setPerpsPnutMaxMarketValue": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxMarketValue",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= settings.pnut_perps_max_market_value %>"
+        ]
+      },
+      "setPerpsPnutMaxLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setMaxLiquidationParameters",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= settings.pnut_perps_max_liquidation_limit_accumulation_multiplier %>",
+          "<%= settings.pnut_perps_max_seconds_in_liquidation_window %>",
+          "<%= settings.pnut_perps_max_liquidation_pd %>",
+          "<%= settings.pnut_perps_endorsed_liquidator %>"
+        ]
+      },
+      "setPerpsPnutLiquidationParameters": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLiquidationParameters",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= settings.pnut_perps_initial_margin_ratio %>",
+          "<%= settings.pnut_perps_minimum_initial_margin_ratio %>",
+          "<%= settings.pnut_perps_maintenance_margin_scalar %>",
+          "<%= settings.pnut_perps_flag_reward_ratio_d18 %>",
+          "<%= settings.pnut_perps_minimum_position_margin %>"
+        ]
+      },
+      "setPerpsPnutLockedOiRatio": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setLockedOiRatio",
+        "args": [
+          "<%= settings.pnut_perps_market_id %>",
+          "<%= settings.pnut_perps_locked_oi_ratio %>"
+        ]
+      },
       "createPolPerpsMarket": {
         "target": [
           "perpsFactory.PerpsMarketProxy"
@@ -24297,6 +24532,25 @@
         "pepe_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
         "pepe_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
       },
+      "perps_pnut_market_settings": {
+        "pnut_perps_market_id": "8800",
+        "pnut_perps_market_skew_scale": "<%= parseEther(String(10_000_000)) %>",
+        "pnut_perps_market_max_funding_velocity": "<%= parseEther('9') %>",
+        "pnut_perps_maker_fee_ratio": "<%= parseEther('0.000000') %>",
+        "pnut_perps_taker_fee_ratio": "<%= parseEther('0.001000') %>",
+        "pnut_perps_max_market_size": "<%= parseEther(String(4_000_000)) %>",
+        "pnut_perps_max_market_value": "<%= parseEther(String(3_000_000)) %>",
+        "pnut_perps_initial_margin_ratio": "<%= parseEther('4.688') %>",
+        "pnut_perps_maintenance_margin_scalar": "<%= parseEther('0.317') %>",
+        "pnut_perps_minimum_initial_margin_ratio": "<%= parseEther('0.05') %>",
+        "pnut_perps_flag_reward_ratio_d18": "<%= parseEther('0.0003') %>",
+        "pnut_perps_max_liquidation_limit_accumulation_multiplier": "<%= parseEther('1.5') %>",
+        "pnut_perps_max_seconds_in_liquidation_window": "30",
+        "pnut_perps_minimum_position_margin": "<%= parseEther('50') %>",
+        "pnut_perps_locked_oi_ratio": "<%= parseEther('0.5') %>",
+        "pnut_perps_max_liquidation_pd": "<%= parseEther('0.0005') %>",
+        "pnut_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
+      },
       "perps_pol_market_settings": {
         "pol_perps_market_id": "2800",
         "pol_perps_market_skew_scale": "<%= parseEther(String(75_000_000)) %>",
@@ -24918,6 +25172,7 @@
         "pyth_feed_id_pendle": "0x9a4df90b25497f66b1afb012467e316e801ca3d839456db028892fe8c70c8016",
         "pyth_feed_id_people": "0xb7fe919d83815ca6074c82a3286b1cd6ffb7d3136e323cd2b1ef706cfc7e5945",
         "pyth_feed_id_pepe": "0xd69731a2e74ac1ce884fc3890f7ee324b6deb66147055249568869ed700882e4",
+        "pyth_feed_id_pnut": "0x116da895807f81f6b5c5f01b109376e7f6834dc8b51365ab7cdfa66634340e54",
         "pyth_feed_id_pol": "0xffd11c5a1cfd42f80afb2df4d9f264c15f956d68153335374ec10722edd70472",
         "pyth_feed_id_popcat": "0xb9312a7ee50e189ef045aa3c7842e099b061bd9bdc99ac645956c3b660dc8cce",
         "pyth_feed_id_pyth": "0x0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff",
@@ -24953,7 +25208,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "37",
+    "version": "38",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -58483,6 +58738,7 @@
           "pyth_feed_id_pendle": "0x9a4df90b25497f66b1afb012467e316e801ca3d839456db028892fe8c70c8016",
           "pyth_feed_id_people": "0xb7fe919d83815ca6074c82a3286b1cd6ffb7d3136e323cd2b1ef706cfc7e5945",
           "pyth_feed_id_pepe": "0xd69731a2e74ac1ce884fc3890f7ee324b6deb66147055249568869ed700882e4",
+          "pyth_feed_id_pnut": "0x116da895807f81f6b5c5f01b109376e7f6834dc8b51365ab7cdfa66634340e54",
           "pyth_feed_id_pol": "0xffd11c5a1cfd42f80afb2df4d9f264c15f956d68153335374ec10722edd70472",
           "pyth_feed_id_popcat": "0xb9312a7ee50e189ef045aa3c7842e099b061bd9bdc99ac645956c3b660dc8cce",
           "pyth_feed_id_pyth": "0x0bbf28e9a841a1cc788f6a361b17ca072d0ea3098a1e5df1c3922d06719579ff",
@@ -58517,7 +58773,7 @@
           "pyth_feed_id_zro": "0x3bd860bea28bf982fa06bcf358118064bb114086cc03993bd76197eaab0b8018"
         }
       },
-      "hash": "8b50ba77a877c6f1101ba624e98e15e7",
+      "hash": "10f8b3ac558fc3d1af6397a663a80541",
       "version": 7
     },
     "provision.weeth_mock_collateral": {
@@ -86587,16 +86843,509 @@
       },
       "hash": "991125b993c6e052af02220b49e31d63",
       "version": 7
+    },
+    "var.perps_pnut_market_settings": {
+      "artifacts": {
+        "settings": {
+          "pnut_perps_market_id": "8800",
+          "pnut_perps_market_skew_scale": "10000000000000000000000000",
+          "pnut_perps_market_max_funding_velocity": "9000000000000000000",
+          "pnut_perps_maker_fee_ratio": "0",
+          "pnut_perps_taker_fee_ratio": "1000000000000000",
+          "pnut_perps_max_market_size": "4000000000000000000000000",
+          "pnut_perps_max_market_value": "3000000000000000000000000",
+          "pnut_perps_initial_margin_ratio": "4688000000000000000",
+          "pnut_perps_maintenance_margin_scalar": "317000000000000000",
+          "pnut_perps_minimum_initial_margin_ratio": "50000000000000000",
+          "pnut_perps_flag_reward_ratio_d18": "300000000000000",
+          "pnut_perps_max_liquidation_limit_accumulation_multiplier": "1500000000000000000",
+          "pnut_perps_max_seconds_in_liquidation_window": "30",
+          "pnut_perps_minimum_position_margin": "50000000000000000000",
+          "pnut_perps_locked_oi_ratio": "500000000000000000",
+          "pnut_perps_max_liquidation_pd": "500000000000000",
+          "pnut_perps_endorsed_liquidator": "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
+        }
+      },
+      "hash": "7520eca7b9b186fbcb9ff9fdada400ae",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_pnut": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_offchain_lookup_pnut": {
+            "hash": "0x9d194e0bb30307e8204f064e6ff9f696df5adab6080f106a71581f06fb4017f5",
+            "blockNumber": "96968861",
+            "timestamp": "1731500908",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xe92bc85fdd3a217099bd618493fa39ee7a4596285caa6d7ca6bf79645e4e44dd",
+                    9,
+                    "0x0000000000000000000000000ea49b2e23387cd99cecebda52041c604e40992e116da895807f81f6b5c5f01b109376e7f6834dc8b51365ab7cdfa66634340e540000000000000000000000000000000000000000000000000000000000000e10",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_offchain_lookup_pnut",
+            "gasUsed": 155325,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {
+          "pnut_lookup_oracle_id": "0xe92bc85fdd3a217099bd618493fa39ee7a4596285caa6d7ca6bf79645e4e44dd"
+        }
+      },
+      "hash": "cc77b2f041f230badfebb9c8357b211e",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_pyth_pnut": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_pyth_pnut": {
+            "hash": "0x466a3049f117cd24f47cb6172ce1c7255720629ba0b6f1f2843cb380546f2e98",
+            "blockNumber": "96968868",
+            "timestamp": "1731500910",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0xa22a486303a7bbee96745d9b38bf129b7908743a141725272258879ad861cb53",
+                    5,
+                    "0x0000000000000000000000004374e5a8b9c22271e9eb878a2aa31de97df15daf116da895807f81f6b5c5f01b109376e7f6834dc8b51365ab7cdfa66634340e540000000000000000000000000000000000000000000000000000000000000000",
+                    []
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_pyth_pnut",
+            "gasUsed": 146702,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {
+          "pnut_pyth_oracle_id": "0xa22a486303a7bbee96745d9b38bf129b7908743a141725272258879ad861cb53"
+        }
+      },
+      "hash": "f977484611156069a6503f3bd5d671c8",
+      "version": 7
+    },
+    "invoke.OracleManagerProxy_registerNode_staleness_pnut": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "OracleManagerProxy_registerNode_staleness_pnut": {
+            "hash": "0x3fd95d4590b7037394afc0514be2b7f076e48319595c3c05c88f0e0eabafe8fe",
+            "blockNumber": "96968878",
+            "timestamp": "1731500914",
+            "events": {
+              "NodeRegistered": [
+                {
+                  "name": "NodeRegistered",
+                  "args": [
+                    "0x1cce7558a811af534f018794a19823e6bbd34a7a372c74b50ce93901c9cc1ec8",
+                    7,
+                    "0x0000000000000000000000000000000000000000000000000000000000000e10",
+                    [
+                      "0xa22a486303a7bbee96745d9b38bf129b7908743a141725272258879ad861cb53",
+                      "0xe92bc85fdd3a217099bd618493fa39ee7a4596285caa6d7ca6bf79645e4e44dd"
+                    ]
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.OracleManagerProxy_registerNode_staleness_pnut",
+            "gasUsed": 221246,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {
+          "pnut_oracle_id": "0x1cce7558a811af534f018794a19823e6bbd34a7a372c74b50ce93901c9cc1ec8"
+        }
+      },
+      "hash": "99f76a25b5e1a98eea37b4022a76fb63",
+      "version": 7
+    },
+    "invoke.addPerpsPnutSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "addPerpsPnutSettlementStrategy": {
+            "hash": "0xd31168206d3c08931ba1787f2e7d1a0b1ac9f29beadf3041449c23f13f05bb1f",
+            "blockNumber": "96968895",
+            "timestamp": "1731500919",
+            "events": {
+              "SettlementStrategyAdded": [
+                {
+                  "name": "SettlementStrategyAdded",
+                  "args": [
+                    "8800",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "1",
+                      "settlementWindowDuration": "1",
+                      "priceVerificationContract": "0x0000000000000000000000000000000000000000",
+                      "feedId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                      "settlementReward": "0",
+                      "disabled": false,
+                      "commitmentPriceDelay": "0"
+                    },
+                    "0"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.addPerpsPnutSettlementStrategy",
+            "gasUsed": 118786,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {
+          "pnut_pyth_settlement_strategy": "0"
+        }
+      },
+      "hash": "5377bb40b6de465585b0622c98f5efcd",
+      "version": 7
+    },
+    "invoke.createPnutPerpsMarket": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "createPnutPerpsMarket": {
+            "hash": "0x5e5551a2ee068113829c8013066fc860e4d90adcb86b612b9b0086092d3ed088",
+            "blockNumber": "96968908",
+            "timestamp": "1731500922",
+            "events": {
+              "MarketCreated": [
+                {
+                  "name": "MarketCreated",
+                  "args": [
+                    "8800",
+                    "Peanut the Squirrel",
+                    "PNUT"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.createPnutPerpsMarket",
+            "gasUsed": 166572,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "2cc0a4567c446ef42d771a7a24aac03d",
+      "version": 7
+    },
+    "invoke.setPerpsPnutFundingParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutFundingParameters": {
+            "hash": "0xc53ac2e14b8680e587b7a25f012d4e46f8cb0bec72af227c3e736cd5737990f0",
+            "blockNumber": "96968946",
+            "timestamp": "1731500935",
+            "events": {
+              "FundingParametersSet": [
+                {
+                  "name": "FundingParametersSet",
+                  "args": [
+                    "8800",
+                    "10000000000000000000000000",
+                    "9000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutFundingParameters",
+            "gasUsed": 79644,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "d10ad2aacd6147ffde7e17730bd8bdfc",
+      "version": 7
+    },
+    "invoke.setPerpsPnutLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutLiquidationParameters": {
+            "hash": "0x6875314fb24b439aa6814ea0ff4884b450503352f7ff7692d190cfcad46579ee",
+            "blockNumber": "96968954",
+            "timestamp": "1731500937",
+            "events": {
+              "LiquidationParametersSet": [
+                {
+                  "name": "LiquidationParametersSet",
+                  "args": [
+                    "8800",
+                    "4688000000000000000",
+                    "317000000000000000",
+                    "50000000000000000",
+                    "300000000000000",
+                    "50000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutLiquidationParameters",
+            "gasUsed": 147649,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "05fba7b5ef3dba41987d4d21c1981fb8",
+      "version": 7
+    },
+    "invoke.setPerpsPnutLockedOiRatio": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutLockedOiRatio": {
+            "hash": "0x9d971d8248499ed8716aef538e434285adad35629da54a03e297edff1cdad1d4",
+            "blockNumber": "96968960",
+            "timestamp": "1731500939",
+            "events": {
+              "LockedOiRatioSet": [
+                {
+                  "name": "LockedOiRatioSet",
+                  "args": [
+                    "8800",
+                    "500000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutLockedOiRatio",
+            "gasUsed": 56891,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "f5dd0e2f2259a62a629a3f61e6d3bcc5",
+      "version": 7
+    },
+    "invoke.setPerpsPnutMaxLiquidationParameters": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutMaxLiquidationParameters": {
+            "hash": "0x19016b6aedd5bc484e7e0b56c3b07145d8ae22800b7ca4386a7d14fe779a892d",
+            "blockNumber": "96968969",
+            "timestamp": "1731500942",
+            "events": {
+              "MaxLiquidationParametersSet": [
+                {
+                  "name": "MaxLiquidationParametersSet",
+                  "args": [
+                    "8800",
+                    "1500000000000000000",
+                    "30",
+                    "500000000000000",
+                    "0x95A61Fa7454CA5f6A3CE01724e306Cd14a22D306"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutMaxLiquidationParameters",
+            "gasUsed": 125221,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "198c2b8ca2d3b8440409e04ec1fdb92d",
+      "version": 7
+    },
+    "invoke.setPerpsPnutMaxMarketSize": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutMaxMarketSize": {
+            "hash": "0x3c323761b5f88f9a113766e7cc07b3066d50c17ea413cd7dff2be87adbe18641",
+            "blockNumber": "96968978",
+            "timestamp": "1731500944",
+            "events": {
+              "MaxMarketSizeSet": [
+                {
+                  "name": "MaxMarketSizeSet",
+                  "args": [
+                    "8800",
+                    "4000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutMaxMarketSize",
+            "gasUsed": 56948,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "2439bfab822d7b9f844e6721f2aa3d8b",
+      "version": 7
+    },
+    "invoke.setPerpsPnutMaxMarketValue": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutMaxMarketValue": {
+            "hash": "0x42d63013ac0f7be07d8a36a7198d0d476a7e090b7df615a3191a7ca4b73ae468",
+            "blockNumber": "96968987",
+            "timestamp": "1731500947",
+            "events": {
+              "MaxMarketValueSet": [
+                {
+                  "name": "MaxMarketValueSet",
+                  "args": [
+                    "8800",
+                    "3000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutMaxMarketValue",
+            "gasUsed": 57037,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "7e345d5267e9b3f177f1684581c7e073",
+      "version": 7
+    },
+    "invoke.setPerpsPnutOrderFees": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutOrderFees": {
+            "hash": "0x49afb6f068cd4ecde7115f6bf2fa19e5db98bffb1c8c79008e1357bf1e660b3c",
+            "blockNumber": "96968995",
+            "timestamp": "1731500949",
+            "events": {
+              "OrderFeesSet": [
+                {
+                  "name": "OrderFeesSet",
+                  "args": [
+                    "8800",
+                    "0",
+                    "1000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutOrderFees",
+            "gasUsed": 59660,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "586d240bc6713d7781937ba78d931c7a",
+      "version": 7
+    },
+    "invoke.setPerpsPricePnut": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPricePnut": {
+            "hash": "0x432da9a457dc7a7b5536cfc5d22b6aeeab98b0220df7025dcb673e398deb24fa",
+            "blockNumber": "96969012",
+            "timestamp": "1731500953",
+            "events": {
+              "MarketPriceDataUpdated": [
+                {
+                  "name": "MarketPriceDataUpdated",
+                  "args": [
+                    "8800",
+                    "0x1cce7558a811af534f018794a19823e6bbd34a7a372c74b50ce93901c9cc1ec8",
+                    "60"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPricePnut",
+            "gasUsed": 79967,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "fd62599db9e714cfd61e81949a349eb2",
+      "version": 7
+    },
+    "invoke.setPerpsPnutSettlementStrategy": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPerpsPnutSettlementStrategy": {
+            "hash": "0x14cf0afbb99cdebbfdccb8da1b324e179a5c3fd98bc7b51934f094b271580044",
+            "blockNumber": "96969055",
+            "timestamp": "1731500967",
+            "events": {
+              "SettlementStrategySet": [
+                {
+                  "name": "SettlementStrategySet",
+                  "args": [
+                    "8800",
+                    "0",
+                    {
+                      "strategyType": 0,
+                      "settlementDelay": "2",
+                      "settlementWindowDuration": "60",
+                      "priceVerificationContract": "0x0eA49b2e23387cD99ceceBDa52041c604e40992E",
+                      "feedId": "0x116da895807f81f6b5c5f01b109376e7f6834dc8b51365ab7cdfa66634340e54",
+                      "settlementReward": "1000000000000000000",
+                      "disabled": false,
+                      "commitmentPriceDelay": "2"
+                    }
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPerpsPnutSettlementStrategy",
+            "gasUsed": 145573,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "bb47d0283809f4b1599abfa18eb97642",
+      "version": 7
     }
   },
-  "seq": 3,
+  "seq": 4,
   "track": "dryyjm68v8u",
   "options": {},
   "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "9f0613a39131c408f18eea8b1a9490ba8a53be41",
-    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/9f0613a39131c408f18eea8b1a9490ba8a53be41/README.md"
+    "commitHash": "35eed0eee0a4d6d5b97dbe57eb851a9058313365",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/35eed0eee0a4d6d5b97dbe57eb851a9058313365/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 421614
