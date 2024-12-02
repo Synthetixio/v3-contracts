@@ -31,6 +31,11 @@
   },
   {
     "type": "error",
+    "name": "OnlyOnDevFork",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "OracleDataRequired",
     "inputs": [
       {
@@ -52,6 +57,50 @@
     "type": "error",
     "name": "OverflowUint256ToInt256",
     "inputs": []
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "ForkBenchmarkPriceSet",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "priceId",
+        "indexed": false
+      },
+      {
+        "type": "uint64",
+        "name": "requestedTime",
+        "indexed": false
+      },
+      {
+        "type": "int256",
+        "name": "newPrice",
+        "indexed": false
+      },
+      {
+        "type": "int32",
+        "name": "expo",
+        "indexed": false
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "name": "ForkLatestPriceSet",
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "priceId",
+        "indexed": false
+      },
+      {
+        "type": "int256",
+        "name": "newPrice",
+        "indexed": false
+      }
+    ]
   },
   {
     "type": "function",
@@ -136,5 +185,47 @@
         "type": "address"
       }
     ]
+  },
+  {
+    "type": "function",
+    "name": "setBenchmarkPrice",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "priceId"
+      },
+      {
+        "type": "uint64",
+        "name": "requestedTime"
+      },
+      {
+        "type": "int256",
+        "name": "newPrice"
+      },
+      {
+        "type": "int32",
+        "name": "expo"
+      }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "setLatestPrice",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes32",
+        "name": "priceId"
+      },
+      {
+        "type": "int256",
+        "name": "newPrice"
+      }
+    ],
+    "outputs": []
   }
 ]
