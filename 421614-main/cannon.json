@@ -1,6 +1,6 @@
 {
-  "generator": "cannon cli 2.19.4",
-  "timestamp": 1733433759,
+  "generator": "cannon cli 2.20.1",
+  "timestamp": 1733494087,
   "def": {
     "setting": {
       "snx_package": {
@@ -345,6 +345,20 @@
         "options": {
           "salt": "<%= settings.salt %>"
         }
+      },
+      "owned_fee_collector": {
+        "source": "owned-fee-collector:3.10.0",
+        "targetPreset": "<%= settings.target_preset %>",
+        "options": {
+          "salt": "<%= settings.salt %>",
+          "owner": "<%= settings.owner %>",
+          "fee_share_recipient": "0xf2107A85d8b79CBd2c5b2Bb63CA73Fd068040b67",
+          "fee_share": "500000000000000000",
+          "fee_token": "<%= imports.system.contracts.USDProxy.address %>"
+        },
+        "depends": [
+          "provision.system"
+        ]
       },
       "pyth_erc7412_wrapper": {
         "source": "pyth-erc7412-wrapper:3.10.0",
@@ -8528,6 +8542,32 @@
         "func": "updateReferrerShare",
         "args": [
           "0xa7DB9b0a95D253022068d43BD1d64756f92eF83C",
+          "<%= settings.referrer_fee %>"
+        ]
+      },
+      "setSynthetixAsReferrerOnPerpsMarket": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "updateReferrerShare",
+        "args": [
+          "0xd25215758734dd3ade497ce04de1c35820964126",
+          "<%= settings.referrer_fee %>"
+        ]
+      },
+      "setCyberDEXAsReferrerOnPerpsMarket": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "updateReferrerShare",
+        "args": [
+          "0x829d7E022c2ACD05a875bCa4Bd11F56E003B727B",
           "<%= settings.referrer_fee %>"
         ]
       },
@@ -24997,6 +25037,21 @@
           "<%= settings.synth_USDe_max_collateral_amount %>"
         ]
       },
+      "setFeeCollector": {
+        "target": [
+          "perpsFactory.PerpsMarketProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setFeeCollector",
+        "args": [
+          "<%= imports.owned_fee_collector.contracts.owned_fee_collector.address %>"
+        ],
+        "depends": [
+          "provision.system"
+        ]
+      },
       "CoreProxy_setMinLiquidityRatio": {
         "target": [
           "system.CoreProxy"
@@ -26967,7 +27022,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "45",
+    "version": "46",
     "description": "Arbitrum deployment",
     "preset": "main"
   },
@@ -92597,16 +92652,177 @@
       },
       "hash": "b5b11df61395114581df7a6ca4e24ba0",
       "version": 7
+    },
+    "provision.owned_fee_collector": {
+      "artifacts": {
+        "imports": {
+          "owned_fee_collector": {
+            "url": "ipfs://QmVFHFkQu7wVtfLqFgfAsXBxbrXLBqwUUyz4srtqi4PgZD",
+            "tags": [
+              "latest"
+            ],
+            "target": "owned-fee-collector:3.10.0@main",
+            "preset": "main",
+            "settings": {
+              "fee_share": "400000000000000000",
+              "fee_share_recipient": "0x14E4f1DE5cA748Fb130711f41473f1d2bc80523a",
+              "fee_token": "0xb2F30A7C980f052f02563fb518dcc39e6bf38175",
+              "owner": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+            },
+            "contracts": {
+              "owned_fee_collector": {
+                "address": "0xA2296BC47fdfe2c4470d68e61f7fC75EA4ED2Ac5",
+                "abi": [
+                  "constructor(address _owner, address _feeShareRecipient, uint256 _feeShare, address _feeToken)",
+                  "error NoChange()",
+                  "error NotNominated(address addr)",
+                  "error Unauthorized(address addr)",
+                  "error ZeroAddress()",
+                  "event OwnerChanged(address oldOwner, address newOwner)",
+                  "event OwnerNominated(address newOwner)",
+                  "function FEE_TOKEN() view returns (address)",
+                  "function acceptFeeShareRecipient()",
+                  "function acceptOwnership()",
+                  "function claimFees()",
+                  "function feeShare() view returns (uint256)",
+                  "function feeShareRecipient() view returns (address)",
+                  "function nominateNewOwner(address newNominatedOwner)",
+                  "function nominatedOwner() view returns (address)",
+                  "function owner() view returns (address)",
+                  "function quoteFees(uint128 marketId, uint256 feeAmount, address sender) view returns (uint256)",
+                  "function renounceNomination()",
+                  "function setFeeShare(uint256 _newFeeShare)",
+                  "function setFeeShareRecipient(address _newFeeShareRecipient)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function tempFeeShareRecipient() view returns (address)"
+                ],
+                "constructorArgs": [
+                  "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9",
+                  "0xf2107A85d8b79CBd2c5b2Bb63CA73Fd068040b67",
+                  "500000000000000000",
+                  "0xe487Ad4291019b33e2230F8E2FB1fb6490325260"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x94ca1d51a5b118f4f61c072a05781ea08524cc1c7b84449f6d2aeb663e9b6a00",
+                "deployTxnBlockNumber": "104113487",
+                "deployTimestamp": "1733494043",
+                "sourceName": "contracts/OwnedFeeCollector.sol",
+                "contractName": "OwnedFeeCollector",
+                "deployedOn": "contract.owned_fee_collector",
+                "gasUsed": 651101,
+                "gasCost": "100000000"
+              }
+            },
+            "extras": {
+              "fee_share": "400000000000000000",
+              "fee_share_recipient": "0x14E4f1DE5cA748Fb130711f41473f1d2bc80523a",
+              "fee_token": "0xb2F30A7C980f052f02563fb518dcc39e6bf38175",
+              "owner": "0xD3DFa13CDc7c133b1700c243f03A8C6Df513A93b"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "invoke.setCyberDEXAsReferrerOnPerpsMarket": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setCyberDEXAsReferrerOnPerpsMarket": {
+            "hash": "0x92fd07be88c39d44a13759a184b76a678cc46e2d7ca5079a649455ab8f96fb72",
+            "blockNumber": "104113530",
+            "timestamp": "1733494054",
+            "events": {
+              "ReferrerShareUpdated": [
+                {
+                  "name": "ReferrerShareUpdated",
+                  "args": [
+                    "0x829d7E022c2ACD05a875bCa4Bd11F56E003B727B",
+                    "200000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setCyberDEXAsReferrerOnPerpsMarket",
+            "gasUsed": 60657,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "5e132b9611c0c7caaf58b5373d8cfc2c",
+      "version": 7
+    },
+    "invoke.setFeeCollector": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setFeeCollector": {
+            "hash": "0xabbc691ef321da46fbe6caee0d6105edf673cd7882e9c42e28334cdb978646e7",
+            "blockNumber": "104113539",
+            "timestamp": "1733494056",
+            "events": {
+              "FeeCollectorSet": [
+                {
+                  "name": "FeeCollectorSet",
+                  "args": [
+                    "0xA2296BC47fdfe2c4470d68e61f7fC75EA4ED2Ac5"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setFeeCollector",
+            "gasUsed": 63192,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "8c2739ddc00432ac03f9599bff799832",
+      "version": 7
+    },
+    "invoke.setSynthetixAsReferrerOnPerpsMarket": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setSynthetixAsReferrerOnPerpsMarket": {
+            "hash": "0x1421739e2e0996683dab8c0bce67d5d73429e09d554a0628f88f89c2a1fd3eae",
+            "blockNumber": "104113622",
+            "timestamp": "1733494077",
+            "events": {
+              "ReferrerShareUpdated": [
+                {
+                  "name": "ReferrerShareUpdated",
+                  "args": [
+                    "0xD25215758734dd3aDE497CE04De1c35820964126",
+                    "200000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setSynthetixAsReferrerOnPerpsMarket",
+            "gasUsed": 60669,
+            "gasCost": "100000000",
+            "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "caf801d01c07f77176fafde894e29348",
+      "version": 7
     }
   },
-  "seq": 10,
+  "seq": 11,
   "track": "dryyjm68v8u",
   "options": {},
   "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "3ba6384ea41199f6661aca28fb8e9f51a8171b87",
-    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/3ba6384ea41199f6661aca28fb8e9f51a8171b87/README.md"
+    "commitHash": "00c786b52018e4235d90f0d03e16624d286d0e45",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/00c786b52018e4235d90f0d03e16624d286d0e45/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 421614
