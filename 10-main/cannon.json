@@ -1,6 +1,6 @@
 {
-  "generator": "cannon website 2.15.5",
-  "timestamp": 1725556515,
+  "generator": "cannon cli 2.20.1",
+  "timestamp": 1733703330,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -801,6 +801,10 @@
     "name": "synthetix-omnibus",
     "version": "7",
     "description": "Includes the full synthetix system with configurations applied",
+    "deployers": [
+      "0x1C8236B406911A376369e33D39189F1b4B39F27D",
+      "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C"
+    ],
     "var": {
       "governance": {
         "governance_package": "synthetix-governance:3.0.9",
@@ -826,7 +830,7 @@
       "artifacts": {
         "imports": {
           "system": {
-            "url": "ipfs://QmNmNZ8cNuudZy1Zi6nY2EK1AAQHgisXkxC1dQLmpPstN1",
+            "url": "ipfs://Qmbx7nwfizjiqjvxGsdwGi69QbmVhvq1z6XgrnYqTioG4k",
             "tags": [
               "latest"
             ],
@@ -2438,7 +2442,7 @@
                 }
               },
               "oracle_manager": {
-                "url": "ipfs://QmTrwZHkgwZWcJQk6o7qpVmJCEqE1aEGuNRkM5N4ZhjXbk",
+                "url": "ipfs://QmVp4ooSGeDu9BDm2NbtQFjoj7sNXPynJB3uxyNBKbXN1e",
                 "tags": [
                   "latest"
                 ],
@@ -2446,10 +2450,10 @@
                 "preset": "with-synthetix",
                 "contracts": {
                   "NodeModule": {
-                    "address": "0x1281905b5C06C5d6A53ADD22e281c43123C7E3E2",
+                    "address": "0x67aD6EA566BA6B0fC52e97Bc25CE46120fdAc04c",
                     "abi": [
-                      "error DeviationToleranceExceeded(int256 deviation)",
-                      "error InvalidInputPrice()",
+                      "error EmptyRevertReason()",
+                      "error Errors(bytes[] errors)",
                       "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
                       "error InvalidParameter(string parameter, string reason)",
                       "error InvalidPrice(int256 price)",
@@ -2460,26 +2464,25 @@
                       "error OverflowUint256ToInt256()",
                       "error OverflowUint256ToUint160()",
                       "error OverflowUint56ToInt56()",
-                      "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
-                      "error UnprocessableNode(bytes32 nodeId)",
-                      "error UnsupportedOperation(uint8 operation)",
                       "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
                       "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
                       "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
                       "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function processManyWithManyRuntime(bytes32[] nodeIds, bytes32[][] runtimeKeys, bytes32[][] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
+                      "function processManyWithRuntime(bytes32[] nodeIds, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
                       "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
                       "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x5b6b18e1beeb0deb9a18ca4d74f858c29de0cc9639f0d62a75b29fc59b04a2c7",
-                    "deployTxnBlockNumber": "124713688",
-                    "deployTimestamp": "1725026153",
+                    "deployTxnHash": "0x63c3fa61bd0bb42d037306b4c5712dbbd4df691c49ab4e76c47190a8a82580bf",
+                    "deployTxnBlockNumber": "129052262",
+                    "deployTimestamp": "1733703323",
                     "sourceName": "contracts/modules/NodeModule.sol",
                     "contractName": "NodeModule",
                     "deployedOn": "contract.NodeModule",
-                    "gasUsed": 4106509,
-                    "gasCost": "1413276"
+                    "gasUsed": 4820634,
+                    "gasCost": "1000000808"
                   },
                   "CoreModule": {
                     "address": "0x874573f87a53e6D9D6F11eE8Bb994E247dB55509",
@@ -2543,8 +2546,13 @@
                     "deployedOn": "contract.InitialProxy"
                   },
                   "OracleRouter": {
-                    "address": "0x7e5d0fb670d4c0507f182aa97a409bee3213411b",
+                    "address": "0x114e375b6fcc6d6fcb68c7a1d407e652c54f25fb",
                     "abi": [
+                      "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                      "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                      "function facetAddresses() pure returns (address[] addresses)",
+                      "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                      "function emitDiamondCutEvent() returns (bool)",
                       "error ImplementationIsSterile(address implementation)",
                       "error NoChange()",
                       "error NotAContract(address contr)",
@@ -2563,8 +2571,8 @@
                       "function renounceNomination()",
                       "function simulateUpgradeTo(address newImplementation)",
                       "function upgradeTo(address newImplementation)",
-                      "error DeviationToleranceExceeded(int256 deviation)",
-                      "error InvalidInputPrice()",
+                      "error EmptyRevertReason()",
+                      "error Errors(bytes[] errors)",
                       "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
                       "error InvalidParameter(string parameter, string reason)",
                       "error InvalidPrice(int256 price)",
@@ -2575,28 +2583,32 @@
                       "error OverflowUint256ToInt256()",
                       "error OverflowUint256ToUint160()",
                       "error OverflowUint56ToInt56()",
-                      "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
-                      "error UnprocessableNode(bytes32 nodeId)",
-                      "error UnsupportedOperation(uint8 operation)",
                       "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
                       "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
                       "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
                       "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function processManyWithManyRuntime(bytes32[] nodeIds, bytes32[][] runtimeKeys, bytes32[][] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
+                      "function processManyWithRuntime(bytes32[] nodeIds, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
                       "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
                       "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                     ],
                     "deployedOn": "router.OracleRouter",
-                    "deployTxnHash": "0xbce1cd997974b0ac5dacb1d06fa2c482d03cf575764a480eef6cc14c5ec1b526",
-                    "deployTxnBlockNumber": "124718806",
-                    "deployTimestamp": "1725036389",
+                    "deployTxnHash": "0xbc353e33837b03cefd902f1c87ee5ee5012f917f779d1c72798ca8dda0794a37",
+                    "deployTxnBlockNumber": "129052263",
+                    "deployTimestamp": "1733703325",
                     "contractName": "OracleRouter",
                     "sourceName": "OracleRouter.sol",
-                    "gasUsed": 246002,
-                    "gasCost": "4995790"
+                    "gasUsed": 1728163,
+                    "gasCost": "1000000724"
                   },
                   "Proxy": {
                     "address": "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
                     "abi": [
+                      "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                      "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                      "function facetAddresses() pure returns (address[] addresses)",
+                      "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                      "function emitDiamondCutEvent() returns (bool)",
                       "error ImplementationIsSterile(address implementation)",
                       "error NoChange()",
                       "error NotAContract(address contr)",
@@ -2615,8 +2627,8 @@
                       "function renounceNomination()",
                       "function simulateUpgradeTo(address newImplementation)",
                       "function upgradeTo(address newImplementation)",
-                      "error DeviationToleranceExceeded(int256 deviation)",
-                      "error InvalidInputPrice()",
+                      "error EmptyRevertReason()",
+                      "error Errors(bytes[] errors)",
                       "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
                       "error InvalidParameter(string parameter, string reason)",
                       "error InvalidPrice(int256 price)",
@@ -2627,21 +2639,20 @@
                       "error OverflowUint256ToInt256()",
                       "error OverflowUint256ToUint160()",
                       "error OverflowUint56ToInt56()",
-                      "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
-                      "error UnprocessableNode(bytes32 nodeId)",
-                      "error UnsupportedOperation(uint8 operation)",
                       "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
                       "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
                       "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
                       "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                      "function processManyWithManyRuntime(bytes32[] nodeIds, bytes32[][] runtimeKeys, bytes32[][] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
+                      "function processManyWithRuntime(bytes32[] nodeIds, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
                       "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
                       "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                     ],
                     "deployTxnHash": "",
                     "deployTxnBlockNumber": "",
                     "deployTimestamp": "",
-                    "sourceName": "",
-                    "contractName": "",
+                    "sourceName": "contracts/Proxy.sol",
+                    "contractName": "Proxy",
                     "deployedOn": "invoke.upgrade_proxy",
                     "gasUsed": 0,
                     "gasCost": "0",
@@ -2721,23 +2732,23 @@
                 },
                 "txns": {
                   "upgrade_proxy": {
-                    "hash": "",
-                    "blockNumber": "124753605",
-                    "timestamp": "1725106002",
+                    "hash": "0xe440f03800fef9e389dfde7c1009ba2d508a94fc0e9f4ca6766226b56e39c401",
+                    "blockNumber": "129052264",
+                    "timestamp": "1733703325",
                     "events": {
                       "Upgraded": [
                         {
                           "name": "Upgraded",
                           "args": [
                             "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
-                            "0x7E5d0Fb670D4c0507f182AA97a409bEe3213411b"
+                            "0x114e375B6FCC6d6fCb68c7A1d407E652C54F25FB"
                           ]
                         }
                       ]
                     },
                     "deployedOn": "invoke.upgrade_proxy",
-                    "gasUsed": 55346,
-                    "gasCost": "1000076981",
+                    "gasUsed": 55376,
+                    "gasCost": "1000000639",
                     "signer": "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C"
                   }
                 },
@@ -3179,7 +3190,7 @@
       "artifacts": {
         "imports": {
           "spotFactory": {
-            "url": "ipfs://Qmd5KYqCPTd9J1iR6HuNvxN9NmoWBycbyUALEnPznN1ZLT",
+            "url": "ipfs://QmP7L21MgkqvRCp13Ycvc7ZaiYznfz7344qZSF58QEjaM8",
             "tags": [
               "latest"
             ],
@@ -3988,7 +3999,7 @@
             },
             "imports": {
               "synthetix": {
-                "url": "ipfs://QmNmNZ8cNuudZy1Zi6nY2EK1AAQHgisXkxC1dQLmpPstN1",
+                "url": "ipfs://Qmbx7nwfizjiqjvxGsdwGi69QbmVhvq1z6XgrnYqTioG4k",
                 "contracts": {
                   "AccountModule": {
                     "address": "0x8931aD768Bb40e16D663dF3b1feF82cE67376209",
@@ -5595,7 +5606,7 @@
                     }
                   },
                   "oracle_manager": {
-                    "url": "ipfs://QmTrwZHkgwZWcJQk6o7qpVmJCEqE1aEGuNRkM5N4ZhjXbk",
+                    "url": "ipfs://QmVp4ooSGeDu9BDm2NbtQFjoj7sNXPynJB3uxyNBKbXN1e",
                     "tags": [
                       "latest"
                     ],
@@ -5603,10 +5614,10 @@
                     "preset": "with-synthetix",
                     "contracts": {
                       "NodeModule": {
-                        "address": "0x1281905b5C06C5d6A53ADD22e281c43123C7E3E2",
+                        "address": "0x67aD6EA566BA6B0fC52e97Bc25CE46120fdAc04c",
                         "abi": [
-                          "error DeviationToleranceExceeded(int256 deviation)",
-                          "error InvalidInputPrice()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
                           "error InvalidParameter(string parameter, string reason)",
                           "error InvalidPrice(int256 price)",
@@ -5617,26 +5628,25 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
-                          "error UnprocessableNode(bytes32 nodeId)",
-                          "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
                           "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
                           "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
                           "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                          "function processManyWithManyRuntime(bytes32[] nodeIds, bytes32[][] runtimeKeys, bytes32[][] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
+                          "function processManyWithRuntime(bytes32[] nodeIds, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
                           "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x5b6b18e1beeb0deb9a18ca4d74f858c29de0cc9639f0d62a75b29fc59b04a2c7",
-                        "deployTxnBlockNumber": "124713688",
-                        "deployTimestamp": "1725026153",
+                        "deployTxnHash": "0x63c3fa61bd0bb42d037306b4c5712dbbd4df691c49ab4e76c47190a8a82580bf",
+                        "deployTxnBlockNumber": "129052262",
+                        "deployTimestamp": "1733703323",
                         "sourceName": "contracts/modules/NodeModule.sol",
                         "contractName": "NodeModule",
                         "deployedOn": "contract.NodeModule",
-                        "gasUsed": 4106509,
-                        "gasCost": "1413276"
+                        "gasUsed": 4820634,
+                        "gasCost": "1000000808"
                       },
                       "CoreModule": {
                         "address": "0x874573f87a53e6D9D6F11eE8Bb994E247dB55509",
@@ -5700,8 +5710,13 @@
                         "deployedOn": "contract.InitialProxy"
                       },
                       "OracleRouter": {
-                        "address": "0x7e5d0fb670d4c0507f182aa97a409bee3213411b",
+                        "address": "0x114e375b6fcc6d6fcb68c7a1d407e652c54f25fb",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -5720,8 +5735,8 @@
                           "function renounceNomination()",
                           "function simulateUpgradeTo(address newImplementation)",
                           "function upgradeTo(address newImplementation)",
-                          "error DeviationToleranceExceeded(int256 deviation)",
-                          "error InvalidInputPrice()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
                           "error InvalidParameter(string parameter, string reason)",
                           "error InvalidPrice(int256 price)",
@@ -5732,28 +5747,32 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
-                          "error UnprocessableNode(bytes32 nodeId)",
-                          "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
                           "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
                           "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
                           "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                          "function processManyWithManyRuntime(bytes32[] nodeIds, bytes32[][] runtimeKeys, bytes32[][] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
+                          "function processManyWithRuntime(bytes32[] nodeIds, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
                           "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployedOn": "router.OracleRouter",
-                        "deployTxnHash": "0xbce1cd997974b0ac5dacb1d06fa2c482d03cf575764a480eef6cc14c5ec1b526",
-                        "deployTxnBlockNumber": "124718806",
-                        "deployTimestamp": "1725036389",
+                        "deployTxnHash": "0xbc353e33837b03cefd902f1c87ee5ee5012f917f779d1c72798ca8dda0794a37",
+                        "deployTxnBlockNumber": "129052263",
+                        "deployTimestamp": "1733703325",
                         "contractName": "OracleRouter",
                         "sourceName": "OracleRouter.sol",
-                        "gasUsed": 246002,
-                        "gasCost": "4995790"
+                        "gasUsed": 1728163,
+                        "gasCost": "1000000724"
                       },
                       "Proxy": {
                         "address": "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -5772,8 +5791,8 @@
                           "function renounceNomination()",
                           "function simulateUpgradeTo(address newImplementation)",
                           "function upgradeTo(address newImplementation)",
-                          "error DeviationToleranceExceeded(int256 deviation)",
-                          "error InvalidInputPrice()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error InvalidNodeDefinition(tuple(uint8 nodeType, bytes parameters, bytes32[] parents) nodeType)",
                           "error InvalidParameter(string parameter, string reason)",
                           "error InvalidPrice(int256 price)",
@@ -5784,21 +5803,20 @@
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint160()",
                           "error OverflowUint56ToInt56()",
-                          "error StalenessToleranceExceeded(bytes32 parentId, int256 price, uint256 staleTimestamp)",
-                          "error UnprocessableNode(bytes32 nodeId)",
-                          "error UnsupportedOperation(uint8 operation)",
                           "event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents)",
                           "function getNode(bytes32 nodeId) pure returns (tuple(uint8 nodeType, bytes parameters, bytes32[] parents) node)",
                           "function getNodeId(uint8 nodeType, bytes parameters, bytes32[] parents) pure returns (bytes32 nodeId)",
                           "function process(bytes32 nodeId) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
+                          "function processManyWithManyRuntime(bytes32[] nodeIds, bytes32[][] runtimeKeys, bytes32[][] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
+                          "function processManyWithRuntime(bytes32[] nodeIds, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2)[] nodes)",
                           "function processWithRuntime(bytes32 nodeId, bytes32[] runtimeKeys, bytes32[] runtimeValues) view returns (tuple(int256 price, uint256 timestamp, uint256 __slotAvailableForFutureUse1, uint256 __slotAvailableForFutureUse2) node)",
                           "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                         ],
                         "deployTxnHash": "",
                         "deployTxnBlockNumber": "",
                         "deployTimestamp": "",
-                        "sourceName": "",
-                        "contractName": "",
+                        "sourceName": "contracts/Proxy.sol",
+                        "contractName": "Proxy",
                         "deployedOn": "invoke.upgrade_proxy",
                         "gasUsed": 0,
                         "gasCost": "0",
@@ -5878,23 +5896,23 @@
                     },
                     "txns": {
                       "upgrade_proxy": {
-                        "hash": "",
-                        "blockNumber": "124753605",
-                        "timestamp": "1725106002",
+                        "hash": "0xe440f03800fef9e389dfde7c1009ba2d508a94fc0e9f4ca6766226b56e39c401",
+                        "blockNumber": "129052264",
+                        "timestamp": "1733703325",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0x0aaF300E148378489a8A471DD3e9E53E30cb42e3",
-                                "0x7E5d0Fb670D4c0507f182AA97a409bEe3213411b"
+                                "0x114e375B6FCC6d6fCb68c7A1d407E652C54F25FB"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.upgrade_proxy",
-                        "gasUsed": 55346,
-                        "gasCost": "1000076981",
+                        "gasUsed": 55376,
+                        "gasCost": "1000000639",
                         "signer": "0x6cd3f878852769e04A723A5f66CA7DD4d9E38A6C"
                       }
                     },
@@ -40041,11 +40059,15 @@
       "version": 7
     }
   },
+  "seq": 1,
+  "track": "ifxc8yhd1f",
   "options": {},
+  "status": "complete",
   "meta": {
-    "gitUrl": "https///github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "4fb1eb46aba151ea73bba1c8942a827f56c2233e",
-    "readme": "https///github.com/Synthetixio/synthetix-deployments/blob/main/README.md"
+    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
+    "commitHash": "00c786b52018e4235d90f0d03e16624d286d0e45",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/00c786b52018e4235d90f0d03e16624d286d0e45/README.md"
   },
-  "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k"
+  "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
+  "chainId": 10
 }
