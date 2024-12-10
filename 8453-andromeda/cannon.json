@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1733494074,
+  "timestamp": 1733800592,
   "def": {
     "setting": {
       "snx_package": {
@@ -165,6 +165,18 @@
         "depends": [
           "provision.system"
         ]
+      },
+      "RewardsDistributor_snx_rewards_for_sc_pool": {
+        "source": "synthetix-rewards-distributor:3.9.1",
+        "target": "synthetix-rewards-distributor:3.9.1@pool-snx",
+        "options": {
+          "salt": "<%= settings.salt %>-pool-snx",
+          "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
+          "poolId": "<%= settings.spartan_council_pool_id_setting %>",
+          "payoutToken": "<%= settings.snx_address %>",
+          "payoutTokenDecimals": "18",
+          "name": "SNX Pool Rewards"
+        }
       },
       "sccp_313_spartan_council_pool_usdc_rewards": {
         "source": "synthetix-rewards-distributor:0.0.2",
@@ -1670,6 +1682,23 @@
         "args": [
           "<%= extras.synth_weth_market_id %>",
           "<%= parseEther('10') %>"
+        ]
+      },
+      "CoreProxy_registerRewardsDistributor_snx_rewards_for_sc_pool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "getPoolOwner",
+          "args": [
+            "<%= settings.spartan_council_pool_id_setting %>"
+          ]
+        },
+        "func": "registerRewardsDistributor",
+        "args": [
+          "<%= settings.spartan_council_pool_id_setting %>",
+          "<%= AddressZero %>",
+          "<%= imports.RewardsDistributor_snx_rewards_for_sc_pool.contracts.RewardsDistributor.address %>"
         ]
       },
       "sccp_313_register_spartan_council_pool_usdc_rewards": {
@@ -26048,9 +26077,9 @@
       "token_addresses": {
         "cbbtc_address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
         "cbeth_address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
-        "wsteth_address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+        "snx_address": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
         "weth_address": "0x4200000000000000000000000000000000000006",
-        "snx_address": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66"
+        "wsteth_address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452"
       },
       "pyth_feeds": {
         "description": "https://pyth.network/developers/price-feed-ids#pyth-evm-mainnet",
@@ -26153,7 +26182,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "66",
+    "version": "67",
     "description": "Andromeda deployment",
     "preset": "andromeda",
     "deployers": [
@@ -96316,12 +96345,12 @@
         "settings": {
           "cbbtc_address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
           "cbeth_address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
-          "wsteth_address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+          "snx_address": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
           "weth_address": "0x4200000000000000000000000000000000000006",
-          "snx_address": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66"
+          "wsteth_address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452"
         }
       },
-      "hash": "6085f6f67d064b223d5d3c200b212f12",
+      "hash": "6c4b9fe7c14f5baa658bc84901319311",
       "version": 7
     },
     "var.weth_spot_settings": {
@@ -103153,9 +103182,122 @@
       },
       "hash": "ff6d663c526877d75b2cbfdb89377eed",
       "version": 7
+    },
+    "provision.RewardsDistributor_snx_rewards_for_sc_pool": {
+      "artifacts": {
+        "imports": {
+          "RewardsDistributor_snx_rewards_for_sc_pool": {
+            "url": "ipfs://QmRvsmskwWf5dySHqLs1t226CWtmKtsgPaTatXQNJXiGCV",
+            "tags": [
+              "latest"
+            ],
+            "target": "synthetix-rewards-distributor:3.9.1@pool-snx",
+            "preset": "pool-snx",
+            "settings": {
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            },
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0x7A1b3DB73E5B8c58EDC8A821890005064f2B83Fd",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardedAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint256ToInt256()",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+                  "1",
+                  "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+                  "18",
+                  "SNX Pool Rewards"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "",
+                "deployTxnBlockNumber": "23503822",
+                "deployTimestamp": "1733796991",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 921429,
+                "gasCost": "6021801"
+              }
+            },
+            "extras": {
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_snx_rewards_for_sc_pool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_snx_rewards_for_sc_pool": {
+            "hash": "0x2af224ed9c2c1d686eed4c91273ddb05b2ad48008dfff813198e361d8b5c7dbe",
+            "blockNumber": "23505436",
+            "timestamp": "1733800542",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x0000000000000000000000000000000000000000",
+                    "0x7A1b3DB73E5B8c58EDC8A821890005064f2B83Fd"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_snx_rewards_for_sc_pool",
+            "gasUsed": 128743,
+            "gasCost": "1004794976",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "d9b04dd3102c8adcca7bf34720972573",
+      "version": 7
     }
   },
   "options": {},
+  "meta": {
+    "gitUrl": "https://nk/Synthetixio/synthetix-deployments",
+    "commitHash": "515198b8e007a435c83dc7be1658abce457f61cd",
+    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/515198b8e007a435c83dc7be1658abce457f61cd/README.md"
+  },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 8453
 }
