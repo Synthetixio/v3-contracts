@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1733800592,
+  "timestamp": 1733809060,
   "def": {
     "setting": {
       "snx_package": {
@@ -102,9 +102,6 @@
       "settlement_reward": {
         "defaultValue": "<%= parseEther('0.4') %>"
       },
-      "usdc_address": {
-        "defaultValue": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
-      },
       "stataBasUSDC_address": {
         "defaultValue": "0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc",
         "description": "https://basescan.org/token/0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc"
@@ -178,17 +175,16 @@
           "name": "SNX Pool Rewards"
         }
       },
-      "sccp_313_spartan_council_pool_usdc_rewards": {
-        "source": "synthetix-rewards-distributor:0.0.2",
-        "targetPreset": "<%= settings.target_preset %>",
+      "RewardsDistributor_usdc_rewards_for_sc_pool": {
+        "source": "synthetix-rewards-distributor:3.9.1",
+        "target": "synthetix-rewards-distributor:3.9.1@pool-usdc",
         "options": {
-          "salt": "<%= settings.salt %>",
+          "salt": "<%= settings.salt %>-pool-usdc",
           "rewardManager": "<%= imports.system.contracts.CoreProxy.address %>",
           "poolId": "<%= settings.spartan_council_pool_id_setting %>",
-          "collateralType": "<%= extras.synth_usdc_token_address %>",
           "payoutToken": "<%= settings.usdc_address %>",
           "payoutTokenDecimals": "6",
-          "name": "Spartan Council Pool USDC Rewards"
+          "name": "USDC Pool Rewards"
         }
       },
       "RewardsDistributor_scbbtc_liquidation_rewards": {
@@ -1701,7 +1697,7 @@
           "<%= imports.RewardsDistributor_snx_rewards_for_sc_pool.contracts.RewardsDistributor.address %>"
         ]
       },
-      "sccp_313_register_spartan_council_pool_usdc_rewards": {
+      "CoreProxy_registerRewardsDistributor_usdc_rewards_for_sc_pool": {
         "target": [
           "system.CoreProxy"
         ],
@@ -1714,8 +1710,8 @@
         "func": "registerRewardsDistributor",
         "args": [
           "<%= settings.spartan_council_pool_id_setting %>",
-          "<%= extras.synth_usdc_token_address %>",
-          "<%= imports.sccp_313_spartan_council_pool_usdc_rewards.contracts.RewardsDistributor.address %>"
+          "<%= AddressZero %>",
+          "<%= imports.RewardsDistributor_usdc_rewards_for_sc_pool.contracts.RewardsDistributor.address %>"
         ]
       },
       "PerpsMarketProxy_registerDistributor_synth_cbbtc_liquidations": {
@@ -26078,6 +26074,7 @@
         "cbbtc_address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
         "cbeth_address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
         "snx_address": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+        "usdc_address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
         "weth_address": "0x4200000000000000000000000000000000000006",
         "wsteth_address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452"
       },
@@ -26182,7 +26179,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "67",
+    "version": "68",
     "description": "Andromeda deployment",
     "preset": "andromeda",
     "deployers": [
@@ -96346,11 +96343,12 @@
           "cbbtc_address": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
           "cbeth_address": "0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22",
           "snx_address": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+          "usdc_address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
           "weth_address": "0x4200000000000000000000000000000000000006",
           "wsteth_address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452"
         }
       },
-      "hash": "6c4b9fe7c14f5baa658bc84901319311",
+      "hash": "7ddde6569e086d408c4a8e6a474cc168",
       "version": 7
     },
     "var.weth_spot_settings": {
@@ -103290,13 +103288,121 @@
       },
       "hash": "d9b04dd3102c8adcca7bf34720972573",
       "version": 7
+    },
+    "provision.RewardsDistributor_usdc_rewards_for_sc_pool": {
+      "artifacts": {
+        "imports": {
+          "RewardsDistributor_usdc_rewards_for_sc_pool": {
+            "url": "ipfs://QmQCoburuLK3ohPyGtvECqnCVBUTHj2zPTdE7DcudfD9L2",
+            "tags": [
+              "latest"
+            ],
+            "target": "synthetix-rewards-distributor:3.9.1@pool-usdc",
+            "preset": "pool-usdc",
+            "settings": {
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            },
+            "contracts": {
+              "RewardsDistributor": {
+                "address": "0xa7163fE9788BF14CcDac854131CAc2C17d1a1676",
+                "abi": [
+                  "constructor(address rewardManager_, uint128 poolId_, address payoutToken_, uint8 payoutTokenDecimals_, string name_)",
+                  "function SYSTEM_PRECISION() view returns (uint256)",
+                  "function distributeRewards(uint128 poolId_, address collateralType_, uint256 amount_, uint64 start_, uint32 duration_)",
+                  "function name() view returns (string)",
+                  "function onPositionUpdated(uint128, uint128, address, uint256)",
+                  "function payout(uint128, uint128 poolId_, address, address payoutTarget_, uint256 payoutAmount_) returns (bool)",
+                  "function payoutToken() view returns (address)",
+                  "function poolId() view returns (uint128)",
+                  "function precision() view returns (uint256)",
+                  "function rewardManager() view returns (address)",
+                  "function rewardedAmount() view returns (uint256)",
+                  "function setShouldFailPayout(bool shouldFailPayout_)",
+                  "function shouldFailPayout() view returns (bool)",
+                  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+                  "function token() view returns (address)",
+                  "error FailedTransfer(address from, address to, uint256 value)",
+                  "error InvalidParameter(string parameter, string reason)",
+                  "error NotEnoughBalance(uint256 amountRequested, uint256 currentBalance)",
+                  "error NotEnoughRewardsLeft(uint256 amountRequested, uint256 amountLeft)",
+                  "error OverflowInt256ToUint256()",
+                  "error OverflowUint256ToInt256()",
+                  "error Unauthorized(address addr)"
+                ],
+                "constructorArgs": [
+                  "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+                  "1",
+                  "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                  "6",
+                  "USDC Pool Rewards"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "",
+                "deployTxnBlockNumber": "23509632",
+                "deployTimestamp": "1733808611",
+                "sourceName": "src/RewardsDistributor.sol",
+                "contractName": "RewardsDistributor",
+                "deployedOn": "contract.RewardsDistributor",
+                "gasUsed": 930739,
+                "gasCost": "8241603"
+              }
+            },
+            "extras": {
+              "name": "Rewards Distributor V3",
+              "payoutToken": "0x22e6966B799c4D5B13BE962E1D117b56327FDa66",
+              "payoutTokenDecimals": "18",
+              "poolId": "1",
+              "rewardManager": "0x32C222A9A159782aFD7529c87FA34b96CA72C696",
+              "salt": "rewards"
+            }
+          }
+        }
+      },
+      "hash": null,
+      "version": 7
+    },
+    "invoke.CoreProxy_registerRewardsDistributor_usdc_rewards_for_sc_pool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_registerRewardsDistributor_usdc_rewards_for_sc_pool": {
+            "hash": "0xd70c32f794559e130fb3765a2dd0956e5823dd0b4ab48e81064575c15b892852",
+            "blockNumber": "23509706",
+            "timestamp": "1733808999",
+            "events": {
+              "RewardsDistributorRegistered": [
+                {
+                  "name": "RewardsDistributorRegistered",
+                  "args": [
+                    "1",
+                    "0x0000000000000000000000000000000000000000",
+                    "0xa7163fE9788BF14CcDac854131CAc2C17d1a1676"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_registerRewardsDistributor_usdc_rewards_for_sc_pool",
+            "gasUsed": 111655,
+            "gasCost": "1004954699",
+            "signer": "0xbb63CA5554dc4CcaCa4EDd6ECC2837d5EFe83C82"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "145ace3cdb30b6d3c6adc3dc8b5389ba",
+      "version": 7
     }
   },
   "options": {},
   "meta": {
     "gitUrl": "https://nk/Synthetixio/synthetix-deployments",
-    "commitHash": "515198b8e007a435c83dc7be1658abce457f61cd",
-    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/515198b8e007a435c83dc7be1658abce457f61cd/README.md"
+    "commitHash": "3b4f7969b00bbeae91371920abd18808eb28bec4",
+    "readme": "https://nk/Synthetixio/synthetix-deployments/blob/3b4f7969b00bbeae91371920abd18808eb28bec4/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 8453
