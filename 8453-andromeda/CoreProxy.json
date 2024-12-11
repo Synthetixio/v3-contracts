@@ -1,5 +1,91 @@
 [
   {
+    "type": "function",
+    "name": "facets",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "components": [
+          {
+            "type": "address",
+            "name": "facetAddress"
+          },
+          {
+            "type": "bytes4[]",
+            "name": "functionSelectors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "facetFunctionSelectors",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "address",
+        "name": "facet"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes4[]",
+        "name": "functionSelectors"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "facetAddresses",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address[]",
+        "name": "addresses"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "facetAddress",
+    "constant": true,
+    "stateMutability": "pure",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "bytes4",
+        "name": "functionSelector"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "emitDiamondCutEvent",
+    "constant": false,
+    "payable": false,
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
     "type": "error",
     "name": "ImplementationIsSterile",
     "inputs": [
@@ -2854,6 +2940,28 @@
   },
   {
     "type": "function",
+    "name": "getMarketCapacityContributionFromPool",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint128",
+        "name": "poolId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "function",
     "name": "getMarketCollateral",
     "constant": true,
     "stateMutability": "view",
@@ -2976,6 +3084,28 @@
       {
         "type": "int128",
         "name": "valuePerShareD27"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getMarketPoolMaxDebtPerShare",
+    "constant": true,
+    "stateMutability": "view",
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "marketId"
+      },
+      {
+        "type": "uint128",
+        "name": "poolId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "int256"
       }
     ]
   },
@@ -3711,6 +3841,24 @@
   },
   {
     "type": "function",
+    "name": "getPoolDebtPerShare",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "poolId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "int256",
+        "name": "debtPerShareD18"
+      }
+    ]
+  },
+  {
+    "type": "function",
     "name": "getPoolName",
     "constant": true,
     "stateMutability": "view",
@@ -3743,6 +3891,24 @@
     "outputs": [
       {
         "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getPoolTotalDebt",
+    "constant": false,
+    "payable": false,
+    "inputs": [
+      {
+        "type": "uint128",
+        "name": "poolId"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "int256",
+        "name": "totalDebtD18"
       }
     ]
   },
