@@ -2,12 +2,17 @@
   "constructor(address _pythAddress)",
   "error FeeRequired(uint256 amount)",
   "error NotSupported(uint8 updateType)",
+  "error OnlyOnDevFork()",
   "error OracleDataRequired(address oracleContract, bytes oracleQuery)",
   "error OverflowInt256ToUint256()",
   "error OverflowUint256ToInt256()",
+  "event ForkBenchmarkPriceSet(bytes32 priceId, uint64 requestedTime, int256 newPrice, int32 expo)",
+  "event ForkLatestPriceSet(bytes32 priceId, int256 newPrice)",
   "function fulfillOracleQuery(bytes signedOffchainData) payable",
   "function getBenchmarkPrice(bytes32 priceId, uint64 requestedTime) view returns (int256)",
   "function getLatestPrice(bytes32 priceId, uint256 stalenessTolerance) view returns (int256)",
   "function oracleId() pure returns (bytes32)",
-  "function pythAddress() view returns (address)"
+  "function pythAddress() view returns (address)",
+  "function setBenchmarkPrice(bytes32 priceId, uint64 requestedTime, int256 newPrice, int32 expo)",
+  "function setLatestPrice(bytes32 priceId, int256 newPrice)"
 ]
