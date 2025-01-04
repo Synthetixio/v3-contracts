@@ -1,5 +1,5 @@
 # v3-contracts
-ABI and Adresses for Synthetix v3 contract deployments
+ABI and Addresses for Synthetix v3 contract deployments
 
 
 #### Install the package:
