@@ -24,7 +24,7 @@ interface IPerpsMarketProxy {
     function createAccount(uint128 requestedAccountId) external;
     function getAccountLastInteraction(uint128 accountId) external view returns (uint256);
     function getAccountOwner(uint128 accountId) external view returns (address);
-    function getAccountPermissions(uint128 accountId) external view returns (S_1[] memory accountPerms);
+    function getAccountPermissions(uint128 accountId) external view returns (IAccountModule.AccountPermissions[] memory accountPerms);
     function getAccountTokenAddress() external view returns (address);
     function grantPermission(uint128 accountId, bytes32 permission, address user) external;
     function hasPermission(uint128 accountId, bytes32 permission, address user) external view returns (bool);
@@ -109,7 +109,7 @@ interface IPerpsMarketProxy {
     function currentFundingRate(uint128 marketId) external view returns (int256);
     function currentFundingVelocity(uint128 marketId) external view returns (int256);
     function fillPrice(uint128 marketId, int128 orderSize, uint256 price) external view returns (uint256);
-    function getMarketSummary(uint128 marketId) external view returns (S_2 memory summary);
+    function getMarketSummary(uint128 marketId) external view returns (IPerpsMarketModule.MarketSummary memory summary);
     function indexPrice(uint128 marketId) external view returns (uint256);
     function maxOpenInterest(uint128 marketId) external view returns (uint256);
     function metadata(uint128 marketId) external view returns (string memory name, string memory symbol);
@@ -125,10 +125,10 @@ interface IPerpsMarketProxy {
     error ZeroSizeOrder();
     event OrderCommitted(uint128 indexed marketId, uint128 indexed accountId, uint8 orderType, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, uint256 expectedPriceTime, uint256 settlementTime, uint256 expirationTime, bytes32 indexed trackingCode, address sender);
     event PreviousOrderExpired(uint128 indexed marketId, uint128 indexed accountId, int128 sizeDelta, uint256 acceptablePrice, uint256 commitmentTime, bytes32 indexed trackingCode);
-    function commitOrder(S_3 memory commitment) external returns (S_4 memory retOrder, uint256 fees);
+    function commitOrder(AsyncOrder.OrderCommitmentRequest memory commitment) external returns (AsyncOrder.Data memory retOrder, uint256 fees);
     function computeOrderFees(uint128 marketId, int128 sizeDelta) external view returns (uint256 orderFees, uint256 fillPrice);
     function computeOrderFeesWithPrice(uint128 marketId, int128 sizeDelta, uint256 price) external view returns (uint256 orderFees, uint256 fillPrice);
-    function getOrder(uint128 accountId) external view returns (S_4 memory order);
+    function getOrder(uint128 accountId) external view returns (AsyncOrder.Data memory order);
     function getSettlementRewardCost(uint128 marketId, uint128 settlementStrategyId) external view returns (uint256);
     function requiredMarginForOrder(uint128 accountId, uint128 marketId, int128 sizeDelta) external view returns (uint256 requiredMargin);
     function requiredMarginForOrderWithPrice(uint128 accountId, uint128 marketId, int128 sizeDelta, uint256 price) external view returns (uint256 requiredMargin);
@@ -187,9 +187,9 @@ interface IPerpsMarketProxy {
     event MaxMarketSizeSet(uint128 indexed marketId, uint256 maxMarketSize);
     event MaxMarketValueSet(uint128 indexed marketId, uint256 maxMarketValue);
     event OrderFeesSet(uint128 indexed marketId, uint256 makerFeeRatio, uint256 takerFeeRatio);
-    event SettlementStrategyAdded(uint128 indexed marketId, S_5 strategy, uint256 indexed strategyId);
-    event SettlementStrategySet(uint128 indexed marketId, uint256 indexed strategyId, S_5 strategy);
-    function addSettlementStrategy(uint128 marketId, S_5 memory strategy) external returns (uint256 strategyId);
+    event SettlementStrategyAdded(uint128 indexed marketId, SettlementStrategy.Data strategy, uint256 indexed strategyId);
+    event SettlementStrategySet(uint128 indexed marketId, uint256 indexed strategyId, SettlementStrategy.Data strategy);
+    function addSettlementStrategy(uint128 marketId, SettlementStrategy.Data memory strategy) external returns (uint256 strategyId);
     function getFundingParameters(uint128 marketId) external view returns (uint256 skewScale, uint256 maxFundingVelocity);
     function getLiquidationParameters(uint128 marketId) external view returns (uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin);
     function getLockedOiRatio(uint128 marketId) external view returns (uint256);
@@ -198,7 +198,7 @@ interface IPerpsMarketProxy {
     function getMaxMarketValue(uint128 marketId) external view returns (uint256 maxMarketValue);
     function getOrderFees(uint128 marketId) external view returns (uint256 makerFee, uint256 takerFee);
     function getPriceData(uint128 perpsMarketId) external view returns (bytes32 feedId, uint256 strictStalenessTolerance);
-    function getSettlementStrategy(uint128 marketId, uint256 strategyId) external view returns (S_5 memory settlementStrategy);
+    function getSettlementStrategy(uint128 marketId, uint256 strategyId) external view returns (SettlementStrategy.Data memory settlementStrategy);
     function setFundingParameters(uint128 marketId, uint256 skewScale, uint256 maxFundingVelocity) external;
     function setLiquidationParameters(uint128 marketId, uint256 initialMarginRatioD18, uint256 minimumInitialMarginRatioD18, uint256 maintenanceMarginScalarD18, uint256 flagRewardRatioD18, uint256 minimumPositionMargin) external;
     function setLockedOiRatio(uint128 marketId, uint256 lockedOiRatioD18) external;
@@ -206,7 +206,7 @@ interface IPerpsMarketProxy {
     function setMaxMarketSize(uint128 marketId, uint256 maxMarketSize) external;
     function setMaxMarketValue(uint128 marketId, uint256 maxMarketValue) external;
     function setOrderFees(uint128 marketId, uint256 makerFeeRatio, uint256 takerFeeRatio) external;
-    function setSettlementStrategy(uint128 marketId, uint256 strategyId, S_5 memory strategy) external;
+    function setSettlementStrategy(uint128 marketId, uint256 strategyId, SettlementStrategy.Data memory strategy) external;
     function setSettlementStrategyEnabled(uint128 marketId, uint256 strategyId, bool enabled) external;
     function updatePriceData(uint128 perpsMarketId, bytes32 feedId, uint256 strictStalenessTolerance) external;
     error InvalidDistributorContract(address distributor);
@@ -249,47 +249,55 @@ interface IPerpsMarketProxy {
     function updateReferrerShare(address referrer, uint256 shareRatioD18) external;
 }
 
+interface IAccountModule {
+    struct AccountPermissions {
+        address user;
+        bytes32[] permissions;
+    }
+}
+
+interface IPerpsMarketModule {
+    struct MarketSummary {
+        int256 skew;
+        uint256 size;
+        uint256 maxOpenInterest;
+        int256 currentFundingRate;
+        int256 currentFundingVelocity;
+        uint256 indexPrice;
+    }
+}
+
+interface AsyncOrder {
+    struct OrderCommitmentRequest {
+        uint128 marketId;
+        uint128 accountId;
+        int128 sizeDelta;
+        uint128 settlementStrategyId;
+        uint256 acceptablePrice;
+        bytes32 trackingCode;
+        address referrer;
+    }
+
+    struct Data {
+        uint256 commitmentTime;
+        OrderCommitmentRequest request;
+    }
+}
+
+interface SettlementStrategy {
+    struct Data {
+        uint8 strategyType;
+        uint256 settlementDelay;
+        uint256 settlementWindowDuration;
+        address priceVerificationContract;
+        bytes32 feedId;
+        uint256 settlementReward;
+        bool disabled;
+        uint256 commitmentPriceDelay;
+    }
+}
+
 struct S_0 {
     address facetAddress;
     bytes4[] functionSelectors;
-}
-
-struct S_1 {
-    address user;
-    bytes32[] permissions;
-}
-
-struct S_2 {
-    int256 skew;
-    uint256 size;
-    uint256 maxOpenInterest;
-    int256 currentFundingRate;
-    int256 currentFundingVelocity;
-    uint256 indexPrice;
-}
-
-struct S_3 {
-    uint128 marketId;
-    uint128 accountId;
-    int128 sizeDelta;
-    uint128 settlementStrategyId;
-    uint256 acceptablePrice;
-    bytes32 trackingCode;
-    address referrer;
-}
-
-struct S_4 {
-    uint256 commitmentTime;
-    S_3 request;
-}
-
-struct S_5 {
-    uint8 strategyType;
-    uint256 settlementDelay;
-    uint256 settlementWindowDuration;
-    address priceVerificationContract;
-    bytes32 feedId;
-    uint256 settlementReward;
-    bool disabled;
-    uint256 commitmentPriceDelay;
 }
