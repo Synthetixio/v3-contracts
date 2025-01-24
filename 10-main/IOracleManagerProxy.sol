@@ -22,7 +22,7 @@ interface IOracleManagerProxy {
     function upgradeTo(address newImplementation) external;
     error DeviationToleranceExceeded(int256 deviation);
     error InvalidInputPrice();
-    error InvalidNodeDefinition(S_0 nodeType);
+    error InvalidNodeDefinition(NodeDefinition.Data nodeType);
     error InvalidParameter(string parameter, string reason);
     error InvalidPrice(int256 price);
     error NodeNotRegistered(bytes32 nodeId);
@@ -36,22 +36,26 @@ interface IOracleManagerProxy {
     error UnprocessableNode(bytes32 nodeId);
     error UnsupportedOperation(uint8 operation);
     event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents);
-    function getNode(bytes32 nodeId) external pure returns (S_0 memory node);
+    function getNode(bytes32 nodeId) external pure returns (NodeDefinition.Data memory node);
     function getNodeId(uint8 nodeType, bytes memory parameters, bytes32[] memory parents) external pure returns (bytes32 nodeId);
-    function process(bytes32 nodeId) external view returns (S_1 memory node);
-    function processWithRuntime(bytes32 nodeId, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (S_1 memory node);
+    function process(bytes32 nodeId) external view returns (NodeOutput.Data memory node);
+    function processWithRuntime(bytes32 nodeId, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (NodeOutput.Data memory node);
     function registerNode(uint8 nodeType, bytes memory parameters, bytes32[] memory parents) external returns (bytes32 nodeId);
 }
 
-struct S_0 {
-    uint8 nodeType;
-    bytes parameters;
-    bytes32[] parents;
+interface NodeDefinition {
+    struct Data {
+        uint8 nodeType;
+        bytes parameters;
+        bytes32[] parents;
+    }
 }
 
-struct S_1 {
-    int256 price;
-    uint256 timestamp;
-    uint256 __slotAvailableForFutureUse1;
-    uint256 __slotAvailableForFutureUse2;
+interface NodeOutput {
+    struct Data {
+        int256 price;
+        uint256 timestamp;
+        uint256 __slotAvailableForFutureUse1;
+        uint256 __slotAvailableForFutureUse2;
+    }
 }
