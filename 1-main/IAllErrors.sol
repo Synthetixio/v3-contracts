@@ -76,7 +76,7 @@ interface IAllErrors {
     error TokenDoesNotExist(uint256 id);
     error InsufficientBalance(uint256 required, uint256 existing);
     error Errors(bytes[] revertReasons);
-    error InvalidNodeDefinition(S_0 nodeType);
+    error InvalidNodeDefinition(NodeDefinition.Data nodeType);
     error InvalidPrice(int256 price);
     error NodeNotRegistered(bytes32 nodeId);
     error OracleDataRequired(address oracleContract, bytes oracleQuery);
@@ -126,8 +126,10 @@ interface IAllErrors {
     error InvalidWrapperFees();
 }
 
-struct S_0 {
-    uint8 nodeType;
-    bytes parameters;
-    bytes32[] parents;
+interface NodeDefinition {
+    struct Data {
+        uint8 nodeType;
+        bytes parameters;
+        bytes32[] parents;
+    }
 }
