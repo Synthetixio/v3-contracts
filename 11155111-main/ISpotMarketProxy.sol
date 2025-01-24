@@ -68,19 +68,19 @@ interface ISpotMarketProxy {
     error InvalidMarket(uint128 marketId);
     error InvalidPrices();
     error OverflowUint256ToInt256();
-    event SynthBought(uint256 indexed synthMarketId, uint256 synthReturned, S_0 fees, uint256 collectedFees, address referrer, uint256 price);
-    event SynthSold(uint256 indexed synthMarketId, uint256 amountReturned, S_0 fees, uint256 collectedFees, address referrer, uint256 price);
-    function buy(uint128 marketId, uint256 usdAmount, uint256 minAmountReceived, address referrer) external returns (uint256 synthAmount, S_0 memory fees);
-    function buyExactIn(uint128 marketId, uint256 usdAmount, uint256 minAmountReceived, address referrer) external returns (uint256 synthAmount, S_0 memory fees);
-    function buyExactOut(uint128 marketId, uint256 synthAmount, uint256 maxUsdAmount, address referrer) external returns (uint256 usdAmountCharged, S_0 memory fees);
+    event SynthBought(uint256 indexed synthMarketId, uint256 synthReturned, OrderFees.Data fees, uint256 collectedFees, address referrer, uint256 price);
+    event SynthSold(uint256 indexed synthMarketId, uint256 amountReturned, OrderFees.Data fees, uint256 collectedFees, address referrer, uint256 price);
+    function buy(uint128 marketId, uint256 usdAmount, uint256 minAmountReceived, address referrer) external returns (uint256 synthAmount, OrderFees.Data memory fees);
+    function buyExactIn(uint128 marketId, uint256 usdAmount, uint256 minAmountReceived, address referrer) external returns (uint256 synthAmount, OrderFees.Data memory fees);
+    function buyExactOut(uint128 marketId, uint256 synthAmount, uint256 maxUsdAmount, address referrer) external returns (uint256 usdAmountCharged, OrderFees.Data memory fees);
     function getMarketSkew(uint128 marketId) external view returns (int256 marketSkew);
-    function quoteBuyExactIn(uint128 marketId, uint256 usdAmount, uint8 stalenessTolerance) external view returns (uint256 synthAmount, S_0 memory fees);
-    function quoteBuyExactOut(uint128 marketId, uint256 synthAmount, uint8 stalenessTolerance) external view returns (uint256 usdAmountCharged, S_0 memory fees);
-    function quoteSellExactIn(uint128 marketId, uint256 synthAmount, uint8 stalenessTolerance) external view returns (uint256 returnAmount, S_0 memory fees);
-    function quoteSellExactOut(uint128 marketId, uint256 usdAmount, uint8 stalenessTolerance) external view returns (uint256 synthToBurn, S_0 memory fees);
-    function sell(uint128 marketId, uint256 synthAmount, uint256 minUsdAmount, address referrer) external returns (uint256 usdAmountReceived, S_0 memory fees);
-    function sellExactIn(uint128 marketId, uint256 synthAmount, uint256 minAmountReceived, address referrer) external returns (uint256 returnAmount, S_0 memory fees);
-    function sellExactOut(uint128 marketId, uint256 usdAmount, uint256 maxSynthAmount, address referrer) external returns (uint256 synthToBurn, S_0 memory fees);
+    function quoteBuyExactIn(uint128 marketId, uint256 usdAmount, uint8 stalenessTolerance) external view returns (uint256 synthAmount, OrderFees.Data memory fees);
+    function quoteBuyExactOut(uint128 marketId, uint256 synthAmount, uint8 stalenessTolerance) external view returns (uint256 usdAmountCharged, OrderFees.Data memory fees);
+    function quoteSellExactIn(uint128 marketId, uint256 synthAmount, uint8 stalenessTolerance) external view returns (uint256 returnAmount, OrderFees.Data memory fees);
+    function quoteSellExactOut(uint128 marketId, uint256 usdAmount, uint8 stalenessTolerance) external view returns (uint256 synthToBurn, OrderFees.Data memory fees);
+    function sell(uint128 marketId, uint256 synthAmount, uint256 minUsdAmount, address referrer) external returns (uint256 usdAmountReceived, OrderFees.Data memory fees);
+    function sellExactIn(uint128 marketId, uint256 synthAmount, uint256 minAmountReceived, address referrer) external returns (uint256 returnAmount, OrderFees.Data memory fees);
+    function sellExactOut(uint128 marketId, uint256 usdAmount, uint256 maxSynthAmount, address referrer) external returns (uint256 synthToBurn, OrderFees.Data memory fees);
     error IneligibleForCancellation(uint256 timestamp, uint256 expirationTime);
     error InsufficientSharesAmount(uint256 expected, uint256 actual);
     error InvalidAsyncTransactionType(uint8 transactionType);
@@ -88,36 +88,36 @@ interface ISpotMarketProxy {
     error InvalidCommitmentAmount(uint256 minimumAmount, uint256 amount);
     error InvalidSettlementStrategy(uint256 settlementStrategyId);
     error OrderAlreadySettled(uint256 asyncOrderId, uint256 settledAt);
-    event OrderCancelled(uint128 indexed marketId, uint128 indexed asyncOrderId, S_1 asyncOrderClaim, address indexed sender);
+    event OrderCancelled(uint128 indexed marketId, uint128 indexed asyncOrderId, AsyncOrderClaim.Data asyncOrderClaim, address indexed sender);
     event OrderCommitted(uint128 indexed marketId, uint8 indexed orderType, uint256 amountProvided, uint128 asyncOrderId, address indexed sender, address referrer);
     function cancelOrder(uint128 marketId, uint128 asyncOrderId) external;
-    function commitOrder(uint128 marketId, uint8 orderType, uint256 amountProvided, uint256 settlementStrategyId, uint256 minimumSettlementAmount, address referrer) external returns (S_1 memory asyncOrderClaim);
-    function getAsyncOrderClaim(uint128 marketId, uint128 asyncOrderId) external pure returns (S_1 memory asyncOrderClaim);
+    function commitOrder(uint128 marketId, uint8 orderType, uint256 amountProvided, uint256 settlementStrategyId, uint256 minimumSettlementAmount, address referrer) external returns (AsyncOrderClaim.Data memory asyncOrderClaim);
+    function getAsyncOrderClaim(uint128 marketId, uint128 asyncOrderId) external pure returns (AsyncOrderClaim.Data memory asyncOrderClaim);
     error InvalidSettlementStrategy(uint8 strategyType);
     error InvalidVerificationResponse();
     error MinimumSettlementAmountNotMet(uint256 minimum, uint256 actual);
     error OutsideSettlementWindow(uint256 timestamp, uint256 startTime, uint256 expirationTime);
     error OverflowUint256ToUint64();
     error SettlementStrategyNotFound(uint8 strategyType);
-    event OrderSettled(uint128 indexed marketId, uint128 indexed asyncOrderId, uint256 finalOrderAmount, S_0 fees, uint256 collectedFees, address indexed settler, uint256 price, uint8 orderType);
-    function settleOrder(uint128 marketId, uint128 asyncOrderId) external returns (uint256 finalOrderAmount, S_0 memory fees);
+    event OrderSettled(uint128 indexed marketId, uint128 indexed asyncOrderId, uint256 finalOrderAmount, OrderFees.Data fees, uint256 collectedFees, address indexed settler, uint256 price, uint8 orderType);
+    function settleOrder(uint128 marketId, uint128 asyncOrderId) external returns (uint256 finalOrderAmount, OrderFees.Data memory fees);
     error InvalidSettlementWindowDuration(uint256 duration);
     event SettlementStrategyAdded(uint128 indexed synthMarketId, uint256 indexed strategyId);
-    event SettlementStrategySet(uint128 indexed synthMarketId, uint256 indexed strategyId, S_2 strategy);
-    function addSettlementStrategy(uint128 marketId, S_2 memory strategy) external returns (uint256 strategyId);
-    function getSettlementStrategy(uint128 marketId, uint256 strategyId) external view returns (S_2 memory settlementStrategy);
-    function setSettlementStrategy(uint128 marketId, uint256 strategyId, S_2 memory strategy) external;
+    event SettlementStrategySet(uint128 indexed synthMarketId, uint256 indexed strategyId, SettlementStrategy.Data strategy);
+    function addSettlementStrategy(uint128 marketId, SettlementStrategy.Data memory strategy) external returns (uint256 strategyId);
+    function getSettlementStrategy(uint128 marketId, uint256 strategyId) external view returns (SettlementStrategy.Data memory settlementStrategy);
+    function setSettlementStrategy(uint128 marketId, uint256 strategyId, SettlementStrategy.Data memory strategy) external;
     function setSettlementStrategyEnabled(uint128 marketId, uint256 strategyId, bool enabled) external;
     error FailedTransfer(address from, address to, uint256 value);
     error InvalidCollateralType(address configuredCollateralType);
     error WrapperExceedsMaxAmount(uint256 maxWrappableAmount, uint256 currentSupply, uint256 amountToWrap);
-    event SynthUnwrapped(uint256 indexed synthMarketId, uint256 amountUnwrapped, S_0 fees, uint256 feesCollected);
-    event SynthWrapped(uint256 indexed synthMarketId, uint256 amountWrapped, S_0 fees, uint256 feesCollected);
+    event SynthUnwrapped(uint256 indexed synthMarketId, uint256 amountUnwrapped, OrderFees.Data fees, uint256 feesCollected);
+    event SynthWrapped(uint256 indexed synthMarketId, uint256 amountWrapped, OrderFees.Data fees, uint256 feesCollected);
     event WrapperSet(uint256 indexed synthMarketId, address indexed wrapCollateralType, uint256 maxWrappableAmount);
     function getWrapper(uint128 marketId) external view returns (address wrapCollateralType, uint256 maxWrappableAmount);
     function setWrapper(uint128 marketId, address wrapCollateralType, uint256 maxWrappableAmount) external;
-    function unwrap(uint128 marketId, uint256 unwrapAmount, uint256 minAmountReceived) external returns (uint256 returnCollateralAmount, S_0 memory fees);
-    function wrap(uint128 marketId, uint256 wrapAmount, uint256 minAmountReceived) external returns (uint256 amountToMint, S_0 memory fees);
+    function unwrap(uint128 marketId, uint256 unwrapAmount, uint256 minAmountReceived) external returns (uint256 returnCollateralAmount, OrderFees.Data memory fees);
+    function wrap(uint128 marketId, uint256 wrapAmount, uint256 minAmountReceived) external returns (uint256 amountToMint, OrderFees.Data memory fees);
     error InvalidCollateralLeverage(uint256);
     error InvalidFeeCollectorInterface(address invalidFeeCollector);
     error InvalidWrapperFees();
@@ -165,35 +165,41 @@ interface ISpotMarketProxy {
     function setFeatureFlagDenyAll(bytes32 feature, bool denyAll) external;
 }
 
-struct S_0 {
-    uint256 fixedFees;
-    uint256 utilizationFees;
-    int256 skewFees;
-    int256 wrapperFees;
+interface OrderFees {
+    struct Data {
+        uint256 fixedFees;
+        uint256 utilizationFees;
+        int256 skewFees;
+        int256 wrapperFees;
+    }
 }
 
-struct S_1 {
-    uint128 id;
-    address owner;
-    uint8 orderType;
-    uint256 amountEscrowed;
-    uint256 settlementStrategyId;
-    uint256 commitmentTime;
-    uint256 minimumSettlementAmount;
-    uint256 settledAt;
-    address referrer;
+interface AsyncOrderClaim {
+    struct Data {
+        uint128 id;
+        address owner;
+        uint8 orderType;
+        uint256 amountEscrowed;
+        uint256 settlementStrategyId;
+        uint256 commitmentTime;
+        uint256 minimumSettlementAmount;
+        uint256 settledAt;
+        address referrer;
+    }
 }
 
-struct S_2 {
-    uint8 strategyType;
-    uint256 settlementDelay;
-    uint256 settlementWindowDuration;
-    address priceVerificationContract;
-    bytes32 feedId;
-    string url;
-    uint256 settlementReward;
-    uint256 priceDeviationTolerance;
-    uint256 minimumUsdExchangeAmount;
-    uint256 maxRoundingLoss;
-    bool disabled;
+interface SettlementStrategy {
+    struct Data {
+        uint8 strategyType;
+        uint256 settlementDelay;
+        uint256 settlementWindowDuration;
+        address priceVerificationContract;
+        bytes32 feedId;
+        string url;
+        uint256 settlementReward;
+        uint256 priceDeviationTolerance;
+        uint256 minimumUsdExchangeAmount;
+        uint256 maxRoundingLoss;
+        bool disabled;
+    }
 }

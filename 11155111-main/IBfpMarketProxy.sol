@@ -19,7 +19,7 @@ interface IBfpMarketProxy {
     function createAccount(uint128 requestedAccountId) external;
     function getAccountLastInteraction(uint128 accountId) external view returns (uint256);
     function getAccountOwner(uint128 accountId) external view returns (address);
-    function getAccountPermissions(uint128 accountId) external view returns (S_0[] memory accountPerms);
+    function getAccountPermissions(uint128 accountId) external view returns (IAccountModule.AccountPermissions[] memory accountPerms);
     function getAccountTokenAddress() external view returns (address);
     function grantPermission(uint128 accountId, bytes32 permission, address user) external;
     function hasPermission(uint128 accountId, bytes32 permission, address user) external view returns (bool);
@@ -83,10 +83,10 @@ interface IBfpMarketProxy {
     event MarketSizeUpdated(uint128 indexed marketId, uint128 size, int128 skew);
     event OrderCanceled(uint128 indexed accountId, uint128 indexed marketId, uint256 keeperFee, uint64 commitmentTime);
     event UtilizationRecomputed(uint128 indexed marketId, int128 skew, uint128 utilizationRate);
-    function createMarket(S_1 memory data) external returns (uint128);
+    function createMarket(IPerpMarketFactoryModule.CreatePerpMarketParameters memory data) external returns (uint128);
     function getActiveMarketIds() external view returns (uint128[] memory);
-    function getMarketDigest(uint128 marketId) external view returns (S_3 memory);
-    function getUtilizationDigest(uint128 marketId) external view returns (S_4 memory);
+    function getMarketDigest(uint128 marketId) external view returns (IPerpMarketFactoryModule.MarketDigest memory);
+    function getUtilizationDigest(uint128 marketId) external view returns (IPerpMarketFactoryModule.UtilizationDigest memory);
     function minimumCredit(uint128 marketId) external view returns (uint256);
     function name(uint128) external pure returns (string memory);
     function recomputeFunding(uint128 marketId) external;
@@ -99,10 +99,10 @@ interface IBfpMarketProxy {
     error InvalidParameter(string parameter, string reason);
     event GlobalMarketConfigured(address indexed from);
     event MarketConfigured(uint128 indexed marketId, address indexed from);
-    function getMarketConfiguration() external pure returns (S_5 memory);
-    function getMarketConfigurationById(uint128 marketId) external pure returns (S_6 memory);
-    function setMarketConfiguration(S_7 memory data) external;
-    function setMarketConfigurationById(S_8 memory data) external;
+    function getMarketConfiguration() external pure returns (PerpMarketConfiguration.GlobalData memory);
+    function getMarketConfigurationById(uint128 marketId) external pure returns (PerpMarketConfiguration.Data memory);
+    function setMarketConfiguration(IMarketConfigurationModule.GlobalMarketConfigureParameters memory data) external;
+    function setMarketConfigurationById(IMarketConfigurationModule.ConfigureByMarketParameters memory data) external;
     function setMinDelegationTime(uint128 marketId, uint32 minDelegationTime) external;
     error AccountNotFound(uint128 accountId);
     error AccountSplitProportionTooLarge();
@@ -121,8 +121,8 @@ interface IBfpMarketProxy {
     error ZeroProportion();
     event AccountSplit(uint128 indexed fromId, uint128 indexed toId, uint128 indexed marketId);
     event AccountsMerged(uint128 indexed fromId, uint128 indexed toId, uint128 indexed marketId);
-    function getAccountDigest(uint128 accountId, uint128 marketId) external view returns (S_11 memory);
-    function getPositionDigest(uint128 accountId, uint128 marketId) external view returns (S_10 memory);
+    function getAccountDigest(uint128 accountId, uint128 marketId) external view returns (IPerpAccountModule.AccountDigest memory);
+    function getPositionDigest(uint128 accountId, uint128 marketId) external view returns (IPerpAccountModule.PositionDigest memory);
     function mergeAccounts(uint128 fromId, uint128 toId, uint128 marketId) external;
     function splitAccount(uint128 fromId, uint128 toId, uint128 marketId, uint128 proportion) external;
     error ArrayLengthMismatch();
@@ -140,8 +140,8 @@ interface IBfpMarketProxy {
     event MarginDeposit(address indexed from, address indexed to, uint256 value, address collateralAddress);
     event MarginWithdraw(address indexed from, address indexed to, uint256 value, address collateralAddress);
     function getDiscountedCollateralPrice(address collateralAddress, uint256 amount) external view returns (uint256);
-    function getMarginCollateralConfiguration() external view returns (S_12[] memory);
-    function getMarginDigest(uint128 accountId, uint128 marketId) external view returns (S_13 memory);
+    function getMarginCollateralConfiguration() external view returns (IMarginModule.ConfiguredCollateral[] memory);
+    function getMarginDigest(uint128 accountId, uint128 marketId) external view returns (Margin.MarginValues memory);
     function getMarginLiquidationOnlyReward(uint128 accountId, uint128 marketId) external view returns (uint256);
     function getNetAssetValue(uint128 accountId, uint128 marketId, uint256 oraclePrice) external view returns (uint256);
     function getWithdrawableMargin(uint128 accountId, uint128 marketId) external view returns (uint256);
@@ -170,7 +170,7 @@ interface IBfpMarketProxy {
     function commitOrder(uint128 accountId, uint128 marketId, int128 sizeDelta, uint256 limitPrice, uint128 keeperFeeBufferUsd, address[] memory hooks, bytes32 trackingCode) external;
     function getFillPrice(uint128 marketId, int128 size) external view returns (uint256);
     function getOraclePrice(uint128 marketId) external view returns (uint256);
-    function getOrderDigest(uint128 accountId, uint128 marketId) external view returns (S_14 memory);
+    function getOrderDigest(uint128 accountId, uint128 marketId) external view returns (IOrderModule.OrderDigest memory);
     function getOrderFees(uint128 marketId, int128 sizeDelta, uint128 keeperFeeBufferUsd) external view returns (uint256 orderFee, uint256 keeperFee);
     function settleOrder(uint128 accountId, uint128 marketId, bytes memory priceUpdateData) external payable;
     error CannotLiquidateMargin();
@@ -191,210 +191,230 @@ interface IBfpMarketProxy {
     function liquidatePosition(uint128 accountId, uint128 marketId) external;
     error ZeroLength();
     event RewardDistributorCreated(address indexed distributor);
-    function createRewardDistributor(S_15 memory data) external returns (address);
+    function createRewardDistributor(IPerpRewardDistributorFactoryModule.CreatePerpRewardDistributorParameters memory data) external returns (address);
     event SettlementHookConfigured(address indexed from, uint256 hooks);
-    function getSettlementHookConfiguration() external view returns (S_16 memory);
+    function getSettlementHookConfiguration() external view returns (ISettlementHookModule.SettlementHookConfigureParameters memory);
     function isSettlementHookWhitelisted(address hook) external view returns (bool);
-    function setSettlementHookConfiguration(S_16 memory data) external;
+    function setSettlementHookConfiguration(ISettlementHookModule.SettlementHookConfigureParameters memory data) external;
     event SplitAccountConfigured(address indexed from, uint256 hooks);
     function getEndorsedSplitAccounts() external view returns (address[] memory addresses);
     function isEndorsedForSplitAccount(address addr) external view returns (bool);
     function setEndorsedSplitAccounts(address[] memory addresses) external;
 }
 
-struct S_0 {
-    address user;
-    bytes32[] permissions;
+interface IAccountModule {
+    struct AccountPermissions {
+        address user;
+        bytes32[] permissions;
+    }
 }
 
-struct S_1 {
-    bytes32 name;
-    uint32 minDelegateTime;
+interface IPerpMarketFactoryModule {
+    struct CreatePerpMarketParameters {
+        bytes32 name;
+        uint32 minDelegateTime;
+    }
+
+    struct DepositedCollateral {
+        address collateralAddress;
+        uint256 available;
+    }
+
+    struct MarketDigest {
+        DepositedCollateral[] depositedCollaterals;
+        bytes32 name;
+        int128 skew;
+        uint128 size;
+        uint256 oraclePrice;
+        int128 fundingVelocity;
+        int128 fundingRate;
+        uint128 utilizationRate;
+        uint128 remainingLiquidatableSizeCapacity;
+        uint128 lastLiquidationTime;
+        uint128 totalTraderDebtUsd;
+        uint256 totalCollateralValueUsd;
+        int128 debtCorrection;
+    }
+
+    struct UtilizationDigest {
+        uint128 lastComputedUtilizationRate;
+        uint64 lastComputedTimestamp;
+        uint128 currentUtilizationRate;
+        uint256 utilization;
+    }
 }
 
-struct S_2 {
-    address collateralAddress;
-    uint256 available;
+interface PerpMarketConfiguration {
+    struct GlobalData {
+        address pyth;
+        bytes32 ethOracleNodeId;
+        address rewardDistributorImplementation;
+        uint64 pythPublishTimeMin;
+        uint64 pythPublishTimeMax;
+        uint64 minOrderAge;
+        uint64 maxOrderAge;
+        uint256 minKeeperFeeUsd;
+        uint256 maxKeeperFeeUsd;
+        uint128 keeperProfitMarginUsd;
+        uint128 keeperProfitMarginPercent;
+        uint128 keeperSettlementGasUnits;
+        uint128 keeperCancellationGasUnits;
+        uint128 keeperLiquidationGasUnits;
+        uint128 keeperFlagGasUnits;
+        uint128 keeperLiquidateMarginGasUnits;
+        address keeperLiquidationEndorsed;
+        uint128 collateralDiscountScalar;
+        uint128 minCollateralDiscount;
+        uint128 maxCollateralDiscount;
+        uint128 utilizationBreakpointPercent;
+        uint128 lowUtilizationSlopePercent;
+        uint128 highUtilizationSlopePercent;
+    }
+
+    struct Data {
+        bytes32 oracleNodeId;
+        bytes32 pythPriceFeedId;
+        uint128 makerFee;
+        uint128 takerFee;
+        uint128 maxMarketSize;
+        uint128 maxFundingVelocity;
+        uint128 skewScale;
+        uint128 fundingVelocityClamp;
+        uint128 minCreditPercent;
+        uint256 minMarginUsd;
+        uint256 minMarginRatio;
+        uint256 incrementalMarginScalar;
+        uint256 maintenanceMarginScalar;
+        uint256 maxInitialMarginRatio;
+        uint256 liquidationRewardPercent;
+        uint128 liquidationLimitScalar;
+        uint128 liquidationWindowDuration;
+        uint128 liquidationMaxPd;
+    }
 }
 
-struct S_3 {
-    S_2[] depositedCollaterals;
-    bytes32 name;
-    int128 skew;
-    uint128 size;
-    uint256 oraclePrice;
-    int128 fundingVelocity;
-    int128 fundingRate;
-    uint128 utilizationRate;
-    uint128 remainingLiquidatableSizeCapacity;
-    uint128 lastLiquidationTime;
-    uint128 totalTraderDebtUsd;
-    uint256 totalCollateralValueUsd;
-    int128 debtCorrection;
+interface IMarketConfigurationModule {
+    struct GlobalMarketConfigureParameters {
+        uint64 pythPublishTimeMin;
+        uint64 pythPublishTimeMax;
+        uint64 minOrderAge;
+        uint64 maxOrderAge;
+        uint256 minKeeperFeeUsd;
+        uint256 maxKeeperFeeUsd;
+        uint128 keeperProfitMarginPercent;
+        uint128 keeperProfitMarginUsd;
+        uint128 keeperSettlementGasUnits;
+        uint128 keeperCancellationGasUnits;
+        uint128 keeperLiquidationGasUnits;
+        uint128 keeperFlagGasUnits;
+        uint128 keeperLiquidateMarginGasUnits;
+        address keeperLiquidationEndorsed;
+        uint128 collateralDiscountScalar;
+        uint128 minCollateralDiscount;
+        uint128 maxCollateralDiscount;
+        uint128 utilizationBreakpointPercent;
+        uint128 lowUtilizationSlopePercent;
+        uint128 highUtilizationSlopePercent;
+    }
+
+    struct ConfigureByMarketParameters {
+        uint128 marketId;
+        bytes32 oracleNodeId;
+        bytes32 pythPriceFeedId;
+        uint128 makerFee;
+        uint128 takerFee;
+        uint128 maxMarketSize;
+        uint128 maxFundingVelocity;
+        uint128 skewScale;
+        uint128 fundingVelocityClamp;
+        uint128 minCreditPercent;
+        uint256 minMarginUsd;
+        uint256 minMarginRatio;
+        uint256 incrementalMarginScalar;
+        uint256 maintenanceMarginScalar;
+        uint256 maxInitialMarginRatio;
+        uint256 liquidationRewardPercent;
+        uint128 liquidationLimitScalar;
+        uint128 liquidationWindowDuration;
+        uint128 liquidationMaxPd;
+    }
 }
 
-struct S_4 {
-    uint128 lastComputedUtilizationRate;
-    uint64 lastComputedTimestamp;
-    uint128 currentUtilizationRate;
-    uint256 utilization;
+interface IPerpAccountModule {
+    struct DepositedCollateral {
+        address collateralAddress;
+        uint256 available;
+        uint256 oraclePrice;
+    }
+
+    struct PositionDigest {
+        uint128 accountId;
+        uint128 marketId;
+        uint256 remainingMarginUsd;
+        uint256 healthFactor;
+        uint256 notionalValueUsd;
+        int256 pnl;
+        int128 accruedFunding;
+        uint128 accruedUtilization;
+        uint256 entryPythPrice;
+        uint256 entryPrice;
+        uint256 oraclePrice;
+        int128 size;
+        uint256 im;
+        uint256 mm;
+    }
+
+    struct AccountDigest {
+        DepositedCollateral[] depositedCollaterals;
+        uint256 collateralUsd;
+        uint128 debtUsd;
+        PositionDigest position;
+    }
 }
 
-struct S_5 {
-    address pyth;
-    bytes32 ethOracleNodeId;
-    address rewardDistributorImplementation;
-    uint64 pythPublishTimeMin;
-    uint64 pythPublishTimeMax;
-    uint64 minOrderAge;
-    uint64 maxOrderAge;
-    uint256 minKeeperFeeUsd;
-    uint256 maxKeeperFeeUsd;
-    uint128 keeperProfitMarginUsd;
-    uint128 keeperProfitMarginPercent;
-    uint128 keeperSettlementGasUnits;
-    uint128 keeperCancellationGasUnits;
-    uint128 keeperLiquidationGasUnits;
-    uint128 keeperFlagGasUnits;
-    uint128 keeperLiquidateMarginGasUnits;
-    address keeperLiquidationEndorsed;
-    uint128 collateralDiscountScalar;
-    uint128 minCollateralDiscount;
-    uint128 maxCollateralDiscount;
-    uint128 utilizationBreakpointPercent;
-    uint128 lowUtilizationSlopePercent;
-    uint128 highUtilizationSlopePercent;
+interface IMarginModule {
+    struct ConfiguredCollateral {
+        address collateralAddress;
+        bytes32 oracleNodeId;
+        uint128 maxAllowable;
+        uint128 skewScale;
+        address rewardDistributor;
+    }
 }
 
-struct S_6 {
-    bytes32 oracleNodeId;
-    bytes32 pythPriceFeedId;
-    uint128 makerFee;
-    uint128 takerFee;
-    uint128 maxMarketSize;
-    uint128 maxFundingVelocity;
-    uint128 skewScale;
-    uint128 fundingVelocityClamp;
-    uint128 minCreditPercent;
-    uint256 minMarginUsd;
-    uint256 minMarginRatio;
-    uint256 incrementalMarginScalar;
-    uint256 maintenanceMarginScalar;
-    uint256 maxInitialMarginRatio;
-    uint256 liquidationRewardPercent;
-    uint128 liquidationLimitScalar;
-    uint128 liquidationWindowDuration;
-    uint128 liquidationMaxPd;
+interface Margin {
+    struct MarginValues {
+        uint256 discountedMarginUsd;
+        uint256 marginUsd;
+        uint256 discountedCollateralUsd;
+        uint256 collateralUsd;
+    }
 }
 
-struct S_7 {
-    uint64 pythPublishTimeMin;
-    uint64 pythPublishTimeMax;
-    uint64 minOrderAge;
-    uint64 maxOrderAge;
-    uint256 minKeeperFeeUsd;
-    uint256 maxKeeperFeeUsd;
-    uint128 keeperProfitMarginPercent;
-    uint128 keeperProfitMarginUsd;
-    uint128 keeperSettlementGasUnits;
-    uint128 keeperCancellationGasUnits;
-    uint128 keeperLiquidationGasUnits;
-    uint128 keeperFlagGasUnits;
-    uint128 keeperLiquidateMarginGasUnits;
-    address keeperLiquidationEndorsed;
-    uint128 collateralDiscountScalar;
-    uint128 minCollateralDiscount;
-    uint128 maxCollateralDiscount;
-    uint128 utilizationBreakpointPercent;
-    uint128 lowUtilizationSlopePercent;
-    uint128 highUtilizationSlopePercent;
+interface IOrderModule {
+    struct OrderDigest {
+        int128 sizeDelta;
+        uint64 commitmentTime;
+        uint256 limitPrice;
+        uint128 keeperFeeBufferUsd;
+        address[] hooks;
+        bool isStale;
+        bool isReady;
+    }
 }
 
-struct S_8 {
-    uint128 marketId;
-    bytes32 oracleNodeId;
-    bytes32 pythPriceFeedId;
-    uint128 makerFee;
-    uint128 takerFee;
-    uint128 maxMarketSize;
-    uint128 maxFundingVelocity;
-    uint128 skewScale;
-    uint128 fundingVelocityClamp;
-    uint128 minCreditPercent;
-    uint256 minMarginUsd;
-    uint256 minMarginRatio;
-    uint256 incrementalMarginScalar;
-    uint256 maintenanceMarginScalar;
-    uint256 maxInitialMarginRatio;
-    uint256 liquidationRewardPercent;
-    uint128 liquidationLimitScalar;
-    uint128 liquidationWindowDuration;
-    uint128 liquidationMaxPd;
+interface IPerpRewardDistributorFactoryModule {
+    struct CreatePerpRewardDistributorParameters {
+        uint128 poolId;
+        address[] collateralTypes;
+        string name;
+        address token;
+    }
 }
 
-struct S_9 {
-    address collateralAddress;
-    uint256 available;
-    uint256 oraclePrice;
-}
-
-struct S_10 {
-    uint128 accountId;
-    uint128 marketId;
-    uint256 remainingMarginUsd;
-    uint256 healthFactor;
-    uint256 notionalValueUsd;
-    int256 pnl;
-    int128 accruedFunding;
-    uint128 accruedUtilization;
-    uint256 entryPythPrice;
-    uint256 entryPrice;
-    uint256 oraclePrice;
-    int128 size;
-    uint256 im;
-    uint256 mm;
-}
-
-struct S_11 {
-    S_9[] depositedCollaterals;
-    uint256 collateralUsd;
-    uint128 debtUsd;
-    S_10 position;
-}
-
-struct S_12 {
-    address collateralAddress;
-    bytes32 oracleNodeId;
-    uint128 maxAllowable;
-    uint128 skewScale;
-    address rewardDistributor;
-}
-
-struct S_13 {
-    uint256 discountedMarginUsd;
-    uint256 marginUsd;
-    uint256 discountedCollateralUsd;
-    uint256 collateralUsd;
-}
-
-struct S_14 {
-    int128 sizeDelta;
-    uint64 commitmentTime;
-    uint256 limitPrice;
-    uint128 keeperFeeBufferUsd;
-    address[] hooks;
-    bool isStale;
-    bool isReady;
-}
-
-struct S_15 {
-    uint128 poolId;
-    address[] collateralTypes;
-    string name;
-    address token;
-}
-
-struct S_16 {
-    address[] whitelistedHookAddresses;
-    uint32 maxHooksPerOrder;
+interface ISettlementHookModule {
+    struct SettlementHookConfigureParameters {
+        address[] whitelistedHookAddresses;
+        uint32 maxHooksPerOrder;
+    }
 }

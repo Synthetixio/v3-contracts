@@ -77,7 +77,7 @@ interface IAllErrors {
     error InsufficientBalance(uint256 required, uint256 existing);
     error EmptyRevertReason();
     error Errors(bytes[] errors);
-    error InvalidNodeDefinition(S_0 nodeType);
+    error InvalidNodeDefinition(NodeDefinition.Data nodeType);
     error InvalidPrice(int256 price);
     error NodeNotRegistered(bytes32 nodeId);
     error OracleDataRequired(address oracleContract, bytes oracleQuery);
@@ -172,8 +172,10 @@ interface IAllErrors {
     error NotSupported(uint8 updateType);
 }
 
-struct S_0 {
-    uint8 nodeType;
-    bytes parameters;
-    bytes32[] parents;
+interface NodeDefinition {
+    struct Data {
+        uint8 nodeType;
+        bytes parameters;
+        bytes32[] parents;
+    }
 }
