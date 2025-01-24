@@ -51,7 +51,7 @@ interface ICoreProxy {
     function createAccount(uint128 requestedAccountId) external;
     function getAccountLastInteraction(uint128 accountId) external view returns (uint256);
     function getAccountOwner(uint128 accountId) external view returns (address);
-    function getAccountPermissions(uint128 accountId) external view returns (S_0[] memory accountPerms);
+    function getAccountPermissions(uint128 accountId) external view returns (IAccountModule.AccountPermissions[] memory accountPerms);
     function getAccountTokenAddress() external view returns (address);
     function grantPermission(uint128 accountId, bytes32 permission, address user) external;
     function hasPermission(uint128 accountId, bytes32 permission, address user) external view returns (bool);
@@ -81,7 +81,7 @@ interface ICoreProxy {
     error InvalidMessage();
     error NotCcipRouter(address);
     error UnsupportedNetwork(uint64);
-    function ccipReceive(S_2 memory message) external;
+    function ccipReceive(CcipClient.Any2EVMMessage memory message) external;
     error AccountActivityTimeoutPending(uint128 accountId, uint256 currentTime, uint256 requiredTime);
     error CollateralDepositDisabled(address collateralType);
     error CollateralNotFound();
@@ -101,12 +101,12 @@ interface ICoreProxy {
     function deposit(uint128 accountId, address collateralType, uint256 tokenAmount) external;
     function getAccountAvailableCollateral(uint128 accountId, address collateralType) external view returns (uint256);
     function getAccountCollateral(uint128 accountId, address collateralType) external view returns (uint256 totalDeposited, uint256 totalAssigned, uint256 totalLocked);
-    function getLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) external view returns (S_3[] memory locks);
+    function getLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) external view returns (CollateralLock.Data[] memory locks);
     function withdraw(uint128 accountId, address collateralType, uint256 tokenAmount) external;
-    event CollateralConfigured(address indexed collateralType, S_4 config);
-    function configureCollateral(S_4 memory config) external;
-    function getCollateralConfiguration(address collateralType) external pure returns (S_4 memory);
-    function getCollateralConfigurations(bool hideDisabled) external view returns (S_4[] memory);
+    event CollateralConfigured(address indexed collateralType, CollateralConfiguration.Data config);
+    function configureCollateral(CollateralConfiguration.Data memory config) external;
+    function getCollateralConfiguration(address collateralType) external pure returns (CollateralConfiguration.Data memory);
+    function getCollateralConfigurations(bool hideDisabled) external view returns (CollateralConfiguration.Data[] memory);
     function getCollateralPrice(address collateralType) external view returns (uint256);
     error InsufficientCcipFee(uint256 requiredAmount, uint256 availableAmount);
     event TransferCrossChainInitiated(uint64 indexed destChainId, uint256 indexed amount, address sender);
@@ -125,12 +125,12 @@ interface ICoreProxy {
     error OverflowUint256ToUint32();
     error OverflowUint32ToInt32();
     error OverflowUint64ToInt64();
-    event Liquidation(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, S_5 liquidationData, uint128 liquidateAsAccountId, address sender);
-    event VaultLiquidation(uint128 indexed poolId, address indexed collateralType, S_5 liquidationData, uint128 liquidateAsAccountId, address sender);
+    event Liquidation(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, ILiquidationModule.LiquidationData liquidationData, uint128 liquidateAsAccountId, address sender);
+    event VaultLiquidation(uint128 indexed poolId, address indexed collateralType, ILiquidationModule.LiquidationData liquidationData, uint128 liquidateAsAccountId, address sender);
     function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) external returns (bool);
     function isVaultLiquidatable(uint128 poolId, address collateralType) external returns (bool);
-    function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) external returns (S_5 memory liquidationData);
-    function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) external returns (S_5 memory liquidationData);
+    function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) external returns (ILiquidationModule.LiquidationData memory liquidationData);
+    function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) external returns (ILiquidationModule.LiquidationData memory liquidationData);
     error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit);
     error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw);
     event MarketCollateralDeposited(uint128 indexed marketId, address indexed collateralType, uint256 tokenAmount, address indexed sender, int128 creditCapacity, int128 netIssuance, uint256 depositedCollateralValue, uint256 reportedDebt);
@@ -181,9 +181,9 @@ interface ICoreProxy {
     error CapacityLocked(uint256 marketId);
     error MinDelegationTimeoutPending(uint128 poolId, uint32 timeRemaining);
     error PoolAlreadyExists(uint128 poolId);
-    event PoolCollateralConfigurationUpdated(uint128 indexed poolId, address collateralType, S_6 config);
+    event PoolCollateralConfigurationUpdated(uint128 indexed poolId, address collateralType, PoolCollateralConfiguration.Data config);
     event PoolCollateralDisabledByDefaultSet(uint128 poolId, bool disabled);
-    event PoolConfigurationSet(uint128 indexed poolId, S_7[] markets, address indexed sender);
+    event PoolConfigurationSet(uint128 indexed poolId, MarketConfiguration.Data[] markets, address indexed sender);
     event PoolCreated(uint128 indexed poolId, address indexed owner, address indexed sender);
     event PoolNameUpdated(uint128 indexed poolId, string name, address indexed sender);
     event PoolNominationRenounced(uint128 indexed poolId, address indexed owner);
@@ -196,9 +196,9 @@ interface ICoreProxy {
     function createPool(uint128 requestedPoolId, address owner) external;
     function getMinLiquidityRatio() external view returns (uint256);
     function getNominatedPoolOwner(uint128 poolId) external view returns (address);
-    function getPoolCollateralConfiguration(uint128 poolId, address collateralType) external view returns (S_6 memory config);
+    function getPoolCollateralConfiguration(uint128 poolId, address collateralType) external view returns (PoolCollateralConfiguration.Data memory config);
     function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) external view returns (uint256);
-    function getPoolConfiguration(uint128 poolId) external view returns (S_7[] memory);
+    function getPoolConfiguration(uint128 poolId) external view returns (MarketConfiguration.Data[] memory);
     function getPoolName(uint128 poolId) external view returns (string memory poolName);
     function getPoolOwner(uint128 poolId) external view returns (address);
     function nominatePoolOwner(address nominatedOwner, uint128 poolId) external;
@@ -207,9 +207,9 @@ interface ICoreProxy {
     function renouncePoolOwnership(uint128 poolId) external;
     function revokePoolNomination(uint128 poolId) external;
     function setMinLiquidityRatio(uint256 minLiquidityRatio) external;
-    function setPoolCollateralConfiguration(uint128 poolId, address collateralType, S_6 memory newConfig) external;
+    function setPoolCollateralConfiguration(uint128 poolId, address collateralType, PoolCollateralConfiguration.Data memory newConfig) external;
     function setPoolCollateralDisabledByDefault(uint128 poolId, bool disabled) external;
-    function setPoolConfiguration(uint128 poolId, S_7[] memory newMarketConfigurations) external;
+    function setPoolConfiguration(uint128 poolId, MarketConfiguration.Data[] memory newMarketConfigurations) external;
     function setPoolName(uint128 poolId, string memory name) external;
     error RewardUnavailable(address distributor);
     event RewardsClaimed(uint128 indexed accountId, uint128 indexed poolId, address indexed collateralType, address distributor, uint256 amount);
@@ -253,52 +253,66 @@ interface ICoreProxy {
     function getVaultDebt(uint128 poolId, address collateralType) external returns (int256);
 }
 
-struct S_0 {
-    address user;
-    bytes32[] permissions;
+interface IAccountModule {
+    struct AccountPermissions {
+        address user;
+        bytes32[] permissions;
+    }
 }
 
-struct S_1 {
-    address token;
-    uint256 amount;
+interface CcipClient {
+    struct EVMTokenAmount {
+        address token;
+        uint256 amount;
+    }
+
+    struct Any2EVMMessage {
+        bytes32 messageId;
+        uint64 sourceChainSelector;
+        bytes sender;
+        bytes data;
+        EVMTokenAmount[] tokenAmounts;
+    }
 }
 
-struct S_2 {
-    bytes32 messageId;
-    uint64 sourceChainSelector;
-    bytes sender;
-    bytes data;
-    S_1[] tokenAmounts;
+interface CollateralLock {
+    struct Data {
+        uint128 amountD18;
+        uint64 lockExpirationTime;
+    }
 }
 
-struct S_3 {
-    uint128 amountD18;
-    uint64 lockExpirationTime;
+interface CollateralConfiguration {
+    struct Data {
+        bool depositingEnabled;
+        uint256 issuanceRatioD18;
+        uint256 liquidationRatioD18;
+        uint256 liquidationRewardD18;
+        bytes32 oracleNodeId;
+        address tokenAddress;
+        uint256 minDelegationD18;
+    }
 }
 
-struct S_4 {
-    bool depositingEnabled;
-    uint256 issuanceRatioD18;
-    uint256 liquidationRatioD18;
-    uint256 liquidationRewardD18;
-    bytes32 oracleNodeId;
-    address tokenAddress;
-    uint256 minDelegationD18;
+interface ILiquidationModule {
+    struct LiquidationData {
+        uint256 debtLiquidated;
+        uint256 collateralLiquidated;
+        uint256 amountRewarded;
+    }
 }
 
-struct S_5 {
-    uint256 debtLiquidated;
-    uint256 collateralLiquidated;
-    uint256 amountRewarded;
+interface PoolCollateralConfiguration {
+    struct Data {
+        uint256 collateralLimitD18;
+        uint256 issuanceRatioD18;
+    }
 }
 
-struct S_6 {
-    uint256 collateralLimitD18;
-    uint256 issuanceRatioD18;
-}
-
-struct S_7 {
-    uint128 marketId;
-    uint128 weightD18;
-    int128 maxDebtShareValueD18;
+interface MarketConfiguration {
+    struct Data {
+        uint128 marketId;
+        uint128 weightD18;
+        int128 maxDebtShareValueD18;
+    }
 }
