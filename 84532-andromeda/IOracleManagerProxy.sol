@@ -27,7 +27,7 @@ interface IOracleManagerProxy {
     function upgradeTo(address newImplementation) external;
     error EmptyRevertReason();
     error Errors(bytes[] errors);
-    error InvalidNodeDefinition(S_1 nodeType);
+    error InvalidNodeDefinition(NodeDefinition.Data nodeType);
     error InvalidParameter(string parameter, string reason);
     error InvalidPrice(int256 price);
     error NodeNotRegistered(bytes32 nodeId);
@@ -38,29 +38,33 @@ interface IOracleManagerProxy {
     error OverflowUint256ToUint160();
     error OverflowUint56ToInt56();
     event NodeRegistered(bytes32 nodeId, uint8 nodeType, bytes parameters, bytes32[] parents);
-    function getNode(bytes32 nodeId) external pure returns (S_1 memory node);
+    function getNode(bytes32 nodeId) external pure returns (NodeDefinition.Data memory node);
     function getNodeId(uint8 nodeType, bytes memory parameters, bytes32[] memory parents) external pure returns (bytes32 nodeId);
-    function process(bytes32 nodeId) external view returns (S_2 memory node);
-    function processManyWithManyRuntime(bytes32[] memory nodeIds, bytes32[][] memory runtimeKeys, bytes32[][] memory runtimeValues) external view returns (S_2[] memory nodes);
-    function processManyWithRuntime(bytes32[] memory nodeIds, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (S_2[] memory nodes);
-    function processWithRuntime(bytes32 nodeId, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (S_2 memory node);
+    function process(bytes32 nodeId) external view returns (NodeOutput.Data memory node);
+    function processManyWithManyRuntime(bytes32[] memory nodeIds, bytes32[][] memory runtimeKeys, bytes32[][] memory runtimeValues) external view returns (NodeOutput.Data[] memory nodes);
+    function processManyWithRuntime(bytes32[] memory nodeIds, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (NodeOutput.Data[] memory nodes);
+    function processWithRuntime(bytes32 nodeId, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (NodeOutput.Data memory node);
     function registerNode(uint8 nodeType, bytes memory parameters, bytes32[] memory parents) external returns (bytes32 nodeId);
+}
+
+interface NodeDefinition {
+    struct Data {
+        uint8 nodeType;
+        bytes parameters;
+        bytes32[] parents;
+    }
+}
+
+interface NodeOutput {
+    struct Data {
+        int256 price;
+        uint256 timestamp;
+        uint256 __slotAvailableForFutureUse1;
+        uint256 __slotAvailableForFutureUse2;
+    }
 }
 
 struct S_0 {
     address facetAddress;
     bytes4[] functionSelectors;
-}
-
-struct S_1 {
-    uint8 nodeType;
-    bytes parameters;
-    bytes32[] parents;
-}
-
-struct S_2 {
-    int256 price;
-    uint256 timestamp;
-    uint256 __slotAvailableForFutureUse1;
-    uint256 __slotAvailableForFutureUse2;
 }
