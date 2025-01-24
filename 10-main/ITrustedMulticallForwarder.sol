@@ -13,14 +13,14 @@ interface ITrustedMulticallForwarder {
     error StringTooLong(string str);
     event EIP712DomainChanged();
     event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success);
-    function aggregate(S_0[] memory calls) external returns (uint256 blockNumber, bytes[] memory returnData);
-    function aggregate3(S_1[] memory calls) external payable returns (S_2[] memory returnData);
-    function aggregate3Value(S_3[] memory calls) external payable returns (S_2[] memory returnData);
-    function blockAndAggregate(S_0[] memory calls) external payable returns (uint256 blockNumber, bytes32 blockHash, S_2[] memory returnData);
+    function aggregate(TrustedMulticallForwarder.Call[] memory calls) external returns (uint256 blockNumber, bytes[] memory returnData);
+    function aggregate3(TrustedMulticallForwarder.Call3[] memory calls) external payable returns (TrustedMulticallForwarder.Result[] memory returnData);
+    function aggregate3Value(TrustedMulticallForwarder.Call3Value[] memory calls) external payable returns (TrustedMulticallForwarder.Result[] memory returnData);
+    function blockAndAggregate(TrustedMulticallForwarder.Call[] memory calls) external payable returns (uint256 blockNumber, bytes32 blockHash, TrustedMulticallForwarder.Result[] memory returnData);
     function eip712Domain() external view returns (bytes1 fields, string memory name, string memory version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] memory extensions);
-    function execute(S_4 memory request) external payable;
-    function executeBatch(S_4[] memory requests) external payable returns (S_2[] memory returnData);
-    function executeBatch(S_4[] memory requests, address refundReceiver) external payable;
+    function execute(ERC2771Forwarder.ForwardRequestData memory request) external payable;
+    function executeBatch(ERC2771Forwarder.ForwardRequestData[] memory requests) external payable returns (TrustedMulticallForwarder.Result[] memory returnData);
+    function executeBatch(ERC2771Forwarder.ForwardRequestData[] memory requests, address refundReceiver) external payable;
     function getBasefee() external view returns (uint256 basefee);
     function getBlockHash(uint256 blockNumber) external view returns (bytes32 blockHash);
     function getBlockNumber() external view returns (uint256 blockNumber);
@@ -32,40 +32,44 @@ interface ITrustedMulticallForwarder {
     function getLastBlockHash() external view returns (bytes32 blockHash);
     function getPrevRandao() external view returns (uint256 prevrandao);
     function nonces(address owner) external view returns (uint256);
-    function tryAggregate(bool requireSuccess, S_0[] memory calls) external returns (S_2[] memory returnData);
-    function tryBlockAndAggregate(bool requireSuccess, S_0[] memory calls) external payable returns (uint256 blockNumber, bytes32 blockHash, S_2[] memory returnData);
-    function verify(S_4 memory request) external view returns (bool);
+    function tryAggregate(bool requireSuccess, TrustedMulticallForwarder.Call[] memory calls) external returns (TrustedMulticallForwarder.Result[] memory returnData);
+    function tryBlockAndAggregate(bool requireSuccess, TrustedMulticallForwarder.Call[] memory calls) external payable returns (uint256 blockNumber, bytes32 blockHash, TrustedMulticallForwarder.Result[] memory returnData);
+    function verify(ERC2771Forwarder.ForwardRequestData memory request) external view returns (bool);
 }
 
-struct S_0 {
-    address target;
-    bytes callData;
+interface TrustedMulticallForwarder {
+    struct Call {
+        address target;
+        bytes callData;
+    }
+
+    struct Call3 {
+        address target;
+        bool requireSuccess;
+        bytes callData;
+    }
+
+    struct Result {
+        bool success;
+        bytes returnData;
+    }
+
+    struct Call3Value {
+        address target;
+        bool requireSuccess;
+        uint256 value;
+        bytes callData;
+    }
 }
 
-struct S_1 {
-    address target;
-    bool requireSuccess;
-    bytes callData;
-}
-
-struct S_2 {
-    bool success;
-    bytes returnData;
-}
-
-struct S_3 {
-    address target;
-    bool requireSuccess;
-    uint256 value;
-    bytes callData;
-}
-
-struct S_4 {
-    address from;
-    address to;
-    uint256 value;
-    uint256 gas;
-    uint48 deadline;
-    bytes data;
-    bytes signature;
+interface ERC2771Forwarder {
+    struct ForwardRequestData {
+        address from;
+        address to;
+        uint256 value;
+        uint256 gas;
+        uint48 deadline;
+        bytes data;
+        bytes signature;
+    }
 }
