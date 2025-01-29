@@ -1442,12 +1442,117 @@
         "type": "uint128"
       }
     ],
+    "name": "getAccountAllCollateralAmounts",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "collateralIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "collateralAmounts",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "accountDebt",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      }
+    ],
     "name": "getAccountCollateralIds",
     "outputs": [
       {
         "internalType": "uint256[]",
         "name": "",
         "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      }
+    ],
+    "name": "getAccountFullPositionInfo",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint128",
+            "name": "marketId",
+            "type": "uint128"
+          },
+          {
+            "internalType": "int256",
+            "name": "size",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "pnl",
+            "type": "int256"
+          },
+          {
+            "internalType": "int256",
+            "name": "accruedFunding",
+            "type": "int256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "chargedInterest",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "currentPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "entryPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "requiredInitialMargin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "requiredMaintenanceMargin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "marketName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "marketSymbol",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct IPerpsAccountModule.DetailedPosition[]",
+        "name": "detailedPositions",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
@@ -1698,7 +1803,7 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "totalValue",
         "type": "uint256"
       }
     ],
@@ -1937,6 +2042,22 @@
       }
     ],
     "name": "ExceedsMarketCreditCapacity",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "bytes16",
+        "name": "mode",
+        "type": "bytes16"
+      }
+    ],
+    "name": "IncorrectAccountMode",
     "type": "error"
   },
   {
@@ -2481,32 +2602,35 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "fillPrice",
-        "type": "uint256"
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
       },
       {
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "int128",
+        "name": "sizeDelta",
+        "type": "int128"
+      }
+    ],
+    "name": "requiredMarginImmut",
+    "outputs": [
+      {
         "internalType": "uint256",
-        "name": "acceptablePrice",
+        "name": "requiredMargin",
         "type": "uint256"
       }
     ],
-    "name": "AcceptablePriceExceeded",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "OrderNotValid",
-    "type": "error"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [],
     "name": "OverflowInt128ToUint128",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "OverflowUint256ToUint64",
     "type": "error"
   },
   {
@@ -2518,43 +2642,6 @@
       }
     ],
     "name": "SettlementStrategyNotFound",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "settlementTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "settlementExpiration",
-        "type": "uint256"
-      }
-    ],
-    "name": "SettlementWindowExpired",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "settlementTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "SettlementWindowNotOpen",
     "type": "error"
   },
   {
@@ -2586,6 +2673,90 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes16",
+        "name": "newMode",
+        "type": "bytes16"
+      }
+    ],
+    "name": "AccountOrderModeChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint128",
+            "name": "accountId",
+            "type": "uint128"
+          },
+          {
+            "internalType": "int128",
+            "name": "sizeDelta",
+            "type": "int128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "orderPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signedPriceData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "trackingCode",
+            "type": "bytes32"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct IBookOrderModule.BookOrder[]",
+        "name": "orders",
+        "type": "tuple[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalCollectedFees",
+        "type": "uint256"
+      }
+    ],
+    "name": "BookOrderSettled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      }
+    ],
+    "name": "DoneLoop",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "uint128",
         "name": "accountId",
@@ -2599,6 +2770,25 @@
       }
     ],
     "name": "InterestCharged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "cmpAccountId",
+        "type": "uint128"
+      }
+    ],
+    "name": "ItsGreater",
     "type": "event"
   },
   {
@@ -2740,6 +2930,145 @@
     ],
     "name": "OrderSettled",
     "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "bool",
+        "name": "useBook",
+        "type": "bool"
+      }
+    ],
+    "name": "setBookMode",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint128",
+            "name": "accountId",
+            "type": "uint128"
+          },
+          {
+            "internalType": "int128",
+            "name": "sizeDelta",
+            "type": "int128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "orderPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "signedPriceData",
+            "type": "bytes"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "trackingCode",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct IBookOrderModule.BookOrder[]",
+        "name": "orders",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "settleBookOrders",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "enum IBookOrderModule.OrderStatus",
+            "name": "status",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct IBookOrderModule.BookOrderSettleStatus[]",
+        "name": "cancelledOrders",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "fillPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "acceptablePrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "AcceptablePriceExceeded",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OrderNotValid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OverflowUint256ToUint64",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "settlementTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "settlementExpiration",
+        "type": "uint256"
+      }
+    ],
+    "name": "SettlementWindowExpired",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "settlementTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "SettlementWindowNotOpen",
+    "type": "error"
   },
   {
     "inputs": [

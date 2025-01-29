@@ -94,7 +94,9 @@ interface IPerpsMarketProxy {
     event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender);
     event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate);
     function debt(uint128 accountId) external view returns (uint256 accountDebt);
+    function getAccountAllCollateralAmounts(uint128 accountId) external view returns (uint256[] memory collateralIds, uint256[] memory collateralAmounts, uint256 accountDebt);
     function getAccountCollateralIds(uint128 accountId) external view returns (uint256[] memory);
+    function getAccountFullPositionInfo(uint128 accountId) external view returns (IPerpsAccountModule.DetailedPosition[] memory detailedPositions);
     function getAccountOpenPositions(uint128 accountId) external view returns (uint256[] memory);
     function getAvailableMargin(uint128 accountId) external view returns (int256 availableMargin);
     function getCollateralAmount(uint128 accountId, uint128 collateralId) external view returns (uint256);
@@ -105,7 +107,7 @@ interface IPerpsMarketProxy {
     function modifyCollateral(uint128 accountId, uint128 collateralId, int256 amountDelta) external;
     function payDebt(uint128 accountId, uint256 amount) external;
     function totalAccountOpenInterest(uint128 accountId) external view returns (uint256);
-    function totalCollateralValue(uint128 accountId) external view returns (uint256);
+    function totalCollateralValue(uint128 accountId) external view returns (uint256 totalValue);
     function currentFundingRate(uint128 marketId) external view returns (int256);
     function currentFundingVelocity(uint128 marketId) external view returns (int256);
     function fillPrice(uint128 marketId, int128 orderSize, uint256 price) external view returns (uint256);
@@ -116,6 +118,7 @@ interface IPerpsMarketProxy {
     function size(uint128 marketId) external view returns (uint256);
     function skew(uint128 marketId) external view returns (int256);
     error ExceedsMarketCreditCapacity(int256 delegatedCollateral, int256 newLockedCredit);
+    error IncorrectAccountMode(uint128 accountId, bytes16 mode);
     error InsufficientMargin(int256 availableMargin, uint256 minMargin);
     error InvalidSettlementStrategy(uint256 settlementStrategyId);
     error MaxOpenInterestReached(uint128 marketId, uint256 maxMarketSize, int256 newSideSize);
@@ -132,17 +135,24 @@ interface IPerpsMarketProxy {
     function getSettlementRewardCost(uint128 marketId, uint128 settlementStrategyId) external view returns (uint256);
     function requiredMarginForOrder(uint128 accountId, uint128 marketId, int128 sizeDelta) external view returns (uint256 requiredMargin);
     function requiredMarginForOrderWithPrice(uint128 accountId, uint128 marketId, int128 sizeDelta, uint256 price) external view returns (uint256 requiredMargin);
-    error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice);
-    error OrderNotValid();
+    function requiredMarginImmut(uint128 accountId, uint128 marketId, int128 sizeDelta) external returns (uint256 requiredMargin);
     error OverflowInt128ToUint128();
-    error OverflowUint256ToUint64();
     error SettlementStrategyNotFound(uint8 strategyType);
-    error SettlementWindowExpired(uint256 timestamp, uint256 settlementTime, uint256 settlementExpiration);
-    error SettlementWindowNotOpen(uint256 timestamp, uint256 settlementTime);
     event AccountCharged(uint128 accountId, int256 amount, uint256 accountDebt);
+    event AccountOrderModeChanged(uint128 accountId, bytes16 newMode);
+    event BookOrderSettled(uint128 indexed marketId, IBookOrderModule.BookOrder[] orders, uint256 totalCollectedFees);
+    event DoneLoop(uint128 accountId);
     event InterestCharged(uint128 indexed accountId, uint256 interest);
+    event ItsGreater(uint128 accountId, uint128 cmpAccountId);
     event MarketUpdated(uint128 marketId, uint256 price, int256 skew, uint256 size, int256 sizeDelta, int256 currentFundingRate, int256 currentFundingVelocity, uint128 interestRate);
     event OrderSettled(uint128 indexed marketId, uint128 indexed accountId, uint256 fillPrice, int256 pnl, int256 accruedFunding, int128 sizeDelta, int128 newSize, uint256 totalFees, uint256 referralFees, uint256 collectedFees, uint256 settlementReward, bytes32 indexed trackingCode, address settler);
+    function setBookMode(uint128 accountId, bool useBook) external;
+    function settleBookOrders(uint128 marketId, IBookOrderModule.BookOrder[] memory orders) external returns (IBookOrderModule.BookOrderSettleStatus[] memory cancelledOrders);
+    error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice);
+    error OrderNotValid();
+    error OverflowUint256ToUint64();
+    error SettlementWindowExpired(uint256 timestamp, uint256 settlementTime, uint256 settlementExpiration);
+    error SettlementWindowNotOpen(uint256 timestamp, uint256 settlementTime);
     function settleOrder(uint128 accountId) external;
     error AcceptablePriceNotExceeded(uint256 fillPrice, uint256 acceptablePrice);
     event OrderCancelled(uint128 indexed marketId, uint128 indexed accountId, uint256 desiredPrice, uint256 fillPrice, int128 sizeDelta, uint256 settlementReward, bytes32 indexed trackingCode, address settler);
@@ -256,6 +266,22 @@ interface IAccountModule {
     }
 }
 
+interface IPerpsAccountModule {
+    struct DetailedPosition {
+        uint128 marketId;
+        int256 size;
+        int256 pnl;
+        int256 accruedFunding;
+        uint256 chargedInterest;
+        uint256 currentPrice;
+        uint256 entryPrice;
+        uint256 requiredInitialMargin;
+        uint256 requiredMaintenanceMargin;
+        string marketName;
+        string marketSymbol;
+    }
+}
+
 interface IPerpsMarketModule {
     struct MarketSummary {
         int256 skew;
@@ -281,6 +307,20 @@ interface AsyncOrder {
     struct Data {
         uint256 commitmentTime;
         OrderCommitmentRequest request;
+    }
+}
+
+interface IBookOrderModule {
+    struct BookOrder {
+        uint128 accountId;
+        int128 sizeDelta;
+        uint256 orderPrice;
+        bytes signedPriceData;
+        bytes32 trackingCode;
+    }
+
+    struct BookOrderSettleStatus {
+        uint8 status;
     }
 }
 
