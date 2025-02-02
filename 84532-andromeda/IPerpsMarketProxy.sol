@@ -146,6 +146,7 @@ interface IPerpsMarketProxy {
     event ItsGreater(uint128 accountId, uint128 cmpAccountId);
     event MarketUpdated(uint128 marketId, uint256 price, int256 skew, uint256 size, int256 sizeDelta, int256 currentFundingRate, int256 currentFundingVelocity, uint128 interestRate);
     event OrderSettled(uint128 indexed marketId, uint128 indexed accountId, uint256 fillPrice, int256 pnl, int256 accruedFunding, int128 sizeDelta, int128 newSize, uint256 totalFees, uint256 referralFees, uint256 collectedFees, uint256 settlementReward, bytes32 indexed trackingCode, address settler);
+    function getOrderMode(uint128 accountId) external view returns (bytes16);
     function setBookMode(uint128 accountId, bool useBook) external;
     function settleBookOrders(uint128 marketId, IBookOrderModule.BookOrder[] memory orders) external returns (IBookOrderModule.BookOrderSettleStatus[] memory cancelledOrders);
     error AcceptablePriceExceeded(uint256 fillPrice, uint256 acceptablePrice);
