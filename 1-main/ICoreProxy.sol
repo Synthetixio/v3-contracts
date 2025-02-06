@@ -2,6 +2,11 @@
 pragma solidity ^0.8.21;
 
 interface ICoreProxy {
+    function facets() external pure returns (S_0[] memory);
+    function facetFunctionSelectors(address facet) external pure returns (bytes4[] memory functionSelectors);
+    function facetAddresses() external pure returns (address[] memory addresses);
+    function facetAddress(bytes4 functionSelector) external pure returns (address);
+    function emitDiamondCutEvent() external returns (bool);
     error ImplementationIsSterile(address implementation);
     error NoChange();
     error NotAContract(address contr);
@@ -61,6 +66,8 @@ interface ICoreProxy {
     function revokePermission(uint128 accountId, bytes32 permission, address user) external;
     error AccountNotFound(uint128 accountId);
     error EmptyDistribution();
+    error EmptyRevertReason();
+    error Errors(bytes[] errors);
     error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio);
     error MarketNotFound(uint128 marketId);
     error NotFundedByPool(uint256 marketId, uint256 poolId);
@@ -152,12 +159,14 @@ interface ICoreProxy {
     function depositMarketUsd(uint128 marketId, address target, uint256 amount) external returns (uint256 feeAmount);
     function distributeDebtToPools(uint128 marketId, uint256 maxIter) external returns (bool);
     function getMarketAddress(uint128 marketId) external view returns (address);
+    function getMarketCapacityContributionFromPool(uint128 marketId, uint128 poolId) external view returns (uint256);
     function getMarketCollateral(uint128 marketId) external view returns (uint256);
     function getMarketDebtPerShare(uint128 marketId) external returns (int256);
     function getMarketFees(uint128, uint256 amount) external view returns (uint256 depositFeeAmount, uint256 withdrawFeeAmount);
     function getMarketMinDelegateTime(uint128 marketId) external view returns (uint32);
     function getMarketNetIssuance(uint128 marketId) external view returns (int128);
     function getMarketPoolDebtDistribution(uint128 marketId, uint128 poolId) external returns (uint256 sharesD18, uint128 totalSharesD18, int128 valuePerShareD27);
+    function getMarketPoolMaxDebtPerShare(uint128 marketId, uint128 poolId) external view returns (int256);
     function getMarketPools(uint128 marketId) external returns (uint128[] memory inRangePoolIds, uint128[] memory outRangePoolIds);
     function getMarketReportedDebt(uint128 marketId) external view returns (uint256);
     function getMarketTotalDebt(uint128 marketId) external view returns (int256);
@@ -199,8 +208,10 @@ interface ICoreProxy {
     function getPoolCollateralConfiguration(uint128 poolId, address collateralType) external view returns (PoolCollateralConfiguration.Data memory config);
     function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) external view returns (uint256);
     function getPoolConfiguration(uint128 poolId) external view returns (MarketConfiguration.Data[] memory);
+    function getPoolDebtPerShare(uint128 poolId) external returns (int256 debtPerShareD18);
     function getPoolName(uint128 poolId) external view returns (string memory poolName);
     function getPoolOwner(uint128 poolId) external view returns (address);
+    function getPoolTotalDebt(uint128 poolId) external returns (int256 totalDebtD18);
     function nominatePoolOwner(address nominatedOwner, uint128 poolId) external;
     function rebalancePool(uint128 poolId, address optionalCollateralType) external;
     function renouncePoolNomination(uint128 poolId) external;
@@ -251,6 +262,7 @@ interface ICoreProxy {
     function getVaultCollateral(uint128 poolId, address collateralType) external view returns (uint256 amount, uint256 value);
     function getVaultCollateralRatio(uint128 poolId, address collateralType) external returns (uint256);
     function getVaultDebt(uint128 poolId, address collateralType) external returns (int256);
+    function migrateDelegation(uint128 accountId, uint128 oldPoolId, address collateralType, uint128 newPoolId) external;
 }
 
 interface IAccountModule {
@@ -315,4 +327,9 @@ interface MarketConfiguration {
         uint128 weightD18;
         int128 maxDebtShareValueD18;
     }
+}
+
+struct S_0 {
+    address facetAddress;
+    bytes4[] functionSelectors;
 }

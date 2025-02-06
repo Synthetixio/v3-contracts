@@ -1,5 +1,82 @@
 [
   {
+    "name": "facets",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "components": [
+          {
+            "type": "address",
+            "name": "facetAddress"
+          },
+          {
+            "type": "bytes4[]",
+            "name": "functionSelectors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "facetFunctionSelectors",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "facet"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes4[]",
+        "name": "functionSelectors"
+      }
+    ]
+  },
+  {
+    "name": "facetAddresses",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address[]",
+        "name": "addresses"
+      }
+    ]
+  },
+  {
+    "name": "facetAddress",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [
+      {
+        "type": "bytes4",
+        "name": "functionSelector"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "name": "emitDiamondCutEvent",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -930,6 +1007,22 @@
   {
     "inputs": [],
     "name": "EmptyDistribution",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EmptyRevertReason",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "errors",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "Errors",
     "type": "error"
   },
   {
@@ -3173,6 +3266,30 @@
         "internalType": "uint128",
         "name": "marketId",
         "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "getMarketCapacityContributionFromPool",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
       }
     ],
     "name": "getMarketCollateral",
@@ -3304,6 +3421,30 @@
       }
     ],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "getMarketPoolMaxDebtPerShare",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -4106,6 +4247,25 @@
         "type": "uint128"
       }
     ],
+    "name": "getPoolDebtPerShare",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "debtPerShareD18",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
     "name": "getPoolName",
     "outputs": [
       {
@@ -4134,6 +4294,25 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "getPoolTotalDebt",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "totalDebtD18",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -5348,6 +5527,34 @@
         "type": "int256"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "oldPoolId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "address",
+        "name": "collateralType",
+        "type": "address"
+      },
+      {
+        "internalType": "uint128",
+        "name": "newPoolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "migrateDelegation",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }

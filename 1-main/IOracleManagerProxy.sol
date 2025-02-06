@@ -2,6 +2,11 @@
 pragma solidity ^0.8.21;
 
 interface IOracleManagerProxy {
+    function facets() external pure returns (S_0[] memory);
+    function facetFunctionSelectors(address facet) external pure returns (bytes4[] memory functionSelectors);
+    function facetAddresses() external pure returns (address[] memory addresses);
+    function facetAddress(bytes4 functionSelector) external pure returns (address);
+    function emitDiamondCutEvent() external returns (bool);
     error ImplementationIsSterile(address implementation);
     error NoChange();
     error NotAContract(address contr);
@@ -20,8 +25,10 @@ interface IOracleManagerProxy {
     function renounceNomination() external;
     function simulateUpgradeTo(address newImplementation) external;
     function upgradeTo(address newImplementation) external;
-    error Errors(bytes[] revertReasons);
+    error EmptyRevertReason();
+    error Errors(bytes[] errors);
     error InvalidNodeDefinition(NodeDefinition.Data nodeType);
+    error InvalidParameter(string parameter, string reason);
     error InvalidPrice(int256 price);
     error NodeNotRegistered(bytes32 nodeId);
     error OracleDataRequired(address oracleContract, bytes oracleQuery);
@@ -34,6 +41,7 @@ interface IOracleManagerProxy {
     function getNode(bytes32 nodeId) external pure returns (NodeDefinition.Data memory node);
     function getNodeId(uint8 nodeType, bytes memory parameters, bytes32[] memory parents) external pure returns (bytes32 nodeId);
     function process(bytes32 nodeId) external view returns (NodeOutput.Data memory node);
+    function processManyWithManyRuntime(bytes32[] memory nodeIds, bytes32[][] memory runtimeKeys, bytes32[][] memory runtimeValues) external view returns (NodeOutput.Data[] memory nodes);
     function processManyWithRuntime(bytes32[] memory nodeIds, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (NodeOutput.Data[] memory nodes);
     function processWithRuntime(bytes32 nodeId, bytes32[] memory runtimeKeys, bytes32[] memory runtimeValues) external view returns (NodeOutput.Data memory node);
     function registerNode(uint8 nodeType, bytes memory parameters, bytes32[] memory parents) external returns (bytes32 nodeId);
@@ -54,4 +62,9 @@ interface NodeOutput {
         uint256 __slotAvailableForFutureUse1;
         uint256 __slotAvailableForFutureUse2;
     }
+}
+
+struct S_0 {
+    address facetAddress;
+    bytes4[] functionSelectors;
 }
