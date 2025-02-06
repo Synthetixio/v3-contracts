@@ -20,6 +20,8 @@ interface IAllErrors {
     error PositionOutOfBounds();
     error AccountNotFound(uint128 accountId);
     error EmptyDistribution();
+    error EmptyRevertReason();
+    error Errors(bytes[] errors);
     error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio);
     error MarketNotFound(uint128 marketId);
     error NotFundedByPool(uint256 marketId, uint256 poolId);
@@ -75,7 +77,6 @@ interface IAllErrors {
     error TokenAlreadyMinted(uint256 id);
     error TokenDoesNotExist(uint256 id);
     error InsufficientBalance(uint256 required, uint256 existing);
-    error Errors(bytes[] revertReasons);
     error InvalidNodeDefinition(NodeDefinition.Data nodeType);
     error InvalidPrice(int256 price);
     error NodeNotRegistered(bytes32 nodeId);
@@ -89,6 +90,10 @@ interface IAllErrors {
     error NothingToMigrate();
     error Paused();
     error V2xPaused();
+    error InsufficientCRatio(uint128 accountId, uint256 currentDebt, uint256 targetDebt);
+    error InsufficientExcessDebt(int256 neededToRepay, int256 ableToRepay);
+    error MarketAlreadyRegistered(uint128 marketId);
+    error OutstandingLoan(uint128 accountId, uint256 outstandingLoanAmount);
     error AddressInsufficientBalance(address account);
     error ERC2771ForwarderExpiredRequest(uint48 deadline);
     error ERC2771ForwarderInvalidSigner(address signer, address from);

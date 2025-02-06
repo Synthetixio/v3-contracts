@@ -2,6 +2,11 @@
 pragma solidity ^0.8.21;
 
 interface IUSDProxy {
+    function facets() external pure returns (S_0[] memory);
+    function facetFunctionSelectors(address facet) external pure returns (bytes4[] memory functionSelectors);
+    function facetAddresses() external pure returns (address[] memory addresses);
+    function facetAddress(bytes4 functionSelector) external pure returns (address);
+    function emitDiamondCutEvent() external returns (bool);
     error ImplementationIsSterile(address implementation);
     error NoChange();
     error NotAContract(address contr);
@@ -51,4 +56,9 @@ interface IUSDProxy {
     function totalSupply() external view returns (uint256);
     function transfer(address to, uint256 amount) external returns (bool);
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
+}
+
+struct S_0 {
+    address facetAddress;
+    bytes4[] functionSelectors;
 }
