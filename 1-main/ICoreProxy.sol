@@ -237,6 +237,7 @@ interface ICoreProxy {
     function registerRewardsDistributor(uint128 poolId, address collateralType, address distributor) external;
     function removeRewardsDistributor(uint128 poolId, address collateralType, address distributor) external;
     function updateRewards(uint128 poolId, address collateralType, uint128 accountId) external returns (uint256[] memory, address[] memory, uint256);
+    event ConfigSet(bytes32 indexed k, bytes32 v);
     event NewSupportedCrossChainNetwork(uint64 newChainId);
     function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool) external;
     function configureOracleManager(address oracleManagerAddress) external;
@@ -255,6 +256,7 @@ interface ICoreProxy {
     error PoolCollateralLimitExceeded(uint128 poolId, address collateralType, uint256 currentCollateral, uint256 maxCollateral);
     event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender);
     function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage) external;
+    function getLastDelegationTime(uint128 accountId, uint128 poolId, address collateralType) external view returns (uint256 lastDelegationTime);
     function getPosition(uint128 accountId, uint128 poolId, address collateralType) external returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio);
     function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) external view returns (uint256 amount);
     function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) external returns (uint256);
