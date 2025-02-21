@@ -176,6 +176,22 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "EmptyRevertReason",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "errors",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "Errors",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -530,6 +546,21 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "OverflowUint256ToUint32",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OverflowUint32ToInt32",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OverflowUint64ToInt64",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint128",
@@ -637,21 +668,6 @@
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "OverflowUint256ToUint32",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "OverflowUint32ToInt32",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "OverflowUint64ToInt64",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -671,6 +687,22 @@
       }
     ],
     "name": "InsufficientDelegation",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "address",
+        "name": "collateralType",
+        "type": "address"
+      }
+    ],
+    "name": "InsufficientVaultCollateralRatio",
     "type": "error"
   },
   {
@@ -810,22 +842,6 @@
   {
     "inputs": [
       {
-        "internalType": "int256",
-        "name": "deviation",
-        "type": "int256"
-      }
-    ],
-    "name": "DeviationToleranceExceeded",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidInputPrice",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
         "components": [
           {
             "internalType": "enum NodeDefinition.NodeType",
@@ -907,152 +923,220 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "parentId",
-        "type": "bytes32"
+        "internalType": "uint256",
+        "name": "amountRequested",
+        "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "amountAvailable",
+        "type": "uint256"
+      }
+    ],
+    "name": "InsufficientCollateralMigrated",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "existingMarketId",
+        "type": "uint256"
+      }
+    ],
+    "name": "MarketAlreadyRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MigrationInProgress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NothingToMigrate",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Paused",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "V2xPaused",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentDebt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "targetDebt",
+        "type": "uint256"
+      }
+    ],
+    "name": "InsufficientCRatio",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "int256",
-        "name": "price",
+        "name": "neededToRepay",
         "type": "int256"
       },
       {
+        "internalType": "int256",
+        "name": "ableToRepay",
+        "type": "int256"
+      }
+    ],
+    "name": "InsufficientExcessDebt",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
+      }
+    ],
+    "name": "MarketAlreadyRegistered",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
         "internalType": "uint256",
-        "name": "staleTimestamp",
+        "name": "outstandingLoanAmount",
         "type": "uint256"
       }
     ],
-    "name": "StalenessToleranceExceeded",
+    "name": "OutstandingLoan",
     "type": "error"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "nodeId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "UnprocessableNode",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum ReducerNode.Operations",
-        "name": "operation",
-        "type": "uint8"
-      }
-    ],
-    "name": "UnsupportedOperation",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
+    "type": "error",
     "name": "AddressInsufficientBalance",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
-        "internalType": "uint48",
-        "name": "deadline",
-        "type": "uint48"
-      }
-    ],
-    "name": "ERC2771ForwarderExpiredRequest",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "signer",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      }
-    ],
-    "name": "ERC2771ForwarderInvalidSigner",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "requestedValue",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "msgValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "ERC2771ForwarderMismatchedValue",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "target",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "forwarder",
-        "type": "address"
-      }
-    ],
-    "name": "ERC2771UntrustfulTarget",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FailedInnerCall",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "account",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "currentNonce",
-        "type": "uint256"
+        "type": "address",
+        "internalType": "address"
       }
-    ],
-    "name": "InvalidAccountNonce",
-    "type": "error"
+    ]
   },
   {
-    "inputs": [],
-    "name": "InvalidShortString",
-    "type": "error"
-  },
-  {
+    "type": "error",
+    "name": "ERC2771ForwarderExpiredRequest",
     "inputs": [
       {
-        "internalType": "string",
-        "name": "str",
-        "type": "string"
+        "name": "deadline",
+        "type": "uint48",
+        "internalType": "uint48"
       }
-    ],
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderInvalidSigner",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "from",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderMismatchedValue",
+    "inputs": [
+      {
+        "name": "requestedValue",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "msgValue",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771UntrustfulTarget",
+    "inputs": [
+      {
+        "name": "target",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "forwarder",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FailedInnerCall",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidAccountNonce",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "currentNonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidShortString",
+    "inputs": []
+  },
+  {
+    "type": "error",
     "name": "StringTooLong",
-    "type": "error"
+    "inputs": [
+      {
+        "name": "str",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
   },
   {
     "inputs": [],

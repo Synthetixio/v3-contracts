@@ -1,5 +1,82 @@
 [
   {
+    "name": "facets",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "components": [
+          {
+            "type": "address",
+            "name": "facetAddress"
+          },
+          {
+            "type": "bytes4[]",
+            "name": "functionSelectors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "facetFunctionSelectors",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "facet"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes4[]",
+        "name": "functionSelectors"
+      }
+    ]
+  },
+  {
+    "name": "facetAddresses",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address[]",
+        "name": "addresses"
+      }
+    ]
+  },
+  {
+    "name": "facetAddress",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [
+      {
+        "type": "bytes4",
+        "name": "functionSelector"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "name": "emitDiamondCutEvent",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -202,19 +279,19 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "int256",
-        "name": "deviation",
-        "type": "int256"
-      }
-    ],
-    "name": "DeviationToleranceExceeded",
+    "inputs": [],
+    "name": "EmptyRevertReason",
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "InvalidInputPrice",
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "errors",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "Errors",
     "type": "error"
   },
   {
@@ -322,49 +399,6 @@
   {
     "inputs": [],
     "name": "OverflowUint56ToInt56",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "parentId",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "int256",
-        "name": "price",
-        "type": "int256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "staleTimestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "StalenessToleranceExceeded",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "nodeId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "UnprocessableNode",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum ReducerNode.Operations",
-        "name": "operation",
-        "type": "uint8"
-      }
-    ],
-    "name": "UnsupportedOperation",
     "type": "error"
   },
   {
@@ -499,6 +533,108 @@
         "internalType": "struct NodeOutput.Data",
         "name": "node",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "nodeIds",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "bytes32[][]",
+        "name": "runtimeKeys",
+        "type": "bytes32[][]"
+      },
+      {
+        "internalType": "bytes32[][]",
+        "name": "runtimeValues",
+        "type": "bytes32[][]"
+      }
+    ],
+    "name": "processManyWithManyRuntime",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "int256",
+            "name": "price",
+            "type": "int256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "__slotAvailableForFutureUse1",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "__slotAvailableForFutureUse2",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct NodeOutput.Data[]",
+        "name": "nodes",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "nodeIds",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "runtimeKeys",
+        "type": "bytes32[]"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "runtimeValues",
+        "type": "bytes32[]"
+      }
+    ],
+    "name": "processManyWithRuntime",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "int256",
+            "name": "price",
+            "type": "int256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "__slotAvailableForFutureUse1",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "__slotAvailableForFutureUse2",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct NodeOutput.Data[]",
+        "name": "nodes",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
