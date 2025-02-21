@@ -1,5 +1,82 @@
 [
   {
+    "name": "facets",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "tuple[]",
+        "components": [
+          {
+            "type": "address",
+            "name": "facetAddress"
+          },
+          {
+            "type": "bytes4[]",
+            "name": "functionSelectors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "facetFunctionSelectors",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [
+      {
+        "type": "address",
+        "name": "facet"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "bytes4[]",
+        "name": "functionSelectors"
+      }
+    ]
+  },
+  {
+    "name": "facetAddresses",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "address[]",
+        "name": "addresses"
+      }
+    ]
+  },
+  {
+    "name": "facetAddress",
+    "type": "function",
+    "stateMutability": "pure",
+    "inputs": [
+      {
+        "type": "bytes4",
+        "name": "functionSelector"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "name": "emitDiamondCutEvent",
+    "type": "function",
+    "stateMutability": "nonpayable",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "bool"
+      }
+    ]
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -933,6 +1010,22 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "EmptyRevertReason",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes[]",
+        "name": "errors",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "Errors",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -1510,18 +1603,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "uint128",
-        "name": "accountId",
-        "type": "uint128"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "collateralType",
-        "type": "address"
-      },
-      {
         "indexed": false,
         "internalType": "uint256",
         "name": "tokenAmount",
@@ -1627,6 +1708,11 @@
       {
         "internalType": "uint256",
         "name": "cleared",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "remainingLockAmountD18",
         "type": "uint256"
       }
     ],
@@ -2309,6 +2395,21 @@
   {
     "inputs": [],
     "name": "OverflowInt128ToUint128",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OverflowUint256ToUint32",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OverflowUint32ToInt32",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OverflowUint64ToInt64",
     "type": "error"
   },
   {
@@ -3165,6 +3266,30 @@
         "internalType": "uint128",
         "name": "marketId",
         "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "getMarketCapacityContributionFromPool",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
       }
     ],
     "name": "getMarketCollateral",
@@ -3296,6 +3421,30 @@
       }
     ],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "marketId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "getMarketPoolMaxDebtPerShare",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -4098,6 +4247,25 @@
         "type": "uint128"
       }
     ],
+    "name": "getPoolDebtPerShare",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "debtPerShareD18",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
     "name": "getPoolName",
     "outputs": [
       {
@@ -4126,6 +4294,25 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "getPoolTotalDebt",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "totalDebtD18",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -4321,21 +4508,6 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "OverflowUint256ToUint32",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "OverflowUint32ToInt32",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "OverflowUint64ToInt64",
-    "type": "error"
   },
   {
     "inputs": [
@@ -4815,6 +4987,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "k",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "v",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ConfigSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint64",
         "name": "newChainId",
@@ -5017,6 +5208,22 @@
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "address",
+        "name": "collateralType",
+        "type": "address"
+      }
+    ],
+    "name": "InsufficientVaultCollateralRatio",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "InvalidCollateralAmount",
     "type": "error"
@@ -5132,6 +5339,35 @@
     "name": "delegateCollateral",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "poolId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "address",
+        "name": "collateralType",
+        "type": "address"
+      }
+    ],
+    "name": "getLastDelegationTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "lastDelegationTime",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -5339,6 +5575,34 @@
         "type": "int256"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "oldPoolId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "address",
+        "name": "collateralType",
+        "type": "address"
+      },
+      {
+        "internalType": "uint128",
+        "name": "newPoolId",
+        "type": "uint128"
+      }
+    ],
+    "name": "migrateDelegation",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   }

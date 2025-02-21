@@ -1,874 +1,874 @@
 [
   {
+    "type": "constructor",
     "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "stateMutability": "nonpayable"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "AddressInsufficientBalance",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint48",
-        "name": "deadline",
-        "type": "uint48"
-      }
-    ],
-    "name": "ERC2771ForwarderExpiredRequest",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "signer",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      }
-    ],
-    "name": "ERC2771ForwarderInvalidSigner",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "requestedValue",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "msgValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "ERC2771ForwarderMismatchedValue",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "target",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "forwarder",
-        "type": "address"
-      }
-    ],
-    "name": "ERC2771UntrustfulTarget",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FailedInnerCall",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "currentNonce",
-        "type": "uint256"
-      }
-    ],
-    "name": "InvalidAccountNonce",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidShortString",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "str",
-        "type": "string"
-      }
-    ],
-    "name": "StringTooLong",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [],
-    "name": "EIP712DomainChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "signer",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "nonce",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "success",
-        "type": "bool"
-      }
-    ],
-    "name": "ExecutedForwardRequest",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "target",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "callData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Call[]",
-        "name": "calls",
-        "type": "tuple[]"
-      }
-    ],
+    "type": "function",
     "name": "aggregate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "blockNumber",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes[]",
-        "name": "returnData",
-        "type": "bytes[]"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
+        "name": "calls",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Call[]",
         "components": [
           {
-            "internalType": "address",
             "name": "target",
-            "type": "address"
+            "type": "address",
+            "internalType": "address"
           },
           {
-            "internalType": "bool",
-            "name": "requireSuccess",
-            "type": "bool"
-          },
-          {
-            "internalType": "bytes",
             "name": "callData",
-            "type": "bytes"
+            "type": "bytes",
+            "internalType": "bytes"
           }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Call3[]",
-        "name": "calls",
-        "type": "tuple[]"
+        ]
       }
     ],
+    "outputs": [
+      {
+        "name": "blockNumber",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "returnData",
+        "type": "bytes[]",
+        "internalType": "bytes[]"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
     "name": "aggregate3",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "success",
-            "type": "bool"
-          },
-          {
-            "internalType": "bytes",
-            "name": "returnData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Result[]",
-        "name": "returnData",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
+        "name": "calls",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Call3[]",
         "components": [
           {
-            "internalType": "address",
             "name": "target",
-            "type": "address"
+            "type": "address",
+            "internalType": "address"
           },
           {
-            "internalType": "bool",
             "name": "requireSuccess",
-            "type": "bool"
+            "type": "bool",
+            "internalType": "bool"
           },
           {
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bytes",
             "name": "callData",
-            "type": "bytes"
+            "type": "bytes",
+            "internalType": "bytes"
           }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Call3Value[]",
-        "name": "calls",
-        "type": "tuple[]"
+        ]
       }
     ],
+    "outputs": [
+      {
+        "name": "returnData",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Result[]",
+        "components": [
+          {
+            "name": "success",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "returnData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
     "name": "aggregate3Value",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "success",
-            "type": "bool"
-          },
-          {
-            "internalType": "bytes",
-            "name": "returnData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Result[]",
-        "name": "returnData",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
+        "name": "calls",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Call3Value[]",
         "components": [
           {
-            "internalType": "address",
             "name": "target",
-            "type": "address"
+            "type": "address",
+            "internalType": "address"
           },
           {
-            "internalType": "bytes",
+            "name": "requireSuccess",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
             "name": "callData",
-            "type": "bytes"
+            "type": "bytes",
+            "internalType": "bytes"
           }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Call[]",
-        "name": "calls",
-        "type": "tuple[]"
+        ]
       }
     ],
+    "outputs": [
+      {
+        "name": "returnData",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Result[]",
+        "components": [
+          {
+            "name": "success",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "returnData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
     "name": "blockAndAggregate",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "uint256",
-        "name": "blockNumber",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "blockHash",
-        "type": "bytes32"
-      },
-      {
+        "name": "calls",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Call[]",
         "components": [
           {
-            "internalType": "bool",
-            "name": "success",
-            "type": "bool"
+            "name": "target",
+            "type": "address",
+            "internalType": "address"
           },
           {
-            "internalType": "bytes",
-            "name": "returnData",
-            "type": "bytes"
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
           }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Result[]",
-        "name": "returnData",
-        "type": "tuple[]"
+        ]
       }
     ],
-    "stateMutability": "payable",
-    "type": "function"
+    "outputs": [
+      {
+        "name": "blockNumber",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "blockHash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "returnData",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Result[]",
+        "components": [
+          {
+            "name": "success",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "returnData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "payable"
   },
   {
-    "inputs": [],
+    "type": "function",
     "name": "eip712Domain",
+    "inputs": [],
     "outputs": [
       {
-        "internalType": "bytes1",
         "name": "fields",
-        "type": "bytes1"
+        "type": "bytes1",
+        "internalType": "bytes1"
       },
       {
-        "internalType": "string",
         "name": "name",
-        "type": "string"
+        "type": "string",
+        "internalType": "string"
       },
       {
-        "internalType": "string",
         "name": "version",
-        "type": "string"
+        "type": "string",
+        "internalType": "string"
       },
       {
-        "internalType": "uint256",
         "name": "chainId",
-        "type": "uint256"
+        "type": "uint256",
+        "internalType": "uint256"
       },
       {
-        "internalType": "address",
         "name": "verifyingContract",
-        "type": "address"
+        "type": "address",
+        "internalType": "address"
       },
       {
-        "internalType": "bytes32",
         "name": "salt",
-        "type": "bytes32"
+        "type": "bytes32",
+        "internalType": "bytes32"
       },
       {
-        "internalType": "uint256[]",
         "name": "extensions",
-        "type": "uint256[]"
+        "type": "uint256[]",
+        "internalType": "uint256[]"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "stateMutability": "view"
   },
   {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gas",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint48",
-            "name": "deadline",
-            "type": "uint48"
-          },
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "internalType": "bytes",
-            "name": "signature",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct ERC2771Forwarder.ForwardRequestData",
-        "name": "request",
-        "type": "tuple"
-      }
-    ],
+    "type": "function",
     "name": "execute",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gas",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint48",
-            "name": "deadline",
-            "type": "uint48"
-          },
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "internalType": "bytes",
-            "name": "signature",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct ERC2771Forwarder.ForwardRequestData[]",
-        "name": "requests",
-        "type": "tuple[]"
-      }
-    ],
-    "name": "executeBatch",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "success",
-            "type": "bool"
-          },
-          {
-            "internalType": "bytes",
-            "name": "returnData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Result[]",
-        "name": "returnData",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gas",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint48",
-            "name": "deadline",
-            "type": "uint48"
-          },
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "internalType": "bytes",
-            "name": "signature",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct ERC2771Forwarder.ForwardRequestData[]",
-        "name": "requests",
-        "type": "tuple[]"
-      },
-      {
-        "internalType": "address payable",
-        "name": "refundReceiver",
-        "type": "address"
-      }
-    ],
-    "name": "executeBatch",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getBasefee",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "basefee",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "blockNumber",
-        "type": "uint256"
-      }
-    ],
-    "name": "getBlockHash",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "blockHash",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getBlockNumber",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "blockNumber",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getChainId",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "chainid",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getCurrentBlockCoinbase",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "coinbase",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getCurrentBlockGasLimit",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "gaslimit",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getCurrentBlockTimestamp",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "addr",
-        "type": "address"
-      }
-    ],
-    "name": "getEthBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getLastBlockHash",
-    "outputs": [
-      {
-        "internalType": "bytes32",
-        "name": "blockHash",
-        "type": "bytes32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getPrevRandao",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "prevrandao",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "name": "nonces",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "requireSuccess",
-        "type": "bool"
-      },
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "target",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "callData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Call[]",
-        "name": "calls",
-        "type": "tuple[]"
-      }
-    ],
-    "name": "tryAggregate",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "success",
-            "type": "bool"
-          },
-          {
-            "internalType": "bytes",
-            "name": "returnData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Result[]",
-        "name": "returnData",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bool",
-        "name": "requireSuccess",
-        "type": "bool"
-      },
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "target",
-            "type": "address"
-          },
-          {
-            "internalType": "bytes",
-            "name": "callData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Call[]",
-        "name": "calls",
-        "type": "tuple[]"
-      }
-    ],
-    "name": "tryBlockAndAggregate",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "blockNumber",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "blockHash",
-        "type": "bytes32"
-      },
-      {
-        "components": [
-          {
-            "internalType": "bool",
-            "name": "success",
-            "type": "bool"
-          },
-          {
-            "internalType": "bytes",
-            "name": "returnData",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct TrustedMulticallForwarder.Result[]",
-        "name": "returnData",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "from",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "to",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "gas",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint48",
-            "name": "deadline",
-            "type": "uint48"
-          },
-          {
-            "internalType": "bytes",
-            "name": "data",
-            "type": "bytes"
-          },
-          {
-            "internalType": "bytes",
-            "name": "signature",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct ERC2771Forwarder.ForwardRequestData",
         "name": "request",
-        "type": "tuple"
+        "type": "tuple",
+        "internalType": "struct ERC2771Forwarder.ForwardRequestData",
+        "components": [
+          {
+            "name": "from",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "gas",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "deadline",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "signature",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
       }
     ],
-    "name": "verify",
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "executeBatch",
+    "inputs": [
+      {
+        "name": "requests",
+        "type": "tuple[]",
+        "internalType": "struct ERC2771Forwarder.ForwardRequestData[]",
+        "components": [
+          {
+            "name": "from",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "gas",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "deadline",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "signature",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
     "outputs": [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
+        "name": "returnData",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Result[]",
+        "components": [
+          {
+            "name": "success",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "returnData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "executeBatch",
+    "inputs": [
+      {
+        "name": "requests",
+        "type": "tuple[]",
+        "internalType": "struct ERC2771Forwarder.ForwardRequestData[]",
+        "components": [
+          {
+            "name": "from",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "gas",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "deadline",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "signature",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      },
+      {
+        "name": "refundReceiver",
+        "type": "address",
+        "internalType": "address payable"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "getBasefee",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "basefee",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getBlockHash",
+    "inputs": [
+      {
+        "name": "blockNumber",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "blockHash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getBlockNumber",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "blockNumber",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getChainId",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "chainid",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getCurrentBlockCoinbase",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "coinbase",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getCurrentBlockGasLimit",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "gaslimit",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getCurrentBlockTimestamp",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getEthBalance",
+    "inputs": [
+      {
+        "name": "addr",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "balance",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getLastBlockHash",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "blockHash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getPrevRandao",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "prevrandao",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "nonces",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "tryAggregate",
+    "inputs": [
+      {
+        "name": "requireSuccess",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "calls",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Call[]",
+        "components": [
+          {
+            "name": "target",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "returnData",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Result[]",
+        "components": [
+          {
+            "name": "success",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "returnData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "tryBlockAndAggregate",
+    "inputs": [
+      {
+        "name": "requireSuccess",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "calls",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Call[]",
+        "components": [
+          {
+            "name": "target",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "blockNumber",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "blockHash",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "returnData",
+        "type": "tuple[]",
+        "internalType": "struct TrustedMulticallForwarder.Result[]",
+        "components": [
+          {
+            "name": "success",
+            "type": "bool",
+            "internalType": "bool"
+          },
+          {
+            "name": "returnData",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "verify",
+    "inputs": [
+      {
+        "name": "request",
+        "type": "tuple",
+        "internalType": "struct ERC2771Forwarder.ForwardRequestData",
+        "components": [
+          {
+            "name": "from",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "value",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "gas",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "deadline",
+            "type": "uint48",
+            "internalType": "uint48"
+          },
+          {
+            "name": "data",
+            "type": "bytes",
+            "internalType": "bytes"
+          },
+          {
+            "name": "signature",
+            "type": "bytes",
+            "internalType": "bytes"
+          }
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "EIP712DomainChanged",
+    "inputs": [],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ExecutedForwardRequest",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "nonce",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "success",
+        "type": "bool",
+        "indexed": false,
+        "internalType": "bool"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "AddressInsufficientBalance",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderExpiredRequest",
+    "inputs": [
+      {
+        "name": "deadline",
+        "type": "uint48",
+        "internalType": "uint48"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderInvalidSigner",
+    "inputs": [
+      {
+        "name": "signer",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "from",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771ForwarderMismatchedValue",
+    "inputs": [
+      {
+        "name": "requestedValue",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "msgValue",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ERC2771UntrustfulTarget",
+    "inputs": [
+      {
+        "name": "target",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "forwarder",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "FailedInnerCall",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "InvalidAccountNonce",
+    "inputs": [
+      {
+        "name": "account",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "currentNonce",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "InvalidShortString",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "StringTooLong",
+    "inputs": [
+      {
+        "name": "str",
+        "type": "string",
+        "internalType": "string"
+      }
+    ]
   }
 ]
