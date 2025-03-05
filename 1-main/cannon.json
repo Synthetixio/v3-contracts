@@ -1,6 +1,6 @@
 {
-  "generator": "cannon website 2.15.5",
-  "timestamp": 1740149614,
+  "generator": "cannon cli 2.21.1",
+  "timestamp": 1741166119,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -1493,6 +1493,21 @@
         "func": "setTargetCRatio",
         "args": [
           "<%= settings.treasury_market_target_cratio %>"
+        ]
+      },
+      "setDebtDecayFunction": {
+        "target": [
+          "treasury_market.Proxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setDebtDecayFunction",
+        "args": [
+          "1",
+          "31536000",
+          "<%= parseEther('1') %>",
+          "<%= parseEther('0.5') %>"
         ]
       },
       "setPositionManagerOverrideWithdrawTimeout": {
@@ -27995,9 +28010,49 @@
       },
       "hash": "09a7878db872c22d2169c4a70b9713b6",
       "version": 7
+    },
+    "invoke.setDebtDecayFunction": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setDebtDecayFunction": {
+            "hash": "0xd93a4c367af31f28612451760bd49ab1864ad3a46aa67a9c2aa3f9c88f05b2ad",
+            "blockNumber": "21979723",
+            "timestamp": "1741166106",
+            "events": {
+              "DebtDecayUpdated": [
+                {
+                  "name": "DebtDecayUpdated",
+                  "args": [
+                    1,
+                    31536000,
+                    "1000000000000000000",
+                    "500000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setDebtDecayFunction",
+            "gasUsed": 36745,
+            "gasCost": "1907204784",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "6df1224fcec9d99abfe80d778459320f",
+      "version": 7
     }
   },
+  "seq": 1,
+  "track": "g06xbu961y4",
   "options": {},
+  "status": "complete",
+  "meta": {
+    "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
+    "commitHash": "f4ca2ba47bd3ab23abb0578a08a08b101792baf0",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/f4ca2ba47bd3ab23abb0578a08a08b101792baf0/README.md"
+  },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 1
 }
