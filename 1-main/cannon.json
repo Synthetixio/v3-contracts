@@ -1,10 +1,10 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1740149614,
+  "timestamp": 1741870066,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
-        "defaultValue": "1500000000000000000"
+        "defaultValue": "1100000000000000000"
       },
       "account_timeout_withdraw": {
         "defaultValue": "86400"
@@ -1495,6 +1495,21 @@
           "<%= settings.treasury_market_target_cratio %>"
         ]
       },
+      "setDebtDecayFunction": {
+        "target": [
+          "treasury_market.Proxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setDebtDecayFunction",
+        "args": [
+          "1",
+          "31536000",
+          "<%= parseEther('1') %>",
+          "<%= parseEther('0.5') %>"
+        ]
+      },
       "setPositionManagerOverrideWithdrawTimeout": {
         "target": [
           "system.CoreProxy"
@@ -1646,7 +1661,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "15",
+    "version": "16",
     "description": "Includes the full synthetix system with configurations applied",
     "deployers": [
       "0x1C8236B406911A376369e33D39189F1b4B39F27D",
@@ -4157,28 +4172,28 @@
         "contracts": {},
         "txns": {
           "setMinimumLiquidityRatio": {
-            "hash": "",
-            "blockNumber": "20339952",
-            "timestamp": "1721384418",
+            "hash": "0x2c60820b4d4facc8967dd816747607daa1e1454c4ad4cfb0aed638101d657e1b",
+            "blockNumber": "22038041",
+            "timestamp": "1741870056",
             "events": {
               "SetMinLiquidityRatio": [
                 {
                   "name": "SetMinLiquidityRatio",
                   "args": [
-                    "1500000000000000000"
+                    "1100000000000000000"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setMinimumLiquidityRatio",
-            "gasUsed": 38624,
-            "gasCost": "1339707889",
+            "gasUsed": 38642,
+            "gasCost": "1377787130",
             "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
           }
         },
         "settings": {}
       },
-      "hash": "ce2632df649625f669621c00004e6cde",
+      "hash": "96cccef00f940f71718cc6dbe2d07194",
       "version": 7
     },
     "invoke.permitCreatePool": {
@@ -4631,10 +4646,10 @@
     "setting.minimum_liquidity_ratio": {
       "artifacts": {
         "settings": {
-          "minimum_liquidity_ratio": "1500000000000000000"
+          "minimum_liquidity_ratio": "1100000000000000000"
         }
       },
-      "hash": "c1d908f79852cdcacfde4731b3912f6d",
+      "hash": "109f80ca4fb572bb6f910537ee0e25cf",
       "version": 7
     },
     "setting.owner": {
@@ -27994,6 +28009,38 @@
         "settings": {}
       },
       "hash": "09a7878db872c22d2169c4a70b9713b6",
+      "version": 7
+    },
+    "invoke.setDebtDecayFunction": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setDebtDecayFunction": {
+            "hash": "0x43870cdf3ba3c89ba05fa1e505f3b05fda0c69adc4e3935c09991656e6815ef0",
+            "blockNumber": "21916427",
+            "timestamp": "1740403073",
+            "events": {
+              "DebtDecayUpdated": [
+                {
+                  "name": "DebtDecayUpdated",
+                  "args": [
+                    1,
+                    31536000,
+                    "1000000000000000000",
+                    "500000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setDebtDecayFunction",
+            "gasUsed": 76545,
+            "gasCost": "1478013676",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "6df1224fcec9d99abfe80d778459320f",
       "version": 7
     }
   },
