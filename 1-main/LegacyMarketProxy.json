@@ -218,6 +218,31 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "staker",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "accountId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "debtForgiven",
+        "type": "uint256"
+      }
+    ],
+    "name": "DebtForgiven",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "marketAddress",
         "type": "address"
       },
@@ -305,6 +330,25 @@
       }
     ],
     "name": "PauseStablecoinConversionSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "ReturnedUSD",
     "type": "event"
   },
   {
@@ -590,6 +634,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "returnUSD",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
