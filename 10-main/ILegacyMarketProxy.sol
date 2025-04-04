@@ -20,11 +20,13 @@ interface ILegacyMarketProxy {
     event AccountLiquidatedInMigration(address staker, uint256 collateralAmount, uint256 debtAmount, uint256 cratio);
     event AccountMigrated(address indexed staker, uint256 indexed accountId, uint256 collateralAmount, uint256 debtAmount);
     event ConvertedUSD(address indexed account, uint256 amount);
+    event DebtForgiven(address indexed staker, uint256 indexed accountId, uint256 debtForgiven);
     event MarketRegistered(address indexed marketAddress, uint128 indexed marketId, address indexed sender);
     event OwnerChanged(address oldOwner, address newOwner);
     event OwnerNominated(address newOwner);
     event PauseMigrationSet(address indexed sender, bool paused);
     event PauseStablecoinConversionSet(address indexed sender, bool paused);
+    event ReturnedUSD(address indexed account, uint256 amount);
     event Upgraded(address indexed self, address implementation);
     function MIN_DELEGATION_TIME() external view returns (uint32);
     function acceptOwnership() external;
@@ -44,6 +46,7 @@ interface ILegacyMarketProxy {
     function registerMarket() external returns (uint128 newMarketId);
     function renounceNomination() external;
     function reportedDebt(uint128 requestedMarketId) external view returns (uint256 debt);
+    function returnUSD(uint256 amount) external;
     function rewardsDistributor() external view returns (address);
     function setPauseMigration(bool paused) external;
     function setPauseStablecoinConversion(bool paused) external;
