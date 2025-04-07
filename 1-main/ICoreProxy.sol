@@ -93,9 +93,9 @@ interface ICoreProxy {
     error CollateralDepositDisabled(address collateralType);
     error CollateralNotFound();
     error FailedTransfer(address from, address to, uint256 value);
-    error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InsufficientAccountCollateral(uint256 amount);
     error InsufficientAllowance(uint256 required, uint256 existing);
+    error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InvalidParameter(string parameter, string reason);
     error OverflowUint256ToUint64();
     error PrecisionLost(uint256 tokenAmount, uint8 decimals);
@@ -137,6 +137,7 @@ interface ICoreProxy {
     function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) external returns (bool);
     function isVaultLiquidatable(uint128 poolId, address collateralType) external returns (bool);
     function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) external returns (ILiquidationModule.LiquidationData memory liquidationData);
+    function liquidateToTreasury(uint128 accountId, uint128 poolId, address collateralType) external returns (ILiquidationModule.LiquidationData memory liquidationData);
     function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) external returns (ILiquidationModule.LiquidationData memory liquidationData);
     error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit);
     error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw);
