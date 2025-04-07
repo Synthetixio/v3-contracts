@@ -39,9 +39,9 @@ interface IAllErrors {
     error CollateralDepositDisabled(address collateralType);
     error CollateralNotFound();
     error FailedTransfer(address from, address to, uint256 value);
-    error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InsufficientAccountCollateral(uint256 amount);
     error InsufficientAllowance(uint256 required, uint256 existing);
+    error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InvalidParameter(string parameter, string reason);
     error OverflowUint256ToUint64();
     error PrecisionLost(uint256 tokenAmount, uint8 decimals);
@@ -90,6 +90,7 @@ interface IAllErrors {
     error NothingToMigrate();
     error Paused();
     error V2xPaused();
+    error InsufficientAvailableReward(address rewardToken, uint256 rewardedAmount, uint256 availableToReward);
     error InsufficientCRatio(uint128 accountId, uint256 currentDebt, uint256 targetDebt);
     error InsufficientExcessDebt(int256 neededToRepay, int256 ableToRepay);
     error MarketAlreadyRegistered(uint128 marketId);
