@@ -185,6 +185,11 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "OverflowUint256ToUint32",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -253,6 +258,31 @@
       }
     ],
     "name": "AccountUnsaddled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newAuxTokenDeposit",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldAuxTokenDeposit",
+        "type": "uint256"
+      }
+    ],
+    "name": "AuxTokenDepositChanged",
     "type": "event"
   },
   {
@@ -508,6 +538,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "requiredRatio",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpdateAuxTokenRequirement",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "self",
@@ -601,58 +650,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "debtDecayPenaltyEnd",
-    "outputs": [
-      {
-        "internalType": "uint128",
-        "name": "",
-        "type": "uint128"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "debtDecayPenaltyStart",
-    "outputs": [
-      {
-        "internalType": "uint128",
-        "name": "",
-        "type": "uint128"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "debtDecayPower",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "debtDecayTime",
-    "outputs": [
-      {
-        "internalType": "uint32",
-        "name": "",
-        "type": "uint32"
       }
     ],
     "stateMutability": "view",
@@ -1010,19 +1007,6 @@
   },
   {
     "inputs": [],
-    "name": "oracleManager",
-    "outputs": [
-      {
-        "internalType": "contract IOracleManagerProxy",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "owner",
     "outputs": [
       {
@@ -1120,6 +1104,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      }
+    ],
+    "name": "reportAuxToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1352,6 +1349,35 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "newAuxTokenRewardsAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "requiredRatio",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "resetTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateAuxToken",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "to",
         "type": "address"
       }
@@ -1359,19 +1385,6 @@
     "name": "upgradeTo",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "v3System",
-    "outputs": [
-      {
-        "internalType": "contract IV3CoreProxy",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   }
 ]
