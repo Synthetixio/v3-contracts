@@ -20,6 +20,8 @@ interface IAllErrors {
     error PositionOutOfBounds();
     error AccountNotFound(uint128 accountId);
     error EmptyDistribution();
+    error EmptyRevertReason();
+    error Errors(bytes[] errors);
     error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio);
     error MarketNotFound(uint128 marketId);
     error NotFundedByPool(uint256 marketId, uint256 poolId);
@@ -37,9 +39,9 @@ interface IAllErrors {
     error CollateralDepositDisabled(address collateralType);
     error CollateralNotFound();
     error FailedTransfer(address from, address to, uint256 value);
-    error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InsufficientAccountCollateral(uint256 amount);
     error InsufficientAllowance(uint256 required, uint256 existing);
+    error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InvalidParameter(string parameter, string reason);
     error OverflowUint256ToUint64();
     error PrecisionLost(uint256 tokenAmount, uint8 decimals);
@@ -75,8 +77,6 @@ interface IAllErrors {
     error TokenAlreadyMinted(uint256 id);
     error TokenDoesNotExist(uint256 id);
     error InsufficientBalance(uint256 required, uint256 existing);
-    error EmptyRevertReason();
-    error Errors(bytes[] errors);
     error InvalidNodeDefinition(NodeDefinition.Data nodeType);
     error InvalidPrice(int256 price);
     error NodeNotRegistered(bytes32 nodeId);

@@ -2,17 +2,6 @@
 pragma solidity ^0.8.21;
 
 interface ITrustedMulticallForwarder {
-    error AddressInsufficientBalance(address account);
-    error ERC2771ForwarderExpiredRequest(uint48 deadline);
-    error ERC2771ForwarderInvalidSigner(address signer, address from);
-    error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue);
-    error ERC2771UntrustfulTarget(address target, address forwarder);
-    error FailedInnerCall();
-    error InvalidAccountNonce(address account, uint256 currentNonce);
-    error InvalidShortString();
-    error StringTooLong(string str);
-    event EIP712DomainChanged();
-    event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success);
     function aggregate(TrustedMulticallForwarder.Call[] memory calls) external returns (uint256 blockNumber, bytes[] memory returnData);
     function aggregate3(TrustedMulticallForwarder.Call3[] memory calls) external payable returns (TrustedMulticallForwarder.Result[] memory returnData);
     function aggregate3Value(TrustedMulticallForwarder.Call3Value[] memory calls) external payable returns (TrustedMulticallForwarder.Result[] memory returnData);
@@ -35,6 +24,17 @@ interface ITrustedMulticallForwarder {
     function tryAggregate(bool requireSuccess, TrustedMulticallForwarder.Call[] memory calls) external returns (TrustedMulticallForwarder.Result[] memory returnData);
     function tryBlockAndAggregate(bool requireSuccess, TrustedMulticallForwarder.Call[] memory calls) external payable returns (uint256 blockNumber, bytes32 blockHash, TrustedMulticallForwarder.Result[] memory returnData);
     function verify(ERC2771Forwarder.ForwardRequestData memory request) external view returns (bool);
+    event EIP712DomainChanged();
+    event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success);
+    error AddressInsufficientBalance(address account);
+    error ERC2771ForwarderExpiredRequest(uint48 deadline);
+    error ERC2771ForwarderInvalidSigner(address signer, address from);
+    error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue);
+    error ERC2771UntrustfulTarget(address target, address forwarder);
+    error FailedInnerCall();
+    error InvalidAccountNonce(address account, uint256 currentNonce);
+    error InvalidShortString();
+    error StringTooLong(string str);
 }
 
 interface TrustedMulticallForwarder {
