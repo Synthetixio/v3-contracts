@@ -2,6 +2,11 @@
 pragma solidity ^0.8.21;
 
 interface IOracleManagerProxy {
+    function facets() external pure returns (S_0[] memory);
+    function facetFunctionSelectors(address facet) external pure returns (bytes4[] memory functionSelectors);
+    function facetAddresses() external pure returns (address[] memory addresses);
+    function facetAddress(bytes4 functionSelector) external pure returns (address);
+    function emitDiamondCutEvent() external returns (bool);
     error ImplementationIsSterile(address implementation);
     error NoChange();
     error NotAContract(address contr);
@@ -57,4 +62,9 @@ interface NodeOutput {
         uint256 __slotAvailableForFutureUse1;
         uint256 __slotAvailableForFutureUse2;
     }
+}
+
+struct S_0 {
+    address facetAddress;
+    bytes4[] functionSelectors;
 }

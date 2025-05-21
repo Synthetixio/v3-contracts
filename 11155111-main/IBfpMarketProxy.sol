@@ -2,6 +2,11 @@
 pragma solidity ^0.8.21;
 
 interface IBfpMarketProxy {
+    function facets() external pure returns (S_0[] memory);
+    function facetFunctionSelectors(address facet) external pure returns (bytes4[] memory functionSelectors);
+    function facetAddresses() external pure returns (address[] memory addresses);
+    function facetAddress(bytes4 functionSelector) external pure returns (address);
+    function emitDiamondCutEvent() external returns (bool);
     error FeatureUnavailable(bytes32 which);
     error InvalidAccountId(uint128 accountId);
     error InvalidPermission(bytes32 permission);
@@ -417,4 +422,9 @@ interface ISettlementHookModule {
         address[] whitelistedHookAddresses;
         uint32 maxHooksPerOrder;
     }
+}
+
+struct S_0 {
+    address facetAddress;
+    bytes4[] functionSelectors;
 }
