@@ -44,27 +44,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "rewardToken",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "rewardedAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "availableToReward",
-        "type": "uint256"
-      }
-    ],
-    "name": "InsufficientAvailableReward",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint128",
         "name": "accountId",
         "type": "uint128"
@@ -326,84 +305,6 @@
         "type": "uint128"
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "rewardToken",
-        "type": "address"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint64",
-            "name": "startTime",
-            "type": "uint64"
-          },
-          {
-            "internalType": "uint32",
-            "name": "power",
-            "type": "uint32"
-          },
-          {
-            "internalType": "uint32",
-            "name": "duration",
-            "type": "uint32"
-          },
-          {
-            "internalType": "uint128",
-            "name": "loanAmount",
-            "type": "uint128"
-          }
-        ],
-        "indexed": false,
-        "internalType": "struct ITreasuryMarket.LoanInfo",
-        "name": "depositedRewardData",
-        "type": "tuple"
-      }
-    ],
-    "name": "DepositRewardIssued",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint128",
-        "name": "accountId",
-        "type": "uint128"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "rewardToken",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewardRedeemed",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "penaltyPaid",
-        "type": "uint256"
-      }
-    ],
-    "name": "DepositRewardRedeemed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint128",
-        "name": "accountId",
-        "type": "uint128"
-      },
-      {
         "indexed": false,
         "internalType": "uint256",
         "name": "newLoanedAmount",
@@ -417,6 +318,31 @@
       }
     ],
     "name": "LoanAdjusted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "newLoanDuration",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint32",
+        "name": "previousLoanDuration",
+        "type": "uint32"
+      }
+    ],
+    "name": "LoanDurationAdjusted",
     "type": "event"
   },
   {
@@ -613,6 +539,40 @@
   {
     "inputs": [
       {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
+    "name": "auxTokenInfo",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "amount",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint64",
+        "name": "lastUpdated",
+        "type": "uint64"
+      },
+      {
+        "internalType": "uint32",
+        "name": "timeInsufficient",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "epoch",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -653,166 +613,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint128",
-        "name": "accountId",
-        "type": "uint128"
-      },
-      {
-        "internalType": "address",
-        "name": "rewardTokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "depositRewardAvailable",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "depositRewardConfigurations",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "uint32",
-        "name": "power",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint32",
-        "name": "duration",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint128",
-        "name": "percent",
-        "type": "uint128"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "valueRatioOracle",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint128",
-        "name": "penaltyStart",
-        "type": "uint128"
-      },
-      {
-        "internalType": "uint128",
-        "name": "penaltyEnd",
-        "type": "uint128"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint128",
-        "name": "accountId",
-        "type": "uint128"
-      },
-      {
-        "internalType": "address",
-        "name": "depositRewardToken",
-        "type": "address"
-      }
-    ],
-    "name": "depositRewardPenalty",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint128",
-        "name": "",
-        "type": "uint128"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "depositRewards",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "startTime",
-        "type": "uint64"
-      },
-      {
-        "internalType": "uint32",
-        "name": "power",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint32",
-        "name": "duration",
-        "type": "uint32"
-      },
-      {
-        "internalType": "uint128",
-        "name": "loanAmount",
-        "type": "uint128"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "fundForDepositReward",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1052,30 +852,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "removeFromDepositReward",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "renounceNomination",
     "outputs": [],
@@ -1201,49 +977,17 @@
   {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
-          {
-            "internalType": "uint32",
-            "name": "power",
-            "type": "uint32"
-          },
-          {
-            "internalType": "uint32",
-            "name": "duration",
-            "type": "uint32"
-          },
-          {
-            "internalType": "uint128",
-            "name": "percent",
-            "type": "uint128"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "valueRatioOracle",
-            "type": "bytes32"
-          },
-          {
-            "internalType": "uint128",
-            "name": "penaltyStart",
-            "type": "uint128"
-          },
-          {
-            "internalType": "uint128",
-            "name": "penaltyEnd",
-            "type": "uint128"
-          }
-        ],
-        "internalType": "struct ITreasuryMarket.DepositRewardConfiguration[]",
-        "name": "newDrcs",
-        "type": "tuple[]"
+        "internalType": "uint128",
+        "name": "accountId",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint32",
+        "name": "loanDuration",
+        "type": "uint32"
       }
     ],
-    "name": "setDepositRewardConfigurations",
+    "name": "setOverrideLoanDuration",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

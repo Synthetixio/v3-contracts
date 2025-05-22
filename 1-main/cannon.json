@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1746532836,
+  "timestamp": 1747906466,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -92,6 +92,9 @@
       "ccip_token_pool": {
         "defaultValue": "0x057152DB365B47851B0A0bd431644b8eE21fE1b4"
       },
+      "v2x_package": {
+        "defaultValue": "synthetix:2.101.2"
+      },
       "oracle_manager_package": {
         "defaultValue": "oracle-manager:3.10.1"
       },
@@ -99,7 +102,7 @@
         "defaultValue": "synthetix-perps-market:3.3.19"
       },
       "treasury_market_package": {
-        "defaultValue": "synthetix-treasury-market:3.12.2"
+        "defaultValue": "synthetix-treasury-market:3.12.3"
       },
       "susde_package": {
         "defaultValue": "susde-token"
@@ -1676,7 +1679,7 @@
         "options": {
           "owner": "<%= settings.pdao %>",
           "pool_owner": "<%= settings.pdao %>",
-          "v2x_package": "synthetix:2.101.2",
+          "v2x_package": "<%= settings.v2x_package %>",
           "v3_package": "<%= settings.snx_package %>",
           "salt": "<%= settings.salt %>",
           "synthetixPackage": "<%= settings.snx_package %>@<%= settings.target_preset %>",
@@ -1753,7 +1756,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "22",
+    "version": "23",
     "description": "Includes the full synthetix system with configurations applied",
     "deployers": [
       "0x1C8236B406911A376369e33D39189F1b4B39F27D",
@@ -25128,10 +25131,10 @@
     "setting.treasury_market_package": {
       "artifacts": {
         "settings": {
-          "treasury_market_package": "synthetix-treasury-market:3.12.2"
+          "treasury_market_package": "synthetix-treasury-market:3.12.3"
         }
       },
-      "hash": "014cb314240b18cfcf77b5269b1909c8",
+      "hash": "b27f59c31f7d61e25658e0d062039c9a",
       "version": 7
     },
     "setting.treasury_pool_id_setting": {
@@ -25275,11 +25278,11 @@
       "artifacts": {
         "imports": {
           "treasury_market": {
-            "url": "ipfs://QmZbeEFiuTqUHH8GV5EmyjJhpqRZxrQQrPXdLtk32bEyk3",
+            "url": "ipfs://QmUBZPQBWpoGDrabudPf7DoiTPm8VSsTRCSm6mbUbJnHN9",
             "tags": [
               "latest"
             ],
-            "target": "synthetix-treasury-market:3.12.2@main",
+            "target": "synthetix-treasury-market:3.12.3@main",
             "preset": "main",
             "contracts": {
               "InitialModuleBundle": {
@@ -25388,7 +25391,7 @@
                 "gasCost": "1437094600"
               },
               "StakingImpl": {
-                "address": "0x3093cbba626e60E4164975f5b15dD1c0D03BF927",
+                "address": "0x04125E3c2e7a52ec88C223c932Fe8279Ff7Cd574",
                 "abi": [
                   "constructor(address _stakingToken, address _treasuryMarket, address _recipient)",
                   "error ImplementationIsSterile(address implementation)",
@@ -25424,20 +25427,19 @@
                 ],
                 "linkedLibraries": {},
                 "deployTxnHash": "",
-                "deployTxnBlockNumber": "22353065",
-                "deployTimestamp": "1745668796",
+                "deployTxnBlockNumber": "22537548",
+                "deployTimestamp": "1747906463",
                 "sourceName": "contracts/TreasuryStakingRewards.sol",
                 "contractName": "TreasuryStakingRewards",
                 "deployedOn": "deploy.StakingImpl",
                 "gasUsed": 739339,
-                "gasCost": "1383055062"
+                "gasCost": "2953416991"
               },
               "MarketImpl": {
-                "address": "0x76067aAb89a73cB5f688F4196211C26355C1f649",
+                "address": "0x2Ad85F5597ee7eb6fDaAb9062160A4D920E1105f",
                 "abi": [
                   "constructor(address v3SystemAddress, address oracleManagerAddress, address treasuryAddress, uint128 v3PoolId, address collateralTokenAddress)",
                   "error ImplementationIsSterile(address implementation)",
-                  "error InsufficientAvailableReward(address rewardToken, uint256 rewardedAmount, uint256 availableToReward)",
                   "error InsufficientCRatio(uint128 accountId, uint256 currentDebt, uint256 targetDebt)",
                   "error InsufficientExcessDebt(int256 neededToRepay, int256 ableToRepay)",
                   "error InvalidParameter(string parameter, string reason)",
@@ -25457,9 +25459,8 @@
                   "event AccountUnsaddled(uint128 indexed accountId, uint256 collateralAmount, uint256 debtUnassigned)",
                   "event AuxTokenDepositChanged(uint128 indexed accountId, uint256 newAuxTokenDeposit, uint256 oldAuxTokenDeposit)",
                   "event DebtDecayUpdated(uint32 power, uint32 duration, uint128 startPenalty, uint128 endPenalty)",
-                  "event DepositRewardIssued(uint128 indexed accountId, address indexed rewardToken, tuple(uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount) depositedRewardData)",
-                  "event DepositRewardRedeemed(uint128 indexed accountId, address indexed rewardToken, uint256 rewardRedeemed, uint256 penaltyPaid)",
                   "event LoanAdjusted(uint128 indexed accountId, uint256 newLoanedAmount, uint256 previousLoanedAmount)",
+                  "event LoanDurationAdjusted(uint128 indexed accountId, uint32 newLoanDuration, uint32 previousLoanDuration)",
                   "event MarketRegistered(address indexed market, uint128 indexed marketId, address indexed sender)",
                   "event OwnerChanged(address oldOwner, address newOwner)",
                   "event OwnerNominated(address newOwner)",
@@ -25472,14 +25473,10 @@
                   "function acceptOwnership()",
                   "function adjustLoan(uint128 accountId, uint256 amount)",
                   "function artificialDebt() view returns (int256)",
+                  "function auxTokenInfo(uint128) view returns (uint128 amount, uint64 lastUpdated, uint32 timeInsufficient, uint32 epoch)",
                   "function availableDepositRewards(address) view returns (uint256)",
                   "function burnTreasury(uint256 amount)",
                   "function collateralToken() view returns (address)",
-                  "function depositRewardAvailable(uint128 accountId, address rewardTokenAddress) view returns (uint256)",
-                  "function depositRewardConfigurations(uint256) view returns (address token, uint32 power, uint32 duration, uint128 percent, bytes32 valueRatioOracle, uint128 penaltyStart, uint128 penaltyEnd)",
-                  "function depositRewardPenalty(uint128 accountId, address depositRewardToken) view returns (uint256)",
-                  "function depositRewards(uint128, address) view returns (uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount)",
-                  "function fundForDepositReward(address token, uint256 amount) returns (uint256)",
                   "function getImplementation() view returns (address)",
                   "function loanedAmount(uint128 accountId) view returns (uint256)",
                   "function loans(uint128) view returns (uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount)",
@@ -25494,7 +25491,6 @@
                   "function poolId() view returns (uint128)",
                   "function rebalance()",
                   "function registerMarket() returns (uint128 newMarketId)",
-                  "function removeFromDepositReward(address token, uint256 amount) returns (uint256)",
                   "function renounceNomination()",
                   "function repaymentPenalty(uint128 accountId, uint256 targetLoan) view returns (uint256)",
                   "function reportAuxToken(uint128 accountId)",
@@ -25502,7 +25498,7 @@
                   "function saddle(uint128 accountId)",
                   "function saddledCollateral(uint128) view returns (uint256)",
                   "function setDebtDecayFunction(uint32 power, uint32 time, uint128 startPenalty, uint128 endPenalty)",
-                  "function setDepositRewardConfigurations(tuple(address token, uint32 power, uint32 duration, uint128 percent, bytes32 valueRatioOracle, uint128 penaltyStart, uint128 penaltyEnd)[] newDrcs)",
+                  "function setOverrideLoanDuration(uint128 accountId, uint32 loanDuration)",
                   "function setTargetCRatio(uint256 ratio)",
                   "function simulateUpgradeTo(address newImplementation)",
                   "function supportsInterface(bytes4 interfaceId) view returns (bool)",
@@ -25522,13 +25518,13 @@
                 ],
                 "linkedLibraries": {},
                 "deployTxnHash": "",
-                "deployTxnBlockNumber": "22353066",
-                "deployTimestamp": "1745668797",
+                "deployTxnBlockNumber": "22537549",
+                "deployTimestamp": "1747906464",
                 "sourceName": "contracts/TreasuryMarket.sol",
                 "contractName": "TreasuryMarket",
                 "deployedOn": "deploy.MarketImpl",
-                "gasUsed": 5376260,
-                "gasCost": "1337533243"
+                "gasUsed": 4168562,
+                "gasCost": "2721275179"
               },
               "StakingProxy": {
                 "address": "0x200D50E61ad543086081E58518F2def6278f27a9",
@@ -25579,7 +25575,6 @@
                 "abi": [
                   "constructor(address v3SystemAddress, address oracleManagerAddress, address treasuryAddress, uint128 v3PoolId, address collateralTokenAddress)",
                   "error ImplementationIsSterile(address implementation)",
-                  "error InsufficientAvailableReward(address rewardToken, uint256 rewardedAmount, uint256 availableToReward)",
                   "error InsufficientCRatio(uint128 accountId, uint256 currentDebt, uint256 targetDebt)",
                   "error InsufficientExcessDebt(int256 neededToRepay, int256 ableToRepay)",
                   "error InvalidParameter(string parameter, string reason)",
@@ -25599,9 +25594,8 @@
                   "event AccountUnsaddled(uint128 indexed accountId, uint256 collateralAmount, uint256 debtUnassigned)",
                   "event AuxTokenDepositChanged(uint128 indexed accountId, uint256 newAuxTokenDeposit, uint256 oldAuxTokenDeposit)",
                   "event DebtDecayUpdated(uint32 power, uint32 duration, uint128 startPenalty, uint128 endPenalty)",
-                  "event DepositRewardIssued(uint128 indexed accountId, address indexed rewardToken, tuple(uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount) depositedRewardData)",
-                  "event DepositRewardRedeemed(uint128 indexed accountId, address indexed rewardToken, uint256 rewardRedeemed, uint256 penaltyPaid)",
                   "event LoanAdjusted(uint128 indexed accountId, uint256 newLoanedAmount, uint256 previousLoanedAmount)",
+                  "event LoanDurationAdjusted(uint128 indexed accountId, uint32 newLoanDuration, uint32 previousLoanDuration)",
                   "event MarketRegistered(address indexed market, uint128 indexed marketId, address indexed sender)",
                   "event OwnerChanged(address oldOwner, address newOwner)",
                   "event OwnerNominated(address newOwner)",
@@ -25614,14 +25608,10 @@
                   "function acceptOwnership()",
                   "function adjustLoan(uint128 accountId, uint256 amount)",
                   "function artificialDebt() view returns (int256)",
+                  "function auxTokenInfo(uint128) view returns (uint128 amount, uint64 lastUpdated, uint32 timeInsufficient, uint32 epoch)",
                   "function availableDepositRewards(address) view returns (uint256)",
                   "function burnTreasury(uint256 amount)",
                   "function collateralToken() view returns (address)",
-                  "function depositRewardAvailable(uint128 accountId, address rewardTokenAddress) view returns (uint256)",
-                  "function depositRewardConfigurations(uint256) view returns (address token, uint32 power, uint32 duration, uint128 percent, bytes32 valueRatioOracle, uint128 penaltyStart, uint128 penaltyEnd)",
-                  "function depositRewardPenalty(uint128 accountId, address depositRewardToken) view returns (uint256)",
-                  "function depositRewards(uint128, address) view returns (uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount)",
-                  "function fundForDepositReward(address token, uint256 amount) returns (uint256)",
                   "function getImplementation() view returns (address)",
                   "function loanedAmount(uint128 accountId) view returns (uint256)",
                   "function loans(uint128) view returns (uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount)",
@@ -25636,7 +25626,6 @@
                   "function poolId() view returns (uint128)",
                   "function rebalance()",
                   "function registerMarket() returns (uint128 newMarketId)",
-                  "function removeFromDepositReward(address token, uint256 amount) returns (uint256)",
                   "function renounceNomination()",
                   "function repaymentPenalty(uint128 accountId, uint256 targetLoan) view returns (uint256)",
                   "function reportAuxToken(uint128 accountId)",
@@ -25644,7 +25633,7 @@
                   "function saddle(uint128 accountId)",
                   "function saddledCollateral(uint128) view returns (uint256)",
                   "function setDebtDecayFunction(uint32 power, uint32 time, uint128 startPenalty, uint128 endPenalty)",
-                  "function setDepositRewardConfigurations(tuple(address token, uint32 power, uint32 duration, uint128 percent, bytes32 valueRatioOracle, uint128 penaltyStart, uint128 penaltyEnd)[] newDrcs)",
+                  "function setOverrideLoanDuration(uint128 accountId, uint32 loanDuration)",
                   "function setTargetCRatio(uint256 ratio)",
                   "function simulateUpgradeTo(address newImplementation)",
                   "function supportsInterface(bytes4 interfaceId) view returns (bool)",
@@ -28097,43 +28086,43 @@
             },
             "txns": {
               "upgradeStakingProxy": {
-                "hash": "0x6ea35c3b77538b81bd1ff543553f857accd9881353e0d39d96f119f42422bc36",
-                "blockNumber": "22353067",
-                "timestamp": "1745668797",
+                "hash": "0x4f222f32bfe1cdc7bba7c69252fabee544a5e87a2f7624011ff3ac2628dd53d3",
+                "blockNumber": "22537550",
+                "timestamp": "1747906464",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0x200D50E61ad543086081E58518F2def6278f27a9",
-                        "0x3093cbba626e60E4164975f5b15dD1c0D03BF927"
+                        "0x04125E3c2e7a52ec88C223c932Fe8279Ff7Cd574"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgradeStakingProxy",
-                "gasUsed": 47039,
-                "gasCost": "1310463809",
+                "gasUsed": 47040,
+                "gasCost": "2565909468",
                 "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
               },
               "upgradeProxy": {
-                "hash": "0x4134d23ba914d1696a0bfef29e466ea699b68f5b44700f17ae5c4be112aaa838",
-                "blockNumber": "22353068",
-                "timestamp": "1745668798",
+                "hash": "0x89122ba81be6f3db3979e0b286f2341f7c69083dad8e2b5b69fe7a52b2344144",
+                "blockNumber": "22537551",
+                "timestamp": "1747906465",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0x7b952507306E7D983bcFe6942Ac9F2f75C1332D8",
-                        "0x76067aAb89a73cB5f688F4196211C26355C1f649"
+                        "0x2Ad85F5597ee7eb6fDaAb9062160A4D920E1105f"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgradeProxy",
-                "gasUsed": 47243,
-                "gasCost": "1271777533",
+                "gasUsed": 47309,
+                "gasCost": "2370784622",
                 "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
               },
               "setAuxTokenRewards": {
@@ -28599,6 +28588,15 @@
         }
       },
       "hash": "67f10cc57cbd20ac18b97950b6e51e6e",
+      "version": 7
+    },
+    "setting.v2x_package": {
+      "artifacts": {
+        "settings": {
+          "v2x_package": "synthetix:2.101.2"
+        }
+      },
+      "hash": "fe9d470577b1bd5da244abb3a72b717b",
       "version": 7
     }
   },
