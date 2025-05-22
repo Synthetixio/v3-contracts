@@ -3,7 +3,6 @@ pragma solidity ^0.8.21;
 
 interface ITreasuryMarketProxy {
     error ImplementationIsSterile(address implementation);
-    error InsufficientAvailableReward(address rewardToken, uint256 rewardedAmount, uint256 availableToReward);
     error InsufficientCRatio(uint128 accountId, uint256 currentDebt, uint256 targetDebt);
     error InsufficientExcessDebt(int256 neededToRepay, int256 ableToRepay);
     error InvalidParameter(string parameter, string reason);
@@ -23,9 +22,8 @@ interface ITreasuryMarketProxy {
     event AccountUnsaddled(uint128 indexed accountId, uint256 collateralAmount, uint256 debtUnassigned);
     event AuxTokenDepositChanged(uint128 indexed accountId, uint256 newAuxTokenDeposit, uint256 oldAuxTokenDeposit);
     event DebtDecayUpdated(uint32 power, uint32 duration, uint128 startPenalty, uint128 endPenalty);
-    event DepositRewardIssued(uint128 indexed accountId, address indexed rewardToken, ITreasuryMarket.LoanInfo depositedRewardData);
-    event DepositRewardRedeemed(uint128 indexed accountId, address indexed rewardToken, uint256 rewardRedeemed, uint256 penaltyPaid);
     event LoanAdjusted(uint128 indexed accountId, uint256 newLoanedAmount, uint256 previousLoanedAmount);
+    event LoanDurationAdjusted(uint128 indexed accountId, uint32 newLoanDuration, uint32 previousLoanDuration);
     event MarketRegistered(address indexed market, uint128 indexed marketId, address indexed sender);
     event OwnerChanged(address oldOwner, address newOwner);
     event OwnerNominated(address newOwner);
@@ -38,14 +36,10 @@ interface ITreasuryMarketProxy {
     function acceptOwnership() external;
     function adjustLoan(uint128 accountId, uint256 amount) external;
     function artificialDebt() external view returns (int256);
+    function auxTokenInfo(uint128) external view returns (uint128 amount, uint64 lastUpdated, uint32 timeInsufficient, uint32 epoch);
     function availableDepositRewards(address) external view returns (uint256);
     function burnTreasury(uint256 amount) external;
     function collateralToken() external view returns (address);
-    function depositRewardAvailable(uint128 accountId, address rewardTokenAddress) external view returns (uint256);
-    function depositRewardConfigurations(uint256) external view returns (address token, uint32 power, uint32 duration, uint128 percent, bytes32 valueRatioOracle, uint128 penaltyStart, uint128 penaltyEnd);
-    function depositRewardPenalty(uint128 accountId, address depositRewardToken) external view returns (uint256);
-    function depositRewards(uint128, address) external view returns (uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount);
-    function fundForDepositReward(address token, uint256 amount) external returns (uint256);
     function getImplementation() external view returns (address);
     function loanedAmount(uint128 accountId) external view returns (uint256);
     function loans(uint128) external view returns (uint64 startTime, uint32 power, uint32 duration, uint128 loanAmount);
@@ -60,7 +54,6 @@ interface ITreasuryMarketProxy {
     function poolId() external view returns (uint128);
     function rebalance() external;
     function registerMarket() external returns (uint128 newMarketId);
-    function removeFromDepositReward(address token, uint256 amount) external returns (uint256);
     function renounceNomination() external;
     function repaymentPenalty(uint128 accountId, uint256 targetLoan) external view returns (uint256);
     function reportAuxToken(uint128 accountId) external;
@@ -68,7 +61,7 @@ interface ITreasuryMarketProxy {
     function saddle(uint128 accountId) external;
     function saddledCollateral(uint128) external view returns (uint256);
     function setDebtDecayFunction(uint32 power, uint32 time, uint128 startPenalty, uint128 endPenalty) external;
-    function setDepositRewardConfigurations(ITreasuryMarket.DepositRewardConfiguration[] memory newDrcs) external;
+    function setOverrideLoanDuration(uint128 accountId, uint32 loanDuration) external;
     function setTargetCRatio(uint256 ratio) external;
     function simulateUpgradeTo(address newImplementation) external;
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
@@ -78,23 +71,4 @@ interface ITreasuryMarketProxy {
     function unsaddle(uint128 accountId) external;
     function updateAuxToken(address newAuxTokenRewardsAddress, uint256 requiredRatio, uint256 resetTime) external returns (uint256);
     function upgradeTo(address to) external;
-}
-
-interface ITreasuryMarket {
-    struct LoanInfo {
-        uint64 startTime;
-        uint32 power;
-        uint32 duration;
-        uint128 loanAmount;
-    }
-
-    struct DepositRewardConfiguration {
-        address token;
-        uint32 power;
-        uint32 duration;
-        uint128 percent;
-        bytes32 valueRatioOracle;
-        uint128 penaltyStart;
-        uint128 penaltyEnd;
-    }
 }
