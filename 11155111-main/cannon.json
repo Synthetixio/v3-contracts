@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.22.0",
-  "timestamp": 1747828820,
+  "timestamp": 1748002843,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -59,7 +59,7 @@
         "defaultValue": "<%= weth_mock_collateral.MintableToken.address %>"
       },
       "legacy_market_package": {
-        "defaultValue": "synthetix-legacy-market:3.12.2"
+        "defaultValue": "synthetix-legacy-market:3.12.1"
       },
       "spot_market_package": {
         "defaultValue": "synthetix-spot-market:3.12.2"
@@ -112,6 +112,9 @@
       },
       "ccip_token_pool": {
         "defaultValue": "0x9b65749b38278060c5787cce0391ac7f1094c8e8"
+      },
+      "v2x_package": {
+        "defaultValue": "synthetix:2.101.2"
       },
       "oracle_manager_package": {
         "defaultValue": "oracle-manager:3.10.1"
@@ -222,7 +225,7 @@
         "defaultValue": "<%= parseEther('100') %>"
       },
       "snx_v4_onchain": {
-        "defaultValue": "synthetix-v4-onchain:0.1.1"
+        "defaultValue": "synthetix-v4-onchain:0.1.3"
       }
     },
     "invoke": {
@@ -1021,7 +1024,7 @@
         "options": {
           "owner": "<%= settings.pdao %>",
           "pool_owner": "<%= settings.pdao %>",
-          "v2x_package": "synthetix:2.101.2",
+          "v2x_package": "<%= settings.v2x_package %>",
           "v3_package": "<%= settings.snx_package %>",
           "salt": "<%= settings.salt %>",
           "synthetixPackage": "<%= settings.snx_package %>@<%= settings.target_preset %>",
@@ -1336,10 +1339,10 @@
     "setting.legacy_market_package": {
       "artifacts": {
         "settings": {
-          "legacy_market_package": "synthetix-legacy-market:3.12.2"
+          "legacy_market_package": "synthetix-legacy-market:3.12.1"
         }
       },
-      "hash": "749946c589ab7551c54bc037830cf355",
+      "hash": "f29a71212d44f5622127da262a5855e3",
       "version": 7
     },
     "setting.minimum_liquidity_ratio": {
@@ -19191,21 +19194,21 @@
     "setting.snx_v4_onchain": {
       "artifacts": {
         "settings": {
-          "snx_v4_onchain": "synthetix-v4-onchain:0.1.1"
+          "snx_v4_onchain": "synthetix-v4-onchain:0.1.3"
         }
       },
-      "hash": "0dc12a907e119aa156a02b5e2b82b71b",
+      "hash": "a319c19d90071f3cf426caac6f36e923",
       "version": 7
     },
     "provision.snx_v4_onchain": {
       "artifacts": {
         "imports": {
           "snx_v4_onchain": {
-            "url": "ipfs://QmcvTLhAUnPrhMeNdrPHV3kFdJXg1PVAApgwXK4jjafN8r",
+            "url": "ipfs://QmaRFpvkmx1z7Qe5epiDU71s6RimJFCaNzdvBGMtMBYwVg",
             "tags": [
               "latest"
             ],
-            "target": "synthetix-v4-onchain:0.1.1@main",
+            "target": "synthetix-v4-onchain:0.1.3@main",
             "preset": "main",
             "contracts": {
               "CoreModule": {
@@ -19567,7 +19570,7 @@
                 "gasCost": "2187130699"
               },
               "BookOrderModule": {
-                "address": "0x162C22baa1F7061C35B02f60C8770bDa1544498c",
+                "address": "0xc559bCA5cb2430bf57c22b3361C3289c6944BB15",
                 "abi": [
                   "constructor(address _globalContext, string name, string version)",
                   "function SIGNED_BOOK_ORDER_TYPEHASH() view returns (bytes32)",
@@ -19601,14 +19604,14 @@
                   "1"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x72d6a89d441f74cc50d5f179c763b16f145a71c0647e130016a4cddd699c55a7",
-                "deployTxnBlockNumber": "8374777",
-                "deployTimestamp": "1747828620",
+                "deployTxnHash": "0x6301371459424d145e026d771c1e49a2865232ec29d887c98f7b0a9b21bbaa21",
+                "deployTxnBlockNumber": "8389250",
+                "deployTimestamp": "1748002776",
                 "sourceName": "src/perps-market/contracts/modules/BookOrderModule.sol",
                 "contractName": "BookOrderModule",
                 "deployedOn": "contract.BookOrderModule",
-                "gasUsed": 2961594,
-                "gasCost": "652910955"
+                "gasUsed": 2968696,
+                "gasCost": "1942861"
               },
               "CollateralConfigurationModule": {
                 "address": "0x79F4501a0C188Ba462C608048808135453db08b4",
@@ -19635,23 +19638,18 @@
                 "gasCost": "2224531728"
               },
               "LiquidationModule": {
-                "address": "0xafc875A0d378840aAbbDD96F8617EC988d60b6a4",
+                "address": "0xbCec42E3dad45b5aBeC4A3d0a39344ac8197d5EB",
                 "abi": [
                   "constructor(address _globalContext)",
-                  "function canLiquidate(uint128 accountId) view returns (bool isEligible)",
-                  "function canLiquidateMarginOnly(uint128 accountId) view returns (bool isEligible)",
-                  "function flaggedAccounts() view returns (uint256[] accountIds)",
-                  "function liquidate(uint128 accountId) returns (uint256 liquidationReward)",
-                  "function liquidateFlagged(uint256 maxNumberOfAccounts) returns (uint256 liquidationReward)",
-                  "function liquidateFlaggedAccounts(uint128[] accountIds) returns (uint256 liquidationReward)",
-                  "function liquidateMarginOnly(uint128 accountId) returns (uint256 liquidationReward)",
-                  "event AccountFlaggedForLiquidation(uint128 indexed accountId, int256 availableMargin, uint256 requiredMaintenanceMargin, uint256 liquidationReward, uint256 flagReward)",
+                  "function canLiquidate(uint128 accountId, uint256[] positionPrices) view returns (bool isEligible)",
+                  "function liquidate(uint128 accountId, uint256[] positionPrices, bool isLarge)",
                   "event AccountLiquidationAttempt(uint128 indexed accountId, uint256 reward, bool fullLiquidation)",
                   "event AccountMarginLiquidation(uint128 indexed accountId, uint256 seizedMarginValue, uint256 liquidationReward)",
                   "event MarketUpdated(uint128 marketId, uint256 price, uint256 size, int256 sizeDelta, int256 currentFundingRate, uint128 interestRate)",
                   "event PositionLiquidated(uint128 indexed accountId, uint128 indexed marketId, uint256 amountLiquidated, int128 currentPositionSize)",
                   "error AccountHasOpenPositions(uint128 accountId)",
                   "error FeatureUnavailable(bytes32 which)",
+                  "error NoPositionsOpen()",
                   "error NotEligibleForLiquidation(uint128 accountId)",
                   "error NotEligibleForMarginLiquidation(uint128 accountId)",
                   "error OverflowInt128ToUint128()",
@@ -19659,7 +19657,6 @@
                   "error OverflowUint128ToInt128()",
                   "error OverflowUint256ToInt256()",
                   "error OverflowUint256ToUint128()",
-                  "error PositionOutOfBounds()",
                   "error ValueAlreadyInSet()",
                   "error ValueNotInSet()"
                 ],
@@ -19667,17 +19664,17 @@
                   "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xc0303c36748bd0adb68d13373de39b41617a4ed91640eca473a270bfbe424b49",
-                "deployTxnBlockNumber": "8323676",
-                "deployTimestamp": "1747208760",
+                "deployTxnHash": "0xe0143b1545032493c852a1da34f3bb5f194a287fb45252cda280834629ef59ee",
+                "deployTxnBlockNumber": "8389251",
+                "deployTimestamp": "1748002788",
                 "sourceName": "src/perps-market/contracts/modules/LiquidationModule.sol",
                 "contractName": "LiquidationModule",
                 "deployedOn": "contract.LiquidationModule",
-                "gasUsed": 2427873,
-                "gasCost": "2208309730"
+                "gasUsed": 1642953,
+                "gasCost": "1976115"
               },
               "PerpsAccountModule": {
-                "address": "0xBB270b25312Fe9dB4DdB4De4c0247732DfE398B2",
+                "address": "0x581aEbB2B5362d716D6080a45383A764D6d23672",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function debt(uint128 accountId) view returns (uint256 accountDebt)",
@@ -19724,14 +19721,14 @@
                   "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xaba98e9e3d35fbbb4222b47273600dde947c21c0b5937eb8c990655a7fe019a9",
-                "deployTxnBlockNumber": "8323677",
-                "deployTimestamp": "1747208772",
+                "deployTxnHash": "0x29bc97b29653f5d86f5d4f9548eb4b999be2c19cb7cf9d02631aa16c61fe70a7",
+                "deployTxnBlockNumber": "8389252",
+                "deployTimestamp": "1748002800",
                 "sourceName": "src/perps-market/contracts/modules/PerpsAccountModule.sol",
                 "contractName": "PerpsAccountModule",
                 "deployedOn": "contract.PerpsAccountModule",
-                "gasUsed": 3637141,
-                "gasCost": "2169524759"
+                "gasUsed": 3547520,
+                "gasCost": "1966822"
               },
               "PerpsMarketModule": {
                 "address": "0x2649b80EEE68243A321fbad8621B279a20933D34",
@@ -19761,7 +19758,7 @@
                 "gasCost": "2278558415"
               },
               "PerpsMarketRouter": {
-                "address": "0x4acf570e9b364d62d18ec02e69eed451a2908594",
+                "address": "0x732e0dbe29db4fdb68208e1e616e1121bfa36b51",
                 "abi": [
                   "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
                   "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
@@ -19911,18 +19908,13 @@
                   "event FeatureFlagAllowlistRemoved(bytes32 indexed feature, address account)",
                   "event FeatureFlagDeniersReset(bytes32 indexed feature, address[] deniers)",
                   "event FeatureFlagDenyAllSet(bytes32 indexed feature, bool denyAll)",
-                  "function canLiquidate(uint128 accountId) view returns (bool isEligible)",
-                  "function canLiquidateMarginOnly(uint128 accountId) view returns (bool isEligible)",
-                  "function flaggedAccounts() view returns (uint256[] accountIds)",
-                  "function liquidate(uint128 accountId) returns (uint256 liquidationReward)",
-                  "function liquidateFlagged(uint256 maxNumberOfAccounts) returns (uint256 liquidationReward)",
-                  "function liquidateFlaggedAccounts(uint128[] accountIds) returns (uint256 liquidationReward)",
-                  "function liquidateMarginOnly(uint128 accountId) returns (uint256 liquidationReward)",
-                  "event AccountFlaggedForLiquidation(uint128 indexed accountId, int256 availableMargin, uint256 requiredMaintenanceMargin, uint256 liquidationReward, uint256 flagReward)",
+                  "function canLiquidate(uint128 accountId, uint256[] positionPrices) view returns (bool isEligible)",
+                  "function liquidate(uint128 accountId, uint256[] positionPrices, bool isLarge)",
                   "event AccountLiquidationAttempt(uint128 indexed accountId, uint256 reward, bool fullLiquidation)",
                   "event AccountMarginLiquidation(uint128 indexed accountId, uint256 seizedMarginValue, uint256 liquidationReward)",
                   "event PositionLiquidated(uint128 indexed accountId, uint128 indexed marketId, uint256 amountLiquidated, int128 currentPositionSize)",
                   "error AccountHasOpenPositions(uint128 accountId)",
+                  "error NoPositionsOpen()",
                   "error NotEligibleForLiquidation(uint128 accountId)",
                   "error NotEligibleForMarginLiquidation(uint128 accountId)",
                   "constructor(uint256 _makerFee, uint256 _takerFee, uint256 _maxMarketSize, uint256 _initialMarginRatioD18, uint256 _maintenanceMarginScalarD18, uint256 _lockedOiRatioD18, uint256 _maxLiquidationLimitAccumulationMultiplier, uint256 _maxSecondsInLiquidationWindow, uint256 _minimumPositionMargin, uint256 _minimumInitialMarginRatioD18, uint256 _maxLiquidationPd, uint256 _maxMarketValue)",
@@ -19995,13 +19987,13 @@
                   "error InvalidReferrerShareRatio(uint256 shareRatioD18)"
                 ],
                 "deployedOn": "router.PerpsMarketRouter",
-                "deployTxnHash": "0x9feb41d3a462decd0c62e2208ccf329f999efeb40389c08bc39706f9e86167b4",
-                "deployTxnBlockNumber": "8374778",
-                "deployTimestamp": "1747828632",
+                "deployTxnHash": "0xa6b29a505d36cb11334220af2462917dde4156afa0a642be00b13b7f71c04f25",
+                "deployTxnBlockNumber": "8389253",
+                "deployTimestamp": "1748002812",
                 "contractName": "PerpsMarketRouter",
                 "sourceName": "PerpsMarketRouter.sol",
-                "gasUsed": 4615339,
-                "gasCost": "636058913"
+                "gasUsed": 4559872,
+                "gasCost": "1984003"
               },
               "PerpsMarketProxy": {
                 "address": "0xEa1ef48647E2418b50480724E120C6A0b0fb54c3",
@@ -20154,18 +20146,13 @@
                   "event FeatureFlagAllowlistRemoved(bytes32 indexed feature, address account)",
                   "event FeatureFlagDeniersReset(bytes32 indexed feature, address[] deniers)",
                   "event FeatureFlagDenyAllSet(bytes32 indexed feature, bool denyAll)",
-                  "function canLiquidate(uint128 accountId) view returns (bool isEligible)",
-                  "function canLiquidateMarginOnly(uint128 accountId) view returns (bool isEligible)",
-                  "function flaggedAccounts() view returns (uint256[] accountIds)",
-                  "function liquidate(uint128 accountId) returns (uint256 liquidationReward)",
-                  "function liquidateFlagged(uint256 maxNumberOfAccounts) returns (uint256 liquidationReward)",
-                  "function liquidateFlaggedAccounts(uint128[] accountIds) returns (uint256 liquidationReward)",
-                  "function liquidateMarginOnly(uint128 accountId) returns (uint256 liquidationReward)",
-                  "event AccountFlaggedForLiquidation(uint128 indexed accountId, int256 availableMargin, uint256 requiredMaintenanceMargin, uint256 liquidationReward, uint256 flagReward)",
+                  "function canLiquidate(uint128 accountId, uint256[] positionPrices) view returns (bool isEligible)",
+                  "function liquidate(uint128 accountId, uint256[] positionPrices, bool isLarge)",
                   "event AccountLiquidationAttempt(uint128 indexed accountId, uint256 reward, bool fullLiquidation)",
                   "event AccountMarginLiquidation(uint128 indexed accountId, uint256 seizedMarginValue, uint256 liquidationReward)",
                   "event PositionLiquidated(uint128 indexed accountId, uint128 indexed marketId, uint256 amountLiquidated, int128 currentPositionSize)",
                   "error AccountHasOpenPositions(uint128 accountId)",
+                  "error NoPositionsOpen()",
                   "error NotEligibleForLiquidation(uint128 accountId)",
                   "error NotEligibleForMarginLiquidation(uint128 accountId)",
                   "constructor(uint256 _makerFee, uint256 _takerFee, uint256 _maxMarketSize, uint256 _initialMarginRatioD18, uint256 _maintenanceMarginScalarD18, uint256 _lockedOiRatioD18, uint256 _maxLiquidationLimitAccumulationMultiplier, uint256 _maxSecondsInLiquidationWindow, uint256 _minimumPositionMargin, uint256 _minimumInitialMarginRatioD18, uint256 _maxLiquidationPd, uint256 _maxMarketValue)",
@@ -20336,10 +20323,10 @@
             },
             "imports": {
               "spotMarket": {
-                "url": "ipfs://QmeUjxVHJKUt2mg7FBFRLkuuDgCH5dPJ7zw7LuwkYZWVmC",
+                "url": "ipfs://QmasaRCA1Dkp8HpSqukPGSbfH9WPepf9sAxrivNKoLbc74",
                 "contracts": {
                   "AsyncOrderConfigurationModule": {
-                    "address": "0xe1089F25De0f203f1d68cDdE5FDfC6ABd6d2e346",
+                    "address": "0xd9E3049e9B31d08708c061B5Dd7b7A3f8E9Ca2f2",
                     "abi": [
                       "error InvalidSettlementStrategy(uint256 settlementStrategyId)",
                       "error InvalidSettlementWindowDuration(uint256 duration)",
@@ -20353,18 +20340,19 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x9afd8fdbf23a9c2fed91231c8c7f8fb816dabcae307a3cf9fd31396ae39572e1",
-                    "deployTxnBlockNumber": "6660756",
-                    "deployTimestamp": "1725881172",
+                    "deployTxnHash": "0x469997b2f1af1eea54049568c53a5adff7d45e7969bcb73f742121d872480340",
+                    "deployTxnBlockNumber": "8374781",
+                    "deployTimestamp": "1747828668",
                     "sourceName": "contracts/modules/AsyncOrderConfigurationModule.sol",
                     "contractName": "AsyncOrderConfigurationModule",
                     "deployedOn": "contract.AsyncOrderConfigurationModule",
                     "gasUsed": 896430,
-                    "gasCost": "61985571613"
+                    "gasCost": "653912843"
                   },
                   "AsyncOrderModule": {
-                    "address": "0xEED61f0CB02f3B38923b1b6EAa939D5f04f431b6",
+                    "address": "0x208b65b1520F1B7356f3f752C637d56CeE268815",
                     "abi": [
+                      "error FeatureUnavailable(bytes32 which)",
                       "error IneligibleForCancellation(uint256 timestamp, uint256 expirationTime)",
                       "error InsufficientSharesAmount(uint256 expected, uint256 actual)",
                       "error InvalidAsyncTransactionType(uint8 transactionType)",
@@ -20382,17 +20370,17 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x256e2ec67b769c1bcff3819c9b4df65fae3cfafc3f840a318ec022bc438a94e3",
-                    "deployTxnBlockNumber": "6660757",
-                    "deployTimestamp": "1725881184",
+                    "deployTxnHash": "0x9b2dc16c231b2f5e06f39104f7e5240048b1fd3b87a172393ca2c04e63dc4763",
+                    "deployTxnBlockNumber": "8374782",
+                    "deployTimestamp": "1747828680",
                     "sourceName": "contracts/modules/AsyncOrderModule.sol",
                     "contractName": "AsyncOrderModule",
                     "deployedOn": "contract.AsyncOrderModule",
-                    "gasUsed": 1317254,
-                    "gasCost": "64790340979"
+                    "gasUsed": 1395455,
+                    "gasCost": "658278909"
                   },
                   "AsyncOrderSettlementModule": {
-                    "address": "0xEFDC184604EA2cb21A083f44fB06E2d340758d83",
+                    "address": "0x9aC0A92aFdEc87BC08B0D31B3f200A5FE5D13A8f",
                     "abi": [
                       "error InvalidClaim(uint256 asyncOrderId)",
                       "error InvalidSettlementStrategy(uint8 strategyType)",
@@ -20409,20 +20397,21 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xc2c14675e07ad41fbdee40db1ad76e88855ae0e4fb183cd13d8c222655b6eae7",
-                    "deployTxnBlockNumber": "6660758",
-                    "deployTimestamp": "1725881196",
+                    "deployTxnHash": "0x2aac05e29796c74246b9138899bdbc7a41c70eb0d1bfb10a574631cc2ceaf22c",
+                    "deployTxnBlockNumber": "8374783",
+                    "deployTimestamp": "1747828692",
                     "sourceName": "contracts/modules/AsyncOrderSettlementModule.sol",
                     "contractName": "AsyncOrderSettlementModule",
                     "deployedOn": "contract.AsyncOrderSettlementModule",
-                    "gasUsed": 1963714,
-                    "gasCost": "62198119510"
+                    "gasUsed": 1981826,
+                    "gasCost": "626075294"
                   },
                   "AtomicOrderModule": {
-                    "address": "0x29e7320d46674Bf090f703F212EAe7f986256609",
+                    "address": "0xdBc86c71044DD010BA6722a8E46131A2d6046b94",
                     "abi": [
                       "error ExceedsMaxSynthAmount(uint256 maxSynthAmount, uint256 synthAmountCharged)",
                       "error ExceedsMaxUsdAmount(uint256 maxUsdAmount, uint256 usdAmountCharged)",
+                      "error FeatureUnavailable(bytes32 which)",
                       "error InsufficientAmountReceived(uint256 expected, uint256 current)",
                       "error InvalidMarket(uint128 marketId)",
                       "error InvalidPrices()",
@@ -20444,14 +20433,14 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x835933ae367ce5acaa571f2c6c6a378966f537152c4b5ef1596b838eea9c8c26",
-                    "deployTxnBlockNumber": "6660759",
-                    "deployTimestamp": "1725881208",
+                    "deployTxnHash": "0x0817dbd04fdae29094316abd97c970d4fa0509dbf0200f2f09d2a9f6b98d8510",
+                    "deployTxnBlockNumber": "8374784",
+                    "deployTimestamp": "1747828704",
                     "sourceName": "contracts/modules/AtomicOrderModule.sol",
                     "contractName": "AtomicOrderModule",
                     "deployedOn": "contract.AtomicOrderModule",
-                    "gasUsed": 2090754,
-                    "gasCost": "62269856470"
+                    "gasUsed": 2345976,
+                    "gasCost": "637234151"
                   },
                   "CoreModule": {
                     "address": "0xf7b6f25ED860125a315d642BAF925eACB001A0FC",
@@ -20485,7 +20474,7 @@
                     "gasCost": "1062045394"
                   },
                   "FeatureFlagModule": {
-                    "address": "0x7B1d1D7a30806558202b9dEc17fFFeA99b2C1334",
+                    "address": "0x1258bB2eD01d738944F1d4F5F8aC53dfc7F6D2c7",
                     "abi": [
                       "error Unauthorized(address addr)",
                       "error ValueAlreadyInSet()",
@@ -20508,17 +20497,17 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xe70530fed80daff9291ee33c61a8e7b56cc5da01d89def8146f269b73efad584",
-                    "deployTxnBlockNumber": "6660760",
-                    "deployTimestamp": "1725881220",
+                    "deployTxnHash": "0x5d9c3deb8b674c8358bd4a67f4992d9537024e1096133622408ec1a8bc197758",
+                    "deployTxnBlockNumber": "8374785",
+                    "deployTimestamp": "1747828716",
                     "sourceName": "contracts/modules/FeatureFlagModule.sol",
                     "contractName": "FeatureFlagModule",
                     "deployedOn": "contract.FeatureFlagModule",
-                    "gasUsed": 765178,
-                    "gasCost": "60066743466"
+                    "gasUsed": 765166,
+                    "gasCost": "613995746"
                   },
                   "MarketConfigurationModule": {
-                    "address": "0x8ADb9399f48cC65741ed685E4622c5C9Ca2FbAE3",
+                    "address": "0x0441630beCbD73d92D15917D150cBD7d488ec935",
                     "abi": [
                       "error InvalidCollateralLeverage(uint256)",
                       "error InvalidFeeCollectorInterface(address invalidFeeCollector)",
@@ -20552,17 +20541,17 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x3234e81a7831e0d234990acc4b0d254430e67a4b3502ce655c76ca1b4c30422f",
-                    "deployTxnBlockNumber": "6660761",
-                    "deployTimestamp": "1725881232",
+                    "deployTxnHash": "0x7b96e81487b509d987db112d46e329f165ca6d2d8e93b0ed11b3408013ea3b06",
+                    "deployTxnBlockNumber": "8374786",
+                    "deployTimestamp": "1747828728",
                     "sourceName": "contracts/modules/MarketConfigurationModule.sol",
                     "contractName": "MarketConfigurationModule",
                     "deployedOn": "contract.MarketConfigurationModule",
                     "gasUsed": 720683,
-                    "gasCost": "64914631353"
+                    "gasCost": "628539006"
                   },
                   "SpotMarketFactoryModule": {
-                    "address": "0x69C9C519Af0944A6A25D564FEafa8B4De4B5055d",
+                    "address": "0xBA9734649d01099eCc41C9da064781440Fd48419",
                     "abi": [
                       "error FeatureUnavailable(bytes32 which)",
                       "error InvalidMarketOwner()",
@@ -20612,17 +20601,17 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x93562dc38960af66c7d07fb859ad94a83f1f90d12ad4fd24ec13b776cb8bc0d5",
-                    "deployTxnBlockNumber": "6660763",
-                    "deployTimestamp": "1725881280",
+                    "deployTxnHash": "0x54f62a76438c6992fbb4f7ff6892d2487737de2d412e5fa04b746a09de84c970",
+                    "deployTxnBlockNumber": "8374787",
+                    "deployTimestamp": "1747828740",
                     "sourceName": "contracts/modules/SpotMarketFactoryModule.sol",
                     "contractName": "SpotMarketFactoryModule",
                     "deployedOn": "contract.SpotMarketFactoryModule",
-                    "gasUsed": 2327426,
-                    "gasCost": "63604810514"
+                    "gasUsed": 2347962,
+                    "gasCost": "609576525"
                   },
                   "SynthTokenModule": {
-                    "address": "0x27B6ca49F2db39C1595F9701a0bA104DaE1F5C9D",
+                    "address": "0x086B525020ed0b4487a8ed4a91f20dC69a2e4f32",
                     "abi": [
                       "error AlreadyInitialized()",
                       "error InsufficientAllowance(uint256 required, uint256 existing)",
@@ -20655,19 +20644,20 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0x950fdb8b959c27f47bd8ca58e629d32e72daf2adc95131d19e5688f5b5ae9b91",
-                    "deployTxnBlockNumber": "6660764",
-                    "deployTimestamp": "1725881304",
+                    "deployTxnHash": "0x1f5533b3098778f5c1b514bdb5602f41915a1cb2d5d3ee17dd569fb7bfbe8596",
+                    "deployTxnBlockNumber": "8374788",
+                    "deployTimestamp": "1747828752",
                     "sourceName": "contracts/modules/token/SynthTokenModule.sol",
                     "contractName": "SynthTokenModule",
                     "deployedOn": "contract.SynthTokenModule",
-                    "gasUsed": 1207435,
-                    "gasCost": "65146701036"
+                    "gasUsed": 1207447,
+                    "gasCost": "609228985"
                   },
                   "WrapperModule": {
-                    "address": "0xE5CEB2B2ad01acf146F45E0fa057E80A7D2E5e10",
+                    "address": "0x9FD3411B3592C3441A0C9E1Ee2dd222dF87F6E44",
                     "abi": [
                       "error FailedTransfer(address from, address to, uint256 value)",
+                      "error FeatureUnavailable(bytes32 which)",
                       "error InsufficientAmountReceived(uint256 expected, uint256 current)",
                       "error InvalidCollateralType(address configuredCollateralType)",
                       "error InvalidMarket(uint128 marketId)",
@@ -20685,14 +20675,14 @@
                     ],
                     "constructorArgs": [],
                     "linkedLibraries": {},
-                    "deployTxnHash": "0xf218ba365871945416270260896601a5177c76105310b2c1b31b3e781d5e0c50",
-                    "deployTxnBlockNumber": "6660766",
-                    "deployTimestamp": "1725881328",
+                    "deployTxnHash": "0x828460129323be46015329c388b7e716131f9805c2f0735153dd86e3a9e06422",
+                    "deployTxnBlockNumber": "8374789",
+                    "deployTimestamp": "1747828764",
                     "sourceName": "contracts/modules/WrapperModule.sol",
                     "contractName": "WrapperModule",
                     "deployedOn": "contract.WrapperModule",
-                    "gasUsed": 1684906,
-                    "gasCost": "65722807709"
+                    "gasUsed": 1892668,
+                    "gasCost": "614094478"
                   },
                   "InitialSpotMarketProxy": {
                     "address": "0xdBE114Ef3054Ad9Ed2A3b6beee538433f72BAfc2",
@@ -20729,8 +20719,13 @@
                     "gasCost": "996572681"
                   },
                   "SpotMarketRouter": {
-                    "address": "0x2c8cd88afd8da2741306b3870a9a2eba110a801f",
+                    "address": "0x49232bd36374bd5e129dd2e91da18a81dc87832d",
                     "abi": [
+                      "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                      "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                      "function facetAddresses() pure returns (address[] addresses)",
+                      "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                      "function emitDiamondCutEvent() returns (bool)",
                       "error ImplementationIsSterile(address implementation)",
                       "error NoChange()",
                       "error NotAContract(address contr)",
@@ -20894,17 +20889,22 @@
                       "function setFeatureFlagDenyAll(bytes32 feature, bool denyAll)"
                     ],
                     "deployedOn": "router.SpotMarketRouter",
-                    "deployTxnHash": "0xfc7776abe7fc832f1f242bc7b76eb616ae442be22ea8e275bc84de9fdb5d75b1",
-                    "deployTxnBlockNumber": "6660767",
-                    "deployTimestamp": "1725881340",
+                    "deployTxnHash": "0x97ca893dc905e4f249fd9ffc72b18beccd572520d54d9ec88ecfd70a73836132",
+                    "deployTxnBlockNumber": "8374790",
+                    "deployTimestamp": "1747828776",
                     "contractName": "SpotMarketRouter",
                     "sourceName": "SpotMarketRouter.sol",
-                    "gasUsed": 877187,
-                    "gasCost": "65678968306"
+                    "gasUsed": 3599996,
+                    "gasCost": "601691546"
                   },
                   "SynthRouter": {
-                    "address": "0x24df500663b7c1e095b353f3538ca7a595b349e7",
+                    "address": "0x3bf31896b2cc5e18af9bb81cd007a1ce8613418c",
                     "abi": [
+                      "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                      "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                      "function facetAddresses() pure returns (address[] addresses)",
+                      "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                      "function emitDiamondCutEvent() returns (bool)",
                       "error ImplementationIsSterile(address implementation)",
                       "error NoChange()",
                       "error NotAContract(address contr)",
@@ -20952,17 +20952,22 @@
                       "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                     ],
                     "deployedOn": "router.SynthRouter",
-                    "deployTxnHash": "0x70ee320647b6b4c9af34633ed8cd3854a6bb7195209ae71809f5f76a5a650f9a",
-                    "deployTxnBlockNumber": "6660768",
-                    "deployTimestamp": "1725881352",
+                    "deployTxnHash": "0xbc97bcadad9b7556e903c7965fabe8aa442787d0a84e9254fb4bb8a3638045b0",
+                    "deployTxnBlockNumber": "8374791",
+                    "deployTimestamp": "1747828788",
                     "contractName": "SynthRouter",
                     "sourceName": "SynthRouter.sol",
-                    "gasUsed": 378297,
-                    "gasCost": "64995355150"
+                    "gasUsed": 1930195,
+                    "gasCost": "588839251"
                   },
                   "SpotMarketProxy": {
                     "address": "0xdBE114Ef3054Ad9Ed2A3b6beee538433f72BAfc2",
                     "abi": [
+                      "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                      "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                      "function facetAddresses() pure returns (address[] addresses)",
+                      "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                      "function emitDiamondCutEvent() returns (bool)",
                       "error ImplementationIsSterile(address implementation)",
                       "error NoChange()",
                       "error NotAContract(address contr)",
@@ -21128,8 +21133,12 @@
                     "deployTxnHash": "",
                     "deployTxnBlockNumber": "",
                     "deployTimestamp": "",
-                    "sourceName": "",
-                    "contractName": "",
+                    "constructorArgs": [
+                      "<%= contracts.CoreModule.address %>",
+                      "<%= settings.owner %>"
+                    ],
+                    "sourceName": "contracts/Proxy.sol",
+                    "contractName": "Proxy",
                     "deployedOn": "invoke.upgradeSpotMarketProxy",
                     "gasUsed": 0,
                     "gasCost": "0",
@@ -21144,10 +21153,10 @@
                 },
                 "imports": {
                   "synthetix": {
-                    "url": "ipfs://QmZBFSpRTz815y5jGswaY3ZmRW9C48U6Gd4MxiCq16Uamc",
+                    "url": "ipfs://QmRtmBhsnHzsZPPyzFyfb4WA8PPwnKfuNyD2jBfmytc7yw",
                     "contracts": {
                       "AccountModule": {
-                        "address": "0xad6BCF26Dea677eF4DDD76Bb316aFB496A86f240",
+                        "address": "0x7297e7544F1f8a507BA3e5e325FBb969C154EECf",
                         "abi": [
                           "error FeatureUnavailable(bytes32 which)",
                           "error InvalidAccountId(uint128 accountId)",
@@ -21177,14 +21186,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x55f848d5531ff3b7aca3b312befa40e33097cf3eed6eb9271dc025f4d23a2555",
-                        "deployTxnBlockNumber": "6787984",
-                        "deployTimestamp": "1727702112",
+                        "deployTxnHash": "0x46a3f477a4db34453e2f788315665c5e190a87b8787a61abfd6791540ede7815",
+                        "deployTxnBlockNumber": "8374751",
+                        "deployTimestamp": "1747828308",
                         "sourceName": "contracts/modules/core/AccountModule.sol",
                         "contractName": "AccountModule",
                         "deployedOn": "contract.AccountModule",
-                        "gasUsed": 1225809,
-                        "gasCost": "249227485234"
+                        "gasUsed": 1225797,
+                        "gasCost": "840868922"
                       },
                       "AccountTokenModule": {
                         "address": "0x88f064248CC20Bf14a115F2cf38e9c3f6a8B9f3c",
@@ -21239,10 +21248,12 @@
                         "gasCost": "49074705690"
                       },
                       "AssociateDebtModule": {
-                        "address": "0x9F9690497D8C9Daa0b0b4C66D9436d31622fbC8D",
+                        "address": "0x714e189cc7E3cba58199776D5420BF4ED1367Fe9",
                         "abi": [
                           "error AccountNotFound(uint128 accountId)",
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error FeatureUnavailable(bytes32 which)",
                           "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
                           "error MarketNotFound(uint128 marketId)",
@@ -21258,14 +21269,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x44ad4a5be9940930eaafd3f529cf0b8d8efe070719cf6a8fa45df08a23aefd78",
-                        "deployTxnBlockNumber": "6787985",
-                        "deployTimestamp": "1727702124",
+                        "deployTxnHash": "0x487723f15b0652a60edc096c7ed7c6dc7913a89edd2cbe55030b0f981caccc22",
+                        "deployTxnBlockNumber": "8374752",
+                        "deployTimestamp": "1747828320",
                         "sourceName": "contracts/modules/core/AssociateDebtModule.sol",
                         "contractName": "AssociateDebtModule",
                         "deployedOn": "contract.AssociateDebtModule",
-                        "gasUsed": 2341212,
-                        "gasCost": "247534915098"
+                        "gasUsed": 2612609,
+                        "gasCost": "812346162"
                       },
                       "AssociatedSystemsModule": {
                         "address": "0x9fb00757BA9e33E3fEf51C1677D9D59E5a4ee9d6",
@@ -21309,8 +21320,9 @@
                         "gasCost": "49006680826"
                       },
                       "CollateralConfigurationModule": {
-                        "address": "0x29294F606b84F819F7b8ee6d6C32E9f334E4934e",
+                        "address": "0x7A8A8F1df54ba15fF97ecA3765fa4fa24D626206",
                         "abi": [
+                          "error EmptyRevertReason()",
                           "error InvalidParameter(string parameter, string reason)",
                           "error OverflowInt256ToUint256()",
                           "error PositionOutOfBounds()",
@@ -21324,27 +21336,28 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x98b20f8a368d00727beea506e178af9bffa0aa9f6362f33e5f5ade54aeebb450",
-                        "deployTxnBlockNumber": "6787986",
-                        "deployTimestamp": "1727702136",
+                        "deployTxnHash": "0x82175b1ef4df15d4d9a7d1538c828bfa5217d11ca76a78580841bc91cc9b318f",
+                        "deployTxnBlockNumber": "8374753",
+                        "deployTimestamp": "1747828332",
                         "sourceName": "contracts/modules/core/CollateralConfigurationModule.sol",
                         "contractName": "CollateralConfigurationModule",
                         "deployedOn": "contract.CollateralConfigurationModule",
-                        "gasUsed": 837646,
-                        "gasCost": "235481438916"
+                        "gasUsed": 872728,
+                        "gasCost": "799886935"
                       },
                       "CollateralModule": {
-                        "address": "0x829D356Db36232f409DE06cAedF127355f9852A6",
+                        "address": "0xa529c684e54aD4D646508539E16b0147b904492C",
                         "abi": [
                           "error AccountActivityTimeoutPending(uint128 accountId, uint256 currentTime, uint256 requiredTime)",
                           "error AccountNotFound(uint128 accountId)",
                           "error CollateralDepositDisabled(address collateralType)",
                           "error CollateralNotFound()",
+                          "error EmptyRevertReason()",
                           "error FailedTransfer(address from, address to, uint256 value)",
                           "error FeatureUnavailable(bytes32 which)",
-                          "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InsufficientAccountCollateral(uint256 amount)",
                           "error InsufficientAllowance(uint256 required, uint256 existing)",
+                          "error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InvalidParameter(string parameter, string reason)",
                           "error OverflowInt256ToUint256()",
                           "error OverflowUint256ToUint128()",
@@ -21366,14 +21379,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xf63f71e40ba7f00772c3a3cdf6fb1036aca7c1a6fd59653edfdef60baf8bf00e",
-                        "deployTxnBlockNumber": "6787987",
-                        "deployTimestamp": "1727702148",
+                        "deployTxnHash": "0xe35000617c3bf7f1ba68e04e3bf40318d2e2b1e8d1cef7ea6933c5e8e085bc89",
+                        "deployTxnBlockNumber": "8374754",
+                        "deployTimestamp": "1747828344",
                         "sourceName": "contracts/modules/core/CollateralModule.sol",
                         "contractName": "CollateralModule",
                         "deployedOn": "contract.CollateralModule",
-                        "gasUsed": 1845817,
-                        "gasCost": "243359225842"
+                        "gasUsed": 1937434,
+                        "gasCost": "802377814"
                       },
                       "CrossChainUSDModule": {
                         "address": "0xfA6b5ae60ddFc37c09Af1C25fABfBDED49121A7b",
@@ -21429,12 +21442,14 @@
                         "gasCost": "47712806352"
                       },
                       "IssueUSDModule": {
-                        "address": "0x4eDCbe23CE89D318f6B4252997954C17A26aBFDd",
+                        "address": "0x0B9373aD7CaC7458a2389dBeD06d7F986dC99f89",
                         "abi": [
                           "error CollateralDepositDisabled(address collateralType)",
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error FeatureUnavailable(bytes32 which)",
-                          "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
+                          "error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
                           "error InsufficientDebt(int256 currentDebt)",
                           "error InvalidParameter(string parameter, string reason)",
@@ -21445,6 +21460,7 @@
                           "error OverflowUint128ToInt128()",
                           "error OverflowUint256ToInt256()",
                           "error OverflowUint256ToUint128()",
+                          "error OverflowUint256ToUint64()",
                           "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
                           "error PoolNotFound(uint128 poolId)",
                           "event UsdBurned(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, address indexed sender)",
@@ -21454,21 +21470,23 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x47f1b297ac78ca844e6a615fe067258b48be6abb7050ec86a5390dd1c6e8de39",
-                        "deployTxnBlockNumber": "6787988",
-                        "deployTimestamp": "1727702160",
+                        "deployTxnHash": "0xeae213f2b8772f75ad719d13bb79659f714a247b01012c33325e1ba7ecf2ea43",
+                        "deployTxnBlockNumber": "8374755",
+                        "deployTimestamp": "1747828356",
                         "sourceName": "contracts/modules/core/IssueUSDModule.sol",
                         "contractName": "IssueUSDModule",
                         "deployedOn": "contract.IssueUSDModule",
-                        "gasUsed": 2669109,
-                        "gasCost": "243481754587"
+                        "gasUsed": 3042995,
+                        "gasCost": "794478182"
                       },
                       "LiquidationModule": {
-                        "address": "0xC02fE85E3C12F4C528C7cBc56308bFcDAfeF2aD7",
+                        "address": "0x7Ab591a06d5Bd3bBA4123fA4918dAE9833Ff437D",
                         "abi": [
                           "error AccountNotFound(uint128 accountId)",
                           "error CannotScaleEmptyMapping()",
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error FeatureUnavailable(bytes32 which)",
                           "error IneligibleForLiquidation(uint256 collateralValue, int256 debt, uint256 currentCRatio, uint256 cratio)",
                           "error InsufficientMappedAmount()",
@@ -21492,23 +21510,25 @@
                           "function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) returns (bool)",
                           "function isVaultLiquidatable(uint128 poolId, address collateralType) returns (bool)",
                           "function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                          "function liquidateToTreasury(uint128 accountId, uint128 poolId, address collateralType) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
                           "function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)"
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xe356051e8eb6a226a8b68a3564d5c3fdfc52f3b7c8476aa7d58be3610fc4c19d",
-                        "deployTxnBlockNumber": "6787989",
-                        "deployTimestamp": "1727702172",
+                        "deployTxnHash": "0xd2e9e1e8abfa58dbd631e430403deb059d98b07efa3ea338bc00ac114a32b811",
+                        "deployTxnBlockNumber": "8374756",
+                        "deployTimestamp": "1747828368",
                         "sourceName": "contracts/modules/core/LiquidationModule.sol",
                         "contractName": "LiquidationModule",
                         "deployedOn": "contract.LiquidationModule",
-                        "gasUsed": 4027474,
-                        "gasCost": "235886783505"
+                        "gasUsed": 4620402,
+                        "gasCost": "816261199"
                       },
                       "MarketCollateralModule": {
-                        "address": "0xe16bc3f9C9bB4c13Fad8ec760b25E920472F024d",
+                        "address": "0x28555458955C04C9ccc6E594ab00Dd1aDa01CF80",
                         "abi": [
                           "error CollateralNotFound()",
+                          "error EmptyRevertReason()",
                           "error FailedTransfer(address from, address to, uint256 value)",
                           "error FeatureUnavailable(bytes32 which)",
                           "error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit)",
@@ -21529,19 +21549,20 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x766958a4e045c58e5924387156ea12578274d0a78e6b077a28e49147e7a3f27d",
-                        "deployTxnBlockNumber": "6787990",
-                        "deployTimestamp": "1727702184",
+                        "deployTxnHash": "0xc33554713454a0e30b8121fca315f326600c637b27a90f868e8d2da3a34dc7b9",
+                        "deployTxnBlockNumber": "8374757",
+                        "deployTimestamp": "1747828380",
                         "sourceName": "contracts/modules/core/MarketCollateralModule.sol",
                         "contractName": "MarketCollateralModule",
                         "deployedOn": "contract.MarketCollateralModule",
-                        "gasUsed": 1222509,
-                        "gasCost": "238083924264"
+                        "gasUsed": 1298300,
+                        "gasCost": "812078176"
                       },
                       "MarketManagerModule": {
-                        "address": "0x114D20143d439131bf2A290463860e52b8Dce109",
+                        "address": "0x4C4712809265C9ebF5D0929DD016F6F8582a08D6",
                         "abi": [
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
                           "error FeatureUnavailable(bytes32 which)",
                           "error IncorrectMarketInterface(address market)",
                           "error InvalidParameter(string parameter, string reason)",
@@ -21561,12 +21582,14 @@
                           "function depositMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
                           "function distributeDebtToPools(uint128 marketId, uint256 maxIter) returns (bool)",
                           "function getMarketAddress(uint128 marketId) view returns (address)",
+                          "function getMarketCapacityContributionFromPool(uint128 marketId, uint128 poolId) view returns (uint256)",
                           "function getMarketCollateral(uint128 marketId) view returns (uint256)",
                           "function getMarketDebtPerShare(uint128 marketId) returns (int256)",
                           "function getMarketFees(uint128, uint256 amount) view returns (uint256 depositFeeAmount, uint256 withdrawFeeAmount)",
                           "function getMarketMinDelegateTime(uint128 marketId) view returns (uint32)",
                           "function getMarketNetIssuance(uint128 marketId) view returns (int128)",
                           "function getMarketPoolDebtDistribution(uint128 marketId, uint128 poolId) returns (uint256 sharesD18, uint128 totalSharesD18, int128 valuePerShareD27)",
+                          "function getMarketPoolMaxDebtPerShare(uint128 marketId, uint128 poolId) view returns (int256)",
                           "function getMarketPools(uint128 marketId) returns (uint128[] inRangePoolIds, uint128[] outRangePoolIds)",
                           "function getMarketReportedDebt(uint128 marketId) view returns (uint256)",
                           "function getMarketTotalDebt(uint128 marketId) view returns (int256)",
@@ -21582,17 +21605,17 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xa67ad9fa4670a7b9eb66e7490576cd22c4e9d2a9edccf20af79c62315bfa002c",
-                        "deployTxnBlockNumber": "6787991",
-                        "deployTimestamp": "1727702208",
+                        "deployTxnHash": "0x197bfacc089fe39747ec254aa4157c19ce0f80e153d0b3dc99278ccfb428b67b",
+                        "deployTxnBlockNumber": "8374758",
+                        "deployTimestamp": "1747828392",
                         "sourceName": "contracts/modules/core/MarketManagerModule.sol",
                         "contractName": "MarketManagerModule",
                         "deployedOn": "contract.MarketManagerModule",
-                        "gasUsed": 2572425,
-                        "gasCost": "238740579560"
+                        "gasUsed": 2816393,
+                        "gasCost": "798490927"
                       },
                       "PoolConfigurationModule": {
-                        "address": "0x34B2Bfb5e45A084761c930f7f2dc6eEB77BEe42e",
+                        "address": "0x6374Bb279b5145C6c62F8CF8eCB064e927BfA513",
                         "abi": [
                           "error PoolNotFound(uint128 poolId)",
                           "error Unauthorized(address addr)",
@@ -21609,20 +21632,22 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xe74829361702308befa7ffce0519a8857add34d28e3e0ce7c0bfec273331beb4",
-                        "deployTxnBlockNumber": "6787992",
-                        "deployTimestamp": "1727702220",
+                        "deployTxnHash": "0xe849b4e06b1c2f809fef78b5132bdaa5bb59180673bf4af58a458d70bad3e8be",
+                        "deployTxnBlockNumber": "8374759",
+                        "deployTimestamp": "1747828404",
                         "sourceName": "contracts/modules/core/PoolConfigurationModule.sol",
                         "contractName": "PoolConfigurationModule",
                         "deployedOn": "contract.PoolConfigurationModule",
                         "gasUsed": 446271,
-                        "gasCost": "248704867732"
+                        "gasCost": "802346058"
                       },
                       "PoolModule": {
-                        "address": "0x566B32366c3c2E1DB367F815A8F145e2EC602ae8",
+                        "address": "0xaC0f047BE43E2B1cF8a842260e6636A414a08101",
                         "abi": [
                           "error CapacityLocked(uint256 marketId)",
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error FeatureUnavailable(bytes32 which)",
                           "error InvalidParameter(string parameter, string reason)",
                           "error MarketNotFound(uint128 marketId)",
@@ -21654,8 +21679,10 @@
                           "function getPoolCollateralConfiguration(uint128 poolId, address collateralType) view returns (tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) config)",
                           "function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) view returns (uint256)",
                           "function getPoolConfiguration(uint128 poolId) view returns (tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[])",
+                          "function getPoolDebtPerShare(uint128 poolId) returns (int256 debtPerShareD18)",
                           "function getPoolName(uint128 poolId) view returns (string poolName)",
                           "function getPoolOwner(uint128 poolId) view returns (address)",
+                          "function getPoolTotalDebt(uint128 poolId) returns (int256 totalDebtD18)",
                           "function nominatePoolOwner(address nominatedOwner, uint128 poolId)",
                           "function rebalancePool(uint128 poolId, address optionalCollateralType)",
                           "function renouncePoolNomination(uint128 poolId)",
@@ -21669,17 +21696,17 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x9f323c28384ff53489e0156ed44b9552f7789ce8b9c53cc599bd1f0b24b101bd",
-                        "deployTxnBlockNumber": "6787993",
-                        "deployTimestamp": "1727702232",
+                        "deployTxnHash": "0x9e91025ca9c17e23d039d5c2648683a1ffcb03f65cd6790a96443463ca5787c8",
+                        "deployTxnBlockNumber": "8374760",
+                        "deployTimestamp": "1747828416",
                         "sourceName": "contracts/modules/core/PoolModule.sol",
                         "contractName": "PoolModule",
                         "deployedOn": "contract.PoolModule",
-                        "gasUsed": 3705275,
-                        "gasCost": "239181325655"
+                        "gasUsed": 4099803,
+                        "gasCost": "791076552"
                       },
                       "RewardsManagerModule": {
-                        "address": "0xA2Afb2ecf105fd3Cf714ceEbB984D7a7d902E6A6",
+                        "address": "0x8bF8FdC959a9fAacC8351bB7A9c429a2c458F1De",
                         "abi": [
                           "error AccountNotFound(uint128 accountId)",
                           "error FeatureUnavailable(bytes32 which)",
@@ -21714,14 +21741,14 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0x2ad2bf652db385fd0bab4f0dc417c30ae85bec992e7de9abf1fe6bccbc0f72db",
-                        "deployTxnBlockNumber": "6787994",
-                        "deployTimestamp": "1727702244",
+                        "deployTxnHash": "0xa140d0fc80a07fee0a18ed4f74960a5c8b8097da0b6c5b76b7d37b45d6177daf",
+                        "deployTxnBlockNumber": "8374761",
+                        "deployTimestamp": "1747828428",
                         "sourceName": "contracts/modules/core/RewardsManagerModule.sol",
                         "contractName": "RewardsManagerModule",
                         "deployedOn": "contract.RewardsManagerModule",
-                        "gasUsed": 2628408,
-                        "gasCost": "236985246197"
+                        "gasUsed": 2642251,
+                        "gasCost": "784183135"
                       },
                       "USDTokenModule": {
                         "address": "0x7812Ac2c7c6f1f00dE85C76c727549ab0D70f784",
@@ -21764,12 +21791,13 @@
                         "gasCost": "53285251123"
                       },
                       "UtilsModule": {
-                        "address": "0xDE0aC619fcE6a8B72853132Ed521Bf300F34921F",
+                        "address": "0xC569ad2b1DD921B4E1438dA331Be79D3FdFCe8d8",
                         "abi": [
                           "error InvalidParameter(string parameter, string reason)",
                           "error OverflowUint256ToUint64()",
                           "error Unauthorized(address addr)",
                           "error ValueAlreadyInSet()",
+                          "event ConfigSet(bytes32 indexed k, bytes32 v)",
                           "event NewSupportedCrossChainNetwork(uint64 newChainId)",
                           "function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool)",
                           "function configureOracleManager(address oracleManagerAddress)",
@@ -21784,29 +21812,32 @@
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xdf35efa1e91ab6f87b8874d7ca7f8ba7fb6ed11b28e1113023a90dafc48f9ae8",
-                        "deployTxnBlockNumber": "6660732",
-                        "deployTimestamp": "1725880764",
+                        "deployTxnHash": "0x79e3b261980c3104387556b07ef64b093759e282c1475462638bb8c91964786b",
+                        "deployTxnBlockNumber": "8374762",
+                        "deployTimestamp": "1747828440",
                         "sourceName": "contracts/modules/core/UtilsModule.sol",
                         "contractName": "UtilsModule",
                         "deployedOn": "contract.UtilsModule",
-                        "gasUsed": 759697,
-                        "gasCost": "52437637756"
+                        "gasUsed": 770698,
+                        "gasCost": "783578952"
                       },
                       "VaultModule": {
-                        "address": "0x3141154ABCc0b1a7f9d5Fe51eC7763AC20148771",
+                        "address": "0x441C9A3063ad9B8b23E42ed12D6E2A8FDE6e1E8c",
                         "abi": [
                           "error CapacityLocked(uint256 marketId)",
                           "error CollateralDepositDisabled(address collateralType)",
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error FeatureUnavailable(bytes32 which)",
-                          "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InsufficientAccountCollateral(uint256 amount)",
+                          "error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
                           "error InsufficientDelegation(uint256 minDelegation)",
                           "error InsufficientVaultCollateralRatio(uint128 poolId, address collateralType)",
                           "error InvalidCollateralAmount()",
                           "error InvalidLeverage(uint256 leverage)",
+                          "error InvalidParameter(string parameter, string reason)",
                           "error MarketNotFound(uint128 marketId)",
                           "error MinDelegationTimeoutPending(uint128 poolId, uint32 timeRemaining)",
                           "error OverflowInt128ToUint128()",
@@ -21826,24 +21857,26 @@
                           "error ValueNotInSet()",
                           "event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender)",
                           "function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage)",
+                          "function getLastDelegationTime(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 lastDelegationTime)",
                           "function getPosition(uint128 accountId, uint128 poolId, address collateralType) returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio)",
                           "function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 amount)",
                           "function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) returns (uint256)",
                           "function getPositionDebt(uint128 accountId, uint128 poolId, address collateralType) returns (int256 debt)",
                           "function getVaultCollateral(uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
                           "function getVaultCollateralRatio(uint128 poolId, address collateralType) returns (uint256)",
-                          "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
+                          "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)",
+                          "function migrateDelegation(uint128 accountId, uint128 oldPoolId, address collateralType, uint128 newPoolId)"
                         ],
                         "constructorArgs": [],
                         "linkedLibraries": {},
-                        "deployTxnHash": "0xa5da2536577aae2390fc5880c02d2b6ac1cf44a9ccdf5bc2efb5688c59eae5e6",
-                        "deployTxnBlockNumber": "6787995",
-                        "deployTimestamp": "1727702256",
+                        "deployTxnHash": "0x5258ca6ad2462f51904e18dcccc365d2acefb46777a67853ee480737130a9c82",
+                        "deployTxnBlockNumber": "8374763",
+                        "deployTimestamp": "1747828452",
                         "sourceName": "contracts/modules/core/VaultModule.sol",
                         "contractName": "VaultModule",
                         "deployedOn": "contract.VaultModule",
-                        "gasUsed": 3965412,
-                        "gasCost": "240369268727"
+                        "gasUsed": 4732148,
+                        "gasCost": "756426945"
                       },
                       "InitialModuleBundle": {
                         "address": "0x828EED723cAF0A8F822249231266E38dF614923C",
@@ -21911,8 +21944,13 @@
                         "gasCost": "978908043"
                       },
                       "AccountRouter": {
-                        "address": "0x41a883a85b1ade59f41d459fa550b40fa56429db",
+                        "address": "0x9b7c69f5b61df63b9914986e61d8c9b0c3aaf8a5",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -21968,17 +22006,22 @@
                           "function transferFrom(address from, address to, uint256 tokenId)"
                         ],
                         "deployedOn": "router.AccountRouter",
-                        "deployTxnHash": "0xe0dbc06ef467e6e0af4ff9a5872232c4ea127a5fd52bdaef82bd5ed449fcfa90",
-                        "deployTxnBlockNumber": "6660734",
-                        "deployTimestamp": "1725880788",
+                        "deployTxnHash": "0xdfa8dd20dee6980218d1feb50f4e9c06b9fcc70726af3816ee220fe1f71ddd40",
+                        "deployTxnBlockNumber": "8374764",
+                        "deployTimestamp": "1747828464",
                         "contractName": "AccountRouter",
                         "sourceName": "AccountRouter.sol",
-                        "gasUsed": 403596,
-                        "gasCost": "52773456583"
+                        "gasUsed": 1963401,
+                        "gasCost": "769642764"
                       },
                       "CoreRouter": {
-                        "address": "0xe0f8529072d72c0d7d0c2a6616f10fb3a4c8edc0",
+                        "address": "0x18346eaf797b6c26399c30968e48cf278466d7ab",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -22038,6 +22081,8 @@
                           "function revokePermission(uint128 accountId, bytes32 permission, address user)",
                           "error AccountNotFound(uint128 accountId)",
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
                           "error MarketNotFound(uint128 marketId)",
                           "error NotFundedByPool(uint256 marketId, uint256 poolId)",
@@ -22063,9 +22108,9 @@
                           "error CollateralDepositDisabled(address collateralType)",
                           "error CollateralNotFound()",
                           "error FailedTransfer(address from, address to, uint256 value)",
-                          "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InsufficientAccountCollateral(uint256 amount)",
                           "error InsufficientAllowance(uint256 required, uint256 existing)",
+                          "error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InvalidParameter(string parameter, string reason)",
                           "error OverflowUint256ToUint64()",
                           "error PrecisionLost(uint256 tokenAmount, uint8 decimals)",
@@ -22107,6 +22152,7 @@
                           "function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) returns (bool)",
                           "function isVaultLiquidatable(uint128 poolId, address collateralType) returns (bool)",
                           "function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                          "function liquidateToTreasury(uint128 accountId, uint128 poolId, address collateralType) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
                           "function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
                           "error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit)",
                           "error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw)",
@@ -22129,12 +22175,14 @@
                           "function depositMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
                           "function distributeDebtToPools(uint128 marketId, uint256 maxIter) returns (bool)",
                           "function getMarketAddress(uint128 marketId) view returns (address)",
+                          "function getMarketCapacityContributionFromPool(uint128 marketId, uint128 poolId) view returns (uint256)",
                           "function getMarketCollateral(uint128 marketId) view returns (uint256)",
                           "function getMarketDebtPerShare(uint128 marketId) returns (int256)",
                           "function getMarketFees(uint128, uint256 amount) view returns (uint256 depositFeeAmount, uint256 withdrawFeeAmount)",
                           "function getMarketMinDelegateTime(uint128 marketId) view returns (uint32)",
                           "function getMarketNetIssuance(uint128 marketId) view returns (int128)",
                           "function getMarketPoolDebtDistribution(uint128 marketId, uint128 poolId) returns (uint256 sharesD18, uint128 totalSharesD18, int128 valuePerShareD27)",
+                          "function getMarketPoolMaxDebtPerShare(uint128 marketId, uint128 poolId) view returns (int256)",
                           "function getMarketPools(uint128 marketId) returns (uint128[] inRangePoolIds, uint128[] outRangePoolIds)",
                           "function getMarketReportedDebt(uint128 marketId) view returns (uint256)",
                           "function getMarketTotalDebt(uint128 marketId) view returns (int256)",
@@ -22176,8 +22224,10 @@
                           "function getPoolCollateralConfiguration(uint128 poolId, address collateralType) view returns (tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) config)",
                           "function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) view returns (uint256)",
                           "function getPoolConfiguration(uint128 poolId) view returns (tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[])",
+                          "function getPoolDebtPerShare(uint128 poolId) returns (int256 debtPerShareD18)",
                           "function getPoolName(uint128 poolId) view returns (string poolName)",
                           "function getPoolOwner(uint128 poolId) view returns (address)",
+                          "function getPoolTotalDebt(uint128 poolId) returns (int256 totalDebtD18)",
                           "function nominatePoolOwner(address nominatedOwner, uint128 poolId)",
                           "function rebalancePool(uint128 poolId, address optionalCollateralType)",
                           "function renouncePoolNomination(uint128 poolId)",
@@ -22203,6 +22253,7 @@
                           "function registerRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
                           "function removeRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
                           "function updateRewards(uint128 poolId, address collateralType, uint128 accountId) returns (uint256[], address[], uint256)",
+                          "event ConfigSet(bytes32 indexed k, bytes32 v)",
                           "event NewSupportedCrossChainNetwork(uint64 newChainId)",
                           "function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool)",
                           "function configureOracleManager(address oracleManagerAddress)",
@@ -22221,26 +22272,33 @@
                           "error PoolCollateralLimitExceeded(uint128 poolId, address collateralType, uint256 currentCollateral, uint256 maxCollateral)",
                           "event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender)",
                           "function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage)",
+                          "function getLastDelegationTime(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 lastDelegationTime)",
                           "function getPosition(uint128 accountId, uint128 poolId, address collateralType) returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio)",
                           "function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 amount)",
                           "function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) returns (uint256)",
                           "function getPositionDebt(uint128 accountId, uint128 poolId, address collateralType) returns (int256 debt)",
                           "function getVaultCollateral(uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
                           "function getVaultCollateralRatio(uint128 poolId, address collateralType) returns (uint256)",
-                          "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
+                          "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)",
+                          "function migrateDelegation(uint128 accountId, uint128 oldPoolId, address collateralType, uint128 newPoolId)"
                         ],
                         "deployedOn": "router.CoreRouter",
-                        "deployTxnHash": "0x336b5ecac7ed49031e23af0b008f68a2d7ec03fa33b26ca82a5109be069ee81a",
-                        "deployTxnBlockNumber": "6787996",
-                        "deployTimestamp": "1727702268",
+                        "deployTxnHash": "0xe1eb96efd14d9e21dc71fca9dccac9ac1602b4d2206eca51ed40840fae9fc46a",
+                        "deployTxnBlockNumber": "8374765",
+                        "deployTimestamp": "1747828476",
                         "contractName": "CoreRouter",
                         "sourceName": "CoreRouter.sol",
-                        "gasUsed": 1315580,
-                        "gasCost": "235502580314"
+                        "gasUsed": 5621270,
+                        "gasCost": "779829074"
                       },
                       "USDRouter": {
-                        "address": "0xf935f225a49ad37be81bb9430bec780446474e13",
+                        "address": "0xa999e916141368c05be86965c0161a9de958d82b",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -22292,17 +22350,22 @@
                           "function transferFrom(address from, address to, uint256 amount) returns (bool)"
                         ],
                         "deployedOn": "router.USDRouter",
-                        "deployTxnHash": "0x5df09aa90c288eb560c868e95b7771175e268155150a10e7426008ddc3c4cf01",
-                        "deployTxnBlockNumber": "6660736",
-                        "deployTimestamp": "1725880824",
+                        "deployTxnHash": "0x327f916c2666bdfc839e121ba76c8e3d02972b5c2b0f6f6e492b7d1854d8ebb1",
+                        "deployTxnBlockNumber": "8374766",
+                        "deployTimestamp": "1747828488",
                         "contractName": "USDRouter",
                         "sourceName": "USDRouter.sol",
-                        "gasUsed": 394947,
-                        "gasCost": "53931562958"
+                        "gasUsed": 2087124,
+                        "gasCost": "790603927"
                       },
                       "CoreProxy": {
                         "address": "0x8715b7eaDC55DF39F0D7bd8D5Ae44BaD4A7a0a8f",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -22362,6 +22425,8 @@
                           "function revokePermission(uint128 accountId, bytes32 permission, address user)",
                           "error AccountNotFound(uint128 accountId)",
                           "error EmptyDistribution()",
+                          "error EmptyRevertReason()",
+                          "error Errors(bytes[] errors)",
                           "error InsufficientCollateralRatio(uint256 collateralValue, uint256 debt, uint256 ratio, uint256 minRatio)",
                           "error MarketNotFound(uint128 marketId)",
                           "error NotFundedByPool(uint256 marketId, uint256 poolId)",
@@ -22387,9 +22452,9 @@
                           "error CollateralDepositDisabled(address collateralType)",
                           "error CollateralNotFound()",
                           "error FailedTransfer(address from, address to, uint256 value)",
-                          "error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InsufficientAccountCollateral(uint256 amount)",
                           "error InsufficientAllowance(uint256 required, uint256 existing)",
+                          "error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18)",
                           "error InvalidParameter(string parameter, string reason)",
                           "error OverflowUint256ToUint64()",
                           "error PrecisionLost(uint256 tokenAmount, uint8 decimals)",
@@ -22431,6 +22496,7 @@
                           "function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) returns (bool)",
                           "function isVaultLiquidatable(uint128 poolId, address collateralType) returns (bool)",
                           "function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
+                          "function liquidateToTreasury(uint128 accountId, uint128 poolId, address collateralType) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
                           "function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) returns (tuple(uint256 debtLiquidated, uint256 collateralLiquidated, uint256 amountRewarded) liquidationData)",
                           "error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit)",
                           "error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw)",
@@ -22453,12 +22519,14 @@
                           "function depositMarketUsd(uint128 marketId, address target, uint256 amount) returns (uint256 feeAmount)",
                           "function distributeDebtToPools(uint128 marketId, uint256 maxIter) returns (bool)",
                           "function getMarketAddress(uint128 marketId) view returns (address)",
+                          "function getMarketCapacityContributionFromPool(uint128 marketId, uint128 poolId) view returns (uint256)",
                           "function getMarketCollateral(uint128 marketId) view returns (uint256)",
                           "function getMarketDebtPerShare(uint128 marketId) returns (int256)",
                           "function getMarketFees(uint128, uint256 amount) view returns (uint256 depositFeeAmount, uint256 withdrawFeeAmount)",
                           "function getMarketMinDelegateTime(uint128 marketId) view returns (uint32)",
                           "function getMarketNetIssuance(uint128 marketId) view returns (int128)",
                           "function getMarketPoolDebtDistribution(uint128 marketId, uint128 poolId) returns (uint256 sharesD18, uint128 totalSharesD18, int128 valuePerShareD27)",
+                          "function getMarketPoolMaxDebtPerShare(uint128 marketId, uint128 poolId) view returns (int256)",
                           "function getMarketPools(uint128 marketId) returns (uint128[] inRangePoolIds, uint128[] outRangePoolIds)",
                           "function getMarketReportedDebt(uint128 marketId) view returns (uint256)",
                           "function getMarketTotalDebt(uint128 marketId) view returns (int256)",
@@ -22500,8 +22568,10 @@
                           "function getPoolCollateralConfiguration(uint128 poolId, address collateralType) view returns (tuple(uint256 collateralLimitD18, uint256 issuanceRatioD18) config)",
                           "function getPoolCollateralIssuanceRatio(uint128 poolId, address collateral) view returns (uint256)",
                           "function getPoolConfiguration(uint128 poolId) view returns (tuple(uint128 marketId, uint128 weightD18, int128 maxDebtShareValueD18)[])",
+                          "function getPoolDebtPerShare(uint128 poolId) returns (int256 debtPerShareD18)",
                           "function getPoolName(uint128 poolId) view returns (string poolName)",
                           "function getPoolOwner(uint128 poolId) view returns (address)",
+                          "function getPoolTotalDebt(uint128 poolId) returns (int256 totalDebtD18)",
                           "function nominatePoolOwner(address nominatedOwner, uint128 poolId)",
                           "function rebalancePool(uint128 poolId, address optionalCollateralType)",
                           "function renouncePoolNomination(uint128 poolId)",
@@ -22527,6 +22597,7 @@
                           "function registerRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
                           "function removeRewardsDistributor(uint128 poolId, address collateralType, address distributor)",
                           "function updateRewards(uint128 poolId, address collateralType, uint128 accountId) returns (uint256[], address[], uint256)",
+                          "event ConfigSet(bytes32 indexed k, bytes32 v)",
                           "event NewSupportedCrossChainNetwork(uint64 newChainId)",
                           "function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool)",
                           "function configureOracleManager(address oracleManagerAddress)",
@@ -22545,19 +22616,25 @@
                           "error PoolCollateralLimitExceeded(uint128 poolId, address collateralType, uint256 currentCollateral, uint256 maxCollateral)",
                           "event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender)",
                           "function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage)",
+                          "function getLastDelegationTime(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 lastDelegationTime)",
                           "function getPosition(uint128 accountId, uint128 poolId, address collateralType) returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio)",
                           "function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) view returns (uint256 amount)",
                           "function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) returns (uint256)",
                           "function getPositionDebt(uint128 accountId, uint128 poolId, address collateralType) returns (int256 debt)",
                           "function getVaultCollateral(uint128 poolId, address collateralType) view returns (uint256 amount, uint256 value)",
                           "function getVaultCollateralRatio(uint128 poolId, address collateralType) returns (uint256)",
-                          "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)"
+                          "function getVaultDebt(uint128 poolId, address collateralType) returns (int256)",
+                          "function migrateDelegation(uint128 accountId, uint128 oldPoolId, address collateralType, uint128 newPoolId)"
                         ],
                         "deployTxnHash": "",
                         "deployTxnBlockNumber": "",
                         "deployTimestamp": "",
-                        "sourceName": "",
-                        "contractName": "",
+                        "constructorArgs": [
+                          "<%= contracts.InitialModuleBundle.address %>",
+                          "<%= settings.owner %>"
+                        ],
+                        "sourceName": "contracts/Proxy.sol",
+                        "contractName": "Proxy",
                         "deployedOn": "invoke.upgrade_core_proxy",
                         "gasUsed": 0,
                         "gasCost": "0",
@@ -22566,6 +22643,11 @@
                       "AccountProxy": {
                         "address": "0xCb5D8fE2B4AfbedB1970CCDc2f2e2919a6114240",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -22623,8 +22705,8 @@
                         "deployTxnHash": "",
                         "deployTxnBlockNumber": "",
                         "deployTimestamp": "",
-                        "sourceName": "",
-                        "contractName": "",
+                        "sourceName": "@synthetixio/core-contracts/contracts/proxy/UUPSProxyWithOwner.sol",
+                        "contractName": "UUPSProxyWithOwner",
                         "deployedOn": "invoke.init_account",
                         "gasUsed": 0,
                         "gasCost": "0",
@@ -22633,6 +22715,11 @@
                       "USDProxy": {
                         "address": "0xF87E23c41Ce898Ab7640FC3Ce2eb8B11f257e67a",
                         "abi": [
+                          "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                          "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                          "function facetAddresses() pure returns (address[] addresses)",
+                          "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                          "function emitDiamondCutEvent() returns (bool)",
                           "error ImplementationIsSterile(address implementation)",
                           "error NoChange()",
                           "error NotAContract(address contr)",
@@ -22686,83 +22773,31 @@
                         "deployTxnHash": "",
                         "deployTxnBlockNumber": "",
                         "deployTimestamp": "",
-                        "sourceName": "",
-                        "contractName": "",
+                        "sourceName": "@synthetixio/core-contracts/contracts/proxy/UUPSProxyWithOwner.sol",
+                        "contractName": "UUPSProxyWithOwner",
                         "deployedOn": "invoke.init_usd",
                         "gasUsed": 0,
                         "gasCost": "0",
                         "highlight": true
                       }
                     },
+                    "settings": {
+                      "account_token_name": "Synthetix Account",
+                      "account_token_symbol": "SACCT",
+                      "bundleSalt": "main",
+                      "oracle_manager_package": "oracle-manager",
+                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                      "salt": "main",
+                      "usd_token_name": "Synthetic USD Token v3",
+                      "usd_token_symbol": "sUSD",
+                      "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
+                    },
                     "imports": {
-                      "trusted_multicall_forwarder": {
-                        "url": "ipfs://QmZvyrG1A2kxn7qrrgMoyx4S7Xncz3T9Cj7qujx1N74kzZ",
-                        "tags": [
-                          "latest"
-                        ],
-                        "target": "trusted-multicall-forwarder:latest@with-synthetix",
-                        "preset": "with-synthetix",
-                        "settings": {
-                          "salt": "salt"
-                        },
-                        "contracts": {
-                          "TrustedMulticallForwarder": {
-                            "address": "0xE2C5658cC5C448B48141168f3e475dF8f65A1e3e",
-                            "abi": [
-                              "constructor()",
-                              "error AddressInsufficientBalance(address account)",
-                              "error ERC2771ForwarderExpiredRequest(uint48 deadline)",
-                              "error ERC2771ForwarderInvalidSigner(address signer, address from)",
-                              "error ERC2771ForwarderMismatchedValue(uint256 requestedValue, uint256 msgValue)",
-                              "error ERC2771UntrustfulTarget(address target, address forwarder)",
-                              "error FailedInnerCall()",
-                              "error InvalidAccountNonce(address account, uint256 currentNonce)",
-                              "error InvalidShortString()",
-                              "error StringTooLong(string str)",
-                              "event EIP712DomainChanged()",
-                              "event ExecutedForwardRequest(address indexed signer, uint256 nonce, bool success)",
-                              "function aggregate(tuple(address target, bytes callData)[] calls) returns (uint256 blockNumber, bytes[] returnData)",
-                              "function aggregate3(tuple(address target, bool requireSuccess, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function aggregate3Value(tuple(address target, bool requireSuccess, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                              "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                              "function execute(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) payable",
-                              "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests) payable returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function executeBatch(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature)[] requests, address refundReceiver) payable",
-                              "function getBasefee() view returns (uint256 basefee)",
-                              "function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
-                              "function getBlockNumber() view returns (uint256 blockNumber)",
-                              "function getChainId() view returns (uint256 chainid)",
-                              "function getCurrentBlockCoinbase() view returns (address coinbase)",
-                              "function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
-                              "function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
-                              "function getEthBalance(address addr) view returns (uint256 balance)",
-                              "function getLastBlockHash() view returns (bytes32 blockHash)",
-                              "function getPrevRandao() view returns (uint256 prevrandao)",
-                              "function nonces(address owner) view returns (uint256)",
-                              "function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) returns (tuple(bool success, bytes returnData)[] returnData)",
-                              "function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
-                              "function verify(tuple(address from, address to, uint256 value, uint256 gas, uint48 deadline, bytes data, bytes signature) request) view returns (bool)"
-                            ],
-                            "constructorArgs": [],
-                            "linkedLibraries": {},
-                            "deployTxnHash": "",
-                            "sourceName": "src/TrustedMulticallForwarder.sol",
-                            "contractName": "TrustedMulticallForwarder",
-                            "deployedOn": "contract.TrustedMulticallForwarder",
-                            "gasUsed": 0,
-                            "gasCost": "0"
-                          }
-                        },
-                        "extras": {
-                          "salt": "salt"
-                        }
-                      },
                       "oracle_manager": {
-                        "url": "ipfs://QmSGaK9acsYzguMU7taZEw6FG3TiDgegCAcVStbEvxVz5M",
+                        "url": "ipfs://QmSPfNCYL81obbLUZAqP519S4uiWBpSswmLta3HBTavcJ2",
                         "contracts": {
                           "NodeModule": {
-                            "address": "0x1eE6Cf9F40548DdB3a82c6D22878b2f4D4C6FA12",
+                            "address": "0x1004bB25635823C02cD8F5d22b6E4cB42de19d53",
                             "abi": [
                               "error EmptyRevertReason()",
                               "error Errors(bytes[] errors)",
@@ -22787,14 +22822,14 @@
                             ],
                             "constructorArgs": [],
                             "linkedLibraries": {},
-                            "deployTxnHash": "0x323761aff50a0e58ce50f950a62f6a9d91286d6c8229a6ef59d60fd927406d70",
-                            "deployTxnBlockNumber": "6992411",
-                            "deployTimestamp": "1730492844",
+                            "deployTxnHash": "0x01e6e242f85db269a26c4a22ac45570e6164ca54653498082c8ab2709e2ba75a",
+                            "deployTxnBlockNumber": "8374748",
+                            "deployTimestamp": "1747828272",
                             "sourceName": "contracts/modules/NodeModule.sol",
                             "contractName": "NodeModule",
                             "deployedOn": "contract.NodeModule",
-                            "gasUsed": 4820634,
-                            "gasCost": "3569579657"
+                            "gasUsed": 4896112,
+                            "gasCost": "807273578"
                           },
                           "CoreModule": {
                             "address": "0xf3b78D43A79737bcbF3b7E2b4Ae1CA660cBE7bc2",
@@ -22866,8 +22901,13 @@
                             "gasCost": "0"
                           },
                           "OracleRouter": {
-                            "address": "0x89a43438f6afde2ab646f8a343fbba12eba6c0c6",
+                            "address": "0x1f10bda2644f77e70ce8cd49b2b9469ffd37856b",
                             "abi": [
+                              "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                              "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                              "function facetAddresses() pure returns (address[] addresses)",
+                              "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                              "function emitDiamondCutEvent() returns (bool)",
                               "error ImplementationIsSterile(address implementation)",
                               "error NoChange()",
                               "error NotAContract(address contr)",
@@ -22908,17 +22948,22 @@
                               "function registerNode(uint8 nodeType, bytes parameters, bytes32[] parents) returns (bytes32 nodeId)"
                             ],
                             "deployedOn": "router.OracleRouter",
-                            "deployTxnHash": "0x088f6e17e6b76967da2225f4572b9637bb986f00576f3c89fd2b7b67f04eba08",
-                            "deployTxnBlockNumber": "6992412",
-                            "deployTimestamp": "1730492856",
+                            "deployTxnHash": "0xbb7e5a4eab3856ce188034af18cebfb1ac63872d8f0aa139e5ae8e5d7b12c5a2",
+                            "deployTxnBlockNumber": "8374749",
+                            "deployTimestamp": "1747828284",
                             "contractName": "OracleRouter",
                             "sourceName": "OracleRouter.sol",
-                            "gasUsed": 262874,
-                            "gasCost": "3454399147"
+                            "gasUsed": 1728151,
+                            "gasCost": "866245566"
                           },
                           "Proxy": {
                             "address": "0xA86DcB6f02a0AFEc5b66Ad7112ACd3bcbbdF98ca",
                             "abi": [
+                              "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
+                              "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
+                              "function facetAddresses() pure returns (address[] addresses)",
+                              "function facetAddress(bytes4 functionSelector) pure returns (address)",
+                              "function emitDiamondCutEvent() returns (bool)",
                               "error ImplementationIsSterile(address implementation)",
                               "error NoChange()",
                               "error NotAContract(address contr)",
@@ -23042,23 +23087,23 @@
                         },
                         "txns": {
                           "upgrade_proxy": {
-                            "hash": "0xb806ffeb4a0d8e791870947bcb213a12fc9351eb89c7aefbfb15ce6d8682e09f",
-                            "blockNumber": "6992413",
-                            "timestamp": "1730492868",
+                            "hash": "0x322054bd97bf23dcd7bac8a92737fe52df6bc7b6ba919a0f356bbbac4dfc6ebb",
+                            "blockNumber": "8374750",
+                            "timestamp": "1747828296",
                             "events": {
                               "Upgraded": [
                                 {
                                   "name": "Upgraded",
                                   "args": [
                                     "0xA86DcB6f02a0AFEc5b66Ad7112ACd3bcbbdF98ca",
-                                    "0x89A43438F6AFDe2aB646f8a343FbBA12eba6c0C6"
+                                    "0x1F10bdA2644F77e70Ce8cD49B2B9469ffD37856B"
                                   ]
                                 }
                               ]
                             },
                             "deployedOn": "invoke.upgrade_proxy",
-                            "gasUsed": 55384,
-                            "gasCost": "3398029683",
+                            "gasUsed": 55420,
+                            "gasCost": "863204254",
                             "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                           }
                         },
@@ -23067,17 +23112,6 @@
                           "salt": "oracle-manager-official"
                         }
                       }
-                    },
-                    "settings": {
-                      "account_token_name": "Synthetix Account",
-                      "account_token_symbol": "SACCT",
-                      "bundleSalt": "main",
-                      "oracle_manager_package": "oracle-manager",
-                      "owner": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
-                      "salt": "main",
-                      "usd_token_name": "Synthetic USD Token v3",
-                      "usd_token_symbol": "sUSD",
-                      "const_one_oracle_id": "0x066ef68c9d9ca51eee861aeb5bce51a12e61f06f10bf62243c563671ae3a9733"
                     },
                     "txns": {
                       "register_const_one_oracle": {
@@ -23101,23 +23135,23 @@
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       },
                       "upgrade_core_proxy": {
-                        "hash": "0x671b98be2d2ac88a08da7e7bbece3ad8494190e8d7c355c119089a12d9122c18",
-                        "blockNumber": "6787997",
-                        "timestamp": "1727702280",
+                        "hash": "0xddd996ae3e17764752e663dd4147fcef0599892bcacb3b34890b68fed1c339ef",
+                        "blockNumber": "8374767",
+                        "timestamp": "1747828500",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0x8715b7eaDC55DF39F0D7bd8D5Ae44BaD4A7a0a8f",
-                                "0xe0F8529072d72C0D7d0c2a6616F10FB3a4C8EdC0"
+                                "0x18346EaF797B6c26399C30968e48Cf278466d7AB"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.upgrade_core_proxy",
-                        "gasUsed": 51313,
-                        "gasCost": "231811234160",
+                        "gasUsed": 51327,
+                        "gasCost": "785077138",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       },
                       "enable_feature_burnUsd": {
@@ -23264,6 +23298,26 @@
                         "gasCost": "1064136427",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       },
+                      "enable_feature_liquidateToTreasury": {
+                        "hash": "0xed3085a81969eed9b1f5085603db300d04e124dfe949438de6212f3c2b2e3dfb",
+                        "blockNumber": "8374768",
+                        "timestamp": "1747828512",
+                        "events": {
+                          "FeatureFlagAllowAllSet": [
+                            {
+                              "name": "FeatureFlagAllowAllSet",
+                              "args": [
+                                "0x6c6971756964617465546f547265617375727900000000000000000000000000",
+                                true
+                              ]
+                            }
+                          ]
+                        },
+                        "deployedOn": "invoke.enable_feature_liquidateToTreasury",
+                        "gasUsed": 57111,
+                        "gasCost": "769840723",
+                        "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+                      },
                       "enable_feature_liquidateVault": {
                         "hash": "0xc4e850fc6a725150be5c76506408f6334d0cbdf56ae7b31fffa2904605167664",
                         "events": {
@@ -23280,6 +23334,26 @@
                         "deployedOn": "invoke.enable_feature_liquidateVault",
                         "gasUsed": 57033,
                         "gasCost": "1013537198",
+                        "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+                      },
+                      "enable_feature_migrateDelegation": {
+                        "hash": "0xc8ecf21131a1d396ed92e353068f47cc236937fffc26c23df3fad125008cf891",
+                        "blockNumber": "8374769",
+                        "timestamp": "1747828524",
+                        "events": {
+                          "FeatureFlagAllowAllSet": [
+                            {
+                              "name": "FeatureFlagAllowAllSet",
+                              "args": [
+                                "0x6d69677261746544656c65676174696f6e000000000000000000000000000000",
+                                true
+                              ]
+                            }
+                          ]
+                        },
+                        "deployedOn": "invoke.enable_feature_migrateDelegation",
+                        "gasUsed": 57087,
+                        "gasCost": "745322710",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       },
                       "enable_feature_mintUsd": {
@@ -23355,16 +23429,16 @@
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       },
                       "init_account": {
-                        "hash": "0x47205e5a277dc425a6a7fe341d634daa8aedc0594c32281c88df47d6cf633edd",
-                        "blockNumber": "6660738",
-                        "timestamp": "1725880860",
+                        "hash": "0xf3be6eae67f31320f9fb1438f9326b5160b5a7e5adec7aef51f3b7ef67afd939",
+                        "blockNumber": "8374770",
+                        "timestamp": "1747828536",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0xCb5D8fE2B4AfbedB1970CCDc2f2e2919a6114240",
-                                "0x41A883a85b1AdE59F41d459Fa550b40fa56429DB"
+                                "0x9B7c69F5B61DF63B9914986e61d8c9B0c3aaf8a5"
                               ]
                             }
                           ],
@@ -23375,27 +23449,27 @@
                                 "0x6572633732310000000000000000000000000000000000000000000000000000",
                                 "0x6163636f756e744e667400000000000000000000000000000000000000000000",
                                 "0xCb5D8fE2B4AfbedB1970CCDc2f2e2919a6114240",
-                                "0x41A883a85b1AdE59F41d459Fa550b40fa56429DB"
+                                "0x9B7c69F5B61DF63B9914986e61d8c9B0c3aaf8a5"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.init_account",
-                        "gasUsed": 80710,
-                        "gasCost": "54430253455",
+                        "gasUsed": 80746,
+                        "gasCost": "743339977",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       },
                       "init_usd": {
-                        "hash": "0xf70e7766cdae870ebe3665086842ffadd88554c4e290fb12a23d6a4b3dfaecad",
-                        "blockNumber": "6660740",
-                        "timestamp": "1725880884",
+                        "hash": "0x3c34d233c02a136702c2e0169c848205d40b9cf11f9375a8e4c5c69a7fb290b6",
+                        "blockNumber": "8374771",
+                        "timestamp": "1747828548",
                         "events": {
                           "Upgraded": [
                             {
                               "name": "Upgraded",
                               "args": [
                                 "0xF87E23c41Ce898Ab7640FC3Ce2eb8B11f257e67a",
-                                "0xf935F225a49ad37be81Bb9430BEc780446474E13"
+                                "0xA999E916141368c05BE86965c0161a9De958d82b"
                               ]
                             }
                           ],
@@ -23406,14 +23480,14 @@
                                 "0x6572633230000000000000000000000000000000000000000000000000000000",
                                 "0x555344546f6b656e000000000000000000000000000000000000000000000000",
                                 "0xF87E23c41Ce898Ab7640FC3Ce2eb8B11f257e67a",
-                                "0xf935F225a49ad37be81Bb9430BEc780446474E13"
+                                "0xA999E916141368c05BE86965c0161a9De958d82b"
                               ]
                             }
                           ]
                         },
                         "deployedOn": "invoke.init_usd",
-                        "gasUsed": 96800,
-                        "gasCost": "56170635430",
+                        "gasUsed": 94076,
+                        "gasCost": "728100935",
                         "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                       },
                       "set_oracle_manager": {
@@ -23466,23 +23540,23 @@
                 },
                 "txns": {
                   "upgradeSpotMarketProxy": {
-                    "hash": "0x72d1774436a188a211a4ebc3b34b289d41e9db62c88141d622ec4d0e78e8e59a",
-                    "blockNumber": "6660769",
-                    "timestamp": "1725881364",
+                    "hash": "0x72d21781ed551b109fab7b33ad127ed7e85d6f1dce732ef93b35f56052527031",
+                    "blockNumber": "8374792",
+                    "timestamp": "1747828800",
                     "events": {
                       "Upgraded": [
                         {
                           "name": "Upgraded",
                           "args": [
                             "0xdBE114Ef3054Ad9Ed2A3b6beee538433f72BAfc2",
-                            "0x2c8CD88aFd8dA2741306b3870a9a2EBa110A801F"
+                            "0x49232BD36374bD5e129dd2E91DA18a81dC87832D"
                           ]
                         }
                       ]
                     },
                     "deployedOn": "invoke.upgradeSpotMarketProxy",
-                    "gasUsed": 55555,
-                    "gasCost": "62287238363",
+                    "gasUsed": 55639,
+                    "gasCost": "608426990",
                     "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   },
                   "addCreateSynthToFeatureFlag": {
@@ -23522,22 +23596,22 @@
                     "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   },
                   "setSynthImplementation": {
-                    "hash": "0xd45e66c0808364c95764724234a03ade9683e425fcee58fb04c7b29f3da9b2df",
-                    "blockNumber": "6660770",
-                    "timestamp": "1725881376",
+                    "hash": "0xed4111894e8ec3ffb62c70b2cccf49077e135f7b5fcf06b16b8ddb1773771a16",
+                    "blockNumber": "8374793",
+                    "timestamp": "1747828812",
                     "events": {
                       "SynthImplementationSet": [
                         {
                           "name": "SynthImplementationSet",
                           "args": [
-                            "0x24df500663B7c1E095b353f3538cA7a595B349e7"
+                            "0x3BF31896b2CC5E18AF9Bb81Cd007A1ce8613418C"
                           ]
                         }
                       ]
                     },
                     "deployedOn": "invoke.setSynthImplementation",
-                    "gasUsed": 39098,
-                    "gasCost": "63624399347",
+                    "gasUsed": 39116,
+                    "gasCost": "594183825",
                     "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
                   },
                   "setSynthetixSystem": {
@@ -25996,23 +26070,23 @@
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "upgrade_proxy": {
-                "hash": "0x2cf59b850ff75ae8890891cc26deae964f12be2e3a3b70bc7449bbbd1c577c39",
-                "blockNumber": "8374779",
-                "timestamp": "1747828644",
+                "hash": "0x67425f95d080939a085bc572890c74ce2749ffe629754d09f934d3097328f4a5",
+                "blockNumber": "8389254",
+                "timestamp": "1748002824",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0xEa1ef48647E2418b50480724E120C6A0b0fb54c3",
-                        "0x4ACF570e9b364d62D18eC02e69eeD451a2908594"
+                        "0x732e0dbe29dB4FdB68208E1E616E1121bfa36b51"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_proxy",
-                "gasUsed": 50761,
-                "gasCost": "655292614",
+                "gasUsed": 50695,
+                "gasCost": "1978543",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "addCreateMarketToFeatureFlag": {
@@ -26053,6 +26127,26 @@
                 "deployedOn": "invoke.addPerpsMarketToFeatureFlag",
                 "gasUsed": 84529,
                 "gasCost": "2226233573",
+                "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+              },
+              "addPerpsSystemToFeatureFlag": {
+                "hash": "0xd5bb81dcf3b4c46d969a0590deab429c9399db794e30149176d9ca8b0b1f67a0",
+                "blockNumber": "8389255",
+                "timestamp": "1748002836",
+                "events": {
+                  "FeatureFlagAllowAllSet": [
+                    {
+                      "name": "FeatureFlagAllowAllSet",
+                      "args": [
+                        "0x706572707353797374656d000000000000000000000000000000000000000000",
+                        true
+                      ]
+                    }
+                  ]
+                },
+                "deployedOn": "invoke.addPerpsSystemToFeatureFlag",
+                "gasUsed": 56722,
+                "gasCost": "1963286",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "enableFeatureCreateAccount": {
@@ -26132,16 +26226,25 @@
       },
       "hash": null,
       "version": 7
+    },
+    "setting.v2x_package": {
+      "artifacts": {
+        "settings": {
+          "v2x_package": "synthetix:2.101.2"
+        }
+      },
+      "hash": "fe9d470577b1bd5da244abb3a72b717b",
+      "version": 7
     }
   },
-  "seq": 4,
+  "seq": 5,
   "track": "yd6gzchcj0j",
   "options": {},
   "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "24e67488091dc97d59dd83aa7da2c0325f9154ba",
-    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/24e67488091dc97d59dd83aa7da2c0325f9154ba/README.md"
+    "commitHash": "c555ab4e8bb9b4525874f6885de0846f547d6668",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/c555ab4e8bb9b4525874f6885de0846f547d6668/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 11155111
