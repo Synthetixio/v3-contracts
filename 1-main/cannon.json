@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1747906466,
+  "timestamp": 1748850004,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -132,10 +132,11 @@
         "defaultValue": "0xFa1DF09D8d09D6E8FAB2a6C4712fEa02ce203e99"
       },
       "treasury_aux_ratio": {
-        "defaultValue": "<%= parseEther('0.1') %>"
+        "defaultValue": "<%= parseEther('0.2') %>"
       },
       "treasury_aux_reset_time": {
-        "defaultValue": "<%= 1423453  %>"
+        "description": "1000 years time to reset, we never reset, pause only",
+        "defaultValue": "<%= 1000 * 365 * 24 * 3600  %>"
       },
       "synthUsdeAsyncFixedFee": {
         "defaultValue": "0"
@@ -1756,7 +1757,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "23",
+    "version": "24",
     "description": "Includes the full synthetix system with configurations applied",
     "deployers": [
       "0x1C8236B406911A376369e33D39189F1b4B39F27D",
@@ -25278,7 +25279,7 @@
       "artifacts": {
         "imports": {
           "treasury_market": {
-            "url": "ipfs://QmUBZPQBWpoGDrabudPf7DoiTPm8VSsTRCSm6mbUbJnHN9",
+            "url": "ipfs://QmSyHKKotVhQ8UALkMiTEkDMEN9NUhzLyVD5mhPnjzNBCj",
             "tags": [
               "latest"
             ],
@@ -28126,23 +28127,23 @@
                 "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
               },
               "setAuxTokenRewards": {
-                "hash": "0x0733dcd2b90104b152d013c055775c0d35337fceff83420ed5330ecbe3a0a08a",
-                "blockNumber": "22424523",
-                "timestamp": "1746532835",
+                "hash": "0x34ec2349aeea712fd4c242c87d41bd969f85f788cd0064fbe44b1e96cef12c1e",
+                "blockNumber": "22615564",
+                "timestamp": "1748850002",
                 "events": {
                   "UpdateAuxTokenRequirement": [
                     {
                       "name": "UpdateAuxTokenRequirement",
                       "args": [
-                        "1746532835",
-                        "100000000000000000"
+                        "1748850002",
+                        "200000000000000000"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.setAuxTokenRewards",
-                "gasUsed": 65935,
-                "gasCost": "1996204957",
+                "gasUsed": 65991,
+                "gasCost": "1719545680",
                 "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
               },
               "setFeatureFlagAssociateDebt": {
@@ -28557,10 +28558,10 @@
     "setting.treasury_aux_ratio": {
       "artifacts": {
         "settings": {
-          "treasury_aux_ratio": "100000000000000000"
+          "treasury_aux_ratio": "200000000000000000"
         }
       },
-      "hash": "d49f2d75e0a6de6a6a824d5e9127499b",
+      "hash": "f296f686e58711260897d9596d6363a5",
       "version": 7
     },
     "setting.treasury_aux_recipient": {
@@ -28575,10 +28576,10 @@
     "setting.treasury_aux_reset_time": {
       "artifacts": {
         "settings": {
-          "treasury_aux_reset_time": "1423453"
+          "treasury_aux_reset_time": "31536000000"
         }
       },
-      "hash": "ef96589fe44f08cfb3b7eb8d27f9a301",
+      "hash": "4ac34107caafe96f344d32ae62c43c02",
       "version": 7
     },
     "setting.treasury_aux_token_address": {
