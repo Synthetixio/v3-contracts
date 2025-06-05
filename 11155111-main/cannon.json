@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.22.0",
-  "timestamp": 1748002843,
+  "timestamp": 1749088542,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -225,7 +225,7 @@
         "defaultValue": "<%= parseEther('100') %>"
       },
       "snx_v4_onchain": {
-        "defaultValue": "synthetix-v4-onchain:0.1.3"
+        "defaultValue": "synthetix-v4-onchain:0.1.6"
       }
     },
     "invoke": {
@@ -1103,7 +1103,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "12",
+    "version": "14",
     "description": "Includes the full synthetix system with configurations applied",
     "deployers": [
       "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
@@ -19194,21 +19194,21 @@
     "setting.snx_v4_onchain": {
       "artifacts": {
         "settings": {
-          "snx_v4_onchain": "synthetix-v4-onchain:0.1.3"
+          "snx_v4_onchain": "synthetix-v4-onchain:0.1.6"
         }
       },
-      "hash": "a319c19d90071f3cf426caac6f36e923",
+      "hash": "e8be02805f76d3620b9e57944eabb4af",
       "version": 7
     },
     "provision.snx_v4_onchain": {
       "artifacts": {
         "imports": {
           "snx_v4_onchain": {
-            "url": "ipfs://QmaRFpvkmx1z7Qe5epiDU71s6RimJFCaNzdvBGMtMBYwVg",
+            "url": "ipfs://QmZPoANti1DtHhh7ubxo3Y8v7e4LEmuveAGDiTupyhmxKo",
             "tags": [
               "latest"
             ],
-            "target": "synthetix-v4-onchain:0.1.3@main",
+            "target": "synthetix-v4-onchain:0.1.6@main",
             "preset": "main",
             "contracts": {
               "CoreModule": {
@@ -19482,9 +19482,10 @@
                 "gasCost": "2153877212"
               },
               "PerpsMarketFactoryModule": {
-                "address": "0x5ef2a01b59f9d209B48e4e15809fc03B60a830f5",
+                "address": "0xC1Db4fe8a58c8d262D3Aa8A50EFbc7646a30be26",
                 "abi": [
-                  "constructor(address _synthetix, address _spotMarket, address _oracle, address _usdToken, bytes32 _name, uint128 _perpsMarketId)",
+                  "constructor(address _synthetix, address _accountProxyAddress, address _spotMarket, address _oracle, address _usdToken, bytes32 _name, uint128 _perpsMarketId)",
+                  "function accountProxy() view returns (address)",
                   "function createMarket(uint128 requestedMarketId, string marketName, string marketSymbol) returns (uint128)",
                   "function depositMarketCollateral(address collateral, uint256 amount)",
                   "function generalName() view returns (bytes32)",
@@ -19516,6 +19517,7 @@
                 ],
                 "constructorArgs": [
                   "0x8715b7eaDC55DF39F0D7bd8D5Ae44BaD4A7a0a8f",
+                  "0xCb5D8fE2B4AfbedB1970CCDc2f2e2919a6114240",
                   "0xdBE114Ef3054Ad9Ed2A3b6beee538433f72BAfc2",
                   "0xA86DcB6f02a0AFEc5b66Ad7112ACd3bcbbdF98ca",
                   "0xF87E23c41Ce898Ab7640FC3Ce2eb8B11f257e67a",
@@ -19523,17 +19525,17 @@
                   "5"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x46d486dde197461d00ecb5677fcd2b38c3ff04a7b716a96c682b6fe1dbb4ec71",
-                "deployTxnBlockNumber": "8323672",
-                "deployTimestamp": "1747208712",
+                "deployTxnHash": "0x8afccc18a505f4a8dcfbecc6934c8f759f81430699b4ab50acfe6beda906fd65",
+                "deployTxnBlockNumber": "8479096",
+                "deployTimestamp": "1749088368",
                 "sourceName": "src/perps-market/contracts/modules/PerpsMarketFactoryModule.sol",
                 "contractName": "PerpsMarketFactoryModule",
                 "deployedOn": "contract.PerpsMarketFactoryModule",
-                "gasUsed": 1399253,
-                "gasCost": "2134027394"
+                "gasUsed": 1410809,
+                "gasCost": "1002382"
               },
               "GlobalContext": {
-                "address": "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8",
+                "address": "0x2EE17C4461D01787786D38E33c59880c79D564BA",
                 "abi": [
                   "constructor(address _globalMarketConfiguration, address _perpsMarketFactory, uint128[] _marketIds, address[] _perpsMarketConfigs, uint128[] _collateralIds, address[] _perpsCollateralConfigs)",
                   "function collateralConfigs(uint128) view returns (address)",
@@ -19545,11 +19547,13 @@
                 ],
                 "constructorArgs": [
                   "0xD042EA6c1816536746847DEa103C71fb18ED3708",
-                  "0x5ef2a01b59f9d209B48e4e15809fc03B60a830f5",
+                  "0xC1Db4fe8a58c8d262D3Aa8A50EFbc7646a30be26",
                   [
-                    2
+                    100,
+                    200
                   ],
                   [
+                    "0x6FCD9528d7b958986584919F74C54A7c45A05F73",
                     "0x6FCD9528d7b958986584919F74C54A7c45A05F73"
                   ],
                   [
@@ -19560,22 +19564,51 @@
                   ]
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x566d86cc53132f44f3759ca5be2a5d9a7165bd9a57aa52e540c2c5af6ea8fdde",
-                "deployTxnBlockNumber": "8323673",
-                "deployTimestamp": "1747208724",
+                "deployTxnHash": "0x0696465950ec9cb1122543fb62cb08025ad836be0a6e9b9d70b73969032e1441",
+                "deployTxnBlockNumber": "8479097",
+                "deployTimestamp": "1749088380",
                 "sourceName": "src/perps-market/contracts/config/GlobalContext.sol",
                 "contractName": "GlobalContext",
                 "deployedOn": "contract.GlobalContext",
-                "gasUsed": 236813,
-                "gasCost": "2187130699"
+                "gasUsed": 260034,
+                "gasCost": "1002649"
+              },
+              "AccountRoleModule": {
+                "address": "0x8052Eb1ee2842214743b175BDAaa478876ae519e",
+                "abi": [
+                  "constructor(address _globalContext)",
+                  "function getAccountOwnerV4(uint128 accountId) view returns (address)",
+                  "function getAccountPermissionsV4(uint128 accountId) view returns (address[] accountPerms)",
+                  "function grantPermissionV4(uint128 accountId, bytes32 permission, address user)",
+                  "function hasPermissionV4(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function isAuthorizedV4(uint128 accountId, bytes32 permission, address target) view returns (bool)",
+                  "function revokePermissionV4(uint128 accountId, bytes32 permission, address user)",
+                  "event PermissionGrantedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "event PermissionRevokedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "error InvalidPermission(bytes32 permission)",
+                  "error Unauthorized(uint128 accountId, bytes32 permission)",
+                  "error ZeroAddress()"
+                ],
+                "constructorArgs": [
+                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
+                ],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x80fc75627f02b85551e83905770d520073befe030b825a68f9bfd10d3d4a8262",
+                "deployTxnBlockNumber": "8479100",
+                "deployTimestamp": "1749088416",
+                "sourceName": "src/perps-market/contracts/modules/AccountRoleModule.sol",
+                "contractName": "AccountRoleModule",
+                "deployedOn": "contract.AccountRoleModule",
+                "gasUsed": 774563,
+                "gasCost": "1002022"
               },
               "BookOrderModule": {
-                "address": "0xc559bCA5cb2430bf57c22b3361C3289c6944BB15",
+                "address": "0x01f67Dce295e4Ee3616654691B17Ef855a902748",
                 "abi": [
                   "constructor(address _globalContext, string name, string version)",
                   "function SIGNED_BOOK_ORDER_TYPEHASH() view returns (bytes32)",
                   "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                  "function settleBookOrders(uint128 marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders) returns (address[] verifiedSigners)",
+                  "function settleBookOrders(uint128 marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders)",
                   "event AccountCharged(uint128 accountId, int256 amount, uint256 accountDebt)",
                   "event BookOrderSettled(uint128 indexed marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders, uint256 totalCollectedFees)",
                   "event DoneLoop(uint128 accountId)",
@@ -19586,35 +19619,39 @@
                   "event OrderSettled(uint128 indexed marketId, uint128 indexed accountId, uint256 fillPrice, int256 pnl, int256 accruedFunding, int128 sizeDelta, int128 newSize, uint256 totalFees, uint256 referralFees, uint256 collectedFees, uint256 settlementReward, bytes32 indexed trackingCode, address settler)",
                   "error AccountLiquidatable(uint128 accountId)",
                   "error FeatureUnavailable(bytes32 which)",
+                  "error InvalidFillPrice(int128 sizeDelta, uint128 orderPrice, uint256 filledPrice)",
                   "error InvalidMarket(uint128 marketId)",
                   "error InvalidParameter(string parameter, string reason)",
+                  "error InvalidPermission(bytes32 permission)",
                   "error InvalidShortString()",
+                  "error NonceAlreadyUsed(uint64 nonce)",
                   "error OverflowInt128ToUint128()",
                   "error OverflowInt256ToUint256()",
                   "error OverflowUint128ToInt128()",
                   "error OverflowUint256ToInt256()",
                   "error OverflowUint256ToUint128()",
+                  "error SizeDeltaIsZero()",
                   "error StringTooLong(string str)",
                   "error ValueAlreadyInSet()",
                   "error ValueNotInSet()"
                 ],
                 "constructorArgs": [
-                  "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8",
+                  "0x2EE17C4461D01787786D38E33c59880c79D564BA",
                   "Orderbook",
                   "1"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x6301371459424d145e026d771c1e49a2865232ec29d887c98f7b0a9b21bbaa21",
-                "deployTxnBlockNumber": "8389250",
-                "deployTimestamp": "1748002776",
+                "deployTxnHash": "0x09e9b5eeafbf07cd9af466122b424d9c002447d65e55858002b766e0bd4e2fce",
+                "deployTxnBlockNumber": "8479101",
+                "deployTimestamp": "1749088428",
                 "sourceName": "src/perps-market/contracts/modules/BookOrderModule.sol",
                 "contractName": "BookOrderModule",
                 "deployedOn": "contract.BookOrderModule",
-                "gasUsed": 2968696,
-                "gasCost": "1942861"
+                "gasUsed": 3252933,
+                "gasCost": "1002072"
               },
               "CollateralConfigurationModule": {
-                "address": "0x79F4501a0C188Ba462C608048808135453db08b4",
+                "address": "0xAE028644815F797E4b6497e06dDc5029587207B7",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function getCollateralConfiguration(uint128 collateralId) view returns (uint256 maxCollateralAmount)",
@@ -19625,20 +19662,20 @@
                   "event RewardDistributorRegistered(address distributor)"
                 ],
                 "constructorArgs": [
-                  "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8"
+                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x27de346452996913dd84eb1b087cbdf02da9e710b971695b37561ea1baafa246",
-                "deployTxnBlockNumber": "8323675",
-                "deployTimestamp": "1747208748",
+                "deployTxnHash": "0x446432c6f0767acedac3543b912c01803d6261aeaad27c460a488f13ca6038c5",
+                "deployTxnBlockNumber": "8479102",
+                "deployTimestamp": "1749088440",
                 "sourceName": "src/perps-market/contracts/modules/CollateralConfigurationModule.sol",
                 "contractName": "CollateralConfigurationModule",
                 "deployedOn": "contract.CollateralConfigurationModule",
                 "gasUsed": 318954,
-                "gasCost": "2224531728"
+                "gasCost": "1001973"
               },
               "LiquidationModule": {
-                "address": "0xbCec42E3dad45b5aBeC4A3d0a39344ac8197d5EB",
+                "address": "0x8bb726888D1E1EA5f3e32168321CA87C680a9A9F",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function canLiquidate(uint128 accountId, uint256[] positionPrices) view returns (bool isEligible)",
@@ -19661,23 +19698,24 @@
                   "error ValueNotInSet()"
                 ],
                 "constructorArgs": [
-                  "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8"
+                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xe0143b1545032493c852a1da34f3bb5f194a287fb45252cda280834629ef59ee",
-                "deployTxnBlockNumber": "8389251",
-                "deployTimestamp": "1748002788",
+                "deployTxnHash": "0x7fc4493e07e4c4c9ecb47cce4bed827175149298e018bf0a60dc44611e724d22",
+                "deployTxnBlockNumber": "8479103",
+                "deployTimestamp": "1749088452",
                 "sourceName": "src/perps-market/contracts/modules/LiquidationModule.sol",
                 "contractName": "LiquidationModule",
                 "deployedOn": "contract.LiquidationModule",
-                "gasUsed": 1642953,
-                "gasCost": "1976115"
+                "gasUsed": 1642737,
+                "gasCost": "1001870"
               },
               "PerpsAccountModule": {
-                "address": "0x581aEbB2B5362d716D6080a45383A764D6d23672",
+                "address": "0x2385286c401800204BcDD6BF2e5B3eBd71E1440d",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function debt(uint128 accountId) view returns (uint256 accountDebt)",
+                  "function depositCollateral(uint128 accountId, uint128 collateralId, uint256 amount)",
                   "function getAccountAllCollateralAmounts(uint128 accountId) view returns (uint256[] collateralIds, uint256[] collateralAmounts, uint256 accountDebt)",
                   "function getAccountCollateralIds(uint128 accountId) view returns (uint256[])",
                   "function getAccountFullPositionInfo(uint128 accountId) view returns (tuple(uint128 marketId, int256 size, int256 pnl, int256 accruedFunding, uint256 chargedInterest, uint256 currentPrice, uint256 entryPrice, uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, string marketName, string marketSymbol)[] detailedPositions)",
@@ -19692,6 +19730,7 @@
                   "function payDebt(uint128 accountId, uint256 amount)",
                   "function totalAccountOpenInterest(uint128 accountId) view returns (uint256)",
                   "function totalCollateralValue(uint128 accountId) view returns (uint256 totalValue)",
+                  "event CollateralDeposited(uint128 indexed accountId, uint128 indexed collateralId, uint256 amountDeposited, uint256 totalAmount, address indexed sender)",
                   "event CollateralModified(uint128 indexed accountId, uint128 indexed collateralId, int256 amountDelta, address indexed sender)",
                   "event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender)",
                   "event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate)",
@@ -19701,9 +19740,9 @@
                   "error InsufficientCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
                   "error InsufficientCollateralAvailableForWithdraw(int256 withdrawableMarginUsd, uint256 requestedMarginUsd)",
                   "error InsufficientSynthCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
-                  "error InvalidAmountDelta(int256 amountDelta)",
                   "error InvalidDistributor(uint128 collateralId)",
                   "error InvalidMarket(uint128 marketId)",
+                  "error InvalidPermission(bytes32 permission)",
                   "error MaxCollateralExceeded(uint128 collateralId, uint256 maxAmount, uint256 collateralAmount, uint256 depositAmount)",
                   "error MaxCollateralsPerAccountReached(uint128 maxCollateralsPerAccount)",
                   "error NonexistentDebt(uint128 accountId)",
@@ -19711,27 +19750,27 @@
                   "error OverflowUint128ToInt128()",
                   "error OverflowUint256ToInt256()",
                   "error OverflowUint256ToUint128()",
-                  "error PermissionDenied(uint128 accountId, bytes32 permission, address target)",
                   "error PositionOutOfBounds()",
+                  "error SizeDeltaIsZero()",
                   "error SynthNotEnabledForCollateral(uint128 collateralId)",
                   "error ValueAlreadyInSet()",
                   "error ValueNotInSet()"
                 ],
                 "constructorArgs": [
-                  "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8"
+                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x29bc97b29653f5d86f5d4f9548eb4b999be2c19cb7cf9d02631aa16c61fe70a7",
-                "deployTxnBlockNumber": "8389252",
-                "deployTimestamp": "1748002800",
+                "deployTxnHash": "0x0bf7c4c5eef6e9e955334b488d43f4f00ed2f702bf997a497e5c96e715e61c85",
+                "deployTxnBlockNumber": "8479104",
+                "deployTimestamp": "1749088464",
                 "sourceName": "src/perps-market/contracts/modules/PerpsAccountModule.sol",
                 "contractName": "PerpsAccountModule",
                 "deployedOn": "contract.PerpsAccountModule",
-                "gasUsed": 3547520,
-                "gasCost": "1966822"
+                "gasUsed": 3581531,
+                "gasCost": "1001768"
               },
               "PerpsMarketModule": {
-                "address": "0x2649b80EEE68243A321fbad8621B279a20933D34",
+                "address": "0xa8127E705C54cD1fd9349cbc428dE4A21116B4c5",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function currentFundingRate(uint128 marketId) view returns (int256)",
@@ -19745,20 +19784,20 @@
                   "error OverflowUint256ToInt256()"
                 ],
                 "constructorArgs": [
-                  "0x5B1B3484497c9b072A7c6D59c41b200DaAC5A4f8"
+                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x8b2e2768dde3c36fefc25e14a8aadb4c74e33a8dda0710c9cf9c074f1622269f",
-                "deployTxnBlockNumber": "8323678",
-                "deployTimestamp": "1747208784",
+                "deployTxnHash": "0xfe8bb20fc643ff4318460113d7f423f5d44b331eaa35c9c1d3397b11b31076ce",
+                "deployTxnBlockNumber": "8479106",
+                "deployTimestamp": "1749088488",
                 "sourceName": "src/perps-market/contracts/modules/PerpsMarketModule.sol",
                 "contractName": "PerpsMarketModule",
                 "deployedOn": "contract.PerpsMarketModule",
                 "gasUsed": 672886,
-                "gasCost": "2278558415"
+                "gasCost": "1001566"
               },
               "PerpsMarketRouter": {
-                "address": "0x732e0dbe29db4fdb68208e1e616e1121bfa36b51",
+                "address": "0xb04f33e02dda68caf8ddd14928b626616f12ecd6",
                 "abi": [
                   "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
                   "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
@@ -19815,7 +19854,8 @@
                   "error NotAContract(address contr)",
                   "error NotNominated(address addr)",
                   "error UpgradeSimulationFailed()",
-                  "constructor(address _synthetix, address _spotMarket, address _oracle, address _usdToken, bytes32 _name, uint128 _perpsMarketId)",
+                  "constructor(address _synthetix, address _accountProxyAddress, address _spotMarket, address _oracle, address _usdToken, bytes32 _name, uint128 _perpsMarketId)",
+                  "function accountProxy() view returns (address)",
                   "function createMarket(uint128 requestedMarketId, string marketName, string marketSymbol) returns (uint128)",
                   "function depositMarketCollateral(address collateral, uint256 amount)",
                   "function generalName() view returns (bytes32)",
@@ -19842,6 +19882,7 @@
                   "error PerpsMarketNotInitialized()",
                   "constructor(address _globalContext)",
                   "function debt(uint128 accountId) view returns (uint256 accountDebt)",
+                  "function depositCollateral(uint128 accountId, uint128 collateralId, uint256 amount)",
                   "function getAccountAllCollateralAmounts(uint128 accountId) view returns (uint256[] collateralIds, uint256[] collateralAmounts, uint256 accountDebt)",
                   "function getAccountCollateralIds(uint128 accountId) view returns (uint256[])",
                   "function getAccountFullPositionInfo(uint128 accountId) view returns (tuple(uint128 marketId, int256 size, int256 pnl, int256 accruedFunding, uint256 chargedInterest, uint256 currentPrice, uint256 entryPrice, uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, string marketName, string marketSymbol)[] detailedPositions)",
@@ -19856,6 +19897,7 @@
                   "function payDebt(uint128 accountId, uint256 amount)",
                   "function totalAccountOpenInterest(uint128 accountId) view returns (uint256)",
                   "function totalCollateralValue(uint128 accountId) view returns (uint256 totalValue)",
+                  "event CollateralDeposited(uint128 indexed accountId, uint128 indexed collateralId, uint256 amountDeposited, uint256 totalAmount, address indexed sender)",
                   "event CollateralModified(uint128 indexed accountId, uint128 indexed collateralId, int256 amountDelta, address indexed sender)",
                   "event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender)",
                   "event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate)",
@@ -19864,13 +19906,22 @@
                   "error InsufficientCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
                   "error InsufficientCollateralAvailableForWithdraw(int256 withdrawableMarginUsd, uint256 requestedMarginUsd)",
                   "error InsufficientSynthCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
-                  "error InvalidAmountDelta(int256 amountDelta)",
                   "error InvalidDistributor(uint128 collateralId)",
                   "error MaxCollateralExceeded(uint128 collateralId, uint256 maxAmount, uint256 collateralAmount, uint256 depositAmount)",
                   "error MaxCollateralsPerAccountReached(uint128 maxCollateralsPerAccount)",
                   "error NonexistentDebt(uint128 accountId)",
                   "error OverflowUint128ToInt128()",
+                  "error SizeDeltaIsZero()",
                   "error SynthNotEnabledForCollateral(uint128 collateralId)",
+                  "function getAccountOwnerV4(uint128 accountId) view returns (address)",
+                  "function getAccountPermissionsV4(uint128 accountId) view returns (address[] accountPerms)",
+                  "function grantPermissionV4(uint128 accountId, bytes32 permission, address user)",
+                  "function hasPermissionV4(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function isAuthorizedV4(uint128 accountId, bytes32 permission, address target) view returns (bool)",
+                  "function revokePermissionV4(uint128 accountId, bytes32 permission, address user)",
+                  "event PermissionGrantedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "event PermissionRevokedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "error Unauthorized(uint128 accountId, bytes32 permission)",
                   "function currentFundingRate(uint128 marketId) view returns (int256)",
                   "function fillPrice(uint128 marketId, int128 orderSize, uint256 price) view returns (uint256)",
                   "function getMarketSummary(uint128 marketId) view returns (tuple(uint256 size, uint256 maxOpenInterest, int256 currentFundingRate, uint256 indexPrice) summary)",
@@ -19881,7 +19932,7 @@
                   "constructor(address _globalContext, string name, string version)",
                   "function SIGNED_BOOK_ORDER_TYPEHASH() view returns (bytes32)",
                   "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                  "function settleBookOrders(uint128 marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders) returns (address[] verifiedSigners)",
+                  "function settleBookOrders(uint128 marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders)",
                   "event AccountCharged(uint128 accountId, int256 amount, uint256 accountDebt)",
                   "event BookOrderSettled(uint128 indexed marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders, uint256 totalCollectedFees)",
                   "event DoneLoop(uint128 accountId)",
@@ -19890,7 +19941,9 @@
                   "event ItsGreater(uint128 accountId, uint128 cmpAccountId)",
                   "event MarketUpdated(uint128 marketId, uint256 price, uint256 size, int256 sizeDelta, int256 currentFundingRate, uint128 interestRate)",
                   "event OrderSettled(uint128 indexed marketId, uint128 indexed accountId, uint256 fillPrice, int256 pnl, int256 accruedFunding, int128 sizeDelta, int128 newSize, uint256 totalFees, uint256 referralFees, uint256 collectedFees, uint256 settlementReward, bytes32 indexed trackingCode, address settler)",
+                  "error InvalidFillPrice(int128 sizeDelta, uint128 orderPrice, uint256 filledPrice)",
                   "error InvalidShortString()",
+                  "error NonceAlreadyUsed(uint64 nonce)",
                   "error OverflowInt128ToUint128()",
                   "error StringTooLong(string str)",
                   "function addToFeatureFlagAllowlist(bytes32 feature, address account)",
@@ -19987,13 +20040,13 @@
                   "error InvalidReferrerShareRatio(uint256 shareRatioD18)"
                 ],
                 "deployedOn": "router.PerpsMarketRouter",
-                "deployTxnHash": "0xa6b29a505d36cb11334220af2462917dde4156afa0a642be00b13b7f71c04f25",
-                "deployTxnBlockNumber": "8389253",
-                "deployTimestamp": "1748002812",
+                "deployTxnHash": "0x061f8deee740d2952ab8b8b7e620631cbe2ac1b1ef66c30c7822a2fae1cbc9f1",
+                "deployTxnBlockNumber": "8479107",
+                "deployTimestamp": "1749088500",
                 "contractName": "PerpsMarketRouter",
                 "sourceName": "PerpsMarketRouter.sol",
-                "gasUsed": 4559872,
-                "gasCost": "1984003"
+                "gasUsed": 4788687,
+                "gasCost": "1001733"
               },
               "PerpsMarketProxy": {
                 "address": "0xEa1ef48647E2418b50480724E120C6A0b0fb54c3",
@@ -20053,7 +20106,8 @@
                   "error NotAContract(address contr)",
                   "error NotNominated(address addr)",
                   "error UpgradeSimulationFailed()",
-                  "constructor(address _synthetix, address _spotMarket, address _oracle, address _usdToken, bytes32 _name, uint128 _perpsMarketId)",
+                  "constructor(address _synthetix, address _accountProxyAddress, address _spotMarket, address _oracle, address _usdToken, bytes32 _name, uint128 _perpsMarketId)",
+                  "function accountProxy() view returns (address)",
                   "function createMarket(uint128 requestedMarketId, string marketName, string marketSymbol) returns (uint128)",
                   "function depositMarketCollateral(address collateral, uint256 amount)",
                   "function generalName() view returns (bytes32)",
@@ -20080,6 +20134,7 @@
                   "error PerpsMarketNotInitialized()",
                   "constructor(address _globalContext)",
                   "function debt(uint128 accountId) view returns (uint256 accountDebt)",
+                  "function depositCollateral(uint128 accountId, uint128 collateralId, uint256 amount)",
                   "function getAccountAllCollateralAmounts(uint128 accountId) view returns (uint256[] collateralIds, uint256[] collateralAmounts, uint256 accountDebt)",
                   "function getAccountCollateralIds(uint128 accountId) view returns (uint256[])",
                   "function getAccountFullPositionInfo(uint128 accountId) view returns (tuple(uint128 marketId, int256 size, int256 pnl, int256 accruedFunding, uint256 chargedInterest, uint256 currentPrice, uint256 entryPrice, uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, string marketName, string marketSymbol)[] detailedPositions)",
@@ -20094,6 +20149,7 @@
                   "function payDebt(uint128 accountId, uint256 amount)",
                   "function totalAccountOpenInterest(uint128 accountId) view returns (uint256)",
                   "function totalCollateralValue(uint128 accountId) view returns (uint256 totalValue)",
+                  "event CollateralDeposited(uint128 indexed accountId, uint128 indexed collateralId, uint256 amountDeposited, uint256 totalAmount, address indexed sender)",
                   "event CollateralModified(uint128 indexed accountId, uint128 indexed collateralId, int256 amountDelta, address indexed sender)",
                   "event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender)",
                   "event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate)",
@@ -20102,13 +20158,22 @@
                   "error InsufficientCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
                   "error InsufficientCollateralAvailableForWithdraw(int256 withdrawableMarginUsd, uint256 requestedMarginUsd)",
                   "error InsufficientSynthCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
-                  "error InvalidAmountDelta(int256 amountDelta)",
                   "error InvalidDistributor(uint128 collateralId)",
                   "error MaxCollateralExceeded(uint128 collateralId, uint256 maxAmount, uint256 collateralAmount, uint256 depositAmount)",
                   "error MaxCollateralsPerAccountReached(uint128 maxCollateralsPerAccount)",
                   "error NonexistentDebt(uint128 accountId)",
                   "error OverflowUint128ToInt128()",
+                  "error SizeDeltaIsZero()",
                   "error SynthNotEnabledForCollateral(uint128 collateralId)",
+                  "function getAccountOwnerV4(uint128 accountId) view returns (address)",
+                  "function getAccountPermissionsV4(uint128 accountId) view returns (address[] accountPerms)",
+                  "function grantPermissionV4(uint128 accountId, bytes32 permission, address user)",
+                  "function hasPermissionV4(uint128 accountId, bytes32 permission, address user) view returns (bool)",
+                  "function isAuthorizedV4(uint128 accountId, bytes32 permission, address target) view returns (bool)",
+                  "function revokePermissionV4(uint128 accountId, bytes32 permission, address user)",
+                  "event PermissionGrantedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "event PermissionRevokedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender)",
+                  "error Unauthorized(uint128 accountId, bytes32 permission)",
                   "function currentFundingRate(uint128 marketId) view returns (int256)",
                   "function fillPrice(uint128 marketId, int128 orderSize, uint256 price) view returns (uint256)",
                   "function getMarketSummary(uint128 marketId) view returns (tuple(uint256 size, uint256 maxOpenInterest, int256 currentFundingRate, uint256 indexPrice) summary)",
@@ -20119,7 +20184,7 @@
                   "constructor(address _globalContext, string name, string version)",
                   "function SIGNED_BOOK_ORDER_TYPEHASH() view returns (bytes32)",
                   "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
-                  "function settleBookOrders(uint128 marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders) returns (address[] verifiedSigners)",
+                  "function settleBookOrders(uint128 marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders)",
                   "event AccountCharged(uint128 accountId, int256 amount, uint256 accountDebt)",
                   "event BookOrderSettled(uint128 indexed marketId, tuple(tuple(bytes32 symbol, uint128 accountId, int128 sizeDelta, uint128 orderPrice, uint64 expiration, uint64 nonce) signedOrder, uint256 filledPrice, bytes32 trackingCode, bytes signature)[] orders, uint256 totalCollectedFees)",
                   "event DoneLoop(uint128 accountId)",
@@ -20128,7 +20193,9 @@
                   "event ItsGreater(uint128 accountId, uint128 cmpAccountId)",
                   "event MarketUpdated(uint128 marketId, uint256 price, uint256 size, int256 sizeDelta, int256 currentFundingRate, uint128 interestRate)",
                   "event OrderSettled(uint128 indexed marketId, uint128 indexed accountId, uint256 fillPrice, int256 pnl, int256 accruedFunding, int128 sizeDelta, int128 newSize, uint256 totalFees, uint256 referralFees, uint256 collectedFees, uint256 settlementReward, bytes32 indexed trackingCode, address settler)",
+                  "error InvalidFillPrice(int128 sizeDelta, uint128 orderPrice, uint256 filledPrice)",
                   "error InvalidShortString()",
+                  "error NonceAlreadyUsed(uint64 nonce)",
                   "error OverflowInt128ToUint128()",
                   "error StringTooLong(string str)",
                   "function addToFeatureFlagAllowlist(bytes32 feature, address account)",
@@ -26070,23 +26137,23 @@
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "upgrade_proxy": {
-                "hash": "0x67425f95d080939a085bc572890c74ce2749ffe629754d09f934d3097328f4a5",
-                "blockNumber": "8389254",
-                "timestamp": "1748002824",
+                "hash": "0xc94872e5a1d3e3acc96570ba1f121ab864f0f121f97af3cf10d92e0b7da5ebe4",
+                "blockNumber": "8479108",
+                "timestamp": "1749088512",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0xEa1ef48647E2418b50480724E120C6A0b0fb54c3",
-                        "0x732e0dbe29dB4FdB68208E1E616E1121bfa36b51"
+                        "0xb04F33e02DdA68cAF8ddD14928b626616f12eCD6"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_proxy",
-                "gasUsed": 50695,
-                "gasCost": "1978543",
+                "gasUsed": 50607,
+                "gasCost": "1001708",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "addCreateMarketToFeatureFlag": {
@@ -26201,13 +26268,13 @@
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "initializeFactory": {
-                "hash": "0x19f1659227c432d4701dc2c20c676502155d5eb373db51884af18d25f7d8dfc6",
-                "blockNumber": "8323685",
-                "timestamp": "1747208868",
+                "hash": "0x1e6fa801b624d057190b3d3bc7c3b4bf8a5f84005e82cc23985d456b7b21aeb3",
+                "blockNumber": "8479109",
+                "timestamp": "1749088524",
                 "events": {},
                 "deployedOn": "invoke.initializeFactory",
-                "gasUsed": 54472,
-                "gasCost": "2309428650",
+                "gasUsed": 37437,
+                "gasCost": "1001593",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               }
             },
@@ -26237,14 +26304,14 @@
       "version": 7
     }
   },
-  "seq": 5,
+  "seq": 9,
   "track": "yd6gzchcj0j",
   "options": {},
   "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "c555ab4e8bb9b4525874f6885de0846f547d6668",
-    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/c555ab4e8bb9b4525874f6885de0846f547d6668/README.md"
+    "commitHash": "b38a20d163cd63f77c8c26026541ccb944342556",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/b38a20d163cd63f77c8c26026541ccb944342556/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 11155111

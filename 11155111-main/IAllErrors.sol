@@ -170,6 +170,29 @@ interface IAllErrors {
     error InsufficientRewardBalance(uint256 amount, uint256 balance);
     error FeeRequired(uint256 amount);
     error NotSupported(uint8 updateType);
+    error PerpsMarketAlreadyInitialized();
+    error PerpsMarketNotInitialized();
+    error AccountLiquidatable(uint128 accountId);
+    error InsufficientCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount);
+    error InsufficientCollateralAvailableForWithdraw(int256 withdrawableMarginUsd, uint256 requestedMarginUsd);
+    error InsufficientSynthCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount);
+    error InvalidDistributor(uint128 collateralId);
+    error MaxCollateralExceeded(uint128 collateralId, uint256 maxAmount, uint256 collateralAmount, uint256 depositAmount);
+    error MaxCollateralsPerAccountReached(uint128 maxCollateralsPerAccount);
+    error NonexistentDebt(uint128 accountId);
+    error SizeDeltaIsZero();
+    error SynthNotEnabledForCollateral(uint128 collateralId);
+    error Unauthorized(uint128 accountId, bytes32 permission);
+    error InvalidFillPrice(int128 sizeDelta, uint128 orderPrice, uint256 filledPrice);
+    error NonceAlreadyUsed(uint64 nonce);
+    error AccountHasOpenPositions(uint128 accountId);
+    error NoPositionsOpen();
+    error NotEligibleForLiquidation(uint128 accountId);
+    error NotEligibleForMarginLiquidation(uint128 accountId);
+    error MaxOpenInterestReached(uint128 marketId, uint256 maxMarketSize, int256 newSideSize);
+    error MaxUSDOpenInterestReached(uint128 marketId, uint256 maxMarketValue, int256 newSideSize, uint256 price);
+    error InvalidInterestRateParameters(uint128 lowUtilizationInterestRateGradient, uint128 highUtilizationInterestRateGradient);
+    error InvalidReferrerShareRatio(uint256 shareRatioD18);
 }
 
 interface NodeDefinition {
