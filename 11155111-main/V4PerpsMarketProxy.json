@@ -1633,7 +1633,25 @@
   },
   {
     "type": "function",
-    "name": "modifyCollateral",
+    "name": "payDebt",
+    "inputs": [
+      {
+        "name": "accountId",
+        "type": "uint128",
+        "internalType": "uint128"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "processSlowWithdraw",
     "inputs": [
       {
         "name": "accountId",
@@ -1644,11 +1662,6 @@
         "name": "collateralId",
         "type": "uint128",
         "internalType": "uint128"
-      },
-      {
-        "name": "amountDelta",
-        "type": "int256",
-        "internalType": "int256"
       }
     ],
     "outputs": [],
@@ -1656,10 +1669,15 @@
   },
   {
     "type": "function",
-    "name": "payDebt",
+    "name": "requestSlowWithdraw",
     "inputs": [
       {
         "name": "accountId",
+        "type": "uint128",
+        "internalType": "uint128"
+      },
+      {
+        "name": "collateralId",
         "type": "uint128",
         "internalType": "uint128"
       },
@@ -1749,37 +1767,6 @@
   },
   {
     "type": "event",
-    "name": "CollateralModified",
-    "inputs": [
-      {
-        "name": "accountId",
-        "type": "uint128",
-        "indexed": true,
-        "internalType": "uint128"
-      },
-      {
-        "name": "collateralId",
-        "type": "uint128",
-        "indexed": true,
-        "internalType": "uint128"
-      },
-      {
-        "name": "amountDelta",
-        "type": "int256",
-        "indexed": false,
-        "internalType": "int256"
-      },
-      {
-        "name": "sender",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
     "name": "DebtPaid",
     "inputs": [
       {
@@ -1818,6 +1805,80 @@
         "type": "uint128",
         "indexed": false,
         "internalType": "uint128"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SlowWithdrawExecuted",
+    "inputs": [
+      {
+        "name": "accountId",
+        "type": "uint128",
+        "indexed": true,
+        "internalType": "uint128"
+      },
+      {
+        "name": "collateralId",
+        "type": "uint128",
+        "indexed": true,
+        "internalType": "uint128"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amountRemaining",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "sender",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "SlowWithdrawRequested",
+    "inputs": [
+      {
+        "name": "accountId",
+        "type": "uint128",
+        "indexed": true,
+        "internalType": "uint128"
+      },
+      {
+        "name": "collateralId",
+        "type": "uint128",
+        "indexed": true,
+        "internalType": "uint128"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "amountRemaining",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "sender",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
       }
     ],
     "anonymous": false
@@ -1981,6 +2042,11 @@
         "internalType": "uint128"
       }
     ]
+  },
+  {
+    "type": "error",
+    "name": "WithdrawTimeoutHasNotPassed",
+    "inputs": []
   },
   {
     "type": "function",
@@ -4116,6 +4182,11 @@
         "name": "_collateralToken",
         "type": "address",
         "internalType": "address"
+      },
+      {
+        "name": "_withdrawTimeout",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "nonpayable"
@@ -4444,6 +4515,19 @@
     "inputs": [],
     "outputs": [],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "withdrawTimeout",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
   },
   {
     "type": "event",

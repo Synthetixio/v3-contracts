@@ -96,14 +96,16 @@ interface IV4PerpsMarketProxy {
     function getOpenPositionSize(uint128 accountId, uint128 marketId) external view returns (int128 positionSize);
     function getRequiredMargins(uint128 accountId) external view returns (uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 maxLiquidationReward);
     function getWithdrawableMargin(uint128 accountId) external view returns (int256 withdrawableMargin);
-    function modifyCollateral(uint128 accountId, uint128 collateralId, int256 amountDelta) external;
     function payDebt(uint128 accountId, uint256 amount) external;
+    function processSlowWithdraw(uint128 accountId, uint128 collateralId) external;
+    function requestSlowWithdraw(uint128 accountId, uint128 collateralId, uint256 amount) external;
     function totalAccountOpenInterest(uint128 accountId) external view returns (uint256);
     function totalCollateralValue(uint128 accountId) external view returns (uint256 totalValue);
     event CollateralDeposited(uint128 indexed accountId, uint128 indexed collateralId, uint256 amountDeposited, uint256 totalAmount, address indexed sender);
-    event CollateralModified(uint128 indexed accountId, uint128 indexed collateralId, int256 amountDelta, address indexed sender);
     event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender);
     event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate);
+    event SlowWithdrawExecuted(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender);
+    event SlowWithdrawRequested(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender);
     error AccountLiquidatable(uint128 accountId);
     error AccountNotFound(uint128 accountId);
     error InsufficientCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount);
@@ -116,6 +118,7 @@ interface IV4PerpsMarketProxy {
     error OverflowUint128ToInt128();
     error SizeDeltaIsZero();
     error SynthNotEnabledForCollateral(uint128 collateralId);
+    error WithdrawTimeoutHasNotPassed();
     function getAccountOwnerV4(uint128 accountId) external view returns (address);
     function getAccountPermissionsV4(uint128 accountId) external view returns (address[] memory accountPerms);
     function grantPermissionV4(uint128 accountId, bytes32 permission, address user) external;
@@ -233,6 +236,7 @@ interface IV4PerpsMarketProxy {
     function rewardDistributorImplementation() external view returns (address);
     function setFeeCollector(address feeCollector) external;
     function updateInterestRate() external;
+    function withdrawTimeout() external view returns (uint256);
     event FeeCollectorSet(address feeCollector);
     event InterestRateParametersSet(uint256 lowUtilizationInterestRateGradient, uint256 interestRateGradientBreakpoint, uint256 highUtilizationInterestRateGradient);
     event KeeperCostNodeIdUpdated(bytes32 keeperCostNodeId);
