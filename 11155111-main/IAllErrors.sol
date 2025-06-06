@@ -182,6 +182,7 @@ interface IAllErrors {
     error NonexistentDebt(uint128 accountId);
     error SizeDeltaIsZero();
     error SynthNotEnabledForCollateral(uint128 collateralId);
+    error WithdrawTimeoutHasNotPassed();
     error Unauthorized(uint128 accountId, bytes32 permission);
     error InvalidFillPrice(int128 sizeDelta, uint128 orderPrice, uint256 filledPrice);
     error NonceAlreadyUsed(uint64 nonce);

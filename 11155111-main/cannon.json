@@ -1,6 +1,6 @@
 {
   "generator": "cannon cli 2.22.0",
-  "timestamp": 1749088542,
+  "timestamp": 1749213224,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -225,7 +225,7 @@
         "defaultValue": "<%= parseEther('100') %>"
       },
       "snx_v4_onchain": {
-        "defaultValue": "synthetix-v4-onchain:0.1.6"
+        "defaultValue": "synthetix-v4-onchain:0.1.7"
       }
     },
     "invoke": {
@@ -1103,7 +1103,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "14",
+    "version": "15",
     "description": "Includes the full synthetix system with configurations applied",
     "deployers": [
       "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
@@ -19194,23 +19194,58 @@
     "setting.snx_v4_onchain": {
       "artifacts": {
         "settings": {
-          "snx_v4_onchain": "synthetix-v4-onchain:0.1.6"
+          "snx_v4_onchain": "synthetix-v4-onchain:0.1.7"
         }
       },
-      "hash": "e8be02805f76d3620b9e57944eabb4af",
+      "hash": "b21c879e575b4eadc718de3cf3facf16",
       "version": 7
     },
     "provision.snx_v4_onchain": {
       "artifacts": {
         "imports": {
           "snx_v4_onchain": {
-            "url": "ipfs://QmZPoANti1DtHhh7ubxo3Y8v7e4LEmuveAGDiTupyhmxKo",
+            "url": "ipfs://QmUdjNdbFjjtv5HDdGHSUE95Hg9NRYSnF7Zk7KM97H1CCS",
             "tags": [
               "latest"
             ],
-            "target": "synthetix-v4-onchain:0.1.6@main",
+            "target": "synthetix-v4-onchain:0.1.7@main",
             "preset": "main",
             "contracts": {
+              "CollateralMockUSDC": {
+                "address": "0xC4C3Fa8eCcc667B5e1f8ae4685B63251eaFB0A88",
+                "abi": [
+                  "function allowance(address owner, address spender) view returns (uint256)",
+                  "function approve(address spender, uint256 amount) returns (bool)",
+                  "function balanceOf(address owner) view returns (uint256)",
+                  "function burn(uint256 amount)",
+                  "function decimals() view returns (uint8)",
+                  "function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)",
+                  "function increaseAllowance(address spender, uint256 addedValue) returns (bool)",
+                  "function initialize(string tokenName, string tokenSymbol, uint8 tokenDecimals)",
+                  "function mint(address recipient, uint256 amount)",
+                  "function name() view returns (string)",
+                  "function symbol() view returns (string)",
+                  "function totalSupply() view returns (uint256)",
+                  "function transfer(address to, uint256 amount) returns (bool)",
+                  "function transferFrom(address from, address to, uint256 amount) returns (bool)",
+                  "event Approval(address indexed owner, address indexed spender, uint256 amount)",
+                  "event Transfer(address indexed from, address indexed to, uint256 amount)",
+                  "error AlreadyInitialized()",
+                  "error InsufficientAllowance(uint256 required, uint256 existing)",
+                  "error InsufficientBalance(uint256 required, uint256 existing)",
+                  "error InvalidParameter(string parameter, string reason)"
+                ],
+                "constructorArgs": [],
+                "linkedLibraries": {},
+                "deployTxnHash": "0x845d90e6df57d8633173e9395e4a2bc29ad233fd5c1c69b81c9e6b10e81de1fa",
+                "deployTxnBlockNumber": "8489465",
+                "deployTimestamp": "1749213072",
+                "sourceName": "node_modules/@synthetixio/main/contracts/mocks/CollateralMock.sol",
+                "contractName": "CollateralMock",
+                "deployedOn": "contract.CollateralMockUSDC",
+                "gasUsed": 1027382,
+                "gasCost": "1004602"
+              },
               "CoreModule": {
                 "address": "0xB002BC2c2a43e497e7eBBCB4166771F02Ad12f8a",
                 "abi": [
@@ -19424,9 +19459,9 @@
                 "gasCost": "2162202768"
               },
               "GlobalPerpsMarketModule": {
-                "address": "0xD042EA6c1816536746847DEa103C71fb18ED3708",
+                "address": "0xb35762aF9b91A0995eAF68A320905e5f3BC234ea",
                 "abi": [
-                  "constructor(address _feeCollector, uint128 _maxPositionsPerAccount, uint128 _maxCollateralsPerAccount, uint128 _lowUtilizationInterestRateGradient, uint128 _interestRateGradientBreakpoint, uint128 _highUtilizationInterestRateGradient, uint128 _collateralLiquidateRewardRatioD18, address _rewardDistributorImplementation, address _collateralToken)",
+                  "constructor(address _feeCollector, uint128 _maxPositionsPerAccount, uint128 _maxCollateralsPerAccount, uint128 _lowUtilizationInterestRateGradient, uint128 _interestRateGradientBreakpoint, uint128 _highUtilizationInterestRateGradient, uint128 _collateralLiquidateRewardRatioD18, address _rewardDistributorImplementation, address _collateralToken, uint256 _withdrawTimeout)",
                   "function calculateCollateralLiquidateReward(uint256 notionalValue) view returns (uint256)",
                   "function collateralLiquidateRewardRatioD18() view returns (uint128)",
                   "function collateralToken() view returns (address)",
@@ -19448,6 +19483,7 @@
                   "function rewardDistributorImplementation() view returns (address)",
                   "function setFeeCollector(address feeCollector)",
                   "function updateInterestRate()",
+                  "function withdrawTimeout() view returns (uint256)",
                   "event FeeCollectorSet(address feeCollector)",
                   "event InterestRateParametersSet(uint256 lowUtilizationInterestRateGradient, uint256 interestRateGradientBreakpoint, uint256 highUtilizationInterestRateGradient)",
                   "event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate)",
@@ -19469,17 +19505,18 @@
                   "10000000000000000",
                   "10000000000000000",
                   "0x8715b7eaDC55DF39F0D7bd8D5Ae44BaD4A7a0a8f",
-                  "0xF87E23c41Ce898Ab7640FC3Ce2eb8B11f257e67a"
+                  "0xC4C3Fa8eCcc667B5e1f8ae4685B63251eaFB0A88",
+                  259200
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xbba16d07f9c6625fcc5358dfc603a5de96165f7ea5940023bc353c0691ac01d1",
-                "deployTxnBlockNumber": "8323669",
-                "deployTimestamp": "1747208676",
+                "deployTxnHash": "0xcd21a83ee8da876f7d8487c58268a52b013f0fe173a8f9df18bedd81f3063c0d",
+                "deployTxnBlockNumber": "8489467",
+                "deployTimestamp": "1749213096",
                 "sourceName": "src/perps-market/contracts/modules/GlobalPerpsMarketModule.sol",
                 "contractName": "GlobalPerpsMarketModule",
                 "deployedOn": "contract.GlobalPerpsMarketModule",
-                "gasUsed": 1182991,
-                "gasCost": "2153877212"
+                "gasUsed": 1194004,
+                "gasCost": "1004300"
               },
               "PerpsMarketFactoryModule": {
                 "address": "0xC1Db4fe8a58c8d262D3Aa8A50EFbc7646a30be26",
@@ -19535,7 +19572,7 @@
                 "gasCost": "1002382"
               },
               "GlobalContext": {
-                "address": "0x2EE17C4461D01787786D38E33c59880c79D564BA",
+                "address": "0xeA85536f774cDf62C6D14b4b2a0Fac63F6341434",
                 "abi": [
                   "constructor(address _globalMarketConfiguration, address _perpsMarketFactory, uint128[] _marketIds, address[] _perpsMarketConfigs, uint128[] _collateralIds, address[] _perpsCollateralConfigs)",
                   "function collateralConfigs(uint128) view returns (address)",
@@ -19546,7 +19583,7 @@
                   "function perpsMarketFactory() view returns (address)"
                 ],
                 "constructorArgs": [
-                  "0xD042EA6c1816536746847DEa103C71fb18ED3708",
+                  "0xb35762aF9b91A0995eAF68A320905e5f3BC234ea",
                   "0xC1Db4fe8a58c8d262D3Aa8A50EFbc7646a30be26",
                   [
                     100,
@@ -19564,17 +19601,17 @@
                   ]
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x0696465950ec9cb1122543fb62cb08025ad836be0a6e9b9d70b73969032e1441",
-                "deployTxnBlockNumber": "8479097",
-                "deployTimestamp": "1749088380",
+                "deployTxnHash": "0xe753913bfc9c012f4d4c1ffd4c744cbfac19b3548266efad69c06a4b0f6d8438",
+                "deployTxnBlockNumber": "8489468",
+                "deployTimestamp": "1749213108",
                 "sourceName": "src/perps-market/contracts/config/GlobalContext.sol",
                 "contractName": "GlobalContext",
                 "deployedOn": "contract.GlobalContext",
                 "gasUsed": 260034,
-                "gasCost": "1002649"
+                "gasCost": "1004167"
               },
               "AccountRoleModule": {
-                "address": "0x8052Eb1ee2842214743b175BDAaa478876ae519e",
+                "address": "0xF452c588Dc0601b2C19e5472ABe6368aeD113642",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function getAccountOwnerV4(uint128 accountId) view returns (address)",
@@ -19590,20 +19627,20 @@
                   "error ZeroAddress()"
                 ],
                 "constructorArgs": [
-                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
+                  "0xeA85536f774cDf62C6D14b4b2a0Fac63F6341434"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x80fc75627f02b85551e83905770d520073befe030b825a68f9bfd10d3d4a8262",
-                "deployTxnBlockNumber": "8479100",
-                "deployTimestamp": "1749088416",
+                "deployTxnHash": "0x07d848a80e69cc7082ecdc1985c4fccd5c2c228819e1f7aba32340b9a8e8c181",
+                "deployTxnBlockNumber": "8489469",
+                "deployTimestamp": "1749213120",
                 "sourceName": "src/perps-market/contracts/modules/AccountRoleModule.sol",
                 "contractName": "AccountRoleModule",
                 "deployedOn": "contract.AccountRoleModule",
                 "gasUsed": 774563,
-                "gasCost": "1002022"
+                "gasCost": "1004165"
               },
               "BookOrderModule": {
-                "address": "0x01f67Dce295e4Ee3616654691B17Ef855a902748",
+                "address": "0x62068eBDCEbcB0eB984aBfEa4c7f9A244050e0Ca",
                 "abi": [
                   "constructor(address _globalContext, string name, string version)",
                   "function SIGNED_BOOK_ORDER_TYPEHASH() view returns (bytes32)",
@@ -19636,22 +19673,22 @@
                   "error ValueNotInSet()"
                 ],
                 "constructorArgs": [
-                  "0x2EE17C4461D01787786D38E33c59880c79D564BA",
+                  "0xeA85536f774cDf62C6D14b4b2a0Fac63F6341434",
                   "Orderbook",
                   "1"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x09e9b5eeafbf07cd9af466122b424d9c002447d65e55858002b766e0bd4e2fce",
-                "deployTxnBlockNumber": "8479101",
-                "deployTimestamp": "1749088428",
+                "deployTxnHash": "0xeb0d896bd013dc631084d4c12e0cdcc317c0c19a06eb51bcbe1cbd3d07751d07",
+                "deployTxnBlockNumber": "8489470",
+                "deployTimestamp": "1749213132",
                 "sourceName": "src/perps-market/contracts/modules/BookOrderModule.sol",
                 "contractName": "BookOrderModule",
                 "deployedOn": "contract.BookOrderModule",
                 "gasUsed": 3252933,
-                "gasCost": "1002072"
+                "gasCost": "1004008"
               },
               "CollateralConfigurationModule": {
-                "address": "0xAE028644815F797E4b6497e06dDc5029587207B7",
+                "address": "0x2fe08C69D8ab826b4E08c47F0EEa9090255f2840",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function getCollateralConfiguration(uint128 collateralId) view returns (uint256 maxCollateralAmount)",
@@ -19662,20 +19699,20 @@
                   "event RewardDistributorRegistered(address distributor)"
                 ],
                 "constructorArgs": [
-                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
+                  "0xeA85536f774cDf62C6D14b4b2a0Fac63F6341434"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x446432c6f0767acedac3543b912c01803d6261aeaad27c460a488f13ca6038c5",
-                "deployTxnBlockNumber": "8479102",
-                "deployTimestamp": "1749088440",
+                "deployTxnHash": "0xc5c72b4b08edd5928161d0f9add027e834e220b76b59c7dddc2c2171bc39c312",
+                "deployTxnBlockNumber": "8489471",
+                "deployTimestamp": "1749213144",
                 "sourceName": "src/perps-market/contracts/modules/CollateralConfigurationModule.sol",
                 "contractName": "CollateralConfigurationModule",
                 "deployedOn": "contract.CollateralConfigurationModule",
                 "gasUsed": 318954,
-                "gasCost": "1001973"
+                "gasCost": "1003857"
               },
               "LiquidationModule": {
-                "address": "0x8bb726888D1E1EA5f3e32168321CA87C680a9A9F",
+                "address": "0x02566b9C95b9Ab5E42526Cf461AA5A3F223F95c1",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function canLiquidate(uint128 accountId, uint256[] positionPrices) view returns (bool isEligible)",
@@ -19698,20 +19735,20 @@
                   "error ValueNotInSet()"
                 ],
                 "constructorArgs": [
-                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
+                  "0xeA85536f774cDf62C6D14b4b2a0Fac63F6341434"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x7fc4493e07e4c4c9ecb47cce4bed827175149298e018bf0a60dc44611e724d22",
-                "deployTxnBlockNumber": "8479103",
-                "deployTimestamp": "1749088452",
+                "deployTxnHash": "0x24b08dd9c5988b58d280d65b66e0c1e67f5bd12ce1df36baa5c857e5bd5aca68",
+                "deployTxnBlockNumber": "8489472",
+                "deployTimestamp": "1749213156",
                 "sourceName": "src/perps-market/contracts/modules/LiquidationModule.sol",
                 "contractName": "LiquidationModule",
                 "deployedOn": "contract.LiquidationModule",
-                "gasUsed": 1642737,
-                "gasCost": "1001870"
+                "gasUsed": 1642507,
+                "gasCost": "1003747"
               },
               "PerpsAccountModule": {
-                "address": "0x2385286c401800204BcDD6BF2e5B3eBd71E1440d",
+                "address": "0x2aD9950f6e4118462BfEB70A602E5EB4F4a3F879",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function debt(uint128 accountId) view returns (uint256 accountDebt)",
@@ -19726,14 +19763,16 @@
                   "function getOpenPositionSize(uint128 accountId, uint128 marketId) view returns (int128 positionSize)",
                   "function getRequiredMargins(uint128 accountId) view returns (uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 maxLiquidationReward)",
                   "function getWithdrawableMargin(uint128 accountId) view returns (int256 withdrawableMargin)",
-                  "function modifyCollateral(uint128 accountId, uint128 collateralId, int256 amountDelta)",
                   "function payDebt(uint128 accountId, uint256 amount)",
+                  "function processSlowWithdraw(uint128 accountId, uint128 collateralId)",
+                  "function requestSlowWithdraw(uint128 accountId, uint128 collateralId, uint256 amount)",
                   "function totalAccountOpenInterest(uint128 accountId) view returns (uint256)",
                   "function totalCollateralValue(uint128 accountId) view returns (uint256 totalValue)",
                   "event CollateralDeposited(uint128 indexed accountId, uint128 indexed collateralId, uint256 amountDeposited, uint256 totalAmount, address indexed sender)",
-                  "event CollateralModified(uint128 indexed accountId, uint128 indexed collateralId, int256 amountDelta, address indexed sender)",
                   "event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender)",
                   "event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate)",
+                  "event SlowWithdrawExecuted(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender)",
+                  "event SlowWithdrawRequested(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender)",
                   "error AccountLiquidatable(uint128 accountId)",
                   "error AccountNotFound(uint128 accountId)",
                   "error FeatureUnavailable(bytes32 which)",
@@ -19754,23 +19793,24 @@
                   "error SizeDeltaIsZero()",
                   "error SynthNotEnabledForCollateral(uint128 collateralId)",
                   "error ValueAlreadyInSet()",
-                  "error ValueNotInSet()"
+                  "error ValueNotInSet()",
+                  "error WithdrawTimeoutHasNotPassed()"
                 ],
                 "constructorArgs": [
-                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
+                  "0xeA85536f774cDf62C6D14b4b2a0Fac63F6341434"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0x0bf7c4c5eef6e9e955334b488d43f4f00ed2f702bf997a497e5c96e715e61c85",
-                "deployTxnBlockNumber": "8479104",
-                "deployTimestamp": "1749088464",
+                "deployTxnHash": "0x2c203f095e384def4a99ae803d88290525139a9f46b5168d7f7ce57712b0cb3b",
+                "deployTxnBlockNumber": "8489473",
+                "deployTimestamp": "1749213168",
                 "sourceName": "src/perps-market/contracts/modules/PerpsAccountModule.sol",
                 "contractName": "PerpsAccountModule",
                 "deployedOn": "contract.PerpsAccountModule",
-                "gasUsed": 3581531,
-                "gasCost": "1001768"
+                "gasUsed": 3687258,
+                "gasCost": "1003738"
               },
               "PerpsMarketModule": {
-                "address": "0xa8127E705C54cD1fd9349cbc428dE4A21116B4c5",
+                "address": "0x99d2548Bd76b09607d27E42155a2bc21b8Ee77EF",
                 "abi": [
                   "constructor(address _globalContext)",
                   "function currentFundingRate(uint128 marketId) view returns (int256)",
@@ -19784,20 +19824,20 @@
                   "error OverflowUint256ToInt256()"
                 ],
                 "constructorArgs": [
-                  "0x2EE17C4461D01787786D38E33c59880c79D564BA"
+                  "0xeA85536f774cDf62C6D14b4b2a0Fac63F6341434"
                 ],
                 "linkedLibraries": {},
-                "deployTxnHash": "0xfe8bb20fc643ff4318460113d7f423f5d44b331eaa35c9c1d3397b11b31076ce",
-                "deployTxnBlockNumber": "8479106",
-                "deployTimestamp": "1749088488",
+                "deployTxnHash": "0xbb1c571bc4204f06f13f78e40341db70df71313abd771cea427d8023cdf94d86",
+                "deployTxnBlockNumber": "8489474",
+                "deployTimestamp": "1749213180",
                 "sourceName": "src/perps-market/contracts/modules/PerpsMarketModule.sol",
                 "contractName": "PerpsMarketModule",
                 "deployedOn": "contract.PerpsMarketModule",
                 "gasUsed": 672886,
-                "gasCost": "1001566"
+                "gasCost": "1003569"
               },
               "PerpsMarketRouter": {
-                "address": "0xb04f33e02dda68caf8ddd14928b626616f12ecd6",
+                "address": "0x4967d1987930b2cd183dab4b6c40b8745dd2eba1",
                 "abi": [
                   "function facets() pure returns (tuple(address facetAddress, bytes4[] functionSelectors)[])",
                   "function facetFunctionSelectors(address facet) pure returns (bytes4[] functionSelectors)",
@@ -19893,14 +19933,16 @@
                   "function getOpenPositionSize(uint128 accountId, uint128 marketId) view returns (int128 positionSize)",
                   "function getRequiredMargins(uint128 accountId) view returns (uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 maxLiquidationReward)",
                   "function getWithdrawableMargin(uint128 accountId) view returns (int256 withdrawableMargin)",
-                  "function modifyCollateral(uint128 accountId, uint128 collateralId, int256 amountDelta)",
                   "function payDebt(uint128 accountId, uint256 amount)",
+                  "function processSlowWithdraw(uint128 accountId, uint128 collateralId)",
+                  "function requestSlowWithdraw(uint128 accountId, uint128 collateralId, uint256 amount)",
                   "function totalAccountOpenInterest(uint128 accountId) view returns (uint256)",
                   "function totalCollateralValue(uint128 accountId) view returns (uint256 totalValue)",
                   "event CollateralDeposited(uint128 indexed accountId, uint128 indexed collateralId, uint256 amountDeposited, uint256 totalAmount, address indexed sender)",
-                  "event CollateralModified(uint128 indexed accountId, uint128 indexed collateralId, int256 amountDelta, address indexed sender)",
                   "event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender)",
                   "event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate)",
+                  "event SlowWithdrawExecuted(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender)",
+                  "event SlowWithdrawRequested(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender)",
                   "error AccountLiquidatable(uint128 accountId)",
                   "error AccountNotFound(uint128 accountId)",
                   "error InsufficientCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
@@ -19913,6 +19955,7 @@
                   "error OverflowUint128ToInt128()",
                   "error SizeDeltaIsZero()",
                   "error SynthNotEnabledForCollateral(uint128 collateralId)",
+                  "error WithdrawTimeoutHasNotPassed()",
                   "function getAccountOwnerV4(uint128 accountId) view returns (address)",
                   "function getAccountPermissionsV4(uint128 accountId) view returns (address[] accountPerms)",
                   "function grantPermissionV4(uint128 accountId, bytes32 permission, address user)",
@@ -20008,7 +20051,7 @@
                   "event CollateralConfigurationSet(uint128 indexed collateralId, uint256 maxCollateralAmount, uint256 upperLimitDiscount, uint256 lowerLimitDiscount, uint256 discountScalar)",
                   "event CollateralLiquidateRewardRatioSet(uint128 collateralLiquidateRewardRatioD18)",
                   "event RewardDistributorRegistered(address distributor)",
-                  "constructor(address _feeCollector, uint128 _maxPositionsPerAccount, uint128 _maxCollateralsPerAccount, uint128 _lowUtilizationInterestRateGradient, uint128 _interestRateGradientBreakpoint, uint128 _highUtilizationInterestRateGradient, uint128 _collateralLiquidateRewardRatioD18, address _rewardDistributorImplementation, address _collateralToken)",
+                  "constructor(address _feeCollector, uint128 _maxPositionsPerAccount, uint128 _maxCollateralsPerAccount, uint128 _lowUtilizationInterestRateGradient, uint128 _interestRateGradientBreakpoint, uint128 _highUtilizationInterestRateGradient, uint128 _collateralLiquidateRewardRatioD18, address _rewardDistributorImplementation, address _collateralToken, uint256 _withdrawTimeout)",
                   "function calculateCollateralLiquidateReward(uint256 notionalValue) view returns (uint256)",
                   "function collateralLiquidateRewardRatioD18() view returns (uint128)",
                   "function collateralToken() view returns (address)",
@@ -20030,6 +20073,7 @@
                   "function rewardDistributorImplementation() view returns (address)",
                   "function setFeeCollector(address feeCollector)",
                   "function updateInterestRate()",
+                  "function withdrawTimeout() view returns (uint256)",
                   "event FeeCollectorSet(address feeCollector)",
                   "event InterestRateParametersSet(uint256 lowUtilizationInterestRateGradient, uint256 interestRateGradientBreakpoint, uint256 highUtilizationInterestRateGradient)",
                   "event KeeperCostNodeIdUpdated(bytes32 keeperCostNodeId)",
@@ -20040,13 +20084,13 @@
                   "error InvalidReferrerShareRatio(uint256 shareRatioD18)"
                 ],
                 "deployedOn": "router.PerpsMarketRouter",
-                "deployTxnHash": "0x061f8deee740d2952ab8b8b7e620631cbe2ac1b1ef66c30c7822a2fae1cbc9f1",
-                "deployTxnBlockNumber": "8479107",
-                "deployTimestamp": "1749088500",
+                "deployTxnHash": "0x973e727b6e54cda8518bd07423d9e9e14260d75956c6351fb1d1dd4d79dceb8e",
+                "deployTxnBlockNumber": "8489475",
+                "deployTimestamp": "1749213192",
                 "contractName": "PerpsMarketRouter",
                 "sourceName": "PerpsMarketRouter.sol",
-                "gasUsed": 4788687,
-                "gasCost": "1001733"
+                "gasUsed": 4835948,
+                "gasCost": "1003459"
               },
               "PerpsMarketProxy": {
                 "address": "0xEa1ef48647E2418b50480724E120C6A0b0fb54c3",
@@ -20145,14 +20189,16 @@
                   "function getOpenPositionSize(uint128 accountId, uint128 marketId) view returns (int128 positionSize)",
                   "function getRequiredMargins(uint128 accountId) view returns (uint256 requiredInitialMargin, uint256 requiredMaintenanceMargin, uint256 maxLiquidationReward)",
                   "function getWithdrawableMargin(uint128 accountId) view returns (int256 withdrawableMargin)",
-                  "function modifyCollateral(uint128 accountId, uint128 collateralId, int256 amountDelta)",
                   "function payDebt(uint128 accountId, uint256 amount)",
+                  "function processSlowWithdraw(uint128 accountId, uint128 collateralId)",
+                  "function requestSlowWithdraw(uint128 accountId, uint128 collateralId, uint256 amount)",
                   "function totalAccountOpenInterest(uint128 accountId) view returns (uint256)",
                   "function totalCollateralValue(uint128 accountId) view returns (uint256 totalValue)",
                   "event CollateralDeposited(uint128 indexed accountId, uint128 indexed collateralId, uint256 amountDeposited, uint256 totalAmount, address indexed sender)",
-                  "event CollateralModified(uint128 indexed accountId, uint128 indexed collateralId, int256 amountDelta, address indexed sender)",
                   "event DebtPaid(uint128 indexed accountId, uint256 amount, address indexed sender)",
                   "event InterestRateUpdated(uint128 indexed superMarketId, uint128 interestRate)",
+                  "event SlowWithdrawExecuted(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender)",
+                  "event SlowWithdrawRequested(uint128 indexed accountId, uint128 indexed collateralId, uint256 amount, uint256 amountRemaining, address indexed sender)",
                   "error AccountLiquidatable(uint128 accountId)",
                   "error AccountNotFound(uint128 accountId)",
                   "error InsufficientCollateral(uint128 collateralId, uint256 collateralAmount, uint256 withdrawAmount)",
@@ -20165,6 +20211,7 @@
                   "error OverflowUint128ToInt128()",
                   "error SizeDeltaIsZero()",
                   "error SynthNotEnabledForCollateral(uint128 collateralId)",
+                  "error WithdrawTimeoutHasNotPassed()",
                   "function getAccountOwnerV4(uint128 accountId) view returns (address)",
                   "function getAccountPermissionsV4(uint128 accountId) view returns (address[] accountPerms)",
                   "function grantPermissionV4(uint128 accountId, bytes32 permission, address user)",
@@ -20260,7 +20307,7 @@
                   "event CollateralConfigurationSet(uint128 indexed collateralId, uint256 maxCollateralAmount, uint256 upperLimitDiscount, uint256 lowerLimitDiscount, uint256 discountScalar)",
                   "event CollateralLiquidateRewardRatioSet(uint128 collateralLiquidateRewardRatioD18)",
                   "event RewardDistributorRegistered(address distributor)",
-                  "constructor(address _feeCollector, uint128 _maxPositionsPerAccount, uint128 _maxCollateralsPerAccount, uint128 _lowUtilizationInterestRateGradient, uint128 _interestRateGradientBreakpoint, uint128 _highUtilizationInterestRateGradient, uint128 _collateralLiquidateRewardRatioD18, address _rewardDistributorImplementation, address _collateralToken)",
+                  "constructor(address _feeCollector, uint128 _maxPositionsPerAccount, uint128 _maxCollateralsPerAccount, uint128 _lowUtilizationInterestRateGradient, uint128 _interestRateGradientBreakpoint, uint128 _highUtilizationInterestRateGradient, uint128 _collateralLiquidateRewardRatioD18, address _rewardDistributorImplementation, address _collateralToken, uint256 _withdrawTimeout)",
                   "function calculateCollateralLiquidateReward(uint256 notionalValue) view returns (uint256)",
                   "function collateralLiquidateRewardRatioD18() view returns (uint128)",
                   "function collateralToken() view returns (address)",
@@ -20282,6 +20329,7 @@
                   "function rewardDistributorImplementation() view returns (address)",
                   "function setFeeCollector(address feeCollector)",
                   "function updateInterestRate()",
+                  "function withdrawTimeout() view returns (uint256)",
                   "event FeeCollectorSet(address feeCollector)",
                   "event InterestRateParametersSet(uint256 lowUtilizationInterestRateGradient, uint256 interestRateGradientBreakpoint, uint256 highUtilizationInterestRateGradient)",
                   "event KeeperCostNodeIdUpdated(bytes32 keeperCostNodeId)",
@@ -26095,6 +26143,16 @@
               }
             },
             "txns": {
+              "initializeCollateral": {
+                "hash": "0x2407b8a73b0d91f9e7a206be85f8afd235302c7a804c4ee4d1d6be32db965f73",
+                "blockNumber": "8489466",
+                "timestamp": "1749213084",
+                "events": {},
+                "deployedOn": "invoke.initializeCollateral",
+                "gasUsed": 90864,
+                "gasCost": "1004454",
+                "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
+              },
               "addRegisterMarketToFeatureFlag": {
                 "hash": "0xe6d46468eea0a83c3bce937e4ae44f2df5f99dc69821bf6bb0b5d98b97465334",
                 "blockNumber": "8323670",
@@ -26137,23 +26195,23 @@
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "upgrade_proxy": {
-                "hash": "0xc94872e5a1d3e3acc96570ba1f121ab864f0f121f97af3cf10d92e0b7da5ebe4",
-                "blockNumber": "8479108",
-                "timestamp": "1749088512",
+                "hash": "0xdbf986a29648ec2035aa7670e09c2d1e77883b2cca21e620bd6a78469a1afdc2",
+                "blockNumber": "8489477",
+                "timestamp": "1749213216",
                 "events": {
                   "Upgraded": [
                     {
                       "name": "Upgraded",
                       "args": [
                         "0xEa1ef48647E2418b50480724E120C6A0b0fb54c3",
-                        "0xb04F33e02DdA68cAF8ddD14928b626616f12eCD6"
+                        "0x4967d1987930b2CD183dAB4B6C40B8745DD2eba1"
                       ]
                     }
                   ]
                 },
                 "deployedOn": "invoke.upgrade_proxy",
                 "gasUsed": 50607,
-                "gasCost": "1001708",
+                "gasCost": "1003111",
                 "signer": "0x48914229deDd5A9922f44441ffCCfC2Cb7856Ee9"
               },
               "addCreateMarketToFeatureFlag": {
@@ -26304,14 +26362,14 @@
       "version": 7
     }
   },
-  "seq": 9,
+  "seq": 10,
   "track": "yd6gzchcj0j",
   "options": {},
   "status": "complete",
   "meta": {
     "gitUrl": "https://github.com/Synthetixio/synthetix-deployments",
-    "commitHash": "b38a20d163cd63f77c8c26026541ccb944342556",
-    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/b38a20d163cd63f77c8c26026541ccb944342556/README.md"
+    "commitHash": "4ce01c8036038b97f696cf0b4265a619140f683b",
+    "readme": "https://github.com/Synthetixio/synthetix-deployments/blob/4ce01c8036038b97f696cf0b4265a619140f683b/README.md"
   },
   "miscUrl": "ipfs://QmeSt2mnJKE8qmRhLyYbHQQxDKpsFbcWnw5e7JF4xVbN6k",
   "chainId": 11155111
