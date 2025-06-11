@@ -127,7 +127,7 @@ interface IV4PerpsMarketProxy {
     function revokePermissionV4(uint128 accountId, bytes32 permission, address user) external;
     event PermissionGrantedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender);
     event PermissionRevokedV4(uint128 indexed accountId, bytes32 indexed permission, address indexed user, address sender);
-    error Unauthorized(uint128 accountId, bytes32 permission);
+    error UnauthorizedPermission(uint128 accountId, bytes32 permission);
     function currentFundingRate(uint128 marketId) external view returns (int256);
     function fillPrice(uint128 marketId, int128 orderSize, uint256 price) external view returns (uint256);
     function getMarketSummary(uint128 marketId) external view returns (IPerpsMarketModule.MarketSummary memory summary);
