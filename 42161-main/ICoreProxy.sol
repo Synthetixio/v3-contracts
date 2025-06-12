@@ -92,10 +92,11 @@ interface ICoreProxy {
     error AccountActivityTimeoutPending(uint128 accountId, uint256 currentTime, uint256 requiredTime);
     error CollateralDepositDisabled(address collateralType);
     error CollateralNotFound();
+    error DeprecatedDeposit();
     error FailedTransfer(address from, address to, uint256 value);
-    error InsufficentAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InsufficientAccountCollateral(uint256 amount);
     error InsufficientAllowance(uint256 required, uint256 existing);
+    error InsufficientAvailableCollateral(uint256 amountAvailableForDelegationD18, uint256 amountD18);
     error InvalidParameter(string parameter, string reason);
     error OverflowUint256ToUint64();
     error PrecisionLost(uint256 tokenAmount, uint8 decimals);
@@ -111,7 +112,9 @@ interface ICoreProxy {
     function getLocks(uint128 accountId, address collateralType, uint256 offset, uint256 count) external view returns (CollateralLock.Data[] memory locks);
     function withdraw(uint128 accountId, address collateralType, uint256 tokenAmount) external;
     event CollateralConfigured(address indexed collateralType, CollateralConfiguration.Data config);
+    event CollateralDeprecated(address indexed collateralType, address deprecationReceiver, uint256 deprecatedBalance);
     function configureCollateral(CollateralConfiguration.Data memory config) external;
+    function deprecateCollateral(address deprecatedCollateral, address deprecationReceiver) external;
     function getCollateralConfiguration(address collateralType) external pure returns (CollateralConfiguration.Data memory);
     function getCollateralConfigurations(bool hideDisabled) external view returns (CollateralConfiguration.Data[] memory);
     function getCollateralPrice(address collateralType) external view returns (uint256);
@@ -137,6 +140,7 @@ interface ICoreProxy {
     function isPositionLiquidatable(uint128 accountId, uint128 poolId, address collateralType) external returns (bool);
     function isVaultLiquidatable(uint128 poolId, address collateralType) external returns (bool);
     function liquidate(uint128 accountId, uint128 poolId, address collateralType, uint128 liquidateAsAccountId) external returns (ILiquidationModule.LiquidationData memory liquidationData);
+    function liquidateToTreasury(uint128 accountId, uint128 poolId, address collateralType) external returns (ILiquidationModule.LiquidationData memory liquidationData);
     function liquidateVault(uint128 poolId, address collateralType, uint128 liquidateAsAccountId, uint256 maxUsd) external returns (ILiquidationModule.LiquidationData memory liquidationData);
     error InsufficientMarketCollateralDepositable(uint128 marketId, address collateralType, uint256 tokenAmountToDeposit);
     error InsufficientMarketCollateralWithdrawable(uint128 marketId, address collateralType, uint256 tokenAmountToWithdraw);
@@ -237,6 +241,7 @@ interface ICoreProxy {
     function registerRewardsDistributor(uint128 poolId, address collateralType, address distributor) external;
     function removeRewardsDistributor(uint128 poolId, address collateralType, address distributor) external;
     function updateRewards(uint128 poolId, address collateralType, uint128 accountId) external returns (uint256[] memory, address[] memory, uint256);
+    event ConfigSet(bytes32 indexed k, bytes32 v);
     event NewSupportedCrossChainNetwork(uint64 newChainId);
     function configureChainlinkCrossChain(address ccipRouter, address ccipTokenPool) external;
     function configureOracleManager(address oracleManagerAddress) external;
@@ -255,6 +260,7 @@ interface ICoreProxy {
     error PoolCollateralLimitExceeded(uint128 poolId, address collateralType, uint256 currentCollateral, uint256 maxCollateral);
     event DelegationUpdated(uint128 indexed accountId, uint128 indexed poolId, address collateralType, uint256 amount, uint256 leverage, address indexed sender);
     function delegateCollateral(uint128 accountId, uint128 poolId, address collateralType, uint256 newCollateralAmountD18, uint256 leverage) external;
+    function getLastDelegationTime(uint128 accountId, uint128 poolId, address collateralType) external view returns (uint256 lastDelegationTime);
     function getPosition(uint128 accountId, uint128 poolId, address collateralType) external returns (uint256 collateralAmount, uint256 collateralValue, int256 debt, uint256 collateralizationRatio);
     function getPositionCollateral(uint128 accountId, uint128 poolId, address collateralType) external view returns (uint256 amount);
     function getPositionCollateralRatio(uint128 accountId, uint128 poolId, address collateralType) external returns (uint256);
@@ -262,6 +268,7 @@ interface ICoreProxy {
     function getVaultCollateral(uint128 poolId, address collateralType) external view returns (uint256 amount, uint256 value);
     function getVaultCollateralRatio(uint128 poolId, address collateralType) external returns (uint256);
     function getVaultDebt(uint128 poolId, address collateralType) external returns (int256);
+    function migrateDelegation(uint128 accountId, uint128 oldPoolId, address collateralType, uint128 newPoolId) external;
 }
 
 interface IAccountModule {
