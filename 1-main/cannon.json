@@ -1,6 +1,6 @@
 {
   "generator": "cannon website 2.15.5",
-  "timestamp": 1748850004,
+  "timestamp": 1750152650,
   "def": {
     "setting": {
       "minimum_liquidity_ratio": {
@@ -152,6 +152,9 @@
       },
       "position_manager_address": {
         "defaultValue": "0x100c6c18381c9a7527762063047236356bbd0b8d"
+      },
+      "pool420_migrate_address": {
+        "defaultValue": "0x8bfd24F68149E3d4e9635a6E26b0e43EEfd2C692"
       }
     },
     "invoke": {
@@ -472,6 +475,84 @@
         "args": [
           "<%= formatBytes32String('transferCrossChain') %>",
           true
+        ]
+      },
+      "setPositionManagerOverrideWithdrawTimeout": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setConfig",
+        "args": [
+          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address'], [formatBytes32String('senderOverrideWithdrawTimeout'), settings.position_manager_address])) %>",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ]
+      },
+      "setPositionManagerOverrideMinDelegateTime": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setConfig",
+        "args": [
+          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address', 'uint256'], [formatBytes32String('senderOverrideMinDelegateTime'), settings.position_manager_address, settings.treasury_pool_id])) %>",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ]
+      },
+      "setPositionManagerOverrideMinDelegateTime_SC_Pool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setConfig",
+        "args": [
+          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address', 'uint256'], [formatBytes32String('senderOverrideMinDelegateTime'), settings.position_manager_address, settings.sc_pool_id])) %>",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ]
+      },
+      "CoreProxy_setConfig_senderOverrideWithdrawTimeout_Pool420Migrate": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setConfig",
+        "args": [
+          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address'], [formatBytes32String('senderOverrideWithdrawTimeout'), settings.pool420_migrate_address])) %>",
+          "0x0000000000000000000000000000000000000000000000000000000000000001"
+        ]
+      },
+      "CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_TreasuryPool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setConfig",
+        "args": [
+          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address', 'uint256'], [formatBytes32String('senderOverrideMinDelegateTime'), settings.pool420_migrate_address, settings.treasury_pool_id])) %>",
+          "0x0000000000000000000000000000000000000000000000000000000000000001"
+        ]
+      },
+      "CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_SCPool": {
+        "target": [
+          "system.CoreProxy"
+        ],
+        "fromCall": {
+          "func": "owner"
+        },
+        "func": "setConfig",
+        "args": [
+          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address', 'uint256'], [formatBytes32String('senderOverrideMinDelegateTime'), settings.pool420_migrate_address, settings.sc_pool_id])) %>",
+          "0x0000000000000000000000000000000000000000000000000000000000000001"
         ]
       },
       "authorizedPublishers_synthetix_bfp_market": {
@@ -1577,32 +1658,6 @@
           "<%= parseEther('1') %>",
           "<%= parseEther('0.5') %>"
         ]
-      },
-      "setPositionManagerOverrideWithdrawTimeout": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "setConfig",
-        "args": [
-          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address'], [formatBytes32String('senderOverrideWithdrawTimeout'), settings.position_manager_address])) %>",
-          "0x0000000000000000000000000000000000000000000000000000000000000001"
-        ]
-      },
-      "setPositionManagerOverrideMinDelegateTime": {
-        "target": [
-          "system.CoreProxy"
-        ],
-        "fromCall": {
-          "func": "owner"
-        },
-        "func": "setConfig",
-        "args": [
-          "<%= keccak256(defaultAbiCoder.encode(['bytes32', 'address', 'uint256'], [formatBytes32String('senderOverrideMinDelegateTime'), settings.position_manager_address, settings.treasury_pool_id])) %>",
-          "0x0000000000000000000000000000000000000000000000000000000000000001"
-        ]
       }
     },
     "clone": {
@@ -1757,7 +1812,7 @@
       }
     },
     "name": "synthetix-omnibus",
-    "version": "24",
+    "version": "25",
     "description": "Includes the full synthetix system with configurations applied",
     "deployers": [
       "0x1C8236B406911A376369e33D39189F1b4B39F27D",
@@ -28309,29 +28364,29 @@
         "contracts": {},
         "txns": {
           "setPositionManagerOverrideWithdrawTimeout": {
-            "hash": "0x2f477df1d45b66cd30e1e3be8e8addf97595d9c5166c6dcd46f6c3e751eea36f",
-            "blockNumber": "21895433",
-            "timestamp": "1740149597",
+            "hash": "0x358d3ced82393b480b35e5b7f1b38761a9b2394bcd58a712c34831f609b201a7",
+            "blockNumber": "22723343",
+            "timestamp": "1750152631",
             "events": {
               "ConfigSet": [
                 {
                   "name": "ConfigSet",
                   "args": [
                     "0x8622f2696ac19335f3e89357baa0a70800291d5a785f76db55073c291483a51e",
-                    "0x0000000000000000000000000000000000000000000000000000000000000001"
+                    "0x0000000000000000000000000000000000000000000000000000000000000000"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPositionManagerOverrideWithdrawTimeout",
-            "gasUsed": 56443,
-            "gasCost": "2386949926",
+            "gasUsed": 34553,
+            "gasCost": "1634581235",
             "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
           }
         },
         "settings": {}
       },
-      "hash": "b9f65fb7df161a11c0731da84a63353b",
+      "hash": "f4dd8fcf04e112e56e3eb1177f3fc561",
       "version": 7
     },
     "invoke.setPositionManagerOverrideMinDelegateTime": {
@@ -28339,29 +28394,29 @@
         "contracts": {},
         "txns": {
           "setPositionManagerOverrideMinDelegateTime": {
-            "hash": "0xebc3c74238e5a9eb4785b64f9f920bdb8a4f7f83bbde6086691c928a910aa436",
-            "blockNumber": "21895434",
-            "timestamp": "1740149608",
+            "hash": "0x567cb288f7ad42e7918f96ff6186b682ebfd49dd024987c7e6774935c5c75b56",
+            "blockNumber": "22723345",
+            "timestamp": "1750152643",
             "events": {
               "ConfigSet": [
                 {
                   "name": "ConfigSet",
                   "args": [
                     "0xbc03617fd4bc1ddd9704ad293f84e0ea760799885a10f4e38499d582f17d3238",
-                    "0x0000000000000000000000000000000000000000000000000000000000000001"
+                    "0x0000000000000000000000000000000000000000000000000000000000000000"
                   ]
                 }
               ]
             },
             "deployedOn": "invoke.setPositionManagerOverrideMinDelegateTime",
-            "gasUsed": 56455,
-            "gasCost": "2214233549",
+            "gasUsed": 34565,
+            "gasCost": "1486272555",
             "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
           }
         },
         "settings": {}
       },
-      "hash": "9c909aefef1f4fe5689cc323c939fb37",
+      "hash": "85a465d13017dd277dd0f23d7602b135",
       "version": 7
     },
     "invoke.setCRatio": {
@@ -28598,6 +28653,135 @@
         }
       },
       "hash": "fe9d470577b1bd5da244abb3a72b717b",
+      "version": 7
+    },
+    "setting.pool420_migrate_address": {
+      "artifacts": {
+        "settings": {
+          "pool420_migrate_address": "0x8bfd24F68149E3d4e9635a6E26b0e43EEfd2C692"
+        }
+      },
+      "hash": "3439f360c619b9c524c4b6e193b22f5c",
+      "version": 7
+    },
+    "invoke.CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_SCPool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_SCPool": {
+            "hash": "0x500d2501c3865b47f830d4e123f1c8376a3099a16600532b9f7a45a904029753",
+            "blockNumber": "22723340",
+            "timestamp": "1750152630",
+            "events": {
+              "ConfigSet": [
+                {
+                  "name": "ConfigSet",
+                  "args": [
+                    "0x02594e46c863e7511f5f49c29c62810cdf6464402bab3847e7b141e7998f477d",
+                    "0x0000000000000000000000000000000000000000000000000000000000000001"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_SCPool",
+            "gasUsed": 56477,
+            "gasCost": "1945917055",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "2c202798f43a4cdba17c1fe709dbbd8d",
+      "version": 7
+    },
+    "invoke.CoreProxy_setConfig_senderOverrideWithdrawTimeout_Pool420Migrate": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_setConfig_senderOverrideWithdrawTimeout_Pool420Migrate": {
+            "hash": "0xfe6b7d5cd756f273e2bac45673ccc4dedad0d8e11c496cdef37057bc1c6ab3ac",
+            "blockNumber": "22723341",
+            "timestamp": "1750152630",
+            "events": {
+              "ConfigSet": [
+                {
+                  "name": "ConfigSet",
+                  "args": [
+                    "0xa9fdc070250e54d5f0d49617f0519119c8efbe233396292e1a32307d92b3816f",
+                    "0x0000000000000000000000000000000000000000000000000000000000000001"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_setConfig_senderOverrideWithdrawTimeout_Pool420Migrate",
+            "gasUsed": 56477,
+            "gasCost": "1828122612",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "b5fcee50b1244d97ad149f2da551792c",
+      "version": 7
+    },
+    "invoke.setPositionManagerOverrideMinDelegateTime_SC_Pool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "setPositionManagerOverrideMinDelegateTime_SC_Pool": {
+            "hash": "0xfb3148655b698833df7c8ce1dbbe6709233eedc629f61989e8ce11d0480cf73a",
+            "blockNumber": "22723342",
+            "timestamp": "1750152631",
+            "events": {
+              "ConfigSet": [
+                {
+                  "name": "ConfigSet",
+                  "args": [
+                    "0xcea3135cc6ed0d67ca731983ad1fc0949c8cd98fa4577373ed47ba657a90d6d3",
+                    "0x0000000000000000000000000000000000000000000000000000000000000000"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.setPositionManagerOverrideMinDelegateTime_SC_Pool",
+            "gasUsed": 34565,
+            "gasCost": "1724997035",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "a6d6477399cee5389483571e372e8ba7",
+      "version": 7
+    },
+    "invoke.CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_TreasuryPool": {
+      "artifacts": {
+        "contracts": {},
+        "txns": {
+          "CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_TreasuryPool": {
+            "hash": "0xacf82c4a141b3ecbb6a944b881f87e72a40f36d7148f874b96809a7bfced279a",
+            "blockNumber": "22723344",
+            "timestamp": "1750152642",
+            "events": {
+              "ConfigSet": [
+                {
+                  "name": "ConfigSet",
+                  "args": [
+                    "0xf1080dacc4c299efe3835528279bb11934ef8fbf5d23a2a29f7b2be5dd95b477",
+                    "0x0000000000000000000000000000000000000000000000000000000000000001"
+                  ]
+                }
+              ]
+            },
+            "deployedOn": "invoke.CoreProxy_setConfig_senderOverrideMinDelegateTime_Pool420Migrate_TreasuryPool",
+            "gasUsed": 56477,
+            "gasCost": "1555441304",
+            "signer": "0xEb3107117FEAd7de89Cd14D463D340A2E6917769"
+          }
+        },
+        "settings": {}
+      },
+      "hash": "63f6ffe85927a2447350564b49e19ac7",
       "version": 7
     }
   },
